@@ -1,0 +1,1 @@
+- [AI Office de SEO DC editing notes](project_ai-office-de-seo-dc-editing.md) — template dialect, tag-balance check, i18n key rules, Office no-scroll rule, preview-skip instruction handling

@@ -1,0 +1,11 @@
+# Local Claude/Codex runtime state
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Python runtime artifacts
+__pycache__/
+*.py[cod]
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

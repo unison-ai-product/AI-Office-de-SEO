@@ -1,0 +1,87 @@
+---
+document_id: AOS-L3-DATA-DDL
+title: AI Office de SEO データDDL設計（L3スケルトン） v3.7
+version: 3.7
+layer: L3
+kind: design
+status: skeleton
+updated_at: 2026-07-05
+related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
+---
+
+# AI Office de SEO データDDL設計（L3スケルトン）
+
+L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作業台。本書はスケルトンであり、`TODO(L3)` を埋めて `status: draft → review → fixed` へ進める。
+
+## 0. 全テーブル共通の不変条件（先に固定・変更不可）
+
+- 境界キー: 全テーブルに `tenant_id` を必須とし、サイトに閉じるものは `site_id` も必須（REQ-PRODUCT-10 / REQ-SEC-07 / REQ-SEC-11。検証: AC-TENANT-01/02, AC-SEC-11）。
+- 単一強制ポイント: 直接クエリを許さず、Repository層でスコープを自動付与。default-deny。可能な範囲でRLS併用（REQ-SEC-07）。
+- 保存禁止列の不存在: 記事本文全文 / HTML全文 / Gutenbergブロック全文 / 競合本文全文 / プロンプト全文 / フォーム入力 / 個別行動ログ / APIキー原文 / secret復号値 / provider raw response全文（REQ-SEC-11。検証: AC-DATA-01/02, AC-SEC-11）。
+- 一時本文: `tenant_id`/`site_id`/`job_id` 必須・TTL・完了後削除・管理画面から閲覧不可（REQ-PRODUCT-04。検証: AC-DATA-03）。
+- 監査ログ: append-only、スキーマは REQ-ADM-06 の `{id, timestamp, actor_id, actor_type, action, resource_type, resource_id, tenant_id, changes, ip, user_agent, metadata}` を正本とする。
+
+## 1. Tenancy & Access（Site / SiteSandboxContext 集約）
+
+対象: tenants / memberships / users / connected_accounts / sites / roles。
+根拠: REQ-PRODUCT-01/02/05/08、REQ-SEC-08/09。検証: AC-TENANT-05/06, AC-SEC-02/04。
+
+- TODO(L3): 各テーブルの列・型・一意制約（例: connected_accounts は tenant 単位で外部アカウントを保持し、テナント間共有を構造的に不可能にする一意性）。
+- TODO(L3): OAuthトークンの暗号化列（KMS参照）と `secret_refs` 分離（REQ-SEC-09）。
+
+## 2. Content Index（UrlMaster / ArticleSummary / KeywordMap 集約）
+
+対象: url_master（raw_url / canonical_url / canonical_url_hash / wp_post_id / gsc_page_url / redirect_target_url / url_alias_type）、url_alias_history、article_summaries（title / meta / h1 / h2_list / h3_summary / word_count / article_type / summary / content_hash / published_at / modified_at / last_synced_at）、keywords（raw / normalized_keyword / keyword_group_id / intent / priority / target_url_hash）、same_serps_clusters、article_map。
+根拠: REQ-PRODUCT-03/04、REQ-KGA-02/07/12、REQ-SEC-11。検証: AC-DATA-04/05, AC-KGA-01/02/14。
+
+- TODO(L3): 一意キー `tenant_id + site_id + canonical_url_hash` と、内部ID（照会=URL・管理=ID、REQ-PRODUCT-03）の二重キー構造。重複検出はアラート（ハードロックしない）。
+- TODO(L3): カニバリ判定に使う被覆・分散の導出列/ビュー（REQ-KGA-07。しきい値はConfig Registry参照）。
+- keyword_attributes（intent / commercial / target_fit / industry_fit / ymyl_adjacent / locality / freshness。決定論付与・辞書version参照。REQ-KGA-13）、keyword_assignments（keyword_group_id一意・status・primary記事は内部ID参照・履歴。REQ-KGA-14。検証: AC-KGA-17/18）、gsc_query_matches（query正規化形 / keyword_group_id / method / confidence / matched_at / 辞書version。未マッチは明示行。夜間バッチで再計算。REQ-KGA-15。検証: AC-KGA-19）、topology_nodes/edges（tier=pillar/cluster/leaf・category/tags・リンク再調整キュー。REQ-KGA-19）、keyword_watchlists（しきい値・通知設定。REQ-KGA-20）、engagement_daily（url_hash×日次のdwell/scroll分位。個人非特定。REQ-WPA-11）、index_status（state/issue/checked_at。REQ-KGA-21）、monthly_plans（目標・配分・予測レンジversion・実績。REQ-PRODUCT-17）、derived_facts（fact_key/value/observed_at/confidence/source_ref・サイズ上限・月次ロールアップ。REQ-PRODUCT-19）、intervention_ledger（施策タイプ×文脈×効果デルタ。REQ-PRODUCT-19）、automation_change_budget（日次/週次消費・クールダウン・振動検知状態。REQ-PRODUCT-18）、cv_points / cv_assignments（カタログ・記事割当・有効期間。REQ-WPA-13）、wp_patch_jobs（対象・操作・リビジョン参照・競合/ロールバック状態。REQ-WPA-12）、article_summaries（契約準拠・content_hash・差分更新。本文列を作らない。REQ-PRODUCT-20）、summary_embeddings（対象ref・model_version・vector。実装方式はL3。REQ-PRODUCT-20）、tenant_schedule（timezone・静穏窓・割当オフセット。REQ-SRC-10）、mail_suppressions（宛先hash・理由・停止/再有効化。REQ-PRODUCT-21）、invitation_tokens（期限・単回・失効。REQ-SEC-16）、tenants.kind（internal/customer区分・開発者アカウント配下の所有参照。REQ-PRODUCT-23）、showcase_consents / showcase_cases（許諾範囲・撤回状態・転用スナップショット。REQ-PRODUCT-23）、support_tickets / support_messages（チケット・会話・AI要約・文脈参照。記事本文/プロンプト全文の列を作らない。保持期間Config。REQ-PRODUCT-22）、longtail_clusters（中核トークン / modifierパターン / 集計clicks・impressions / 昇格状態 / 親グループ参照。REQ-KGA-16）、keyword_value_scores（value_score / 成分内訳 / aio_suppressed / 期待CTR基線version。REQ-KGA-17。検証: AC-KGA-20/21）。
+
+## 3. Search Performance（GscDataMart / CoverageAssessment / RewriteCandidate 集約）
+
+対象: gsc_site_metrics_daily / gsc_page_metrics_daily / gsc_query_metrics_daily / gsc_page_query_metrics_daily、gsc_ingest_metadata（匿名化・切り捨て・取得次元・データ日）、coverage_assessments、query_drift、rewrite_candidates（28d比較・cv_28d・keyword_match_score・cannibalization_score・rewrite_priority_score・rewrite_reason）、cv_daily。
+根拠: REQ-PRODUCT-05、REQ-KGA-05/06/08/11、REQ-WPA-05、REQ-SEC-11。検証: AC-KGA-03/04/06/11/12, AC-CV-01。
+
+- 保持の確定事項（v3.7.1で解消済みの矛盾を踏襲）: GSC/CV日次実績は判定正本として日次粒度で保持（初期16か月・要調整）。1週間保持は日次より細かいリアルタイム系のみ。月/年集約は日次正本から導出（REQ-KGA-08）。
+- TODO(L3): パーティション設計（日次・大規模サイト）、月次/年次集約テーブル、BigQuery Bulk Export併用時の取り込み経路（REQ-KGA-11）。
+
+## 4. Generation / Quality / Rewrite（GenerationJob / QualityGateEvaluation / RewriteJob 集約）
+
+対象: generation_jobs（freeze済み workflow/pack/catalog/config version、SiteSandboxContext）、tickets（キーのみ・本文非内包）、snapshots_meta（snapshot_hash・schema_key・returnTo・結果参照）、outline_contracts、qa_results（schema.snapshot.qa.v1 準拠のgates/metrics/ymyl/hard_gate_block）、rewrite_jobs / edit_plans / patch_audit（patch_id / section_id / operation / reason / quality result / cost / approved_by）。
+根拠: REQ-PACK-01/04、REQ-AGENT-09、REQ-RWR-02/03/05、REQ-SEC-02。検証: AC-PACK-01/02, AC-AGENT-14, AC-RWR-01/02。
+
+- TODO(L3): Snapshot本体は本文を含む場合があるため一時領域（TTL）に置き、テーブルはメタ・hashのみ（REQ-SEC-11）。
+- TODO(L3): 状態機械の状態カラム（13状態＝実務工程9＋強制ゲート4、REQ-AGENT-09）と遷移履歴。
+- 冪等性: tickets.ticket_idを冪等キーとし、snapshots_metaにticket_id一意制約（重複取り込みのdedupe）、usage_credit_ledgerのreserve/commitはticket_id参照で冪等（REQ-AGENT-10。検証: AC-AGENT-18）。
+- golden_eval_sets / golden_eval_runs（改版時の品質回帰評価: タスク定義参照・対象version・gateスコア・比較デルタ。REQ-ADM-10。検証: AC-ADM-11）。
+
+## 5. Publishing & Automation（PublicationJob / PostEnvelope 集約）
+
+対象: wp_capability_snapshots（snapshotKey / schemaVersion）、dynamic_post_schemas、publication_jobs（dynamicPostSchemaKey・slot assignment metadata・content hash・validation result・WP draft URL・job result）、scheduled_actions / automation_policies / approval_requests / content_calendar_slots、recommendation_items / recommendation_feedback / saved_views / user_exploration_sessions。
+根拠: REQ-WPA-02/04/08/09、REQ-AOUI-05、REQ-SEC-11。検証: AC-WPA-08, AC-AUTO-01/02, AC-AOUI-03。
+
+- TODO(L3): PostEnvelopeSnapshot は一時保存（最終HTML/ブロック全文は恒久保存しない）。
+
+## 6. Billing & Credit（CreditAccount 集約）
+
+対象: usage_credit_ledger（append-only。monthly_grant / purchase_grant / promo_grant / manual_grant / reserve / release / commit / adjustment / expire / refund_reversal / chargeback_hold、stripe_event_id + idempotency_key 一意）、subscriptions、billing_plans(+versions) / credit_packs / credit_pack_prices、preflight_estimates。
+根拠: REQ-BILL-01/02/06/07/08/10、REQ-SEC-12。検証: AC-BILL-03/04, AC-SEC-12。
+
+- TODO(L3): 残高はビュー/導出（台帳を直接書き換えない）。予約はmiss上限側で仮押さえ（REQ-BILL-06）。
+
+## 7. Provider / Config & Governance / Observability
+
+対象: llm_provider_profiles / provider_adapter_registry / model_catalog / capability_matrix / cost_tables / routing_policies(+versions) / health_checks、config_registry（version / effective_from / effective_to / status、グローバル→プラン→テナント/サイト上書き）、feature_flags / kill_switches、usage_traces（REQ-SEC-02の記録項目）、audit_logs、pack_catalog_definitions（`prompt.*` / `catalog.*`（writing_method / review_lens / reader_segment含む）/ `workflow.*` の版管理正本・ADM-10統制）、few_shot_entries（gate_tags / segment_refs / human_authored / reference_anchor）、ai_phrase_dictionary(+versions)。
+根拠: REQ-BILL-09/10、REQ-ADM-06/09、REQ-DUR-04、REQ-SEC-02/10/13。検証: AC-BILL-06/07, AC-ADM-03/06, AC-SEC-06, AC-REL-01〜03。
+
+- TODO(L3): 安全不変条件（REQ-ADM-09）は config_registry の設定対象外であることをスキーマ/検証で強制する方法（許可キーのホワイトリスト等）。
+- 通知: notifications（tenant_id / site_id? / recipient_user_id / event_type / severity / payload_meta（本文全文・シークレット禁止）/ read_at / created_at）、notification_settings（user単位＋tenant既定の上書き、種別別ON/OFF・ダイジェスト頻度）、delivery_attempts（外部チャネル配信結果。in-app記録が正本）。根拠: REQ-PRODUCT-11（AC-NOTIF-01〜03）。TODO(L3): 保持期間・既読アーカイブ。
+
+## 8. グローバル信号ストア（Network Learning、REQ-PRODUCT-13）
+
+テナントスキーマ外に、集約済み・k匿名の派生物のみを置く: global_dictionary_candidates（言語対・観測テナント数・昇格状態。識別子なし）、segment_priors（intent/デバイス/業界/AIO有無別のCTR基線・計測分布。version付き）、threshold_calibration_proposals。**生データ・URL・クエリ文字列・テナント識別子を持つ列を作らない**ことをスキーマレベルで保証し、集約バッチのみ書き込み可。検証: AC-NET-01/02。TODO(L3): k値・セグメント標本しきい値・集約ジョブ設計。
+
+## 9. 受入との接続
+
+本DDLの完成判定は、負のテストを含む受入（AC-TENANT-02/03、AC-SEC-11、AC-DATA-01〜03）をスキーマレベルで満たせることとする。越境JOIN・スコープ未指定クエリが構造的に失敗することをmigrationテストで検証する。

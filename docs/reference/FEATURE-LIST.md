@@ -1,0 +1,158 @@
+﻿# AI Office de SEO 機能一覧（v3.7・要求書から導出・全REQ網羅）
+
+各機能は L1 要求（REQ-*）に基づく。**参照は完全ID表記**とし、全135 REQを最低1回参照する（機械照合可能。監査: 定義REQ集合との差分ゼロを維持すること）。
+
+## A. 基盤・テナント・接続
+- テナント階層（Tenant/Membership/Site/Role・マルチアカウント）(REQ-PRODUCT-01)
+- マルチテナント分離（ID型論理分離・共有DB・単一強制ポイント）(REQ-PRODUCT-10, REQ-SEC-07)
+- サイト単位サンドボックス（ジョブはtenant/site/job固定）(REQ-PRODUCT-02, REQ-SEC-11)
+- URLマスターキー（canonical管理・照会はURL/管理はID・重複はアラート）(REQ-PRODUCT-03)
+- 記事本文非保持（WP正本・一時本文TTL）(REQ-PRODUCT-04, REQ-SEC-11)
+- Googleログイン＋GSC接続（Data Mart蓄積）(REQ-PRODUCT-05)
+- WordPress連携（取得/公開/トラッキング・プラグイン=データ交換ソケット・ZIP配布/署名更新）(REQ-PRODUCT-06, REQ-WPA-01, REQ-WPA-07)
+- セキュリティ基本要求（境界・fail-close・シークレット暗号化・Webhook署名・サーバー側認可）(REQ-SEC-01)
+- Role権限マトリクス／認証・認可／シークレット・トークン管理 (REQ-PRODUCT-08, REQ-SEC-08, REQ-SEC-09)
+- 通知・アラート基盤（イベントカタログ・in-app正本・受信者解決・頻度制御・オプトイン設定）(REQ-PRODUCT-11)
+- ユーザー要望とレギュレーション（User Order・影響度制御）(REQ-PRODUCT-07)
+- ユーザーカスタマイズ階梯（レギュレーション/要望/戦略入力=ターゲット軸・主張軸。構造カスタムはコンサル→ADM経由）(REQ-PRODUCT-12)
+- ネットワーク学習（共有観測キャッシュ・k匿名辞書集合知・セグメントprior・成果較正。承認付き適用・オプトアウト）(REQ-PRODUCT-13)
+- 提供方針（オンボーディング=コンサル・ヘルプ=専用サイト・登録時同意）(REQ-PRODUCT-09)
+- 分析データエクスポート（CSV・境界/Role/本文非保持の維持）(REQ-PRODUCT-14)
+- グローバル検索（テナント内横断・列挙制・Role可視性）(REQ-PRODUCT-15)
+- 運営お知らせ配信・公開ステータスページ (REQ-PRODUCT-16)
+- 月次プランニング（目標・配分・予測レンジ・実績乖離）(REQ-PRODUCT-17)
+- 自動運用の資源・変更ガバナンス（増分計算・監視階層化・変更予算/クールダウン/振動検知）(REQ-PRODUCT-18)
+- 調査知識の小型蓄積（導出事実ストア・施策台帳・ロールアップ・facts Pack供給）(REQ-PRODUCT-19)
+- 記事サマリー契約と軽量意味索引（本文非保持のまま取得省略・ベクトルは補助限定）(REQ-PRODUCT-20)
+- メール配信基盤（送達性=SPF/DKIM/DMARC・バウンス自動停止・in-app正本維持）(REQ-PRODUCT-21)
+- サポート運用（AIファーストQA・権限内参照・エスカレーション/SLA・ナレッジ還流・deflection計測）(REQ-PRODUCT-22)
+- マスターテナント（開発者アカウント配下・ドッグフーディング=同一経路・内部課金・master先行Flag・prior偏り制御）(REQ-PRODUCT-23)
+- 実績→SEOループ（k匿名ベンチマーク公表＋オプトイン事例許諾・showcase転用=第二の明示認可例外・撤回削除）(REQ-PRODUCT-23)
+
+## B. キーワード・GSC・分析
+- キーワード接続思想（keyword⇔GSCクエリ⇔記事URL）(REQ-KGA-01)
+- キーワード正規化・自動マップ生成・分類（必須/推奨/オリジナル）(REQ-KGA-02, REQ-KGA-03, REQ-KGA-04)
+- Keyword Map Graph・契約強化・トピック網羅グルーピング (REQ-KGA-12, REQ-KGA-10)
+- カバー率／Query Drift分類／カニバリ機械判定 (REQ-KGA-05, REQ-KGA-06, REQ-KGA-07)
+- 内部リンクロジック（Google公式ベース・オーファン禁止・機械候補選定）(REQ-KGA-09)
+- GSC取り込み・フィルター設計（行数上限/匿名化/増分/次元スコープ/Bulk Export）(REQ-KGA-11)
+- データ保持・集約・判定ウィンドウ（日次正本・LLM判定はエージェント内限定）(REQ-KGA-08)
+- 決定論的キーワード属性・ターゲット/業界軸フィルター・ギャップマトリクス (REQ-KGA-13)
+- キーワード⇔記事アサイン台帳・Intake Gateプレチェック (REQ-KGA-14)
+- GSCクエリ⇔キーワードの決定論マッチングカスケード（co-landing・辞書自己改善・クリック加重KPI）(REQ-KGA-15)
+- ロングテール集約昇格（クラスタ集計・セクション/FAQ候補還流）(REQ-KGA-16)
+- キーワード価値スコア（AIO×CTR残差の自サイト較正）(REQ-KGA-17)
+- トピック起点の多元化（keyword/ニューストレンド/動画需要）とSERP面適応・鮮度×レーン整合 (REQ-KGA-18)
+- サイトトポロジー戦略（幹→枝→葉・カテゴリ×タグ網目・生成順序・リンク再調整ループ）(REQ-KGA-19)
+- ウォッチリスト・急変検知・SERP/アルゴ変動ガード・季節リフレッシュ (REQ-KGA-20)
+- インデックス状況・技術ヘルス監視 (REQ-KGA-21)
+- ローカルSEO（地域検索最適化）: Local Pack/地図/オーガニック順位の分離観測（地域軸）・ローカルインテント検出・地域ページ生成（薄いページ回避ゲート）・LocalBusiness構造化データ/NAP一貫性チェック・ローカル競合/レビュー信号の戦略入力 (REQ-KGA-22) *2026-07 追加*
+
+## C. 外部情報・競合・バッチ
+- 外部情報源のSource Pack化（本文非保持・抽象化）(REQ-SRC-01)
+- Query Fanout（停止条件・Google公開ロジック準拠のfacet分解）(REQ-SRC-02, REQ-SRC-09)
+- 競合上位5記事の抽象構造・Crawler Compliance (REQ-SRC-03, REQ-SRC-04)
+- 夜間バッチ・事前計算／分散実行単位・Batch Priority・DataForSEO Cache (REQ-SRC-05, REQ-SRC-08)
+- 営業時間スケジューリングと負荷平準化（静穏窓・オフセット分散・同時上限）(REQ-SRC-10)
+- 外部APIコスト管理・取得のグローバル分散/フェアシェア (REQ-SRC-06, REQ-SRC-07)
+
+## D. コンテンツ生成エージェント
+- 少数Executor＋Orchestrator（Snapshot returnTo・失敗は保留既定）(REQ-AGENT-01)
+- ステージ設計（Research&Outline→意味ユニット執筆→QA→Repair）(REQ-AGENT-02)
+- 状態機械13状態＝9工程＋4ゲート（強制ゲート/fail-close）(REQ-AGENT-09)
+- ジョブ中断・再開（checkpoint＝ステージ境界・完了分再課金なし・再ウォーム費明示）(REQ-AGENT-10)
+- 全体整合パス（用語ロック・隣接文脈ブリーフ・Cohesion QA=coherence_flow・限定Repair）(REQ-AGENT-11)
+- Workflow定義（列挙・版固定・ループ収束/停止ガード・権限スコープ）(REQ-AGENT-06)
+- Prompt Cache Layer A/B/C/D（工程別注入・4ブレイクポイント対応）(REQ-AGENT-03)
+- Packキーインジェクター（system prompt強制注入・固定/自由分離・外部はデータ扱い）(REQ-AGENT-07)
+- データ取得はSource Pack経由（直テーブル禁止）(REQ-AGENT-05, REQ-PACK-06)
+- Claude優先ルーティング (REQ-AGENT-04)
+- 品質評価基準（Google公式：E-E-A-T/Needs Met/YMYL/Lowest回避）(REQ-AGENT-08)
+
+## E. Pack / Ticket / Schema / 品質
+- 分離原則（Ticket=キーのみ・Workflow/Pack/Catalog/Schema/Snapshot）(REQ-PACK-01)
+- Pack分類・Ticket分類 (REQ-PACK-02, REQ-PACK-03)
+- Key命名規則・版固定（ジョブ再現性）(REQ-PACK-04)
+- テーブルJSON契約 (REQ-PACK-05)
+- Source Packカタログ (REQ-PACK-07)
+- Workflow×Packステージ別バインディング／スコープ階層（フロー/フェーズ/遷移）／ステージ階層（方針/実装）(REQ-PACK-08, REQ-PACK-14, REQ-PACK-13)
+- Quality Gateカタログ＋計測指標・初期しきい値 (REQ-PACK-09, REQ-PACK-10)
+- Pack Typeカタログと型定義（意味ユニット39種等）(REQ-PACK-11)
+- few-shot構築（生成と検査の単一整合）(REQ-PACK-12)
+- Pack Resolver/Dispatch・Pack Compiler/User Knowledge (REQ-PACK-15, REQ-PACK-16)
+- CTA=QA/Placement／Meaning Unit Registry・Outline Contract (REQ-PACK-17, REQ-PACK-18)
+- Writing Method Catalog（技法6種・横断修飾レイヤ・手書きfew-shot登録規律・構成フレームはheading_flow拡張）(REQ-PACK-19)
+- Review Lens Catalog（校正校閲推敲＋Web/SEO/論文/マーケの7レンズ＝ゲートの束ね・argument_structureゲート）(REQ-PACK-20)
+- Reader Segment・Persona Simulation（セグメント転生検証＝advisory・Validate/ゴールデン評価補助・属性は検証限定）(REQ-PACK-21)
+
+## F. リライト
+- rewrite_patch既定・Article-as-Code（workspace tool server・限定operation）(REQ-RWR-01, REQ-RWR-02, REQ-RWR-03)
+- 差分プレビュー／品質ゲートfail-close (REQ-RWR-04, REQ-RWR-05)
+- リライト原因分析（機械判定）・コスト/クレジット (REQ-RWR-06, REQ-RWR-07)
+- 好調記事の保護・波及リンク強化・リライトブリーフ (REQ-RWR-08)
+- フラッシュリライト（TDH・CTR残差選定・AIO切り分け・同順位帯効果測定）(REQ-RWR-09)
+
+## G. WP出力・自動化
+- Dynamic Post Schema・封入フロー・Schema fallback (REQ-WPA-02, REQ-WPA-09, REQ-WPA-03)
+- WP Capability Snapshot (REQ-WPA-08)
+- 投稿予約・承認／CV計測（相関ベース補助）(REQ-WPA-04, REQ-WPA-05)
+- 代表記事10本未満の暫定プロファイル (REQ-WPA-06)
+- Keyword Map Pack結合 (REQ-WPA-10)
+- エンゲージメント計測（滞在・スクロール。任意有効化・相関補助）(REQ-WPA-11)
+- 既存記事への部分パッチ適用（リビジョン・競合検知・分散適用・キャッシュ環境差）(REQ-WPA-12)
+- CVポイント台帳と管理CRO（カタログ・割当・差し替え提案・健全性検知）(REQ-WPA-13)
+- 成果物の一時保持 Output Vault（全成果物を暗号化14日保持・コピー/ダウンロード可搬・WP送信失敗時は自動/手動再送＋停止/再開・期限で完全削除＝本文非保持の唯一の例外）(REQ-WPA-14) *2026-07 追加*
+
+## H. 課金・クレジット・プロバイダ
+- サブスク課金（Stripe責務分担）／append-onlyクレジット台帳 (REQ-BILL-01, REQ-BILL-07)
+- クレジット予約/確定/解放（事前見積連動）(REQ-BILL-02)
+- 品質グレード別消費／原価前提・キャッシュ下限保護 (REQ-BILL-03, REQ-BILL-06)
+- サブスク状態とアクセス制御（active時のみ付与・繰越/期限）(REQ-BILL-08)
+- AI Provider拡張の位置づけ／Registry・Adapter・Routing（Claude優先・Canary）(REQ-BILL-04, REQ-BILL-09)
+- 開発管理者向けProvider/コスト管理画面 (REQ-BILL-05)
+- 価格・原価の設定化（ハードコード禁止）(REQ-BILL-10)
+- 実行レーン（今すぐ/おまかせ）とLLM Batch活用 (REQ-BILL-11)
+
+## I. セキュリティ・観測・運用・管理
+- データ境界とテーブル契約・保存禁止・一時本文 (REQ-SEC-11)
+- 決定論的Preflight・事前シミュレーション (REQ-SEC-12, REQ-SEC-04)
+- Observability・契約検証・Token/Cache Tracker (REQ-SEC-02, REQ-SEC-03, REQ-SEC-13)
+- 受入検証観点・性能要求（事前計算配信・レイテンシ目標）(REQ-SEC-05, REQ-SEC-06)
+- 監査ログ・テナントオフボーディング (REQ-SEC-10)
+- 認証拡張点（SSO/2FA後付け・テナントポリシー強制）(REQ-SEC-14)
+- インバウンド保護（レート制限・認証防御・TLS/HSTS・管理面追加防御）(REQ-SEC-15)
+- アカウントライフサイクル（招待トークン・オーナー回復・全端末ログアウト・step-up再認証）(REQ-SEC-16)
+- 開発管理者コンソール（位置づけ/課金原価/プロバイダ/コスト観測/運用監査）(REQ-ADM-01, REQ-ADM-02, REQ-ADM-03, REQ-ADM-04, REQ-ADM-05)
+- 認可・なりすまし・break-glass／可観測性・SLO・インシデント／データ保護・保持・DR (REQ-ADM-06, REQ-ADM-07, REQ-ADM-08)
+- 設定レジストリ・安全不変条件 (REQ-ADM-09)
+- Pack・プロンプト・ゲート管理画面（コード変更なしの調整・版統制）(REQ-ADM-10)
+- 表示ラベルレジストリ（内部キー→日本語ラベル併記・fail-visible・単一ソース）(REQ-ADM-11)
+
+## J. UI / UX
+- 通常SaaSビュー（グローバルUI要素含む）／Agent Officeビュー（体験レイヤー）(REQ-NAV-02, REQ-NAV-03, REQ-AOUI-01)
+- 第一階層7画面と各画面責務・内部用語非表示 (REQ-NAV-01, REQ-NAV-04, REQ-AOUI-02)
+- Agent Office部門・キャラ・ペルソナ⇄工程マッピング (REQ-AOUI-03, REQ-AOUI-04)
+- 画面の2軸（探索/おすすめ）／全画面ワークベンチ (REQ-AOUI-05, REQ-AOUI-06)
+- 部門・フロア・ペルソナのconfig駆動拡張 (REQ-AOUI-07)
+- UI素材方針（テキスト非画像化）(REQ-NAV-05)
+- レスポンシブ方針（閲覧系モバイル対応・Officeはデスクトップ最適）(REQ-NAV-06)
+- 国際化方針（文言外部化・ロケール分離・初期ja）(REQ-NAV-07)
+- アクセシビリティ品質床（キーボード到達・フォーカス可視・WCAG AA目安・reduced-motion・通常ビュー完結）(REQ-NAV-08)
+- UIテキストレジストリ（版差し替え・2層フォールバック・型付きアクセサ生成＝関数⇄日本語・日本語リテラルlint・逆引き・再同意は対象外で別統制）(REQ-NAV-09)
+
+## K. 開発プロセス・リリース制御
+- 開発ユニットと本質先行の実装順序・禁止事項 (REQ-DUR-01, REQ-DUR-02, REQ-DUR-03, REQ-DUR-05)
+- Feature Flag / Kill Switch (REQ-DUR-04)
+- キャパシティモデルとインフラ段階構成（密度健全域・段階移行・1社原価配賦）(REQ-DUR-06)
+- 実行基盤の実装規約（環境分離・graceful drainデプロイ・後方互換DDL・キュー段階・S3互換・UTC規約）(REQ-DUR-07)
+- バックアップ・リカバリ目標（RPO/RTO・PITR・隔離保管・テナント単位復元・演習）(REQ-DUR-08)
+- コンテナ化と移管性（不変イメージ・同一イメージでVPS→クラウド・状態外部化・中立プロトコル）(REQ-DUR-09)
+- 自動復旧・自動保守（self-healing・checkpoint無人再開・証明書/ログ/DB保守・フラッピング停止）(REQ-DUR-10)
+
+## L. ユーザー行動要件（ジャーニー）
+- 行動原則（到達2遷移以内・行き止まり禁止・文脈引き継ぎ・非同期・安全操作）(REQ-UJ-01)
+- 初期導入／日常運用ループ (REQ-UJ-02, REQ-UJ-03)
+- キーワード戦略／生成〜公開／リライト運用 (REQ-UJ-04, REQ-UJ-05, REQ-UJ-06)
+- 例外・緊急／開発管理者の運用 (REQ-UJ-07, REQ-UJ-08)
+- 月次プランニング・ジャーニー (REQ-UJ-09)
+

@@ -1,0 +1,330 @@
+{
+  "version": "2.1.0",
+  "_note": "部屋7＋ハブ=ダッシュボード。7フロア構成（1部屋=1フロアでゆとりを持たせる）。描画は本configのみで追従すること（PT-G）。エレベーターはfloors配列から生成。",
+  "floors": [
+    {
+      "floor_id": "f1",
+      "label": "1F",
+      "order": 1
+    },
+    {
+      "floor_id": "f2",
+      "label": "2F",
+      "order": 2
+    },
+    {
+      "floor_id": "f3",
+      "label": "3F",
+      "order": 3
+    },
+    {
+      "floor_id": "f4",
+      "label": "4F",
+      "order": 4
+    },
+    {
+      "floor_id": "f5",
+      "label": "5F",
+      "order": 5
+    },
+    {
+      "floor_id": "f6",
+      "label": "6F",
+      "order": 6
+    },
+    {
+      "floor_id": "f7",
+      "label": "7F",
+      "order": 7
+    }
+  ],
+  "hub": {
+    "label": "ダッシュボード",
+    "screen_refs": [
+      "dashboard"
+    ]
+  },
+  "rooms": [
+    {
+      "room_id": "keyword_research",
+      "section_no": "01",
+      "label": "キーワードリサーチ",
+      "floor_id": "f1",
+      "order": 1,
+      "sign_asset": "sign_01_keyword.webp",
+      "screen_refs": [
+        "keywords"
+      ],
+      "persona_ids": [
+        "keyword_researcher",
+        "planner"
+      ]
+    },
+    {
+      "room_id": "content_creation",
+      "section_no": "02",
+      "label": "コンテンツ制作",
+      "floor_id": "f2",
+      "order": 2,
+      "sign_asset": "sign_02_content.webp",
+      "screen_refs": [
+        "content",
+        "w3"
+      ],
+      "persona_ids": [
+        "content_writer",
+        "qa_checker"
+      ]
+    },
+    {
+      "room_id": "traffic_report",
+      "section_no": "03",
+      "label": "レポート分析",
+      "floor_id": "f3",
+      "order": 3,
+      "sign_asset": "sign_03_report.webp",
+      "screen_refs": [
+        "analytics"
+      ],
+      "persona_ids": [
+        "analyst",
+        "traffic_reporter"
+      ]
+    },
+    {
+      "room_id": "automation",
+      "section_no": "04",
+      "label": "自動化オペレーション",
+      "floor_id": "f4",
+      "order": 4,
+      "sign_asset": "sign_04_automation.webp",
+      "screen_refs": [
+        "automation",
+        "w4",
+        "w8"
+      ],
+      "persona_ids": [
+        "automation_operator",
+        "publish_manager"
+      ]
+    },
+    {
+      "room_id": "knowledge",
+      "section_no": "05",
+      "label": "ナレッジ",
+      "floor_id": "f5",
+      "order": 5,
+      "sign_asset": "sign_05_knowledge.webp",
+      "screen_refs": [
+        "knowledge"
+      ],
+      "persona_ids": [
+        "knowledge_trainer"
+      ]
+    },
+    {
+      "room_id": "settings",
+      "section_no": "06",
+      "label": "設定",
+      "floor_id": "f6",
+      "order": 6,
+      "sign_asset": "sign_06_settings.webp",
+      "screen_refs": [
+        "settings",
+        "w9"
+      ],
+      "persona_ids": [
+        "security_admin",
+        "support_agent"
+      ]
+    },
+    {
+      "room_id": "technical_seo",
+      "section_no": "07",
+      "label": "テクニカルSEO",
+      "floor_id": "f7",
+      "order": 7,
+      "sign_asset": "sign_07_technical.webp",
+      "screen_refs": [
+        "automation",
+        "analytics"
+      ],
+      "persona_ids": [
+        "technical_seo",
+        "link_architect"
+      ]
+    }
+  ],
+  "personas": [
+    {
+      "persona_id": "publish_manager",
+      "label": "パブリッシュマネージャー",
+      "char_asset": "char_publish_manager.webp",
+      "asset_confidence": "confirmed",
+      "mapping": {
+        "executors": [
+          "automation"
+        ],
+        "stages": [
+          "wp_draft"
+        ]
+      }
+    },
+    {
+      "persona_id": "knowledge_trainer",
+      "label": "ナレッジトレーナー",
+      "char_asset": "char_knowledge_trainer.webp",
+      "asset_confidence": "confirmed",
+      "mapping": {
+        "executors": [],
+        "stages": []
+      }
+    },
+    {
+      "persona_id": "link_architect",
+      "label": "リンクアーキテクト",
+      "char_asset": "char_link_architect.webp",
+      "asset_confidence": "confirmed",
+      "mapping": {
+        "executors": [],
+        "stages": [
+          "site_strategy",
+          "self_evolution"
+        ]
+      }
+    },
+    {
+      "persona_id": "technical_seo",
+      "label": "テクニカルSEO",
+      "char_asset": "char_technical_seo.webp",
+      "asset_confidence": "confirmed",
+      "mapping": {
+        "executors": [
+          "qa"
+        ],
+        "stages": [
+          "quality_gate",
+          "wp_draft"
+        ]
+      }
+    },
+    {
+      "persona_id": "planner",
+      "label": "プランナー",
+      "char_asset": "char_pose_01.webp",
+      "asset_confidence": "provisional",
+      "mapping": {
+        "executors": [
+          "planning"
+        ],
+        "stages": [
+          "site_strategy",
+          "outline_architect"
+        ]
+      }
+    },
+    {
+      "persona_id": "keyword_researcher",
+      "label": "キーワードリサーチャー",
+      "char_asset": "char_pose_02.webp",
+      "asset_confidence": "provisional",
+      "mapping": {
+        "executors": [
+          "planning"
+        ],
+        "stages": [
+          "keyword_intent"
+        ]
+      }
+    },
+    {
+      "persona_id": "analyst",
+      "label": "アナリスト",
+      "char_asset": "char_pose_03.webp",
+      "asset_confidence": "provisional",
+      "mapping": {
+        "executors": [],
+        "stages": [
+          "serp_ttps_research"
+        ]
+      }
+    },
+    {
+      "persona_id": "traffic_reporter",
+      "label": "トラフィックレポーター",
+      "char_asset": "char_pose_04.webp",
+      "asset_confidence": "provisional",
+      "mapping": {
+        "executors": [],
+        "stages": [
+          "serp_ttps_research"
+        ]
+      }
+    },
+    {
+      "persona_id": "content_writer",
+      "label": "コンテンツライター",
+      "char_asset": "char_pose_05.webp",
+      "asset_confidence": "provisional",
+      "mapping": {
+        "executors": [
+          "writing"
+        ],
+        "stages": [
+          "section_brief",
+          "draft_writer",
+          "self_evolution"
+        ]
+      }
+    },
+    {
+      "persona_id": "qa_checker",
+      "label": "QAチェッカー",
+      "char_asset": "char_pose_06.webp",
+      "asset_confidence": "provisional",
+      "mapping": {
+        "executors": [
+          "qa"
+        ],
+        "stages": [
+          "quality_gate"
+        ]
+      }
+    },
+    {
+      "persona_id": "automation_operator",
+      "label": "オートメーションオペレーター",
+      "char_asset": "char_pose_07.webp",
+      "asset_confidence": "provisional",
+      "mapping": {
+        "executors": [
+          "automation"
+        ],
+        "stages": [
+          "preview_approval",
+          "cleanup"
+        ]
+      }
+    },
+    {
+      "persona_id": "security_admin",
+      "label": "セキュリティ管理",
+      "char_asset": "char_pose_08.webp",
+      "asset_confidence": "provisional",
+      "mapping": {
+        "executors": [],
+        "stages": []
+      }
+    },
+    {
+      "persona_id": "support_agent",
+      "label": "サポート",
+      "char_asset": "char_pose_09.webp",
+      "asset_confidence": "provisional",
+      "mapping": {
+        "executors": [],
+        "stages": []
+      }
+    }
+  ]
+}

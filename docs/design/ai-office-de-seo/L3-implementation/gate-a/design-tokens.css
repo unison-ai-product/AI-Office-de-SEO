@@ -1,0 +1,27 @@
+/* AOS Design Tokens v1 (frozen names) — Design.md §6 準拠 */
+:root { /* Standard SaaS (light) */
+  --aos-bg:#F6F8FC; --aos-surface:#FFFFFF; --aos-surface-2:#EEF2F9;
+  --aos-border:#DCE3EF; --aos-text:#101828; --aos-text-2:#5B6B84;
+  --aos-primary:#2F6FE4; --aos-primary-ink:#FFFFFF; --aos-accent:#7A5CF0;
+  --aos-state-idle:#8A97AD; --aos-state-working:#2F6FE4; --aos-state-done:#1FA97A;
+  --aos-state-error:#E5484D; --aos-state-hold:#C98A0B;
+  --aos-glow-working:0 0 0 3px rgba(47,111,228,.25); --aos-glow-error:0 0 0 3px rgba(229,72,77,.25);
+  --aos-glow-done:0 0 0 3px rgba(31,169,122,.25); --aos-glow-hold:0 0 0 3px rgba(201,138,11,.25);
+  --aos-radius-s:8px; --aos-radius-m:12px; --aos-radius-l:20px;
+  --aos-space-1:4px; --aos-space-2:8px; --aos-space-3:12px; --aos-space-4:16px; --aos-space-6:24px; --aos-space-8:32px;
+  --aos-font-display:"Zen Kaku Gothic New","Noto Sans JP",sans-serif;
+  --aos-font-body:"Noto Sans JP",sans-serif; --aos-font-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --aos-fs-12:12px; --aos-fs-13:13px; --aos-fs-14:14px; --aos-fs-16:16px; --aos-fs-20:20px; --aos-fs-24:24px; --aos-fs-32:32px;
+  --aos-focus:0 0 0 2px var(--aos-bg),0 0 0 4px var(--aos-primary);
+}
+[data-theme="office"] { /* Agent Office (dark navy + neon) */
+  --aos-bg:#0A1224; --aos-surface:#111B31; --aos-surface-2:#18243E;
+  --aos-border:#243352; --aos-text:#E8EEFA; --aos-text-2:#93A2C0;
+  --aos-primary:#4DA3FF; --aos-primary-ink:#08122A; --aos-accent:#9B7BFF;
+  --aos-state-idle:#8A97AD; --aos-state-working:#4DA3FF; --aos-state-done:#3ED598;
+  --aos-state-error:#FF6B6B; --aos-state-hold:#F5B93E;
+  --aos-glow-working:0 0 14px rgba(77,163,255,.45); --aos-glow-error:0 0 14px rgba(255,107,107,.45);
+  --aos-glow-done:0 0 14px rgba(62,213,152,.45); --aos-glow-hold:0 0 14px rgba(245,185,62,.45);
+  --aos-focus:0 0 0 2px var(--aos-bg),0 0 0 4px var(--aos-accent);
+}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
