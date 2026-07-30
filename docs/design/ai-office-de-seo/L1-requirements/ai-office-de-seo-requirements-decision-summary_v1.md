@@ -122,6 +122,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 記事画像はGPT Image 2（`gpt-image-2`）で生成・編集する。評価済みsnapshotとprompt versionをModel Registryで管理する。
 - ユーザーはSiteまたは記事単位で目的、生成トーン、画風、構図、色、明暗、人物、文字入れ、比率、配置、枚数、禁止要素、参照画像を調整できる。
 - ユーザーが許可したWordPress Mediaまたは指定URLの画像をREST取得し、Style Feature候補を抽出してユーザー選択後にProfileへ登録する。
+- 生成後の修正は基準画像に対する差分Instructionとして保持し、指示の追加・取消・undo／redoでは画像生成を実行しない。明示的なPreview生成または確定時だけGPT Image 2へ編集要求を送る。
 - 画像は最適化後、本文とは別にWordPress Media APIへ画像単位で登録し、返却されたMedia ID・URLを記事へ参照設定する。
 - 本文JSONへ画像本体を埋め込まない。Site負荷、容量、タイムアウト時は本文画像を減らし、最終的にアイキャッチのみへ縮退する。
 - 画像解析結果、Profile、prompt template、同一条件の生成成果をcacheし、再取得・再解析・二重生成を避ける。ただし新しい画像outputの生成原価は毎回見積もる。

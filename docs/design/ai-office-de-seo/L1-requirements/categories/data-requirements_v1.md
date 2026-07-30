@@ -93,6 +93,8 @@ Site画像Style Profileは目的、トーン、画風、構図、palette、明�
 
 既存画像の原本は解析中の一時領域へ限定し、WordPress等の外部正本を無期限複製しない。恒久保持する解析cacheはperceptual hash、content hash、Style Feature、解析model／prompt version、observed_at、source_ref、権利・出典、失効条件に限定する。生成画像はWordPress Mediaを公開正本とし、製品側は生成job、model、prompt version、Profile version、Media ID／URL、content hash、採否、費用、権利表示に必要な来歴を保持する。
 
+画像修正指示は基準画像versionに対するappend-onlyのInstruction versionとして保持し、自由記述原文、構造化後のoperation、対象領域、差分、適用順、作成者、確定者、生成jobとの対応を追跡する。指示編集中の状態とGPT Image 2へ送信済みの確定versionを区別する。
+
 ## 受入条件
 
 - [ ] AC-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
@@ -106,4 +108,4 @@ Site画像Style Profileは目的、トーン、画風、構図、palette、明�
 - [ ] AC-DATA-09: エクスポート、削除、移管の対象と結果を監査できる。
 - [ ] AC-DATA-10: 横断集計から顧客、Site、URLを特定できない。
 - [ ] AC-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。
-- [ ] AC-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、解析cache、生成画像の来歴とWordPress Media参照を保持できる。
+- [ ] AC-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、解析cache、差分Instruction、生成画像の来歴とWordPress Media参照を保持できる。
