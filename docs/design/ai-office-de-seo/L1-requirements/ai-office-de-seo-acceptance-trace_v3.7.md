@@ -79,6 +79,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-KGA-20: ロングテールが単クエリのクリックしきい値ではなくクラスタ集計値で昇格判定され、親グループありは既存記事のセクション/FAQ候補（modifier拡張）へ、親なしはバックログ・ギャップマトリクスへ還流し、定常裾の定期評価枠を持ち、匿名化未満の不可視裾にはPAA/オートコンプリート/Fanoutを代理候補源とし、昇格をキーワード詰め込みの根拠にしない。 ｜ 検証: REQ-KGA-16, REQ-KGA-14, REQ-KGA-11
 - [ ] AC-KGA-22: トピック起点がkeyword/news_trend/video_demandの3類型で管理され、news/YouTube観測が既存プロバイダ予算・availability配下で取得され、起点タグ付きでバックログへ還流し、Research & Outlineの記事タイプ決定にSERP面構成とnews/youtube Packが配線され（news→news_column＋freshness_honesty必須、video→video_reference推奨）、鮮度highジョブのレーン既定がinteractiveになり、scheduled選択時に鮮度注意が表示される。起点候補からの採用はユーザー選択であり、作成フローに起点選択UIがある。 ｜ 検証: REQ-KGA-18, REQ-PACK-08, REQ-BILL-11
 - [ ] AC-KGA-21: キーワード価値スコアがdemand・realizable_ctr（自サイト順位別期待CTR基線への実測残差。AIO観測群の系統的負残差でのみ割引し固定低下率を仮定せず、観測不可時はunknownで捏造しない）・SERP構成・intent/CV近接・適合乗数から決定論で算出され、ギャップ/新規候補/リライト優先度/昇格判定へ接続し、順位保証でない旨が明示される。GSCがAI由来をクエリ単位で分離しない前提でAIO判定フラグはSERP観測由来とし、Generative AIレポート（impressionsのみ）は被引用観測の補助としてavailability付きで扱う。 ｜ 検証: REQ-KGA-17, REQ-KGA-08, REQ-WPA-05, REQ-KGA-11
+- [ ] AC-KGA-23: キーワード市場の影響がAIO圧力（ゼロクリックと引用機会を分離）・リスティング広告占有・トピック単位のドメイン信用適合の3軸で観測され、未知値を0扱いせず、需要・実現可能CTR・SERP面・CV近接と分解表示される。 ｜ 検証: REQ-KGA-17, REQ-KGA-08
+- [ ] AC-KGA-24: キーワードがサイト基盤としての必要性・流入機会・CV機会の3目的を持ち、foundation/growth/conversion/authority/balancedの戦略配分と現在データから動的優先度が増分再計算され、内訳付きで記事制作・リライトrecommendationへ供給される。 ｜ 検証: REQ-KGA-23, REQ-PRODUCT-24, REQ-SEC-06
 
 ## Agent Runtime
 

@@ -25,7 +25,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 |---|---|---|---|
 | Tenancy & Access | テナント・サイト・権限・サンドボックス境界・アカウントライフサイクル・マスターテナント | Tenant, Site(SiteSandboxContext) | REQ-PRODUCT-02/08/10/23, REQ-SEC-07/08/15/16 |
 | Content Index | URL正本・記事メタ（サマリー契約・意味索引）・キーワード/記事マップ・属性・アサイン台帳・起点候補・サイトトポロジー・導出事実/施策台帳 | UrlMaster, ArticleSummary, KeywordMap(AssignmentLedger), SiteTopology, DerivedFacts(InterventionLedger) | REQ-PRODUCT-03/04/19/20, REQ-KGA-01〜04/07/12/13/14/18/19 |
-| Search Performance | GSC実績・被覆・ドリフト・カニバリ・リライト候補・マッチカスケード・ロングテール昇格・価値スコア・ウォッチ/変動監視・インデックス状況・月次プランニング | GscDataMart, CoverageAssessment, RewriteCandidate, QueryMatch, Watchlist, MonthlyPlan | REQ-KGA-05/06/08/11/15/16/17/20/21, REQ-PRODUCT-05/17 |
+| Search Performance | GSC実績・被覆・ドリフト・カニバリ・リライト候補・マッチカスケード・ロングテール昇格・市場圧力・動的キーワード戦略・ウォッチ/変動監視・インデックス状況・月次プランニング | GscDataMart, CoverageAssessment, RewriteCandidate, QueryMatch, KeywordMarketPressure, KeywordStrategyProfile, Watchlist, MonthlyPlan | REQ-KGA-05/06/08/11/15/16/17/20/21/23, REQ-PRODUCT-05/17/24 |
 | External Intelligence | SERP/競合/Fanoutの取得・キャッシュ・バッチ・静穏窓スケジューリング | SourcePack, CompetitorStructure, FetchBatch | REQ-SRC-01〜10 |
 | Generation | Workflow状態機械・Ticket・Pack注入・執筆・QA/Repair・中断/再開・全体整合パス・実行冪等性・執筆技法レイヤ | GenerationJob, Ticket, PackCatalog, OutlineContract | REQ-AGENT-01〜11, REQ-PACK-01〜21 |
 | Quality | 品質ゲート・計測・few-shot・合否・コヒーレンス検査・ゴールデン評価・検品レンズ・AIらしさ検査・転生検証 | QualityGateEvaluation, GateRegistry, ReaderSegment | REQ-PACK-09/10/12/20/21, REQ-AGENT-08/11, REQ-ADM-10 |
@@ -70,6 +70,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 ### 4.3 ArticleSummary / KeywordMap（Content Index）
 - ルート: ArticleSummary（url_master単位）, KeywordMap（site単位グラフ）。
 - ArticleSummaryの値: ArticleIdentity、ContentInventory（topics / intent / audience / questions / claims / unit types / entities）、BusinessInventory（tier / category / tags / CTA / linkability / freshness）、GapInventory、SummaryQuality（completeness / confidence / schema version / analyzed_at）。
+- KeywordMapの値: KeywordMarketPressure（aio / paid / domain credibility）、KeywordStrategicNeed（site necessity / traffic / conversion）、KeywordStrategyProfile、DynamicPriorityComponents。
 - 不変条件: 記事本文全文を保持しない（REQ-PRODUCT-04）／各配列・短文は上限つき／content hash未変更時は再解析しない／解析失敗で直前の有効サマリーを消さない／recommendationは使用したsummary fieldと外部根拠を説明できる／canonical_url_hashが正本で照会はURL・管理はID（REQ-PRODUCT-03）／正規化で表記ゆれを寄せ修飾語違いは別キーワード（REQ-KGA-02）／1キーワードグループの主担当記事は高々1で、オーファン・二重アサインはアラート（REQ-KGA-14）。
 
 ### 4.4 RewriteJob / ArticleWorkspace（Rewrite）

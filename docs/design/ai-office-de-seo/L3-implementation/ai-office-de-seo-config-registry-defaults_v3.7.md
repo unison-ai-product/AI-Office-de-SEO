@@ -69,7 +69,9 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | master.prior算入（既定: 除外） / 内部クレジット付与額 / 先行Flag許可 / showcase.公表最小標本数・撤回時削除猶予 | TODO(L3) | REQ-PRODUCT-23 |
 | facts.鮮度期限（種別別） / サイズ上限 / ロールアップ周期 | TODO(L3) | REQ-PRODUCT-19 |
 | kga.origin.news_trend評価周期 / 鮮度期限 / video面比率しきい値 | TODO(L3) | REQ-KGA-18 |
-| kga.value.weights{demand, realizable_ctr, serp_features, intent_cv, fit} / expected_ctr基線パラメータ / aio残差有意しきい値 | TODO(L3)（固定AIO低下率は設定項目にしない＝自サイト残差で較正） | REQ-KGA-17 |
+| kga.value.weights{demand, realizable_ctr, aio_pressure, paid_pressure, domain_credibility_fit, serp_features, intent_cv, fit} / expected_ctr基線パラメータ / aio残差有意しきい値 | TODO(L3)（固定AIO低下率・推測広告費・一般化ドメインパワーは設定しない） | REQ-KGA-17 |
+| kga.strategy.profile / weights{site_necessity, traffic_opportunity, conversion_opportunity} / profile_recommend_threshold | TODO(L3・foundation/growth/conversion/authority/balanced別) | REQ-KGA-23 |
+| kga.strategy.dynamic_priority.weights{strategic_need, attainable_value, urgency, confidence, cost, risk} / recalc_triggers / stale_after | TODO(L3・実施後効果で較正) | REQ-KGA-23, REQ-PRODUCT-24 |
 | net.k_anonymity_threshold / segment_min_samples / prior縮小推定の重み関数 | TODO(L3) | REQ-PRODUCT-13 |
 | agent.suspend.max_hold / reserve保持TTL / 一時本文延長上限 | TODO(L3) | REQ-AGENT-10 |
 | notif.digest_window / retention / channel既定 / bill.balance_low_threshold | TODO(L3) | REQ-PRODUCT-11, REQ-BILL-02 |

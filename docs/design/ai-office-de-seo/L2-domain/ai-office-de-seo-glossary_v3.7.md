@@ -39,7 +39,9 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Assignment Ledger | キーワードグループ⇔主担当記事の台帳（1グループ高々1・状態管理・Intake Gateプレチェック） | REQ-KGA-14 |
 | Match Cascade | GSCクエリ⇔キーワードの多段決定論マッチ（exact/synonym/containment/co-landing/限定serp/unmatched。method・confidence記録） | REQ-KGA-15 |
 | Long-tail Promotion | 未マッチ裾のクラスタ集計昇格（親ありはセクション/FAQ候補、親なしはバックログ） | REQ-KGA-16 |
-| Keyword Value Score | 実現可能CTR（自サイト残差でAIO影響を較正）を織り込む決定論の優先度スコア | REQ-KGA-17 |
+| Keyword Market Pressure | キーワード市場の外部圧力。AIOのゼロクリック/引用機会、リスティング広告占有、対象トピックに対する自サイトのドメイン信用適合を別軸で保持する | REQ-KGA-17 |
+| Keyword Strategic Need | サイト基盤としての必要性、流入機会、CV機会の3目的。現在の戦略プロファイルで配分し、動的優先度へ変換する | REQ-KGA-23 |
+| Keyword Value Score | 需要、市場圧力、戦略目的、実現可能性を成分別に持つ決定論の価値評価。単一スコアだけを判断根拠にしない | REQ-KGA-17/23 |
 | Topic Origin（起点3類型） | keyword / news_trend（鮮度期限つき）/ video_demand のトピック発生源。採用判断はユーザー | REQ-KGA-18 |
 | Site Topology | 幹→枝→葉の階層とカテゴリ×タグ網目。生成順序（CV近接）とリンク再調整ループの正本 | REQ-KGA-19 |
 | Derived Facts（導出事実） | 調査由来の低変化事実のコンパクト蓄積。鮮度期限内は外部再取得を省略 | REQ-PRODUCT-19 |
