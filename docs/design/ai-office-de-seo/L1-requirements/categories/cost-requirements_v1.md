@@ -109,6 +109,14 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 - 人的サポート・コンサル原価
 - 商品・プラン別粗利への寄与
 
+## 9.1 画像生成原価  ［REQ-COST-10］
+
+- GPT Image 2のinput、reference image、output、quality、size、編集・再生成を画像jobへ帰属する。
+- 既存画像解析cache、Image Style Profile、prompt template、重複生成防止による削減額を測定する。
+- cache hitを理由に新規画像output原価をゼロ見積しない。
+- 同一生成条件の既存成果を再利用する場合と、新規生成・編集・ユーザー希望の再生成を区別する。
+- 画像解析、生成、最適化、WordPress Media転送、storage、egressを分けて原価計測する。
+
 ## 10. 受入条件
 
 - [ ] AC-COST-01: コストが分類され、tenant/site/workflow/job/stage/attemptへ帰属できる。
@@ -121,4 +129,4 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 - [ ] AC-COST-08: Provider請求値と内部実績の照合差異を検出できる。
 - [ ] AC-COST-09: DB・ストレージ・バックアップの増加量と原価をテナント単位で観測できる。
 - [ ] AC-COST-10: 商品・プラン別粗利を実績原価から算出できる。
-
+- [ ] AC-COST-11: 画像の解析cacheによる削減と新規output原価を分離し、画像job単位で見積・実績を算出できる。

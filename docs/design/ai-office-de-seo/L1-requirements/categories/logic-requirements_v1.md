@@ -77,6 +77,14 @@ WordPress送信後の下書きは引渡し済みSnapshotとして扱い、標準
 
 生成画像は、画像最適化後にWordPress Media APIへ画像単位でアップロードし、成功時に返されたMedia ID・URL・派生サイズを記事のImage blockおよびfeatured mediaへ参照設定する。記事本文の送信ペイロードへbase64等で画像本体を埋め込まない。画像アップロードは本文下書き作成と分離して冪等化し、Site別の最大枚数、ファイルサイズ、解像度、並列数、再試行回数を制御する。制限超過、タイムアウト、容量不足等では本文内画像を段階的に省略し、アイキャッチのみへ縮退して理由を表示する。
 
+画像生成モデルの初期既定はOpenAI `gpt-image-2` とし、生成・編集・高忠実度画像入力を利用する。運用ではModel Registryでalias、評価済みsnapshot、prompt version、quality、size、背景・透過等の対応能力を版管理し、モデル更新時は代表画像による回帰評価後に切り替える。
+
+Image Style ProfileはSite単位の既定と記事単位overrideを持ち、目的、トーン、画風、構図、palette、明暗、被写体、人物、文字入れ、比率、配置、枚数、禁止要素、参照画像hash、権利・出典を構造化する。ユーザー明示指定を推定値より優先し、記事overrideをSite既定より優先する。
+
+既存画像解析は全メディアを毎回走査せず、ユーザー指定画像または代表サンプルをRESTで取得する。取得画像は一時領域で解析し、perceptual hash、content hash、Media ID／URL、更新時刻、解析model／prompt versionから解析cache keyを作る。同一keyでは配色、構図、被写体、質感、余白、文字利用等の派生Style Featureを再利用する。原画像変更、Profile変更、解析model／prompt改版、ユーザー再解析要求で失効する。
+
+生成cacheは、Site、Image Style Profile version、記事・section目的、prompt version、参照画像hash、size、quality、model snapshotをkeyとし、同一要求の二重生成を防ぐ。既存の生成画像を再利用できる場合はユーザーへ提示するが、別記事への機械的な使い回しで意味不一致や重複感を生じさせない。解析cacheと重複防止は原価を下げるが、新しい画像outputの生成原価が毎回発生する前提で見積もる。
+
 WordPressから公開・更新イベントを受信した場合は、WordPressの更新日時を記事の最新変更日時として遍歴へ追加する。これは記事変更履歴であり、過去Snapshotや当時の施策・評価記録を上書きしない。変更内容を取得できない初期リリースでは、更新日時だけを根拠に変更量やSEO影響を断定しない。
 
 生成開始前に、選択品質、入力、予算、固定価格内の限定Repair枠で成果生成が成立するかをPreflight判定する。成立しない見込みなら生成を開始せず、品質変更、入力追加または別実行を提案する。1回の生成価格は途中Repair回数で変動させず、ユーザー希望による再生成は新しいジョブとしてクレジットを消費する。サービス障害による中断はcheckpointから再開し、同一成果の再開を再生成として課金しない。

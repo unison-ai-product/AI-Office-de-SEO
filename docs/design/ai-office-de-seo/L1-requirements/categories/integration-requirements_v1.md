@@ -65,6 +65,12 @@ WordPress連携はCore REST APIと軽量トラッキングコードを最小構�
 
 記事制作・リライト・計測WorkflowはCMS非依存のPublication Contractを経由し、WordPressは初期Adapterとして実装する。他CMSの検証環境がない初期段階では、WordPress以外を対応済み・互換保証・提供予定確定として表示しない。将来Adapterを追加する場合はCMSごとの実環境でContract TestとE2E検証を通し、対応version、利用可能機能、制限、縮退動作を版管理する。
 
+### REQ-INT-07 画像取得・生成連携
+
+ユーザーが許可したWordPress Media IDまたは指定URLから画像を取得し、Image Style Profileの候補抽出へ渡せる。URL取得はHTTPS、許可host、DNS再解決、private／link-local宛拒否、redirect上限、MIME・容量・画素数・timeout・malware検査を適用し、任意URL取得を内部ネットワークアクセス経路にしない。
+
+画像生成・編集の初期ProviderはOpenAI GPT Image 2（`gpt-image-2`）とする。Provider request／responseの識別子・状態等のメタデータ、model snapshot、prompt version、reference hash、quality、size、usage、費用、失敗分類を画像jobへ記録し、raw payloadを恒久保持しない。Provider障害時は本文生成・公開全体ではなく画像工程だけを保留・縮退できる。
+
 ## 受入条件
 
 - [ ] AC-INT-01: 初期Pluginが本文・フォーム値を送らず、ページ遷移と指定CVを取得できる。
@@ -73,3 +79,4 @@ WordPress連携はCore REST APIと軽量トラッキングコードを最小構�
 - [ ] AC-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。
 - [ ] AC-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離できる。
 - [ ] AC-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。
+- [ ] AC-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。

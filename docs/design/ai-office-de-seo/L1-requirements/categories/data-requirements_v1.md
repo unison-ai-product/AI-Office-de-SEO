@@ -87,6 +87,12 @@ Siteは「業界／業種」の2階層分類を複数持てる。業界は上位
 
 記事は主担当の業界／業種を1組、関連する業界／業種を複数持てる。ユーザーが推定分類を確認・修正した後はユーザー確定値を正本とし、自動推定で上書きしない。推定値、ユーザー修正前後、修正理由、使用した入力、推定versionを教師データとして保持し、キーワード分配、Site分析、業界推定のSite固有補正と、同意・匿名化条件を満たす全体較正へ還流する。
 
+### REQ-DATA-12 画像Style Profileとcache
+
+Site画像Style Profileは目的、トーン、画風、構図、palette、明暗、被写体、人物、文字入れ、比率、配置、枚数、禁止要素、参照Media ID／URL／hash、権利・出典、ユーザー確定状態、versionを持つ。記事単位overrideは差分だけを保持する。
+
+既存画像の原本は解析中の一時領域へ限定し、WordPress等の外部正本を無期限複製しない。恒久保持する解析cacheはperceptual hash、content hash、Style Feature、解析model／prompt version、observed_at、source_ref、権利・出典、失効条件に限定する。生成画像はWordPress Mediaを公開正本とし、製品側は生成job、model、prompt version、Profile version、Media ID／URL、content hash、採否、費用、権利表示に必要な来歴を保持する。
+
 ## 受入条件
 
 - [ ] AC-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
@@ -100,3 +106,4 @@ Siteは「業界／業種」の2階層分類を複数持てる。業界は上位
 - [ ] AC-DATA-09: エクスポート、削除、移管の対象と結果を監査できる。
 - [ ] AC-DATA-10: 横断集計から顧客、Site、URLを特定できない。
 - [ ] AC-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。
+- [ ] AC-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、解析cache、生成画像の来歴とWordPress Media参照を保持できる。
