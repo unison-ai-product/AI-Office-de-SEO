@@ -5,7 +5,7 @@ version: 3.7
 layer: L3
 kind: design
 status: draft
-updated_at: 2026-07-10
+updated_at: 2026-07-13
 related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 ---
 
@@ -27,7 +27,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 | # | 画面 | できること | 主データ | 根拠 |
 |---|---|---|---|---|
 | ADM-S1 | 運用ダッシュボード | golden signals（レイテンシ/トラフィック/エラー/飽和）、SLO・アラート状況、ステータス、インシデント一覧・runbook導線（**起票・更新・クローズ、アラートのack操作**）、**運営お知らせの作成・対象選択・配信（REQ-PRODUCT-16）**、公開ステータスページの更新、**メール送達性の監視（バウンス/苦情率・DMARCレポート・抑制リスト。REQ-PRODUCT-21）**、**自動復旧・保守イベント（再起動/再スケジュール/証明書更新/クリーンアップ、フラッピング検知と自動化一時停止。REQ-DUR-10）**、異常ログイン/不正利用検知、**管理者向け通知の集約**（Webhook失敗・Health Check失敗/Canary rollback・原価乖離・境界違反試行・接続サイト別プラグインversion更新有無） | メトリクス集約、SLO定義、インシデント記録、通知イベント | REQ-ADM-07, REQ-PRODUCT-11, REQ-WPA-07（AC-ADM-04, AC-NOTIF-01） |
-| ADM-S2 | 課金・プラン・原価管理 | Stripe Product/Price⇄plan/credit_pack対応付け、Credit Packカタログ、税・クーポン・dunning・返金/チャージバック方針、**Webhook受信状態・失敗率・reconciliation状態（＝入金の突合をコード不要で確認）**、プラン別の販売価格・手数料見込み・想定AI原価・想定粗利・1credit原価/売価の可視化（**内部利用=マスターテナントは区分表示・粗利計算から分離・実コストリファレンスとして参照。REQ-PRODUCT-23**）、手動クレジット操作（理由・量・有効期限・承認者必須）、**編集フロー: 価格・1クレジット単価・品質グレード係数・プラン構成・Credit Packの新規作成/改定（draft→effective_from指定→影響プレビュー→承認→公開）、Stripe Product/Price対応付けの張り替え（REQ-BILL-10）** | Stripe対応表、usage_credit_ledger、原価集計 | REQ-ADM-02, REQ-BILL-01/07/10（AC-ADM-07, AC-BILL-04/07/08） |
+| ADM-S2 | 課金・プラン・原価管理 | Stripe Product/Price⇄plan/credit_pack対応付け、Credit Packカタログ、税・クーポン・dunning・返金/チャージバック方針、**Webhook受信状態・失敗率・reconciliation状態（＝入金の突合をコード不要で確認）**、プラン別の販売価格・手数料見込み・想定AI原価・想定粗利・1credit原価/売価の可視化（**内部利用=マスターテナントは区分表示・粗利計算から分離・実コストリファレンスとして参照。REQ-PRODUCT-23**）、手動クレジット操作（理由・量・有効期限・承認者必須）、**編集フロー: 価格・1クレジット単価・品質グレード係数・プラン構成・Credit Packの新規作成/改定（draft→effective_from指定→影響プレビュー→承認→公開）、Stripe Product/Price対応付けの張り替え（REQ-BILL-10）**、**初期商用設定値の投入（REQ-BILL-10 §10.1=BR写像: プラン4種エントリー/スタンダード/プライム/エンタープライズで名称統一・Credit Pack S/M/L/XL＋追加購入・品質係数1.00/1.25/2.00・調査範囲係数・タスク別基準cr12種・契約/割引/税ルール）**、**タスク・品質・モデル・顧客・サイト別の見積vs実績乖離ビュー（BR-CRD-009。実測はADM-S4と連携）**、**コンサル/完全委託の人的工数の顧客・プラン別計測と粗利配賦（BR-CNS-*/BR-OPS-002。商品化前提の暫定所属＝画面要否は未決）** | Stripe対応表、usage_credit_ledger、原価集計 | REQ-ADM-02, REQ-BILL-01/07/10（AC-ADM-07, AC-BILL-04/07/08） |
 | ADM-S3 | LLMプロバイダ・モデル管理 | Provider Adapter Registry / Provider Profile / Model Catalog / Capability Matrix / Cost Table の登録・編集、Health Check状況、Canary/Rollout・自動rollback（**手動rollback・モデルの有効/無効切替の操作**）、Routing Policy（Claude優先。非Claudeの本文生成許可は明示許可＋Route Decision Audit）、**Routing Impact Preview（変更前に対象tenant/site/workflow・予測コスト・latency差分を提示）**、API key alias管理（原文非表示・mask） | provider系テーブル一式 | REQ-ADM-03, REQ-BILL-04/05/09（AC-ADM-01, AC-BILL-06/10） |
 | ADM-S4 | コスト・観測ダッシュボード | preflight estimate vs actual、workflow/ticket/provider/model別 token・cost、**Prompt Cache hit率・creation/read tokens・miss理由・想定vs実測ヒット率と原価乖離（tenant/site/workflow別）**、error/retry率、schema validation fail率、QA fail率、repair loop平均回数、DataForSEO cost、crawler fallback率、WP validation fail率、budget overrun件数、**GSCクエリ⇔キーワードのマッチ率（クリック加重・段別内訳・tenant/site別。辞書較正の入力、REQ-KGA-15）**、**実行レーン別のtoken・cost・割引効果と、バッチ失敗・SLA超過・interactiveフォールバック率（差額監視。REQ-BILL-11）**、**監視・増分計算の運用原価（クレジット外）と全件再計算の発生監視、自動変更予算の消費・振動検知（REQ-PRODUCT-18）、導出事実ストアのサイズ・ヒット率＝再調査省略効果（REQ-PRODUCT-19）**、**プラットフォーム負荷平準化ビュー（テナント別バッチ窓ヒートマップ・窓内オフセット分散状況。REQ-SRC-10）、ノード密度・利用率とキャパシティしきい値接近（1社あたり基盤原価の配賦単価表示。REQ-DUR-06）、サマリー参照による本文取得省略効果（REQ-PRODUCT-20）**。設定: workflow別max token、tier別budget、DataForSEO日次上限、cache TTL、retry/repair上限、circuit breaker、debug snapshot export（本文全文除く） | usage_traces、REQ-SEC-02の記録項目一式 | REQ-ADM-04, REQ-SEC-03, REQ-BILL-06（AC-ADM-08, AC-COST-02/03, AC-BILL-01/02） |
 | ADM-S5 | 監査ログビューア | append-only監査ログの検索・閲覧（actor / action / resource / tenant / changes diff / ip / user_agent）。対象: 境界違反試行・シークレットアクセス・Role変更・Flag/Kill Switch・課金操作・full_auto有効化・なりすまし記録。テナント分離ビュー | audit_logs（REQ-ADM-06スキーマ） | REQ-SEC-10, REQ-ADM-06（AC-SEC-06, AC-ADM-03） |
@@ -65,3 +65,5 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 管理コンソールは AOS-L3-PROTOTYPE-PLAN のPT-6（管理面トラック）で扱う。優先はADM-S8（Pack管理＝運用の中核で新設要求の検証が必要）→ ADM-S4（コスト観測）→ ADM-S2（課金・入金）。ADM-S1/S11は一般SaaS標準のため後段。
 
 プロト実装追記（2026-07-10）: 縦積み解消のため ADM-S1（`opsTab`: システム状態/通知・お知らせ/インシデント）・ADM-S4（`costTab`: 概要/コスト内訳/キャッシュ・GSC）・ADM-S8（`packTab`: Pack管理/UI・評価/表示ラベル/通知テンプレート/類語辞書/オフィス構成）の3画面を画面内タブ化（他9画面は単一ビューのまま）。ヘッダーに常設グローバル検索（画面12＋タブ9＋Pack4＋設定キー10＋プロバイダ4=39件インデックス）とテナント（企業）スコープ切替（`tScope`＝監査ログ・コスト内訳・サポートデスク・設定レジストリの4画面を絞り込み）を新設。サイドメニュー・全タブに`window.scrollTo(0,0)`のスクロールリセット適用。詳細は screen-connection-map v1.7 §8 を参照。
+
+要求写像追記（2026-07-13・L0ビジネス要求 v1.0 の反映）: ADM-S2に REQ-BILL-10 §10.1（BR-PRC/BR-CRD初期商用設定値）の投入・プラン名4種統一・見積vs実績乖離ビュー（BR-CRD-009）・コンサル/完全委託の工数配賦（BR-CNS/BR-OPS-002・画面要否は未決の暫定所属）を追記した。プロト実装のプラン名混在（スタンダード/Starter/Pro/Business＝screen-connection-map §3.4 #25）は本統一により解消対象＝プロト側残課題。

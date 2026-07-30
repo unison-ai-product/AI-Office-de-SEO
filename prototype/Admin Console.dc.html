@@ -773,7 +773,7 @@
                   </sc-for>
                   <span style="font-size: 10.5px; color: #5F7290;">7月は3日までの実績（棒にホバーで各月の値）</span>
                   <sc-if value="{{ tcGmNoteOn }}" hint-placeholder-val="{{ false }}">
-                    <span style="font-size: 10.5px; color: #7C6230;">粗利（概算）＝クレジット消費の売価換算 − AI原価。決済手数料は含みません（正確な値はADM-S2）。Starterプランは粗利が薄い点に注意</span>
+                    <span style="font-size: 10.5px; color: #7C6230;">粗利（概算）＝クレジット消費の売価換算 − AI原価。決済手数料は含みません（正確な値はADM-S2）。エントリープランは粗利が薄い点に注意</span>
                   </sc-if>
                 </div>
               </div>
@@ -2184,8 +2184,8 @@ class Component extends DCLogic {
   ];
 
   TENANTS = [
-    { name: 'タナカメディア合同会社', short: 'タナカメディア', plan: 'Pro', sites: '2サイト', members: '3名', usage: '今月 1,842 cr', state: '正常', stateFg: '#21725C' },
-    { name: 'サンプル商事株式会社', short: 'サンプル商事', plan: 'Starter', sites: '1サイト', members: '1名', usage: '今月 210 cr', state: '支払い再試行中（dunning 1/3）', stateFg: '#B5893A' }
+    { name: 'タナカメディア合同会社', short: 'タナカメディア', plan: 'スタンダード', sites: '2サイト', members: '3名', usage: '今月 1,842 cr', state: '正常', stateFg: '#21725C' },
+    { name: 'サンプル商事株式会社', short: 'サンプル商事', plan: 'エントリー', sites: '1サイト', members: '1名', usage: '今月 210 cr', state: '支払い再試行中（dunning 1/3）', stateFg: '#B5893A' }
   ];
 
   KILLS = [
@@ -2469,16 +2469,16 @@ class Component extends DCLogic {
 
   // ══ ADM-S12 サポートデスク（REQ-PRODUCT-22 / PT-Y） ══
   SD_TICKETS = [
-    { id: 'OT-2041', subj: 'WordPress連携の再認可が繰り返し必要になる', tenant: 'タナカメディア', plan: 'Pro', sev: '高', sla: '残り 2:10', breach: false, state: '対応中', assignee: 'ops.sato',
+    { id: 'OT-2041', subj: 'WordPress連携の再認可が繰り返し必要になる', tenant: 'タナカメディア', plan: 'スタンダード', sev: '高', sla: '残り 2:10', breach: false, state: '対応中', assignee: 'ops.sato',
       summary: 'AIが連携トークンの有効期限を確認済み。再発のためエスカレーション。ジョブ・請求は権限内で参照済み。',
       ai: [ { r: 'u', t: 'WordPressの連携が何度も切れる' }, { r: 'a', t: '連携トークンの有効期限を確認しました。通常は自動更新されますが、今回は3回連続で失効しています。確度が低いため担当者にお繋ぎします。' } ] },
-    { id: 'OT-2044', subj: '請求金額が想定と違う（クレジット消費）', tenant: 'みらい不動産', plan: 'Business', sev: '緊急', sla: '超過 0:30', breach: true, state: '未割当',
+    { id: 'OT-2044', subj: '請求金額が想定と違う（クレジット消費）', tenant: 'みらい不動産', plan: 'プライム', sev: '緊急', sla: '超過 0:30', breach: true, state: '未割当',
       summary: '夜間バッチの一括実行でクレジット消費が増加。原価乖離ではなく利用増と推定。要一次回答。',
       ai: [ { r: 'u', t: '今月のクレジットの減りが早い気がします' }, { r: 'a', t: 'ご利用履歴を確認しました。7/1に一括リライト12件を実行されています。金額の妥当性判断は担当者にお繋ぎします。' } ] },
-    { id: 'OT-2039', subj: '記事の自動公開を止めたい', tenant: '暮らしラボ', plan: 'Starter', sev: '中', sla: '残り 5:40', breach: false, state: '対応中', assignee: 'ops.kim',
+    { id: 'OT-2039', subj: '記事の自動公開を止めたい', tenant: '暮らしラボ', plan: 'エントリー', sev: '中', sla: '残り 5:40', breach: false, state: '対応中', assignee: 'ops.kim',
       summary: 'おまかせ運用の無効化手順を案内。AIで解決見込みだが確認のため保留。',
       ai: [ { r: 'u', t: '自動で公開されないようにしたい' }, { r: 'a', t: '設定の「おまかせ運用」をオフにすると、公開前に必ず承認が入ります。オーナー／管理者のみ変更できます。手順をご案内します。' } ] },
-    { id: 'OT-2036', subj: 'CSVエクスポートに記事本文が含まれない', tenant: 'さくら工務店', plan: 'Pro', sev: '低', sla: '残り 12:00', breach: false, state: '対応中', assignee: 'ops.sato',
+    { id: 'OT-2036', subj: 'CSVエクスポートに記事本文が含まれない', tenant: 'さくら工務店', plan: 'スタンダード', sev: '低', sla: '残り 12:00', breach: false, state: '対応中', assignee: 'ops.sato',
       summary: '仕様どおり（本文・機密は対象外）。AIが根拠つきで回答済み、解決見込み。',
       ai: [ { r: 'u', t: 'CSVに本文が入っていない' }, { r: 'a', t: '仕様として、CSVには記事本文・プロンプト・機密情報は含まれません（URL・要約・キーワード・実績のみ）。データの取り扱いに関するヘルプをご案内します。' } ] }
   ];
@@ -3219,17 +3219,19 @@ class Component extends DCLogic {
       retryWebhook: () => this.showToast('失敗2件を再送キューに投入しました（冪等キーで二重計上は発生しません）'),
       recFixedOn: !!st.recFixed, recFixedOffOn: !st.recFixed,
       recFix: () => {
-        this.setState({ recFixed: true, audit: this.pushAudit({ type: '課金操作', typeFg: '#7C6230', typeBg: 'rgba(181,137,58,.14)', action: 'billing.reconcile_manual', res: 'pi_3Nx****9qK → usage_credit_ledger', tenant: 'サンプル商事', diff: '入金 ¥9,800 を台帳へ計上（不一致解消）', reason: 'Webhook失敗分の手動突合' }) });
+        this.setState({ recFixed: true, audit: this.pushAudit({ type: '課金操作', typeFg: '#7C6230', typeBg: 'rgba(181,137,58,.14)', action: 'billing.reconcile_manual', res: 'pi_3Nx****9qK → usage_credit_ledger', tenant: 'サンプル商事', diff: '入金 ¥68,000 を台帳へ計上（不一致解消）', reason: 'Webhook失敗分の手動突合' }) });
         this.showToast('手動突合を記録しました。台帳と入金が一致しました（129/129）');
       },
       // ADM-S9マスターテナント（内部利用）は粗利集計から区分・除外する（本セクションのplanRows/粗利には含めない）
       masterTenantsCount: (st.masterTenants || this.MASTER_TENANTS).length,
       // REQ-BILL-10 / PT-P: 価格改定フロー（draft→effective_from→影響確認→承認→公開）・Stripe対応付け張り替え・Pack新規作成
       planRows: [
-        { name: 'Starter（月額）', price: 'price_1Ns****Kd2', sell: '¥9,800', fee: '¥357', ai: '¥2,140', gate: '¥410', margin: '71%' },
-        { name: 'Pro（月額）', price: 'price_1Ns****Xf8', sell: '¥29,800', fee: '¥1,086', ai: '¥7,920', gate: '¥1,240', margin: '66%' },
-        { name: 'Business（月額）', price: 'price_1Nt****Bz3', sell: '¥59,800', fee: '¥2,181', ai: '¥16,400', gate: '¥2,480', margin: '68%' },
-        { name: 'Credit Pack 1,000cr', price: 'price_1Nt****Aq1', sell: '¥12,000', fee: '¥437', ai: '¥3,850', gate: '¥620', margin: '59%' },
+        { name: 'エントリー（月額）', price: 'price_1Ns****Kd2', sell: '¥68,000', fee: '¥2,482', ai: '¥14,900', gate: '¥1,600', margin: '72%' },
+        { name: 'スタンダード（月額）', price: 'price_1Ns****Xf8', sell: '¥128,000', fee: '¥4,672', ai: '¥26,300', gate: '¥2,900', margin: '73%' },
+        { name: 'プライム（月額）', price: 'price_1Nu****Pm4', sell: '¥198,000', fee: '¥7,227', ai: '¥38,200', gate: '¥4,300', margin: '75%' },
+        { name: 'エンタープライズ（月額）', price: 'price_1Nt****Bz3', sell: '¥298,000', fee: '¥10,877', ai: '¥54,100', gate: '¥6,100', margin: '76%' },
+        { name: 'Credit Pack S 1,000cr（月額）', price: 'price_1Nt****Aq1', sell: '¥30,000', fee: '¥1,095', ai: '¥8,000', gate: '¥900', margin: '67%' },
+        { name: '追加パック 500cr', price: 'price_1Nu****Ex5', sell: '¥18,000', fee: '¥657', ai: '¥4,000', gate: '¥520', margin: '71%' },
         ...(st.prExtra || [])
       ].map((p) => ({
         ...p,
@@ -3383,7 +3385,7 @@ class Component extends DCLogic {
       ceVal: st.ceVal, ceValInput: (e) => this.setState({ ceVal: e.target.value }),
       ceEff: st.ceEff, ceEffInput: (e) => this.setState({ ceEff: e.target.value }),
       ceScope: st.ceScope, ceScopeInput: (e) => this.setState({ ceScope: e.target.value }),
-      cePrevScope: st.ceScope === 'グローバル' ? 'テナント 2 ・ サイト 3' : (st.ceScope.indexOf('プラン') === 0 ? 'Proプラン加入 1テナント' : 'タナカメディア 2サイト'),
+      cePrevScope: st.ceScope === 'グローバル' ? 'テナント 2 ・ サイト 3' : (st.ceScope.indexOf('プラン') === 0 ? 'プライムプラン加入 1テナント' : 'タナカメディア 2サイト'),
       cePrevCost: '+¥180 / 月（見込み）',
       ceClose: () => this.setState({ ce: null }),
       ceReason: st.ceReason || '',

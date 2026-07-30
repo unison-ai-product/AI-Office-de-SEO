@@ -1,6 +1,37 @@
-# AI Office de SEO 要求定義 v3.7 clean
+# AI Office de SEO — 要求定義・設計・画面プロトタイプ
 
-本ZIPは **AI Office de SEO** の企画・要求定義を、上流成果物として整理したものです。
+## このプロジェクトについて
+
+**AI Office de SEO** は、AIエージェントチームがSEOコンテンツ運用（キーワード調査 → 記事生成 → WordPress投稿 → GSC分析 → リライト・レポート）を一気通貫で代行するSaaSです。中小企業のWeb担当者・新規サイト立上げ事業者を主要ターゲットに、SEOコンサル/インハウス担当より低コストな代替を目指します（正本: L0企画書・ビジネス要求）。
+
+プロダクトの特徴:
+
+- **2つのUIモード**: 通常ビュー（選ぶ・決める・承認する業務SaaS面）と **Agent Officeビュー**（バーチャルオフィスでエージェントたちの実行状況を見守る監視面。7フロア・13ペルソナ）
+- **エージェント実行基盤**: Pack/Ticket/Workflow契約・13状態の状態機械・Quality Gate（Google公式基準ベース）・Prompt Cache層構造・テナントサンドボックス
+- **二層課金**: システム利用料（プラン4種: エントリー/スタンダード/プライム/エンタープライズ）＋クレジット（月額パック・追加購入・予約/確定/返還のappend-only台帳・Stripe連携）
+
+### このリポジトリの中身
+
+このリポジトリは**上流成果物（企画・要求・設計）と画面プロトタイプ**です。本実装のコード（DB migration・API・WPプラグイン・テスト）は含みません。
+
+| パス | 内容 |
+|---|---|
+| `docs/design/ai-office-de-seo/L0-charter/` | 企画書・ビジネス要求（市場・商品・価格・KPIの正本） |
+| `docs/design/ai-office-de-seo/L1-requirements/` | 要求定義15文書（REQ-* 180件超）＋受入条件トレース（AC-*） |
+| `docs/design/ai-office-de-seo/L2-domain/` | ドメインモデル（DDD）・用語集 |
+| `docs/design/ai-office-de-seo/L3-implementation/` | 実装設計（DDL・契約スキーマ・Quality Gate・設定レジストリ・Gate A凍結物） |
+| `docs/design/ai-office-de-seo/L3-ui-prototype/` | 画面台帳（S1〜S7/W1〜W10/A0〜A8・ADM-S1〜S12）・画面フロー・接続マップ |
+| `prototype/` | 動作する画面プロトタイプ（`AI Office de SEO.dc.html`=ユーザー面 / `Admin Console.dc.html`=管理コンソール。モック駆動・単一HTML） |
+| `Design.md` | デザイン思想（コンセプト『SEO業務をもっとたのしく、プロフェッショナルが簡単に』） |
+| `docs/plans/` | 各レイヤの作業計画 |
+
+プロトタイプはローカルHTTPサーバー経由で `prototype/AI Office de SEO.dc.html` を開くと動作します（実データ・実LLM接続なし、モック契約駆動。管理コンソールはユーザー面のヘルプ「開発コンソール（社内）」から）。仕様の正本は常に `docs/` 側で、プロトは実装実証という役割分担です。
+
+---
+
+# 要求定義 v3.7 clean（改訂記録）
+
+本パッケージは **AI Office de SEO** の企画・要求定義を、上流成果物として整理したものです。
 
 この版では、過去の実装資産への依存・参照を要求本文から外し、AI Office de SEOとしての独立した要求だけを収録しています。コード、DB migration、API実装、WordPressプラグイン実装、テストコードは含めません。
 

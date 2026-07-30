@@ -6987,7 +6987,7 @@ class Component extends DCLogic {
           { text: '7/2 予約 J-1024 リライト実行中 −42cr', fg: '#93A2C0' },
           { text: '7/1 確定 J-1018 リライト −12cr', fg: '#93A2C0' },
           { text: '6/30 確定 J-1019 新規記事 −45cr', fg: '#93A2C0' },
-          { text: '6/28 チャージ +1,200cr', fg: '#93A2C0' }
+          { text: '6/28 チャージ +2,000cr', fg: '#93A2C0' }
         ],
         fixRows: [
           { chip: '予測', chipFg: '#F5C544', chipBorder: 'rgba(245,197,68,.5)', text: '不足見込み（自動算出）' },
@@ -7800,7 +7800,7 @@ class Component extends DCLogic {
       "影響なし（引き続き使えます）": "Unaffected (still available)",
       "リライト「単身引越し 相場と安くするコツ」": "Rewrite: Single-person moving costs & saving tips",
       "J-1024 リライト（実行中）": "J-1024 rewrite (running)",
-      "Standard ・ 表示中": "Standard · viewing",
+      "スタンダード ・ 表示中": "Standard · viewing",
       "解約して外す": "Cancel plan & remove",
       "サイトを外すと、そのサイトのプランも解約されます（1サイト＝1プラン）": "Removing a site also cancels its plan (one site = one plan)",
       "解約・退会を申請する…": "Request cancellation…",
@@ -8426,6 +8426,9 @@ class Component extends DCLogic {
       "進行中・品質チェック": "In progress & QA",
       "ライト": "Light",
       "スタンダード": "Standard",
+      "エントリー": "Entry",
+      "プライム": "Prime",
+      "エンタープライズ": "Enterprise",
       "プロ": "Pro",
       "全て": "All",
       "初心者": "Beginner",
@@ -9259,7 +9262,7 @@ class Component extends DCLogic {
       };
     });
     const created = st.ctCreated;
-    const PLAN_DEFS = [ { name: 'ライト', cr: '500 cr / 月', price: '¥5,500 / 月' }, { name: 'スタンダード', cr: '1,200 cr / 月', price: '¥12,000 / 月' }, { name: 'プロ', cr: '3,000 cr / 月', price: '¥27,500 / 月' } ];
+    const PLAN_DEFS = [ { name: 'エントリー', cr: '500 cr / 月', price: '¥68,000 / 月' }, { name: 'スタンダード', cr: '1,200 cr / 月', price: '¥128,000 / 月' }, { name: 'プライム', cr: '3,000 cr / 月', price: '¥198,000 / 月' }, { name: 'エンタープライズ', cr: '10,000 cr / 月', price: '¥298,000 / 月' } ];
     const ctOutSelIdx = Math.min(st.ctOutSel || 0, 4);
     const ctOutputsRaw = [
       st.wpVaultRetried
@@ -9931,7 +9934,7 @@ class Component extends DCLogic {
         { date: '7/2', kind: '予約', kindFg: '#2F6FE4', kindBg: 'rgba(47,111,228,.08)', title: 'J-1024 リライト（実行中）', amt: '-42', fg: '#51637F' },
         { date: '7/1', kind: '確定', kindFg: '#6C59CE', kindBg: 'rgba(126,107,217,.1)', title: 'J-1018 リライト', amt: '-12', fg: '#16294B' },
         { date: '6/30', kind: '確定', kindFg: '#6C59CE', kindBg: 'rgba(126,107,217,.1)', title: 'J-1019 新規記事', amt: '-45', fg: '#16294B' },
-        { date: '6/28', kind: 'チャージ', kindFg: '#7C6230', kindBg: 'rgba(240,190,61,.18)', title: 'クレジットパック購入（追加チャージ）', amt: '+1,200', fg: '#21725C' },
+        { date: '6/28', kind: 'チャージ', kindFg: '#7C6230', kindBg: 'rgba(240,190,61,.18)', title: 'クレジットパック購入（追加チャージ）', amt: '+2,000', fg: '#21725C' },
         { date: '6/25', kind: '戻し', kindFg: '#21725C', kindBg: 'rgba(51,155,125,.1)', title: 'J-1007 取得エラーのため全額', amt: '+28', fg: '#21725C' }
       ]),
       seLedgerCsv: () => this.exportCsv('クレジット消費履歴', ['日付', '種別', '内容', '増減(cr)'], (this._seLedgerRows || []).map((l) => [l.date, l.kind, l.title, l.amt])),
@@ -9940,9 +9943,9 @@ class Component extends DCLogic {
       portalOn: !!st.portalOpen,
       portalClose: () => this.setState({ portalOpen: false }),
       portalInvoices: [
-        { id: 'INV-2026-0701', date: '2026/07/01', item: 'スタンダードプラン 7月分', amt: '¥49,800', status: '支払い済み' },
-        { id: 'INV-2026-0601', date: '2026/06/01', item: 'スタンダードプラン 6月分', amt: '¥49,800', status: '支払い済み' },
-        { id: 'INV-2026-0520', date: '2026/05/20', item: 'クレジット追加チャージ 200cr', amt: '¥11,000', status: '支払い済み' }
+        { id: 'INV-2026-0701', date: '2026/07/01', item: 'スタンダードプラン 7月分', amt: '¥128,000', status: '支払い済み' },
+        { id: 'INV-2026-0601', date: '2026/06/01', item: 'スタンダードプラン 6月分', amt: '¥128,000', status: '支払い済み' },
+        { id: 'INV-2026-0520', date: '2026/05/20', item: 'クレジット追加チャージ 500cr', amt: '¥18,000', status: '支払い済み' }
       ].map((v) => ({ ...v, onReceipt: () => this._dlReceipt(v) })),
       // REQ-BILL-08 / REQ-SEC-10: オフボーディング（解約・退会）は申請制
       seOffbNoneOn: !st.offb,
@@ -10500,7 +10503,7 @@ class Component extends DCLogic {
     const old = [
       { color: '#1F7A5C', title: '「引越し やることリスト」を公開しました', meta: '6/30 ・ 公開前承認: 田中 良介', actOn: false, goOn: false, go: '', onGo: null },
       { color: '#1F7A5C', title: '6月分の検索実績の取り込みが完了しました', meta: '6/30 6:00 ・ 自動実行', actOn: false, goOn: false, go: '', onGo: null },
-      { color: '#5B6B84', title: 'クレジットパックをチャージしました（+1,200 cr）', meta: '6/28 ・ 田中 良介', actOn: false, goOn: false, go: '', onGo: null }
+      { color: '#5B6B84', title: 'クレジットパックをチャージしました（+2,000 cr）', meta: '6/28 ・ 田中 良介', actOn: false, goOn: false, go: '', onGo: null }
     ].map((n) => ({ ...n, unreadOn: false, weight: 500, bg: '#FFFFFF' }));
     const filt = st.ncFilter || 'all';
     const segF = (on) => ({ bg: on ? 'linear-gradient(180deg, #4A87F2, #2A63D4)' : '#FFFFFF', fg: on ? '#FFFFFF' : '#51637F', weight: on ? 700 : 500 });
@@ -11031,9 +11034,8 @@ class Component extends DCLogic {
   }
 
   PACKS = [
-    { name: 'ライト', cr: 500, price: 5500, tag: '' },
-    { name: 'スタンダード', cr: 1200, price: 12000, tag: 'おトク' },
-    { name: 'プロ', cr: 3000, price: 27500, tag: '' }
+    { name: '追加パック 500', cr: 500, price: 18000, tag: '' },
+    { name: '追加パック 2,000', cr: 2000, price: 64000, tag: 'おトク' }
   ];
 
   buyVals() {
@@ -11951,7 +11953,7 @@ class Component extends DCLogic {
       })),
       seInviteNoneOn: (st.invites || this.DEFAULT_INVITES).length === 0,
       seSitesOp: (() => { const all = this.SITES.concat(st.siteAdded || []); return all.filter((s, i) => (st.siteRemoved || []).indexOf(i) < 0).map((s) => { const i = all.indexOf(s); return {
-        name: s.name, domain: s.domain, role: i === 0 ? 'Standard ・ 表示中' : 'Standard', canRemove: i !== 0,
+        name: s.name, domain: s.domain, role: i === 0 ? 'スタンダード ・ 表示中' : 'スタンダード', canRemove: i !== 0,
         onRemove: () => { if (this.roGuard()) return; const prev = this.state.siteRemoved || []; this.setState({ siteRemoved: prev.concat([i]) }); this.showUndoToast(this.LABELS.msg.siteRemoved, () => this.setState({ siteRemoved: prev })); }
       }; }); })(),
       siteAddOpen: () => { if (this.roGuard()) return; this.setState({ siteAdd: { name: '', url: '' } }); },

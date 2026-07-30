@@ -5,7 +5,7 @@ version: 3.7
 layer: L1
 kind: design
 status: draft
-updated_at: 2026-07-05
+updated_at: 2026-07-13
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
 
@@ -28,6 +28,15 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ジョブ実行前に、予想トークン、外部API費用、Prompt Cache期待値、品質グレード、再試行余地から消費予定クレジットを算出する。
 
 予約時にクレジットを仮押さえし、成功時に確定消費、失敗・キャンセル時に解放する。
+
+ビジネス要求（L0 v1.0）からの追加確定事項:
+
+- 見積式は `基準cr × 数量 × 品質係数 × 調査範囲係数` とし、5cr単位で切り上げる（BR-CRD-001）。係数の実数は設定レジストリ（`REQ-BILL-10`）。
+- 予約額は `max(商品係数による見積, Provider原価のキャッシュmiss上限をcr換算した額)` とする（BR-CRD-004。`REQ-BILL-06` のmiss上限予約と統合）。
+- 実績見込みが見積を10%超える場合、追加実行前にユーザー承認を得る（BR-CRD-005）。
+- システム障害・生成失敗は原則100%返還する（BR-CRD-006）。
+- 見積済みタスクは係数改定の影響を受けず、新規タスクから新版を適用する（BR-CRD-007。`REQ-BILL-10` のversion freezeと同型）。
+- 実行前・実行中・完了後・月次の各段階で、見積・予約・実績・返還・残高・繰越・失効予定を表示する（BR-CRD-008）。
 
 ## 3. 品質グレード  ［REQ-BILL-03］
 
@@ -90,6 +99,14 @@ API keyは平文再表示しない。保存後はmask表示のみ。
 
 `active` のときだけ月次付与する。`past_due` / `unpaid` / `canceled` 時の生成・予約・Autopilot制限を定義する。月次クレジット繰越可否・追加購入/プロモの有効期限・先に消費するクレジット種別をplan/credit_policy versionで管理する。ユーザーにはmodel/provider名を見せず、プラン・品質グレード・本数・クレジット・追加購入価格として提示する。
 
+credit_policy の初期値（L0 v1.0で確定・実数は設定レジストリが正本）:
+
+- 月額付与クレジットは翌月まで繰越可能。保有上限は月次付与量の150%とし、上限超過時は古いクレジットから失効させる（BR-PRC-006）。
+- 追加購入クレジットは購入月を含む3か月有効（BR-PRC-007）。
+- 消費順は有効期限が近いものから。同日期限はプロモーション→月額付与→追加購入の順（BR-PRC-019）。
+- 解約時: 月額付与・プロモ由来の未使用crは契約終了日に失効し返金しない。追加購入crは有効期限または契約終了日の早い方で失効（BR-PRC-018）。
+- プラン変更: アップグレードは即時適用・差額日割り、ダウングレードは次回更新日適用。既発行クレジットの期限は変更しない（BR-PRC-016）。
+
 ## 9. LLMプロバイダ拡張（Registry / Adapter / Routing）  ［REQ-BILL-09］
 
 Provider種別を Agent Runtime Adapter と LLM Provider Adapter に分ける。Provider Adapter Registry（`provider_family`: anthropic / openai / openai_compatible / azure_openai / google_vertex / aws_bedrock / local / custom_http / private_gateway、request/response/error/cost mapper version、status）、Provider Profile、Model Catalog、Capability Matrix（agent_loop / tool_calling / structured_output / streaming / long_context / vision / prompt_cache / batch / cost_report / safety / private_network）、Cost Table を持つ。
@@ -107,6 +124,19 @@ Routingは用途別capability要件で解決し、Claude優先: 本文生成・�
 - 監査: 価格・係数・手動クレジット操作の変更は、理由・対象・承認者つきで監査ログに残す（`REQ-ADM-06`）。
 - 提示: 一般ユーザーには model / provider 名でなく、プラン・品質グレード・本数・クレジット・購入価格として提示する（`REQ-BILL-08`）。
 - 本要求書・参照ノートに現れる価格・係数はすべて「既定値 / 初期値」であり、設定レジストリの値が優先する。
+
+### 10.1 初期商用設定値（L0ビジネス要求 v1.0 からの写像・承認対象の初期値）
+
+`ai-office-de-seo-business-requirements_v1.md`（BR-PRC/BR-CRD）で確定した初期商用設定値。Pricing Configuration の初期投入値であり、本節も実数のハードコードではなく「設定レジストリ初期値の正本参照」である。
+
+- `billing_plans` 初期値（BR-PRC-002/003）: エントリー 68,000円 / スタンダード 128,000円 / プライム 198,000円 / エンタープライズ 298,000円（月額・税別）。プラン別にサイト数・ユーザー数・クロール頻度・CRO/内部リンク・外部連携・SLA/監査ログの提供範囲を設定管理する。**プラン名はこの4種で全画面・全文書を統一する（Starter/Pro/Business等の仮名は廃止）。**
+- `credit_packs` 初期値（BR-PRC-004/005）: 月額 S=30,000円/1,000cr、M=70,000円/2,500cr、L=130,000円/5,000cr、XL=240,000円/10,000cr。追加購入 18,000円/500cr、64,000円/2,000cr。
+- 品質グレード係数初期値（BR-CRD-002）: スタンダード1.00 / ハイクオリティ1.25 / プロフェッショナル2.00。調査範囲係数初期値（BR-CRD-003）: 通常1.00 / 広範囲1.30 / 網羅1.70。
+- タスク別基準クレジット12種（BR-CRD-010）を版管理された設定として保持する。
+- 契約・請求規則（BR-PRC-008/009/014/015/017）: 最低契約6か月、年間契約はシステム利用料のみ10%割引、税別表示・請求時消費税加算・1円単位四捨五入、Stripe前払い既定（Enterprise等のみ請求書払い）、年契10%と早期20%割引は併用不可。
+- 初期費用（BR-PRC-011〜013）: データセットアップ費=保有記事数×30円（最低30,000円）、標準設定費100,000円、新規サイト構築1,200,000円〜。
+- パック記載の本数は「記事換算上限」として表示し、固定の「記事＋分析」例は使用しない（BR-DEC-024決定）。
+- GPT系Providerの利用を許可する（BR-DEC-016/018決定）。一般ユーザーはモデル非表示（`REQ-BILL-03`）・管理者は表示のまま。初期既定モデルは検証結果に基づき設定レジストリで選択する。
 
 ## 11. 実行レーンとLLM Batch活用（コストダウン）  ［REQ-BILL-11］
 
