@@ -34,6 +34,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 | 11 | コスト要求 | `categories/cost-requirements_v1.md` | 何にいくらかかり、どこで止めるか |
 | 12 | 障害対応・保証要求 | `categories/incident-warranty-requirements_v1.md` | 障害時にどう守り、復旧・補償するか |
 | 13 | 成長・アップセル要求 | `categories/growth-upsell-requirements_v1.md` | いつ何を根拠に追加提案するか |
+| 14 | ユーザー組織・権限統制要求 | `categories/customer-organization-governance-requirements_v1.md` | 顧客組織の所属・承認・予算・権限をどう統治するか |
+| 15 | 開発管理・画面制御要求 | `categories/platform-administration-control-requirements_v1.md` | 開発・運用側が画面から何を安全に制御するか |
 
 ## 3. 分類ルール
 
@@ -47,6 +49,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 原価と請求を分離する: コスト要求は提供原価、課金・会計要求は顧客請求と台帳を正本にする。
 - 障害と通常運用を分離する: 計測・運用は平常時、障害対応・保証はincident、復旧、補償、責任境界を正本にする。
 - アップセルは根拠を持つ: 成長提案は利用上限、実行不足、統制、支援、経済適合から判定し、製品不具合を課金で解決させない。
+- 顧客組織と運営組織を分離する: ユーザー企業の階層・所属・承認・予算と、プラットフォーム内部Roleを同じ権限体系へ混在させない。
+- UI制御を認可にしない: 画面の非表示・無効化とサーバー側Permission判定は同じポリシーを参照し、UIだけでアクセスを防がない。
+- 管理画面も安全境界を越えない: 通常運用は管理画面で解決可能にしつつ、安全不変条件は内部Roleや設定でも解除不能にする。
 - 受入条件は各分類の要求IDへ接続し、横断一覧を `ai-office-de-seo-acceptance-trace_v3.7.md` に置く。
 
 ## 4. 詳細ロジック文書
