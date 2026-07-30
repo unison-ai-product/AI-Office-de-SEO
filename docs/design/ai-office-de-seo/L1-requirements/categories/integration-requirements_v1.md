@@ -41,7 +41,7 @@ updated_at: 2026-07-30
 
 ### REQ-INT-01 WordPress軽量計測
 
-リリース時はCMS非依存の単一JavaScript Trackerで、ページ表示、遷移元・遷移先、明示CTA・button識別子、指定サンクスページ到達を取得できなければならない。記事本文、フォーム入力内容、不要な個人情報を送信せず、同意状態、Site識別子、イベントID、発生時刻、tracker versionを付与する。WordPress PluginはTrackerの任意インストール経路であり、計測ロジックの正本にしない。
+リリース時はCMS非依存の単一JavaScript Trackerで、ページ表示、遷移元・遷移先、明示CTA・button識別子、指定サンクスページ到達を取得できなければならない。記事本文、フォーム入力内容、不要な個人情報を送信せず、同意状態、Site識別子、イベントID、発生時刻、tracker versionを付与する。WordPressではThin Pluginを標準のTracker設置・接続導線とし、非WordPressではscript設置を使用する。計測ロジックの正本はTrackerに置き、Pluginへ重複実装しない。
 
 ### REQ-INT-02 計測契約の更新
 
@@ -57,7 +57,7 @@ GSCおよびURL Inspectionの利用可能な観測結果から、公開URLのイ
 
 ### REQ-INT-05 WordPress連携方式
 
-WordPress連携はCore REST APIと軽量トラッキングコードを最小構成とし、プラグインは標準RESTで不足する機能だけを補う薄いAdapterとして選択可能にする。Site接続時にREST到達性、Application Password可否、投稿・メディア・Block Type API、Webhook相当のイベント通知、独自ブロック・Page Builder、トラッキング設置可否を診断し、Connection Profileと利用可能機能を決定する。
+WordPress連携はCore REST APIと軽量トラッキングコードを基礎とし、初期の標準Connection ProfileをThin Plugin併用とする。PluginはTrackerの自動設置、Siteペアリング、version・更新通知、標準RESTで不足するCapabilityとイベント通知だけを補う。Site接続時にREST到達性、Application Password可否、投稿・メディア・Block Type API、Plugin version、トラッキング稼働、独自ブロック・Page Builderを診断する。
 
 連携方式の比較では、導入容易性だけでなく、WordPress／Gutenberg更新追従、障害分離、認証・秘密管理、イベント即時性、Capability精度、独自構造対応、保守原価、Site負荷を評価する。Profile変更時も記事・メディア・計測の識別子と履歴を引き継ぎ、再登録・二重計測を起こさない。
 
@@ -73,7 +73,7 @@ WordPress連携はCore REST APIと軽量トラッキングコードを最小構�
 
 ## 受入条件
 
-- [ ] AC-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、Pluginなしでも設置可能である。
+- [ ] AC-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。
 - [ ] AC-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。
 - [ ] AC-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。
 - [ ] AC-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。

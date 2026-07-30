@@ -102,10 +102,10 @@ WordPress連携はCore REST APIを基礎経路とし、記事・メディア・�
 
 WordPressプラグインは必須の業務実行基盤ではなく、SaaSとWPの間の薄い拡張Adapterとする。標準RESTで不足するSiteペアリング、Capability差分、イベント通知、Preview URL補助、独自ブロック検証等だけを担い、業務ロジック・判定・生成を持たない。WordPress／Gutenberg更新への追従範囲を最小化する。
 
-Siteは次のConnection Profileを選択または自動判定できる。
+WordPress Siteの初期既定は `thin_plugin` とする。Pluginを導入できない環境では他Profileへ縮退できる。
 
-- `rest_tracking`: WordPress Core REST API＋軽量トラッキングコード。投稿・メディア操作はREST、CV・遷移計測は非同期コードで行う。更新検知はpollingまたは取得時差分となる。
-- `thin_plugin`: Core REST API＋軽量トラッキング＋薄いプラグイン。イベント駆動通知、詳細Capability、独自構造検証等を追加する。
+- `thin_plugin`: 初期既定。Core REST API＋軽量Tracker＋薄いプラグイン。Tracker自動設置、Siteペアリング、version・更新通知、イベント駆動通知、詳細Capabilityを提供する。
+- `rest_tracking`: Pluginを導入できないWordPress向け縮退。投稿・メディア操作はREST、CV・遷移計測は手動設置した非同期Trackerで行う。更新検知はpollingまたは取得時差分となる。
 - `limited_rest`: REST制限、認証無効、WAF遮断等があるSite。利用可能な読取・下書き・計測機能だけ提供し、不足機能を明示する。
 
 プラグインが担うもの:
@@ -128,6 +128,7 @@ Siteは次のConnection Profileを選択または自動判定できる。
 - 自前の更新チェッカ（アップデートサーバ）を持ち、更新の有無をWP標準の更新通知経路に載せてWP管理画面へ通知する。
 - 同時に、システム側（開発管理者コンソール）でも接続サイトごとのプラグインversionと更新有無を集約し、通知する。
 - 更新はTenant/Siteスコープの認証・署名付き配信とし、改竄されたパッケージを適用しない。
+- 通常のTracker設定変更はSite Configurationで行い、Plugin更新を要求しない。WordPress互換、認証、安全性、接続機能の変更が必要な場合だけPluginを更新する。
 
 ## 8. WP Capability Snapshot  ［REQ-WPA-08］
 

@@ -157,7 +157,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - 一般的なWeb計測と同様、CMSへ密結合しない単一の非同期JavaScript Trackerを使用する。
 - 初期対象はpage view、URL遷移、明示CTA識別子、設定済み到達URLのCVとする。
-- PluginはTrackerの任意設置手段であり、計測ロジックを持たない。
+- WordPressではThin Pluginを標準導線とし、Trackerの自動設置、Siteペアリング、version・更新通知を提供する。計測ロジック自体はPluginへ重複実装しない。
 - cookie、全click自動取得、常時heartbeat、全DOM監視、heatmap、session replay、フォーム内容取得は初期対象外とする。
 - 高度計測は人員と運用余力を確保したリリース後のversion upで追加する。
 
@@ -175,13 +175,11 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 次は要求の欠落ではなく、今後の判断または設計較正が必要な項目である。
 
-1. WordPress Connection Profileの初期既定を `rest_tracking` とするか、Thin Plugin導入を推奨既定にするか。
-2. プラグインなしTrackingの初期対応経路をGTM、手動script、その他タグ管理のどこまで含めるか。
-3. REST Pollingの通常周期と、公開・更新直後の短期監視周期。
-4. 未対応Page Builderへ提供する初期縮退形式の優先順。
-5. 生成画像における人物、商品、実績等の誤認リスクと個別確認条件。
-6. SLO、RPO、RTO、通知保持、ジョブ保留期限等の商用初期値。
-7. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
+1. REST Pollingの通常周期と、公開・更新直後の短期監視周期。
+2. 未対応Page Builderへ提供する初期縮退形式の優先順。
+3. 生成画像における人物、商品、実績等の誤認リスクと個別確認条件。
+4. SLO、RPO、RTO、通知保持、ジョブ保留期限等の商用初期値。
+5. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
 
 ## 16. 監査上の注意
 
