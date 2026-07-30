@@ -81,6 +81,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 `dynamic_priority = clamp(base × freshness_adjustment + dependency_bonus - cost_penalty - risk_penalty, 0, 1)`
 
+`cost_penalty` は `REQ-COST-04/07` のexpected costとcost confidenceから算出し、本書内にProvider単価や固定金額を重複定義しない。
+
 保存するもの:
 
 - 各入力成分
@@ -156,4 +158,3 @@ recommendation itemは次を持つ。
 - [ ] AC-KRL-08: recommendationからTicket/Edit Planへ対象・目的・根拠・予算が引き継がれる。
 - [ ] AC-KRL-09: UIで6成分と順位変動理由を確認できる。
 - [ ] AC-KRL-10: 同条件で却下された候補の反復が抑制される。
-

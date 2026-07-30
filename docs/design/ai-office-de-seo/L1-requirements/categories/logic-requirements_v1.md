@@ -35,5 +35,6 @@ updated_at: 2026-07-30
 - ArticleSummary抽出・不足判定
 - 品質ゲート、Repair、予算、ルーティング
 
-詳細文書: `../logic/keyword-dynamic-recommendation-logic-requirements_v1.md`。
+計算で使う実行原価・予算・停止条件は `cost-requirements_v1.md` を参照し、ロジック文書内で単価を重複定義しない。
 
+詳細文書: `../logic/keyword-dynamic-recommendation-logic-requirements_v1.md`。

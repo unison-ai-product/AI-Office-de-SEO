@@ -33,6 +33,8 @@ generates:
     artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md
     artifact_type: design_doc
+  - artifact_path: docs/design/ai-office-de-seo/L1-requirements/categories/cost-requirements_v1.md
+    artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L1-requirements/logic/keyword-dynamic-recommendation-logic-requirements_v1.md
     artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-requirements_v3.7.md

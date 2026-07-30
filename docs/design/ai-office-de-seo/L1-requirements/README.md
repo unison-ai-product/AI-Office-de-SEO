@@ -31,6 +31,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 | 8 | デザイン・体験要求 | `categories/design-experience-requirements_v1.md` | どう理解・体験させるか |
 | 9 | 課金・会計要求 | `categories/billing-accounting-requirements_v1.md` | 金銭・クレジットをどう整合させるか |
 | 10 | 計測・運用要求 | `categories/measurement-operations-requirements_v1.md` | 何を測り、異常時にどう運用するか |
+| 11 | コスト要求 | `categories/cost-requirements_v1.md` | 何にいくらかかり、どこで止めるか |
 
 ## 3. 分類ルール
 
@@ -41,6 +42,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 非機能は数値化する: 初期値が未確定でも、計測点、分位、負荷条件、確定時期を定義する。
 - 外部仕様と内部判断を分離する: API制約は外部連携、優先順位計算はロジックへ置く。
 - UIは計算しない: UIはロジック結果を表示・操作し、独自判定を持たない。
+- 原価と請求を分離する: コスト要求は提供原価、課金・会計要求は顧客請求と台帳を正本にする。
 - 受入条件は各分類の要求IDへ接続し、横断一覧を `ai-office-de-seo-acceptance-trace_v3.7.md` に置く。
 
 ## 4. 詳細ロジック文書
@@ -52,4 +54,3 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## 5. 既存文書の移行方針
 
 既存文書は一度に分解しない。要求を更新するタイミングで、該当要求を分類別正本へ移し、元文書には移行先を記録する。移行完了までは既存要求IDと本文が有効である。
-
