@@ -124,6 +124,8 @@ WordPressプラグインは、SaaSとWPの間のデータ交換エンドポイ�
 
 WP接続時・プラグイン更新時・テーマ/SEOプラグイン/カスタムブロック変更検知時に `WPCapabilitySnapshot` を再取得する。`snapshotKey` と `schemaVersion` をDynamic Post Schemaに記録し、投稿反映時に照合する。取得できない能力は「未対応」と扱い、生成側が勝手にHTMLで代替しない。古いプラグインが必要能力を返せない場合、その機能のTicketは `blocked` / `degraded` とする。
 
+Editor Capabilityとして、WordPress version、投稿タイプごとのClassic Editor／Block Editor、Block API version、iframe／non-iframe、classic meta box、Site Editor、Pattern、Content-Only mode、Isolated Editor、Visual Revisions、登録ブロック、第三者Page Builderを検出する。WordPress 7.0は記事内ブロックのAPI versionによりiframe可否が変わり得るため、version番号だけで決めず対象記事の実効Editor modeを返す。リアルタイム共同編集はWordPress 7.0の標準能力として仮定しない。
+
 装飾能力として、利用中テーマ、標準・独自ブロック、ショートコード、登録済みCSS class、依存プラグイン、Preview可否を取得する。検出した独自パーツは一律排除せず候補化するが、互換性を表示してユーザーが採用したものだけをDynamic Post Schemaへ含める。
 
 メディア能力として、アップロード上限、許可MIME、画像サイズ、派生サイズ、featured media対応、画像最適化プラグインの有無を取得する。生成画像は記事本文と別リクエストで順次登録し、画像本体を投稿JSONへ埋め込まない。登録済み画像はcontent hashとSiteスコープの冪等キーで二重登録を防ぎ、本文送信失敗時も再利用できる。負荷・容量・タイムアウト時は同時数を下げ、本文画像を減らし、最終的にアイキャッチのみへ縮退する。
@@ -131,6 +133,8 @@ WP接続時・プラグイン更新時・テーマ/SEOプラグイン/カスタ�
 ## 9. Dynamic Post Schema と封入フロー  ［REQ-WPA-09］
 
 Outline Contract作成後、Orchestratorが `dynamicPostSchemaKey` を確定する。Writing TicketはHTML構造を自由に決めずSchemaを変更しない。Assembly TicketがWriting SnapshotをPostSlotへ割り当てる。CTAはWriting Ticketで生成せずQA/Placement後に `cta_box` slotへ（`REQ-PACK-17`）。FAQは `faq` slot（能力があればFAQ block/schema、無ければdegrade/人手確認）、tableは `table` slot（能力がある場合のみtable block化、非対応/破壊時はfail-close）。WP能力にないslot/blockを出力したらfail-close。WP Plugin validation失敗時はDraft Applyを止めRepair Ticketを発行する。最終HTML/Gutenbergブロックは恒久保存せず、`dynamicPostSchemaKey`・slot assignment metadata・content hash・validation result・WP draft URL・job resultのみ保存する（`PostEnvelopeSnapshot` は一時保存）。
+
+出力形式はEditor Capabilityに合わせて分岐する。Block Editorは登録済みblock markup、Classic Editorは互換HTML、Content-Only Patternは許可された内容フィールド、第三者Page Builderは検証済みAdapterがある場合だけ専用構造を使用する。未対応Page Builderや未知の独自構造へ推測で書き込まず、HTML下書きまたはアイキャッチのみ等の縮退候補をユーザーへ提示する。
 
 ## 10. Keyword Map Pack と結合  ［REQ-WPA-10］
 

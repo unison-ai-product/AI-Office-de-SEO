@@ -67,6 +67,8 @@ updated_at: 2026-07-30
 
 WordPressプラグインは下書き作成応答として投稿ID、編集URL、Preview URL、登録Media ID・URL、投稿状態を返す。AI Officeは同一相関IDへ保存し、確認導線と承認操作を提供する。ユーザー承認後の公開・更新命令もプラグイン連携で実行し、結果イベントを記事遍歴へ記録する。
 
+WordPress出力はClassic Editor、Block Editor、iframe／non-iframe、Content-Only Pattern、第三者Page BuilderをCapabilityとして判別し、対象投稿タイプと記事の実効編集方式に合う形式を選ぶ。WordPress 7.0のVisual Revisions、Content-Only mode、Isolated Editorは利用可能能力として記録するが、記事本文の新しい正本形式とはみなさない。未対応方式には推測で構造を書き込まず、安全な縮退またはユーザー対応へ切り替える。
+
 WordPress送信後の下書きは引渡し済みSnapshotとして扱い、標準WorkflowではAI Officeから再取得・上書きしない。WordPress内編集、AI生成版との差分表示、変更履歴取得は別機構の後続要件とし、初期リリースではWordPress標準編集機能との自動同期を行わない。後続機構で取得する差分は、ユーザー同意の範囲で品質改善・Site学習へ利用できるが、取得差分を根拠に本文を自動変更しない。
 
 装飾工程はSiteのWordPress Capabilityを解析し、テーマ、標準ブロック、独自ブロック、ショートコード、登録済みCSS classを候補化する。利用候補は互換性、依存プラグイン、Preview可否とともにユーザーへ提示し、選択・承認されたパーツだけを生成に使用する。
