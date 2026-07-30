@@ -222,7 +222,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 - Outline Contract がないまま本文生成しない。Section Briefs がないまま本文生成しない。
 - Quality Gate を通らない記事をWP下書きに送らない（fail-close）。
 - Preview または Automation承認なしに予約投稿しない。
-- 最初の15記事は完成記事Previewの承認を必須とする。Outline確認はSite設定で任意に有効化し、有効時は見出しを修正・freezeしてから再開する。
+- 最初の15記事は完成記事への人間承認を必須とする。WordPress実表示Previewは確認手段であり、URLを開いた事実自体を条件にしない。Outline確認はSite設定で任意に有効化し、有効時は見出しを修正・freezeしてから再開する。
 - リライト・全文再生成はAutomation承認だけで公開記事へ直接反映せず、WP下書きとユーザー承認を必須とする。
 - Cleanup が完了しないジョブを完了扱いにしない。
 

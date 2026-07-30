@@ -65,7 +65,7 @@ updated_at: 2026-07-30
 
 本文生成・リライト完了後に装飾工程を実行し、装飾済みコンテンツをWordPress下書きとして保存する。最終プレビューはWordPressが発行する認証付きPreview URLを正規表示とし、当該Siteの実テーマ、ブロック、CSS、表示系プラグインを通した結果を確認してから公開する。AI Office内のHTML表示は簡易確認に限定し、正規プレビューと同一であることを保証しない。
 
-WordPressプラグインは下書き作成応答として投稿ID、編集URL、Preview URL、登録Media ID・URL、投稿状態を返す。AI Officeは同一相関IDへ保存し、確認導線と承認操作を提供する。ユーザー承認後の公開・更新命令もプラグイン連携で実行し、結果イベントを記事遍歴へ記録する。
+WordPress AdapterはConnection Profileで取得可能な範囲の投稿ID、編集URL、Preview URL、登録Media ID・URL、投稿状態を下書き作成応答として返す。AI Officeは同一相関IDへ保存し、確認導線と承認操作を提供する。ユーザー承認後の公開・更新命令も選択中のAdapter経由で実行し、結果イベントを記事遍歴へ記録する。
 
 WordPress出力はClassic Editor、Block Editor、iframe／non-iframe、Content-Only Pattern、第三者Page BuilderをCapabilityとして判別し、対象投稿タイプと記事の実効編集方式に合う形式を選ぶ。初期互換検証はWordPress 7.0.2を基準とする。7.0系のVisual Revisions、Content-Only mode、Isolated Editorは利用可能能力として記録するが、記事本文の新しい正本形式とはみなさない。未対応方式には推測で構造を書き込まず、安全な縮退またはユーザー対応へ切り替える。
 

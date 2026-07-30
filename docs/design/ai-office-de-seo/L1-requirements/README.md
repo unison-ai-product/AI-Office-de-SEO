@@ -62,6 +62,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 |---|---|---|
 | キーワード動的レコメンド | `logic/keyword-dynamic-recommendation-logic-requirements_v1.md` | 初版 |
 
-## 5. 既存文書の移行方針
+## 5. 横断監査
+
+確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。
+
+## 6. 既存文書の移行方針
 
 既存文書は一度に分解しない。要求を更新するタイミングで、該当要求を分類別正本へ移し、元文書には移行先を記録する。移行完了までは既存要求IDと本文が有効である。
