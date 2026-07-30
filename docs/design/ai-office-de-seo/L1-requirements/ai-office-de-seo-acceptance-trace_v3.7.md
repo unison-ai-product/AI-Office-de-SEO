@@ -159,7 +159,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## Profile
 
-- [ ] AC-PROFILE-01: 代表記事が10本未満でも暫定プロファイルで受け入れ、プロファイル信頼度を明示する。 ｜ 検証: REQ-WPA-06
+- [ ] AC-PROFILE-01: 「です・ます調／だ・である調」と文語体／口語体の組合せを指定でき、個別Siteの言い回し学習をON/OFFできる。ON時に記事が少なくても暫定プロファイルで受け入れ、信頼度を明示する。 ｜ 検証: REQ-WPA-06
 
 ## Role
 
@@ -204,7 +204,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-FACT-01: 調査由来の低変化事実がコンパクト形（key/value/observed_at/confidence/source_ref）で蓄積され、鮮度期限内は外部再取得・再計算が省略され、再調査が期限または変化トリガ時に限定され、本文・生HTMLを含まず、書き込みがSnapshot経由のスキーマ検証で行われ、source_ref根拠のない事実・鮮度期限のない事実の永続化が拒否され、サイズ上限とロールアップを持つ。 ｜ 検証: REQ-PRODUCT-19, REQ-SEC-11
 - [ ] AC-FACT-02: 施策台帳が施策タイプ×文脈×効果デルタで記録され、しきい値較正・好調分析・ネットワーク学習の成果較正の入力になり、生成への供給がsource.site.facts.v1経由で行われる。 ｜ 検証: REQ-PRODUCT-19, REQ-RWR-06, REQ-PRODUCT-13
 
-- [ ] AC-PATCH-01: 公開済み記事への部分更新（リンク挿入・TDH・CTAブロック）がリビジョン保存・更新競合検知・ロールバックつきのプラグイン操作として行われ、公開と同期直列でなくscheduledレーンの分散適用（レート・同時数制御）で実行され、キャッシュ連携がCapability検出の任意連携で、更新が施策台帳と28日比較の対象になる。 ｜ 検証: REQ-WPA-12, REQ-PRODUCT-18, REQ-WPA-08
+- [ ] AC-PATCH-01: 公開済み記事への部分更新（リンク挿入・TDH・CTAブロック）がリビジョン保存・更新競合検知・ロールバックつきのプラグイン操作として行われ、公開と同期直列でなくscheduledレーンの分散適用（レート・同時数制御）で実行され、キャッシュ連携がCapability検出の任意連携で、更新が施策台帳と1か月後・3か月後の段階評価の対象になる。 ｜ 検証: REQ-WPA-12, REQ-PRODUCT-18, REQ-WPA-08
 - [ ] AC-FLASH-01: フラッシュリライト候補が期待CTR基線への負残差から選定され、aio_suppressedが切り分け表示され、TDH複数案が意図・主張軸・本文整合の検査つきで提示され、本文非変更の部分パッチで適用され、効果が同順位帯の前後CTR比較で測定される。 ｜ 検証: REQ-RWR-09, REQ-KGA-17, REQ-WPA-12
 - [ ] AC-CRO-01: CVポイントがカタログ（識別子・計測タグ・有効期間）と記事×割当台帳で管理され、CTA Placementの解決先になり、CV相関・エンゲージメントから差し替え候補が因果非主張で提案され、適用が部分パッチ＋承認/変更予算配下で、期限切れ・リンク切れが検知される。 ｜ 検証: REQ-WPA-13, REQ-PACK-17, REQ-WPA-05
 
@@ -241,7 +241,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-UJ-03: 日常運用（S1/W7起点→承認・保留対応・おすすめ採否・アラート対処）が完結し、未対応ゼロの終端に到達できる。 ｜ 検証: REQ-UJ-03, REQ-AGENT-10
 - [ ] AC-UJ-04: キーワード戦略（フィルタ→ギャップ→補充→候補採否→生成起動/一括投入）が完結し、採用分がS3へプリセット引き継ぎされる。 ｜ 検証: REQ-UJ-04, REQ-NAV-04, REQ-BILL-11
 - [ ] AC-UJ-05: 生成〜公開（起点→レーン→Preflight→進捗→構成/QA→保留対応→承認→公開→通知→追跡）が遷移図どおり到達可能で、hard gate保留と予算超過の分岐が終端を持つ。 ｜ 検証: REQ-UJ-05, REQ-AGENT-08, REQ-SEC-12
-- [ ] AC-UJ-06: リライト（候補→原因→起動→差分→承認→28日比較）が完結し、内部リンク候補の採否を含む。 ｜ 検証: REQ-UJ-06, REQ-RWR-04, REQ-KGA-09
+- [ ] AC-UJ-06: リライト（候補→原因→起動→差分→承認→1か月後の一次評価→3か月後の二次評価）が完結し、内部リンク候補の採否を含む。 ｜ 検証: REQ-UJ-06, REQ-RWR-04, REQ-KGA-09
 - [ ] AC-UJ-07: 例外・緊急（再認可・Kill Switch作動/解除・支払い失敗復旧・解約オフボーディング・保留期限超過）がそれぞれ定義済み終端に到達する。 ｜ 検証: REQ-UJ-07, REQ-DUR-04, REQ-SEC-10
 - [ ] AC-UJ-08: 管理者運用（日次監視→較正、変更統制フロー、提案承認、障害対応、なりすまし調査）が管理コンソール遷移図のパスとして完結する。 ｜ 検証: REQ-UJ-08, REQ-ADM-07, REQ-ADM-10
 - [ ] AC-UJ-09: 月次計画ジャーニー（目標→配分→トポロジー確定→日次/週次追跡→月末実績→翌月引き継ぎ）が遷移図のパスとして完結する。 ｜ 検証: REQ-UJ-09, REQ-PRODUCT-17
@@ -265,7 +265,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## Customization
 
 - [ ] AC-CUST-01: ユーザー自己サーブのカスタマイズがレギュレーション調整 / User Order / 戦略入力（ターゲット軸・主張軸）に限定され、生system prompt編集・few-shot自作登録・レシピ自作定義・Pack本文直接編集・Quality Gate無効化は提供されず、全Tierが固定制約を上書きできない注入経路に乗る。 ｜ 検証: REQ-PRODUCT-12, REQ-AGENT-07, REQ-ADM-09
-- [ ] AC-CUST-02: ターゲット軸・主張軸が構造化フィールドでDomain Positioning（audience/target_axes/allowed_claims/avoided_claims）へ写像され、登録時の静的Validateで差し戻され、実行時は主張がclaim_evidence/deceptive_claim/ymyl_bar等で検証されて根拠を伴えない主張はhardで保留になる（ユーザー指定でもhard緩和不可）。文体はサンプル記事10本由来、構造カスタムはコンサル→REQ-ADM-10経由でテナント/サイトスコープ登録される。 ｜ 検証: REQ-PRODUCT-12, REQ-PACK-09, REQ-PACK-16, REQ-ADM-10
+- [ ] AC-CUST-02: ターゲット軸・主張軸が構造化フィールドでDomain Positioning（audience/target_axes/allowed_claims/avoided_claims）へ写像され、登録時の静的Validateで差し戻され、実行時は主張がclaim_evidence/deceptive_claim/ymyl_bar等で検証されて根拠を伴えない主張はhardで保留になる（ユーザー指定でもhard緩和不可）。文体は「です・ます調／だ・である調」と文語体／口語体を指定し、個別Siteの言い回し学習は任意ON/OFF、構造カスタムはコンサル→REQ-ADM-10経由でテナント/サイトスコープ登録される。 ｜ 検証: REQ-PRODUCT-12, REQ-PACK-09, REQ-PACK-16, REQ-ADM-10
 - [ ] AC-CUST-03: 注入されたUser Order・主張軸・ターゲット軸のキーが観測ログとQA結果に紐づき、ゲート不合格時にどの指定が影響したかが提示され、見直し導線がある。 ｜ 検証: REQ-PRODUCT-12, REQ-SEC-02
 
 ## Migrated Domains (v3.6→v3.7)

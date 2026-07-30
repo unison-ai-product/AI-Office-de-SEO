@@ -48,7 +48,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 1. キーワードを正規化し、同一SERP/intentクラスタへ集約する。
 2. ArticleSummaryとAssignment Ledgerから既存記事の充足、担当、重複、保護を取得する。
 3. GSC・CVは判定期間と欠損状態を適用する。
-4. AIO・広告面は地域・device・取得日時を揃える。
+4. AIO・広告面は地域・device・取得日時を揃える。AIOは週次または鮮度期限到達時の観測を基本とし、短期間の変動を追って反復取得しない。
 5. 全成分を0〜1へ正規化する。
 6. `unknown` を0へ置換しない。利用可能成分だけで暫定計算しconfidenceを下げる。
 
@@ -132,8 +132,8 @@ recommendation itemは次を持つ。
 
 トリガ:
 
-- GSC/CV更新
-- AIO/広告/SERP構成変化
+- GSC/CV更新。ただし急変は通常候補へ直接投入せず要監視キューへ送る
+- 週次のAIO/広告/SERP構成再評価または鮮度期限到達
 - ArticleSummary更新
 - Assignment/Topology更新
 - 新規公開、リライト、統合、リンク、CTA実施
@@ -141,6 +141,8 @@ recommendation itemは次を持つ。
 - strategy mix、辞書、算式version変更
 
 算式・辞書・mixの全体改版時のみ全件バッチを許可する。
+
+順位、SERP、表示、クリック等の急変は再計算要求として記録するが、施策を即時推薦しない。要監視キューで継続性を確認し、週次再評価によって一時変動ではないと判定できた場合だけ通常候補へ戻す。急変をAIO即時再取得のトリガにしない。
 
 ## 10. フィードバック  ［REQ-KRL-10］
 
@@ -153,7 +155,7 @@ recommendation itemは次を持つ。
 - [ ] AC-KRL-03: strategy mix変更だけで優先順位が再計算され、元の観測値は変わらない。
 - [ ] AC-KRL-04: 総合点から各加点・減点と根拠を再現できる。
 - [ ] AC-KRL-05: 充足済みキーワードに新規記事を重複推薦しない。
-- [ ] AC-KRL-06: 変動中、cooldown中、効果測定待ちは自動実行対象にならない。
+- [ ] AC-KRL-06: 急変・変動中の対象が要監視キューへ分離され、cooldown中、効果測定待ちとともに自動実行対象にならない。
 - [ ] AC-KRL-07: 入力更新時に対象グループだけが増分再計算される。
 - [ ] AC-KRL-08: recommendationからTicket/Edit Planへ対象・目的・根拠・予算が引き継がれる。
 - [ ] AC-KRL-09: UIで6成分と順位変動理由を確認できる。

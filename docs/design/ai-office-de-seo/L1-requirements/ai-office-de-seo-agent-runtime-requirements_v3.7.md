@@ -200,7 +200,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 2. Sandbox Fix（`tenant_id`/`site_id` 固定）
 3. Keyword Intent（GSC/CVから検索意図・狙いを確定）
 4. SERP-TTPS Research（SERP/競合の抽象化取得）
-5. Site Strategy（サンプル10本・CTA・内部リンク方針の適用）
+5. Site Strategy（指定文体・任意のSite言い回し学習・CTA・内部リンク方針の適用）
 6. Outline Architect（Outline Contract 生成・freeze）
 7. Section Brief（各セクションのブリーフ生成）
 8. Draft Writer（意味ユニット執筆）
