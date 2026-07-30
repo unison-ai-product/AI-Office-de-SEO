@@ -27,7 +27,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### REQ-PAC-01 内部権限階級
 
-Platform Owner、Platform Admin、Developer、Operations、Support、Finance、Security、Auditorの内部Roleを分離し、管理機能ごとのPermissionと対象環境を付与する。Supportの顧客代理閲覧はread-onlyを既定とし、課金、権限、公開、秘密情報、品質安全条件の変更権限を持たせない。
+Platform Owner、Platform Admin、Developer、Operations、Support、Finance、Security、Auditorの内部Roleを分離し、管理機能ごとのPermissionと対象環境を付与する。顧客環境の操作範囲を一律read-onlyには固定せず、運用で即時解決できる設定・状態・再実行等と、プログラム修正が必要な障害調査・変更を分類する。前者は期限付き権限付与と監査の範囲で操作可能とし、後者は開発変更管理へ移す。課金、権限、公開、秘密情報、品質安全条件は個別Permissionと追加承認を要求する。
 
 ### REQ-PAC-02 機能公開制御
 
@@ -59,7 +59,7 @@ Provider Routing、Model Catalog、Prompt Pack、few-shot、Quality Gate、修�
 
 ### REQ-PAC-09 顧客支援操作
 
-権限に応じ、接続状態確認、エラー診断、ジョブ状態確認、通知再送、期限付き機能解放、クレジット調整、返金起票、組織管理支援を管理画面から行える。秘密情報、記事本文全文、プロンプト全文は表示せず、変更操作は顧客同意または内部承認を要求する。
+権限に応じ、接続状態確認、エラー診断、ジョブ状態確認、通知再送、期限付き機能解放、クレジット調整、返金起票、組織管理支援を管理画面から行える。操作前に「運用操作で解決可能」「プログラム修正が必要」「判定不能」を分類し、プログラム問題を顧客データの直接変更で回避しない。秘密情報、記事本文全文、プロンプト全文は表示せず、変更操作は操作種別に応じた権限、理由、有効期限、追加承認を要求する。
 
 ### REQ-PAC-10 障害時制御
 
@@ -108,3 +108,4 @@ Kill Switch、read-onlyモード、機能別停止、キュー保留、公開停
 - [ ] AC-PAC-10: 障害時に機能停止、通知、復旧を同一インシデントへ記録できる。
 - [ ] AC-PAC-11: 本番変更に差分、理由、承認、適用、Rollback記録が残る。
 - [ ] AC-PAC-12: いずれの内部Roleでも安全不変条件を解除できない。
+- [ ] AC-PAC-13: 本番・非本番の権限、秘密情報、設定が分離され、管理操作を環境別に監査できる。

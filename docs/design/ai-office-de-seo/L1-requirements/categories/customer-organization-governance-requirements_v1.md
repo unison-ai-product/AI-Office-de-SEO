@@ -13,17 +13,16 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 1. 責務
 
-契約企業、代理店、部門、チーム、ブランド、サイトにまたがるユーザー側の組織構造、所属、権限、承認、予算および移管を定義する。プラットフォーム運営者の内部権限は本書の対象外とし、`platform-administration-control-requirements_v1.md` を正本とする。
+法人または個人の契約主体、部門、チーム、ブランド、サイトにまたがるユーザー側の組織構造、所属、権限、承認、予算および移管を定義する。代理店による複数顧客管理は対象外とする。プラットフォーム運営者の内部権限は本書の対象外とし、`platform-administration-control-requirements_v1.md` を正本とする。
 
 ## 2. 用語と基本モデル
 
-- `Contract Account`: 契約、請求、全体クレジットおよび利用上限の単位。
-- `Customer Organization`: 顧客企業または代理店等のユーザー側組織。
+- `Contract Account`: 法人または個人の契約、請求、全体クレジットおよび利用上限の単位。
+- `Customer Organization`: 契約主体が管理するユーザー側組織。個人契約でも本人をOwnerとする組織を1つ持つ。
 - `Organization Unit`: 事業部、部門、チーム、ブランド等の組織ノード。
 - `Membership`: UserとCustomer Organizationの所属関係。
 - `Role Assignment`: Role、Resource Scope、有効期間を組み合わせた権限付与。
 - `Resource Scope`: 組織、配下組織、サイト、記事、機能等の操作対象範囲。
-- `Partner Relationship`: 代理店等が顧客組織を運用支援する組織間関係。
 
 基本構造は `Contract Account → Customer Organization Tree → Membership → Role Assignment → Resource Scope → Permission` とする。契約関係、データ所有者、操作権限を同一概念にまとめない。
 
@@ -31,7 +30,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### REQ-ORG-01 組織階層
 
-Customer Organization配下に、事業部、部門、チーム、ブランド等のOrganization Unitを階層で構成でき、Siteを任意の組織ノードへ所属させられなければならない。組織階層の深さには設定可能な上限を持ち、循環参照を禁止する。
+すべての契約でCustomer Organizationを必須とし、その配下に事業部、部門、チーム、ブランド等のOrganization Unitを階層で構成でき、Siteを任意の組織ノードへ所属させられなければならない。個人契約はOwner本人だけの初期組織から開始できる。組織階層の深さには設定可能な上限を持ち、循環参照を禁止する。
 
 ### REQ-ORG-02 複数所属
 
@@ -70,13 +69,13 @@ Contract Accountのクレジットおよび利用予算をCustomer Organization�
 
 記事、キーワード、分析、成果、請求、監査の可視範囲を独立して制御する。同一Customer Organization内でも部門・ブランド間を非公開にでき、External Memberは割当対象だけ、経営層は許可された集計だけを閲覧できる。
 
-### REQ-ORG-09 代理店・顧客関係
+### REQ-ORG-09 契約主体と組織
 
-Partner Organizationは明示的なPartner Relationshipと顧客側承認に基づき、指定された顧客組織とResource Scopeだけを操作できる。代理店配下に顧客データを所有させず、顧客ごとのtenant境界、データ所有権、契約主体を維持する。
+Contract Accountは法人または個人を契約主体として識別し、請求主体とCustomer Organizationを対応付ける。法人・個人で記事、推薦、組織、権限の機能経路を分岐させず、契約・請求に必要な属性だけを区別する。代理店による顧客横断管理、OEM、ホワイトラベルはスコープに含めない。
 
 ### REQ-ORG-10 ライフサイクル
 
-招待、参加、異動、兼務、休止、退職、契約終了、部門統廃合、Site移管、代理店から内製への移行を扱う。無効化されたMembershipのセッションと権限は速やかに失効し、履歴、成果物、承認記録の所有先は保持する。
+招待、参加、異動、兼務、休止、退職、契約終了、部門統廃合、Site移管、運用担当変更を扱う。無効化されたMembershipのセッションと権限は速やかに失効し、履歴、成果物、承認記録の所有先は保持する。
 
 ### REQ-ORG-11 組織変更の安全性
 
@@ -95,14 +94,15 @@ Partner Organizationは明示的なPartner Relationshipと顧客側承認に基�
 
 ## 5. 受入条件
 
-- [ ] AC-ORG-01: 契約組織配下に部門、チーム、ブランド、Siteを構成できる。
+- [ ] AC-ORG-01: 法人・個人のどちらも必須の契約組織を持ち、その配下に部門、チーム、ブランド、Siteを構成できる。
 - [ ] AC-ORG-02: 同一ユーザーが所属先ごとに異なるRoleとScopeを持てる。
 - [ ] AC-ORG-03: UI非表示だけでなくAPI側で同一Permission判定が強制される。
 - [ ] AC-ORG-04: 権限継承、明示拒否、競合時の結果が再現可能である。
 - [ ] AC-ORG-05: 記事実行、公開、接続、課金、データ出力を個別に制御できる。
 - [ ] AC-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。
 - [ ] AC-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。
-- [ ] AC-ORG-08: 代理店ユーザーが未契約・未許可の顧客を閲覧できない。
+- [ ] AC-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。
 - [ ] AC-ORG-09: 退職・契約終了時にアクセスが失効し、成果物と履歴は失われない。
 - [ ] AC-ORG-10: 組織・Site移管前に権限、データ、請求への影響が表示される。
 - [ ] AC-ORG-11: Ownerが権限棚卸しを実行し、是正履歴を確認できる。
+- [ ] AC-ORG-12: 所属・権限・承認・予算変更の実行者、理由、期限、差分を監査できる。
