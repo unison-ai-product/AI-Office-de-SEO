@@ -153,6 +153,14 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 正本: `categories/non-functional-requirements_v1.md`、`categories/incident-warranty-requirements_v1.md`
 
+## 13.1 初期計測方式
+
+- 一般的なWeb計測と同様、CMSへ密結合しない単一の非同期JavaScript Trackerを使用する。
+- 初期対象はpage view、URL遷移、明示CTA識別子、設定済み到達URLのCVとする。
+- PluginはTrackerの任意設置手段であり、計測ロジックを持たない。
+- cookie、全click自動取得、常時heartbeat、全DOM監視、heatmap、session replay、フォーム内容取得は初期対象外とする。
+- 高度計測は人員と運用余力を確保したリリース後のversion upで追加する。
+
 ## 14. 課金・アップセル
 
 - プラン内利用上限と、超過分の追加クレジットを持つ。

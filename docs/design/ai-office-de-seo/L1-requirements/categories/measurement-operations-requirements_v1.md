@@ -50,8 +50,15 @@ CVはSiteごとに到達URLまたは明示イベントを設定し、定義versi
 
 詳細イベントは推薦・施策効果の判定に必要な最小項目だけを取得し、短期保持後に記事・日・イベント種別単位へ集約する。生イベントの保持期間、Site当たり上限、遅延到着、削除、再集計を定義し、分析要望ごとに無制限なイベント項目を追加しない。
 
+### REQ-MEASURE-04 軽量Tracker
+
+初期計測はCMS内部ロジックへ密結合せず、非同期で読み込む単一のversion付きJavaScript Trackerを使用する。初期自動取得はpage viewとURL遷移に限定し、CTAは明示的なdata属性または登録selector、CVは設定済み到達URLで判定する。送信はページ表示を妨げない `sendBeacon` 等の非同期経路とし、失敗してもページ操作を停止しない。
+
+Trackerはcookie、常時heartbeat、MutationObserverによる全DOM監視、全click自動取得、heatmap、session replay、フォーム入力取得、スクロール高頻度送信を初期機能に含めない。設定はサーバー側のSite Configurationで変更し、計測項目の追加だけを理由にSite側scriptを頻繁に差し替えない。
+
 ## 受入条件
 
 - [ ] AC-MEASURE-01: 同一のページ遷移から再現可能なイベント結果が得られる。
 - [ ] AC-MEASURE-02: CV定義versionと重複規則に従いサンクスページ到達を計上できる。
 - [ ] AC-MEASURE-03: 生イベントが期限後に集約・削除され、記事遍歴と施策評価は維持される。
+- [ ] AC-MEASURE-04: 単一の非同期Trackerでpage view、明示CTA、到達URL CVを計測でき、未提供の高度計測を読み込まずページ表示を阻害しない。

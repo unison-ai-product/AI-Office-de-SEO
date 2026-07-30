@@ -41,11 +41,11 @@ updated_at: 2026-07-30
 
 ### REQ-INT-01 WordPress軽量計測
 
-リリース時のWordPress Pluginは、ページ表示、遷移元・遷移先、明示CTA・button識別子、指定サンクスページ到達を取得できなければならない。記事本文、フォーム入力内容、不要な個人情報を送信せず、同意状態、Site識別子、イベントID、発生時刻、plugin versionを付与する。
+リリース時はCMS非依存の単一JavaScript Trackerで、ページ表示、遷移元・遷移先、明示CTA・button識別子、指定サンクスページ到達を取得できなければならない。記事本文、フォーム入力内容、不要な個人情報を送信せず、同意状態、Site識別子、イベントID、発生時刻、tracker versionを付与する。WordPress PluginはTrackerの任意インストール経路であり、計測ロジックの正本にしない。
 
 ### REQ-INT-02 計測契約の更新
 
-計測イベントschemaとPluginはversion管理し、後方互換期間、対応するサーバーversion、段階更新、失敗時停止、rollbackを持つ。計測項目の追加は、データ量、保守負担、確実性、利用目的を評価し、状況に応じてリリース後に追加できる。
+計測イベントschemaとTrackerはversion管理し、後方互換期間、対応するサーバーversion、段階更新、失敗時停止、rollbackを持つ。計測項目の追加は、データ量、保守負担、確実性、利用目的を評価し、人員・運用余力を確保したリリース後のversion upとして追加できる。Site設定変更だけで対応可能な項目はserver-side configurationで配信する。
 
 ### REQ-INT-03 補助分析連携
 
@@ -73,8 +73,8 @@ WordPress連携はCore REST APIと軽量トラッキングコードを最小構�
 
 ## 受入条件
 
-- [ ] AC-INT-01: 初期Pluginが本文・フォーム値を送らず、ページ遷移と指定CVを取得できる。
-- [ ] AC-INT-02: Pluginとイベントschemaを互換性確認後に段階更新・rollbackできる。
+- [ ] AC-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、Pluginなしでも設置可能である。
+- [ ] AC-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。
 - [ ] AC-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。
 - [ ] AC-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。
 - [ ] AC-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離できる。

@@ -56,6 +56,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 WordPress AdapterはPortとして抽象化し、Core REST、Tracking、Thin Pluginの実装を分離する。業務Workflowは特定プラグインのPHP hook、Gutenberg内部Data Store、DOM構造、非公開APIを直接参照しない。WordPress更新による変更はAdapterのCapability変換内へ閉じ込め、REST標準機能の継続利用とプラグイン固有機能のdegraded運転を分離する。
 
+Tracking runtimeはCMS Adapterと分離した小さい非同期scriptとし、同一buildをSite Configurationで動作させる。初期bundleへheatmap、session replay、全DOM監視等の未使用機能を同梱しない。script取得失敗、event送信失敗、設定取得失敗はWeb表示・CTA・フォーム送信を妨げず、送信queue、batch、再試行には厳しい上限を持たせる。
+
 公開基盤はCMS非依存のPublication Portを持ち、記事、Metadata、Section、Media、CTA、SEO、公開状態、Preview、Revision、外部ID、冪等キー、Capabilityを共通契約として扱う。WordPress固有のGutenberg block markup、Classic HTML、hook、投稿metaを内部記事モデルの正本にしない。初期実装・互換検証・動作保証の対象AdapterはWordPress 7.0.2に限定する。
 
 他CMS向けAdapterが未実装でも、共通契約、Fake Adapter、Contract Testにより業務WorkflowとCMS境界の分離を検証できる。ただしFake／Mock検証を実CMS互換性の根拠にせず、他CMS対応を対外表示しない。新しいCMS Adapterは、当該CMSの公式Sandbox、開発環境、顧客Staging等で認証、下書き、公開、Media、Preview、Revision、Webhook、rate limit、失敗復旧を検証してから対応済みへ昇格する。
