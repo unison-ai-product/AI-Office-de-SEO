@@ -5,7 +5,7 @@ version: 3.7
 layer: L3
 kind: design
 status: skeleton
-updated_at: 2026-07-05
+updated_at: 2026-07-30
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
 
@@ -89,6 +89,12 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | perf.list_initial_p95 | 2秒 | REQ-SEC-06 |
 | perf.keyword_map_cached_p95 | 3秒 | REQ-SEC-06 |
 | perf.job_submit_p95 | 1秒 | REQ-SEC-06 |
+| perf.ui.client_payload_budget | TODO(L3・代表画面で実測) | REQ-SEC-06 |
+| perf.ui.initial_api_request_budget | TODO(L3・代表画面で実測) | REQ-SEC-06 |
+| perf.db.query_count_budget | TODO(L3・画面/API別に実測) | REQ-SEC-06 |
+| perf.db.slow_query_threshold | TODO(L3・負荷試験で確定) | REQ-SEC-06 |
+| perf.db.scanned_rows_budget | TODO(L3・代表クエリ別に実測) | REQ-SEC-06 |
+| retention.site_storage_budget | TODO(L3・データ群別に定義) | REQ-SEC-06 |
 
 ### 課金・原価（REQ-BILL-06/10）
 | config_key | 初期値 | 出典 |

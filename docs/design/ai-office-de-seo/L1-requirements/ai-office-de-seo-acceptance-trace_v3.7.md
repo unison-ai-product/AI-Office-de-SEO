@@ -5,7 +5,7 @@ version: 3.7
 layer: L1
 kind: design
 status: draft
-updated_at: 2026-07-05
+updated_at: 2026-07-30
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
 
@@ -167,8 +167,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## Performance
 
-- [ ] AC-PERF-01: 主要画面が分散バッチの事前計算スナップショットから配信される。 ｜ 検証: REQ-SEC-06
-- [ ] AC-PERF-02: 主要画面に初期表示レイテンシ目標が設定され、受入で計測される。 ｜ 検証: REQ-SEC-06
+- [ ] AC-PERF-01: 主要画面が代表テナントと上限近傍テナントで性能計測され、事前計算スナップショットから配信され、初期表示目標を満たし、画面シェルと主要ナビゲーションが遅いデータ源にブロックされず、一覧が取得上限・ページングまたは仮想化を持ち、長時間処理が受付状態・進捗・部分結果・再試行を表示する。 ｜ 検証: REQ-SEC-06
+- [ ] AC-PERF-02: 主要画面ごとにクライアント配信量・初期API本数・DBクエリ数の予算が定義され、無制限走査・無制限JOIN・N+1がなく、クエリ時間・走査行数・返却行数の計測結果が受入証跡として残る。 ｜ 検証: REQ-SEC-06
+- [ ] AC-DATA-WEIGHT-01: 恒久DBに本文・生HTML・競合本文・LLM raw response・プロンプト全文・大容量debug payloadがなく、増加データに保持期間・ロールアップ・削除またはアーカイブ・容量上限があり、新しいデータ群に所有者・増加単位・保持方法が定義される。 ｜ 検証: REQ-SEC-06, REQ-SEC-11, REQ-PRODUCT-19, REQ-PRODUCT-20
 - [ ] AC-PERF-03: 事前計算が未完了の場合、空表示ではなく計算中状態と再試行手段を提示する。 ｜ 検証: REQ-SEC-06
 
 ## Analytics Framing

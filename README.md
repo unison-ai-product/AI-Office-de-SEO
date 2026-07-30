@@ -4,6 +4,8 @@
 
 **AI Office de SEO** は、AIエージェントチームがSEOコンテンツ運用（キーワード調査 → 記事生成 → WordPress投稿 → GSC分析 → リライト・レポート）を一気通貫で代行するSaaSです。中小企業のWeb担当者・新規サイト立上げ事業者を主要ターゲットに、SEOコンサル/インハウス担当より低コストな代替を目指します（正本: L0企画書・ビジネス要求）。
 
+本プロダクトは、社内運用システム [`UNISON-TECHNOLOGY/seo-agent`](https://github.com/UNISON-TECHNOLOGY/seo-agent) の実装・運用から得た知見を基に発展させます。旧コードの単純移植ではなく、SEO業務と連携の知見を継承し、DB肥大、同期的な重処理、画面の体感速度などの運用課題を非機能要件から解消します。
+
 現在は、L0〜L3の上流成果物と画面プロトタイプを基に、本番実装へ移るための文書整理を進めています。製品の目的、開発境界、開発方針は [`ai-office-de-seo-charter_v3.7.md`](docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-charter_v3.7.md)、構築順序は [`ai-office-de-seo-development-unit-roadmap_v3.7.md`](docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-development-unit-roadmap_v3.7.md) を正本とします。
 
 開発・検証には、開発中の **UT-TDD Agent Harness** を利用できる文書構造とトレーサビリティを維持します。Harnessは製品機能や製品ランタイムではなく、設計・実装・テスト・レビュー・受入を管理する開発基盤です。Harnessの未確定仕様へ先行固定せず、L0〜L3、PLAN、要求ID、受入条件、検証証跡の対応を保ちます。
