@@ -93,7 +93,7 @@ Site画像Style Profileは目的、トーン、画風、構図、palette、明�
 
 既存画像の原本は解析中の一時領域へ限定し、WordPress等の外部正本を無期限複製しない。恒久保持する解析cacheはperceptual hash、content hash、Style Feature、解析model／prompt version、observed_at、source_ref、権利・出典、失効条件に限定する。生成画像はWordPress Mediaを公開正本とし、製品側は生成job、model、prompt version、Profile version、Media ID／URL、content hash、採否、費用、権利表示に必要な来歴を保持する。
 
-Featured Image Patternはcanvas、layer、領域、位置、比率、余白、安全領域、固定・可変slot、palette、トーン、参照画像hash、作成者、確定者、version、既定状態を保持する。編集中、確定、廃止を区別し、生成jobが使用したPattern versionを追跡する。
+Featured Image PatternはCMS要求size、layer、領域、位置、比率、余白、安全領域、固定・可変slot、palette、トーン、参照画像hash、variation tolerance、可変属性と範囲、ロゴ配置・余白、合成方式、作成者、確定者、version、既定状態を保持する。編集中、確定、廃止を区別し、生成jobが使用したPattern versionを追跡する。
 
 ## 受入条件
 

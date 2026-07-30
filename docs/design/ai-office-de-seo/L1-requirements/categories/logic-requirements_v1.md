@@ -85,9 +85,15 @@ Image Style ProfileはSite単位の既定と記事単位overrideを持ち、目�
 
 生成cacheは、Site、Image Style Profile version、記事・section目的、prompt version、参照画像hash、size、quality、model snapshotをkeyとし、同一要求の二重生成を防ぐ。既存の生成画像を再利用できる場合はユーザーへ提示するが、別記事への機械的な使い回しで意味不一致や重複感を生じさせない。解析cacheと重複防止は原価を下げるが、新しい画像outputの生成原価が毎回発生する前提で見積もる。
 
-Featured Image Patternは生成前の構成定義として、canvas比率、背景、被写体領域、文字領域、ロゴ領域、palette、明暗、構図、余白、安全領域、レイヤー順、禁止要素、固定要素、可変要素、参照画像、作成者、version、状態を持つ。記事タイトル、カテゴリ、キーワード等を可変slotへ割り当てられる。
+Featured Image Patternは生成前の構成定義として、CMS要求size、背景、被写体領域、文字領域、ロゴ領域、palette、明暗、構図、余白、安全領域、レイヤー順、禁止要素、固定要素、可変要素、参照画像、variation tolerance、作成者、version、状態を持つ。記事タイトル、カテゴリ、キーワード等を可変slotへ割り当てられる。
 
 Pattern Editorの配置、サイズ、表示・非表示、並べ替え、複製、undo／redoは決定論的な設定編集として処理し、操作ごとに画像モデルや解析モデルを呼ばない。Pattern、Style Feature、正規化済みprompt fragment、参照画像hashをcacheし、確定Patternと記事の可変slotから生成promptを組み立てる。GPT Image 2はユーザーが「テスト生成」または記事生成を実行した時だけ呼び、同一Pattern version・記事入力の二重生成を冪等keyで防ぐ。
+
+variation toleranceは少なくとも `fixed`、`controlled`、`creative` を持つ。`fixed` は構図・領域・配色を固定し、`controlled` はユーザーが許可した属性と範囲だけを変化させ、`creative` は固定要素・禁止要素・ブランドトーン以外の生成裁量を広げる。Pattern数ではなくこの許容度を生成promptとQAへ伝播する。
+
+ロゴ合成は配置領域、外周余白、最小表示サイズ、aspect維持、背景コントラストを検査する。合成方式はCapabilityと代表出力の品質評価で有効化し、品質基準を満たさない環境では強制しない。CMSのfeatured media／thumbnail等が要求するsizeだけを生成対象とし、SNS等の別用途sizeをCMS要求なしに追加しない。
+
+自動投稿時の画像gateは、ファイル破損、CMS非対応形式・容量、明確な禁止要素、欠落した必須素材等の機械判定可能な項目に限定する。構図・トーン・バリエーション等の主観的差異はadvisoryとし、承認済みPatternの自動投稿を過剰に停止しない。
 
 WordPressから公開・更新イベントを受信した場合は、WordPressの更新日時を記事の最新変更日時として遍歴へ追加する。これは記事変更履歴であり、過去Snapshotや当時の施策・評価記録を上書きしない。変更内容を取得できない初期リリースでは、更新日時だけを根拠に変更量やSEO影響を断定しない。
 
