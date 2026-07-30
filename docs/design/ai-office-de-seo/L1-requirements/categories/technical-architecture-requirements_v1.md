@@ -118,6 +118,16 @@ API、ジョブ、外部連携、AI実行を相関IDで接続し、ログ、メ�
 - Provider固有仕様を中核業務ロジックへ直接埋め込むこと
 - 記事本文、秘密情報、プロンプト全文をログへ出力すること
 
+### REQ-TECH-19 AWS配置・観測
+
+本番基盤はAWSを第一配置先とする。初期構成を過剰なmicroserviceへ分割せず、Web/API、非同期worker、queue、transaction database、object storage、edge delivery、監視の境界を保つ。具体的なcomputeおよびdatabase製品は負荷試験、運用人数、費用からADRで決定する。
+
+静的assetとcache可能なread responseはCloudFront等で配信し、動的APIは必要なデータだけを返す。記事本文、生成中間物、画像等の大きいobjectをtransaction databaseへ置かず、期限付きobject storageへ分離する。transaction databaseは契約、権限、状態、台帳、短い派生データ等の正本に限定し、無制限な履歴・本文・生レスポンスを蓄積しない。
+
+非同期jobはAmazon SQS相当のmanaged queueでAPIから分離し、処理種別・優先度・障害domainに応じてqueueを分ける。再試行上限を超えたmessageはdead-letter queueへ隔離し、CloudWatch alarm、原因分類、関連trace、redrive手順を持たせる。
+
+application telemetryはOpenTelemetry互換とし、CloudWatch Application Signals／Logs／Metrics／Trace等へ送信できる構成とする。全経路へ `correlation_id`、`tenant_id`、`site_id`、`job_id`、処理stage、Provider、結果分類を付与するが、本文、秘密情報、不要な個人情報は送信しない。dashboardはユーザー経路、queue、外部Provider、公開、課金、cache、databaseを分け、alertから該当runbookと原因候補へ遷移できるようにする。
+
 ## 4. 接続要求
 
 - 性能、可用性、容量目標は `non-functional-requirements_v1.md` を参照する。
@@ -147,3 +157,4 @@ API、ジョブ、外部連携、AI実行を相関IDで接続し、ログ、メ�
 - [ ] AC-TECH-16: 相関IDからAPI、ジョブ、外部連携、AI実行を追跡できる。
 - [ ] AC-TECH-17: 具体的な技術選定と例外にADRまたは期限付き記録がある。
 - [ ] AC-TECH-18: 技術的禁止事項を自動検査またはレビューゲートで検出できる。
+- [ ] AC-TECH-19: AWS上の代表E2Eで相関IDがAPI、queue、worker、Provider、WordPress結果まで維持され、DLQから原因確認と安全なredriveができる。

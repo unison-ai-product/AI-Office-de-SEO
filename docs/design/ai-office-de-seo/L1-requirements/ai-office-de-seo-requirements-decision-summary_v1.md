@@ -153,7 +153,11 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 重い非同期処理はAgent Officeビューで進行を可視化し、待ち時間を作業体験へ変換する。
 - 障害を機能単位に封じ込め、全体停止を避ける。
 - 機械的に復旧可能な障害は即時自動復旧を目指す。人・金銭対応は営業日単位の運用とする。
-- RPO、RTO、SLOの確定値は販売プランと運用体制の決定前に確定する。
+- 初期内部SLOは月間99.5%とし、機能別に計測する。契約上のSLA・service creditとは分離する。
+- 認証、権限、契約、課金台帳、クレジット、公開命令、同意記録等の正本データは初期内部目標RPO 1時間、RTO 4時間とする。
+- AWSを第一配置先とし、CloudWatchを中心にmetrics、logs、tracesを相関させる。対象tenant、Site、記事、job、stage、Provider、失敗分類を相関IDから即時に追跡し、MTTD、MTTA、MTTI、MTTRを計測する。
+- 非同期処理はmanaged queueとDLQで隔離・再実行可能にし、静的配信・cache可能な読取はCloudFront等を利用してorigin負荷とlatencyを抑える。重いobjectや本文をtransaction databaseへ置かない。
+- 通常通知は90日、課金・権限・公開・同意・代理操作の監査記録は最低1年保持する。保留jobは標準7日とし、期限前通知と再開見積りを行う。
 
 正本: `categories/non-functional-requirements_v1.md`、`categories/incident-warranty-requirements_v1.md`
 
@@ -179,8 +183,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 次は要求の欠落ではなく、今後の判断または設計較正が必要な項目である。
 
-1. SLO、RPO、RTO、通知保持、ジョブ保留期限等の商用初期値。
-2. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
+1. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
 
 ## 16. 監査上の注意
 

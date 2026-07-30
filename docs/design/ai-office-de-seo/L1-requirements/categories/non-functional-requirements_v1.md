@@ -55,11 +55,11 @@ Site当たりの記事、キーワード、推薦、施策、監査、Article Su
 
 ### REQ-NFR-06 可用性
 
-ユーザーAPI、ジョブ受付、管理面、課金・公開等の重要経路ごとにSLOを定義する。初期SLO値は商用プランと運用体制の決定まではTBDとするが、計測、error budget、違反検知、顧客通知経路を販売開始前に確定する。
+初期リリースの内部SLOは月間99.5%を基線とする。ユーザーAPI、ジョブ受付、管理面、課金、公開、AI生成、WordPress連携、計測を機能別に計測し、一部機能の障害をサービス全停止と集計しない。計測、error budget、違反検知、顧客通知経路を販売開始前に実装する。内部SLOと契約上のSLA・service creditは分離し、販売プランごとの保証値は別途版管理する。
 
 ### REQ-NFR-07 復旧性
 
-重要データと機能ごとに一般的なSaaS指標に基づくRPO/RTO、バックアップ頻度、保持、復元手順を定義する。プロセス・worker・接続等の機械的に回復可能な障害はhealth check、再起動、再試行、failoverで即時の自動復旧を目指す。返金、契約、顧客連絡等の人間・金銭対応は営業日単位の期限を別に定義する。
+認証、権限、契約、課金台帳、クレジット、公開命令、同意記録等の正本データは、初期内部目標をRPO 1時間、RTO 4時間とする。記事生成、解析、推薦等はcheckpointと冪等再実行で復旧し、正本データと同じ復元方式を強制しない。プロセス・worker・接続等の機械的に回復可能な障害はhealth check、再起動、再試行、failoverで即時の自動復旧を試行する。返金、契約、顧客連絡等の人間・金銭対応は営業日単位の期限を別に定義する。
 
 ### REQ-NFR-08 劣化時動作
 
@@ -83,6 +83,14 @@ API・イベント・DB変更は後方互換期間とロールバックを持ち
 
 各開発単位で代表データ量の性能計測を行い、画面、API、query、ジョブ、保存量の予算超過を検出する。重大な回帰はリリースを停止し、例外は期限、理由、改善計画を記録する。
 
+### REQ-NFR-13 原因特定速度
+
+障害・遅延・外部連携失敗は、検知から相関IDによる対象tenant、Site、記事、ジョブ、処理stage、Provider、直前の再試行、失敗分類へ到達できなければならない。主要alertは担当者が追加の本番DB調査や本文閲覧をせず原因候補と影響範囲を確認できるdashboard、trace、構造化log、runbookリンクを持つ。検知時刻、調査開始、原因特定、封じ込め、復旧の所要時間を計測し、MTTD、MTTA、MTTI、MTTRとして継続改善する。
+
+### REQ-NFR-14 AWS運用基線
+
+本番配置はAWSを前提とし、AWS Well-Architected Frameworkの運用、信頼性、性能効率、コスト最適化を定期確認する。観測はCloudWatchを中心にmetrics、logs、tracesを統合し、OpenTelemetry互換のinstrumentationを採用する。静的配信とcache可能な読取はCloudFront等のedge cacheを利用し、API・画面originへの負荷とlatencyを抑える。非同期処理はqueueとdead-letter queueで隔離し、滞留、再試行、失敗理由、redriveを観測可能にする。
+
 ## 受入条件
 
 - [ ] AC-NFR-01: 推薦再計算中でも画面シェルと既存データを操作できる。
@@ -97,3 +105,5 @@ API・イベント・DB変更は後方互換期間とロールバックを持ち
 - [ ] AC-NFR-10: 通常運用が本番DB直接更新を必要としない。
 - [ ] AC-NFR-11: 主要操作のキーボード・focus・contrast検査を通過する。
 - [ ] AC-NFR-12: 性能予算の重大回帰がリリースゲートで検出される。
+- [ ] AC-NFR-13: 相関IDから対象顧客・Site・記事・ジョブ・stage・外部依存の原因候補へ到達でき、MTTD/MTTA/MTTI/MTTRを計測できる。
+- [ ] AC-NFR-14: AWS上でmetrics、logs、traces、queue滞留、DLQ、edge cache hit率をdashboardとalertから確認できる。
