@@ -61,6 +61,10 @@ WordPress連携はCore REST APIと軽量トラッキングコードを最小構�
 
 連携方式の比較では、導入容易性だけでなく、WordPress／Gutenberg更新追従、障害分離、認証・秘密管理、イベント即時性、Capability精度、独自構造対応、保守原価、Site負荷を評価する。Profile変更時も記事・メディア・計測の識別子と履歴を引き継ぎ、再登録・二重計測を起こさない。
 
+### REQ-INT-06 CMS Adapter拡張境界
+
+記事制作・リライト・計測WorkflowはCMS非依存のPublication Contractを経由し、WordPressは初期Adapterとして実装する。他CMSの検証環境がない初期段階では、WordPress以外を対応済み・互換保証・提供予定確定として表示しない。将来Adapterを追加する場合はCMSごとの実環境でContract TestとE2E検証を通し、対応version、利用可能機能、制限、縮退動作を版管理する。
+
 ## 受入条件
 
 - [ ] AC-INT-01: 初期Pluginが本文・フォーム値を送らず、ページ遷移と指定CVを取得できる。
@@ -68,3 +72,4 @@ WordPress連携はCore REST APIと軽量トラッキングコードを最小構�
 - [ ] AC-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。
 - [ ] AC-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。
 - [ ] AC-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離できる。
+- [ ] AC-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。
