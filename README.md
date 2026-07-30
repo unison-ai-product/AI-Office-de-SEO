@@ -4,6 +4,10 @@
 
 **AI Office de SEO** は、AIエージェントチームがSEOコンテンツ運用（キーワード調査 → 記事生成 → WordPress投稿 → GSC分析 → リライト・レポート）を一気通貫で代行するSaaSです。中小企業のWeb担当者・新規サイト立上げ事業者を主要ターゲットに、SEOコンサル/インハウス担当より低コストな代替を目指します（正本: L0企画書・ビジネス要求）。
 
+現在は、L0〜L3の上流成果物と画面プロトタイプを基に、本番実装へ移るための文書整理を進めています。製品の目的、開発境界、開発方針は [`ai-office-de-seo-charter_v3.7.md`](docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-charter_v3.7.md)、構築順序は [`ai-office-de-seo-development-unit-roadmap_v3.7.md`](docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-development-unit-roadmap_v3.7.md) を正本とします。
+
+開発・検証には、開発中の **UT-TDD Agent Harness** を利用できる文書構造とトレーサビリティを維持します。Harnessは製品機能や製品ランタイムではなく、設計・実装・テスト・レビュー・受入を管理する開発基盤です。Harnessの未確定仕様へ先行固定せず、L0〜L3、PLAN、要求ID、受入条件、検証証跡の対応を保ちます。
+
 プロダクトの特徴:
 
 - **2つのUIモード**: 通常ビュー（選ぶ・決める・承認する業務SaaS面）と **Agent Officeビュー**（バーチャルオフィスでエージェントたちの実行状況を見守る監視面。7フロア・13ペルソナ）
@@ -26,6 +30,18 @@
 | `docs/plans/` | 各レイヤの作業計画 |
 
 プロトタイプはローカルHTTPサーバー経由で `prototype/AI Office de SEO.dc.html` を開くと動作します（実データ・実LLM接続なし、モック契約駆動。管理コンソールはユーザー面のヘルプ「開発コンソール（社内）」から）。仕様の正本は常に `docs/` 側で、プロトは実装実証という役割分担です。
+
+### 文書の読み順
+
+1. [`L0 企画書`](docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-charter_v3.7.md) — 目的、価値、開発対象、境界、現在地
+2. [`L0 ビジネス要求`](docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-business-requirements_v1.md) — 商品、価格、収益、販売条件
+3. [`L1 開発ユニットロードマップ`](docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-development-unit-roadmap_v3.7.md) — DU-00〜DU-17と構築順序
+4. `docs/design/ai-office-de-seo/L1-requirements/` — 機能・品質要求と受入条件
+5. `docs/design/ai-office-de-seo/L2-domain/` — 用語、境界、集約、イベント
+6. `docs/design/ai-office-de-seo/L3-implementation/` — DDL、契約、設定、Quality Gate
+7. `docs/design/ai-office-de-seo/L3-ui-prototype/` と `prototype/` — 画面設計と動作実証
+
+`README.md` は入口と案内であり、仕様の正本ではありません。改訂履歴は以下に保持します。
 
 ---
 
