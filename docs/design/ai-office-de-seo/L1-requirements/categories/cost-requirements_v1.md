@@ -113,8 +113,8 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 
 - GPT Image 2のinput、reference image、output、quality、size、編集・再生成を画像jobへ帰属する。
 - 既存画像解析cache、Image Style Profile、prompt template、重複生成防止による削減額を測定する。
-- 修正指示の追加・取消・並べ替え・prompt fragment組立は原則として決定論処理とし、画像モデルを呼ばない。自然文の構造化にモデルを使う場合も、正規化結果をcacheして同一指示を再処理しない。
-- GPT Image 2の費用はユーザーがPreview生成または確定生成を実行した時だけ発生させる。
+- Featured Image Patternの配置、slot設定、複製、undo／redo、prompt fragment組立は原則として決定論処理とし、画像モデルを呼ばない。Patternと正規化結果をcacheして同じ構成を再処理しない。
+- GPT Image 2の費用はユーザーがテスト生成または記事用画像生成を実行した時だけ発生させる。
 - cache hitを理由に新規画像output原価をゼロ見積しない。
 - 同一生成条件の既存成果を再利用する場合と、新規生成・編集・ユーザー希望の再生成を区別する。
 - 画像解析、生成、最適化、WordPress Media転送、storage、egressを分けて原価計測する。

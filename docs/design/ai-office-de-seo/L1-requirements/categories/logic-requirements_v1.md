@@ -85,9 +85,9 @@ Image Style ProfileはSite単位の既定と記事単位overrideを持ち、目�
 
 生成cacheは、Site、Image Style Profile version、記事・section目的、prompt version、参照画像hash、size、quality、model snapshotをkeyとし、同一要求の二重生成を防ぐ。既存の生成画像を再利用できる場合はユーザーへ提示するが、別記事への機械的な使い回しで意味不一致や重複感を生じさせない。解析cacheと重複防止は原価を下げるが、新しい画像outputの生成原価が毎回発生する前提で見積もる。
 
-Image Revision Instructionは、基準画像versionに対する差分命令として、対象、operation、値、対象領域／mask参照、優先度、禁止条件、作成者、作成時刻、適用順、状態を持つ。operationは少なくともtone、palette、brightness、composition、subject、person、text、spacing、background、crop、aspect、remove、replaceを構造化し、自由記述は構造化命令へ正規化してユーザー確認後に確定する。
+Featured Image Patternは生成前の構成定義として、canvas比率、背景、被写体領域、文字領域、ロゴ領域、palette、明暗、構図、余白、安全領域、レイヤー順、禁止要素、固定要素、可変要素、参照画像、作成者、version、状態を持つ。記事タイトル、カテゴリ、キーワード等を可変slotへ割り当てられる。
 
-修正UIでの選択・並べ替え・取消・undo／redoは決定論的なInstruction編集として処理し、操作ごとに画像モデルや解析モデルを呼ばない。基準画像のStyle Feature、Image Style Profile、過去Instruction、正規化済みprompt fragmentをcacheし、変更されたInstructionだけから編集promptを組み立てる。GPT Image 2の編集呼出しは明示的なPreview生成または確定時に限定し、同一Instruction versionの再送を冪等keyで防ぐ。
+Pattern Editorの配置、サイズ、表示・非表示、並べ替え、複製、undo／redoは決定論的な設定編集として処理し、操作ごとに画像モデルや解析モデルを呼ばない。Pattern、Style Feature、正規化済みprompt fragment、参照画像hashをcacheし、確定Patternと記事の可変slotから生成promptを組み立てる。GPT Image 2はユーザーが「テスト生成」または記事生成を実行した時だけ呼び、同一Pattern version・記事入力の二重生成を冪等keyで防ぐ。
 
 WordPressから公開・更新イベントを受信した場合は、WordPressの更新日時を記事の最新変更日時として遍歴へ追加する。これは記事変更履歴であり、過去Snapshotや当時の施策・評価記録を上書きしない。変更内容を取得できない初期リリースでは、更新日時だけを根拠に変更量やSEO影響を断定しない。
 
