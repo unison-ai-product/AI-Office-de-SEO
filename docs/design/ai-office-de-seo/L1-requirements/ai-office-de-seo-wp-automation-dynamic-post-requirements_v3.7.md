@@ -124,7 +124,9 @@ WordPressプラグインは、SaaSとWPの間のデータ交換エンドポイ�
 
 WP接続時・プラグイン更新時・テーマ/SEOプラグイン/カスタムブロック変更検知時に `WPCapabilitySnapshot` を再取得する。`snapshotKey` と `schemaVersion` をDynamic Post Schemaに記録し、投稿反映時に照合する。取得できない能力は「未対応」と扱い、生成側が勝手にHTMLで代替しない。古いプラグインが必要能力を返せない場合、その機能のTicketは `blocked` / `degraded` とする。
 
-Editor Capabilityとして、WordPress version、投稿タイプごとのClassic Editor／Block Editor、Block API version、iframe／non-iframe、classic meta box、Site Editor、Pattern、Content-Only mode、Isolated Editor、Visual Revisions、登録ブロック、第三者Page Builderを検出する。WordPress 7.0は記事内ブロックのAPI versionによりiframe可否が変わり得るため、version番号だけで決めず対象記事の実効Editor modeを返す。リアルタイム共同編集はWordPress 7.0の標準能力として仮定しない。
+Editor Capabilityとして、WordPress version、投稿タイプごとのClassic Editor／Block Editor、Block API version、iframe／non-iframe、classic meta box、Site Editor、Pattern、Content-Only mode、Isolated Editor、Visual Revisions、登録ブロック、第三者Page Builderを検出する。初期開発・互換検証の現行基準はWordPress 7.0.2とする。7.0系は記事内ブロックのAPI versionによりiframe可否が変わり得るため、version番号だけで決めず対象記事の実効Editor modeを返す。リアルタイム共同編集はWordPress 7.0.2の標準能力として仮定しない。
+
+WordPress 7.0.2は重大なセキュリティ修正を含むため、7.0／7.0.1を検出したSiteには更新要求を表示する。書込み連携の許可可否はSecurity Policyの対応version表で管理し、version文字列をコードへ固定しない。
 
 装飾能力として、利用中テーマ、標準・独自ブロック、ショートコード、登録済みCSS class、依存プラグイン、Preview可否を取得する。検出した独自パーツは一律排除せず候補化するが、互換性を表示してユーザーが採用したものだけをDynamic Post Schemaへ含める。
 
