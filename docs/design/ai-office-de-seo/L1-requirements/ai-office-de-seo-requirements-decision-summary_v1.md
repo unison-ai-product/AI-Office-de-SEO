@@ -138,7 +138,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - Core REST APIと軽量Trackingを最小構成とし、Thin Pluginは標準RESTで不足するCapability、イベント通知、独自構造検証等だけを補う。
 - REST外部認証はHTTPS上の取消可能なApplication Password等を利用する。
 - Classic Editor、Block Editor、iframe／non-iframe、Content-Only、Visual Revisions、独自ブロック、第三者Page BuilderをCapabilityとして判別する。
-- 未対応Page Builderへ推測で書き込まない。
+- 未対応Page Builderへ推測で書き込まず、既存記事を上書きしない。標準ブロックの別下書き、互換HTMLの別下書き、HTML／Markdown持ち出しへ段階的に縮退する。
+- Builder判定は記事単位とし、分析・Recommendationは継続して、構造破壊の可能性がある公開・更新操作だけを保留する。
 - 他CMSは実環境がない段階で対応済みと表示しない。将来Adapter追加時に当該CMSのSandboxまたはStagingでE2E検証する。
 
 正本: `categories/integration-requirements_v1.md`、`categories/technical-architecture-requirements_v1.md`、`ai-office-de-seo-wp-automation-dynamic-post-requirements_v3.7.md`
@@ -176,10 +177,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 次は要求の欠落ではなく、今後の判断または設計較正が必要な項目である。
 
 1. REST Pollingの通常周期と、公開・更新直後の短期監視周期。
-2. 未対応Page Builderへ提供する初期縮退形式の優先順。
-3. 生成画像における人物、商品、実績等の誤認リスクと個別確認条件。
-4. SLO、RPO、RTO、通知保持、ジョブ保留期限等の商用初期値。
-5. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
+2. 生成画像における人物、商品、実績等の誤認リスクと個別確認条件。
+3. SLO、RPO、RTO、通知保持、ジョブ保留期限等の商用初期値。
+4. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
 
 ## 16. 監査上の注意
 

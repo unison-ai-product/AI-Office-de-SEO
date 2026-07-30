@@ -61,6 +61,8 @@ WordPress連携はCore REST APIと軽量トラッキングコードを基礎と�
 
 連携方式の比較では、導入容易性だけでなく、WordPress／Gutenberg更新追従、障害分離、認証・秘密管理、イベント即時性、Capability精度、独自構造対応、保守原価、Site負荷を評価する。Profile変更時も記事・メディア・計測の識別子と履歴を引き継ぎ、再登録・二重計測を起こさない。
 
+Page Builder／独自テーマは、検出できることと安全に書き込めることを分離する。対応済みAdapterは対象Builder version、投稿タイプ、読取、下書き、更新、Preview、Revisionの対応表とContract Testを持つ。検出だけ可能なBuilderへ書込み互換を表示しない。
+
 ### REQ-INT-06 CMS Adapter拡張境界
 
 記事制作・リライト・計測WorkflowはCMS非依存のPublication Contractを経由し、WordPressは初期Adapterとして実装する。他CMSの検証環境がない初期段階では、WordPress以外を対応済み・互換保証・提供予定確定として表示しない。将来Adapterを追加する場合はCMSごとの実環境でContract TestとE2E検証を通し、対応version、利用可能機能、制限、縮退動作を版管理する。

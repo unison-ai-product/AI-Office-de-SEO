@@ -146,7 +146,9 @@ Editor Capabilityとして、WordPress version、投稿タイプごとのClassic
 
 Outline Contract作成後、Orchestratorが `dynamicPostSchemaKey` を確定する。Writing TicketはHTML構造を自由に決めずSchemaを変更しない。Assembly TicketがWriting SnapshotをPostSlotへ割り当てる。CTAはWriting Ticketで生成せずQA/Placement後に `cta_box` slotへ（`REQ-PACK-17`）。FAQは `faq` slot（能力があればFAQ block/schema、無ければdegrade/人手確認）、tableは `table` slot（能力がある場合のみtable block化、非対応/破壊時はfail-close）。WP能力にないslot/blockを出力したらfail-close。WP Plugin validation失敗時はDraft Applyを止めRepair Ticketを発行する。最終HTML/Gutenbergブロックは恒久保存せず、`dynamicPostSchemaKey`・slot assignment metadata・content hash・validation result・WP draft URL・job resultのみ保存する（`PostEnvelopeSnapshot` は一時保存）。
 
-出力形式はEditor Capabilityに合わせて分岐する。Block Editorは登録済みblock markup、Classic Editorは互換HTML、Content-Only Patternは許可された内容フィールド、第三者Page Builderは検証済みAdapterがある場合だけ専用構造を使用する。未対応Page Builderや未知の独自構造へ推測で書き込まず、HTML下書き等の縮退候補をユーザーへ提示する。
+出力形式はEditor Capabilityに合わせて分岐する。Block Editorは登録済みblock markup、Classic Editorは互換HTML、Content-Only Patternは許可された内容フィールド、第三者Page Builderは検証済みAdapterがある場合だけ専用構造を使用する。未対応Page Builderや未知の独自構造へ推測で書き込まず、標準ブロックの別下書き、互換HTMLの別下書き、HTML／Markdown持ち出しを縮退候補として提示する。
+
+Page Builder判定は投稿単位で行い、元記事のBuilder post meta、shortcode、JSON、template dataを保持する。対応Adapterがない既存記事へ標準block／HTMLを上書きせず、元記事と別下書きの関係を記録する。Builder Adapter追加は初期リリース後の個別version upとし、実環境Contract Testなしに対応済みへ昇格しない。
 
 ## 10. Keyword Map Pack と結合  ［REQ-WPA-10］
 

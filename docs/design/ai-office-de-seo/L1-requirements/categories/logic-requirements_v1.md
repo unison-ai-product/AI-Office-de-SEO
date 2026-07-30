@@ -69,6 +69,17 @@ WordPress AdapterはConnection Profileで取得可能な範囲の投稿ID、編�
 
 WordPress出力はClassic Editor、Block Editor、iframe／non-iframe、Content-Only Pattern、第三者Page BuilderをCapabilityとして判別し、対象投稿タイプと記事の実効編集方式に合う形式を選ぶ。最新安定版を主検証基準とし、保守中の旧系列も最新security patchとCapability Testを満たす範囲で受け入れる。7.0系のVisual Revisions、Content-Only mode、Isolated Editorは利用可能能力として記録するが、記事本文の新しい正本形式とはみなさない。未対応方式には推測で構造を書き込まず、安全な縮退またはユーザー対応へ切り替える。
 
+Page Builder CapabilityはSite単位だけでなく対象投稿単位で判定し、Builder識別子、post meta、shortcode、block namespace、template、投稿タイプ、利用Plugin、検出confidenceを返す。未知または複数Builder混在時は自動的に対応済みとみなさない。
+
+出力経路は次の順で解決する。
+
+1. 対応済みBuilder Adapterによる構造化下書き。
+2. 対象投稿タイプで利用可能なWordPress標準Block Editorの別下書き。
+3. Classic Editor互換HTMLの別下書き。
+4. HTML／Markdown／画像等の成果物持ち出し。
+
+既存Builder記事のリライトで1を利用できない場合、2または3を既存URLへ直接適用せず、差分案または別下書きとして出力する。未知のpost meta、shortcode、Builder JSON、template dataを削除・再構成しない。Builder対応不能を記事生成失敗とせず、選択可能な縮退成果と制限理由を返す。
+
 WordPress送信後の下書きは引渡し済みSnapshotとして扱い、標準WorkflowではAI Officeから再取得・上書きしない。WordPress内編集、AI生成版との差分表示、変更履歴取得は別機構の後続要件とし、初期リリースではWordPress標準編集機能との自動同期を行わない。後続機構で取得する差分は、ユーザー同意の範囲で品質改善・Site学習へ利用できるが、取得差分を根拠に本文を自動変更しない。
 
 装飾工程はSiteのWordPress Capabilityを解析し、テーマ、標準ブロック、独自ブロック、ショートコード、登録済みCSS classを候補化する。利用候補は互換性、依存プラグイン、Preview可否とともにユーザーへ提示し、選択・承認されたパーツだけを生成に使用する。
