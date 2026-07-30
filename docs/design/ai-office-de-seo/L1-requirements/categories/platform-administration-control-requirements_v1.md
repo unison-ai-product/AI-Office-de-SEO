@@ -27,7 +27,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### REQ-PAC-01 内部権限階級
 
-Platform Owner、Platform Admin、Developer、Operations、Support、Finance、Security、Auditorの内部Roleを分離し、管理機能ごとのPermissionと対象環境を付与する。顧客環境の操作範囲を一律read-onlyには固定せず、運用で即時解決できる設定・状態・再実行等と、プログラム修正が必要な障害調査・変更を分類する。前者は期限付き権限付与と監査の範囲で操作可能とし、後者は開発変更管理へ移す。課金、権限、公開、秘密情報、品質安全条件は個別Permissionと追加承認を要求する。
+内部RoleはAdmin、Manager、Operatorを基本階級とする。Adminは内部Role・権限付与とプラットフォーム設定を管理する。Managerは担当顧客のデータと運用操作へ、対象Customer Organization・Site・操作種別・期限を限定した権限でアクセスできる。Operatorは開発側のログ、メトリクス、トレース、ジョブ状態の確認に限定し、顧客データ本文と変更操作へアクセスできない。ユーザー側Roleを内部Roleへ昇格させず、顧客ユーザーは開発管理面へアクセスできない。
+
+運用で即時解決できる設定・状態・再実行等と、プログラム修正が必要な障害調査・変更を分類する。前者はManagerの期限付き権限付与と監査の範囲で操作可能とし、後者は開発変更管理へ移す。課金、権限、公開、秘密情報、品質安全条件は個別Permissionと追加承認を要求する。
 
 ### REQ-PAC-02 機能公開制御
 
@@ -96,7 +98,7 @@ Kill Switch、read-onlyモード、機能別停止、キュー保留、公開停
 
 ## 5. 受入条件
 
-- [ ] AC-PAC-01: 内部Roleごとに管理画面とAPIの権限が分離される。
+- [ ] AC-PAC-01: Admin、Manager、Operatorの管理画面とAPI権限が分離され、Operatorと顧客ユーザーが顧客データ変更へ到達できない。
 - [ ] AC-PAC-02: 機能を対象、割合、期間別に段階公開しロールバックできる。
 - [ ] AC-PAC-03: コード変更なしで定義済みUI文言・状態・上限を変更できる。
 - [ ] AC-PAC-04: UIを直接呼び出さなくてもサーバー側で同じ操作制限が働く。
