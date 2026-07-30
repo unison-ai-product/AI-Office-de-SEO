@@ -15,7 +15,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 1. 位置づけ  ［REQ-RWR-01］
 
-新規生成は `new_article_workflow`（`REQ-AGENT-09`）、リライトは `rewrite_patch`（別の状態機械）で行う。リライトは既存記事の部分修正であり、記事を一時ワークスペース化し、対象セクションへ限定パッチを適用し、diffプレビューと品質ゲートを通してWP下書きへ反映する。通常リライトのdefaultは `rewrite_patch`、`rewrite_full_regenerate` は明示承認または管理ポリシーがない限り実行しない。
+新規生成は `new_article_workflow`（`REQ-AGENT-09`）、リライトは `rewrite_patch`（別の状態機械）で行う。リライトは既存記事の部分修正を既定とし、記事を一時ワークスペース化し、対象セクションへ限定パッチを適用し、diffプレビューと品質ゲートを通してWP下書きへ反映する。公開記事への更新はユーザー承認後に行う。
+
+`rewrite_full_regenerate` も実行可能だが、記事置換に近い高リスク操作として、順位影響、変更範囲、復元可否、バックアップ提供プランを表示し、WP下書き、全文差分、ユーザー承認を必須とする。
 
 ## 2. Article-as-Code とワークスペース  ［REQ-RWR-02］
 
@@ -23,11 +25,13 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 3. Patch operation  ［REQ-RWR-03］
 
-パッチはEdit Planに宣言された `section_id` の範囲内に限定する。許可: `rewrite_lead` / `rewrite_meta` / `replace_paragraphs` / `insert_paragraph_after` / `rewrite_h2_section` / `rewrite_faq_item` / `add_faq_item` / `adjust_cta_copy`（リンク先変更は別承認）/ `add_internal_link`（URLはArticle Data Server候補のみ）/ `fix_table_markup`（新規表はPremiumまたは承認付き）。禁止（未承認時）: 全文置換、H2大規模並び替え、CTA削除、外部リンク追加、canonical変更、WP公開、他記事本文を読み込んだ統合生成。
+パッチはEdit Planに宣言された `section_id` の範囲内に限定する。許可: `rewrite_lead` / `rewrite_meta` / `replace_paragraphs` / `insert_paragraph_after` / `rewrite_h2_section` / `rewrite_faq_item` / `add_faq_item` / `adjust_cta_copy`（リンク先変更は別承認）/ `add_internal_link`（URLはArticle Data Server候補のみ）/ `fix_table_markup`（新規表はPremiumまたは承認付き）。禁止（未承認時）: 全文置換、H2大規模並び替え、CTA削除、外部リンク追加、canonical変更、WP公開、他記事本文を読み込んだ統合生成。全文再生成は専用operationとして通常パッチと分離し、高リスク確認と個別承認を要求する。
 
 ## 4. 差分プレビュー  ［REQ-RWR-04］
 
 WP下書き前に差分をユーザーが確認できる。提示: リライト理由、対象URL、対象キーワード、該当GSCクエリ、変更対象セクション、変更前/後要約、title/meta差分、H2/H3差分、CTA差分、内部リンク差分、Quality Gate結果、予想消費credits、WP下書きURL、予約日時。
+
+部分リライト・全文再生成とも、生成結果をWP下書きへ送った後にユーザーが確認し、承認後に公開記事へ更新する。本文・見出しをユーザーが修正した場合はその差分を保護して再QAし、再生成で上書きしない。装飾は本文生成・リライト後へ分離し、公開後編集として扱う。
 
 ## 5. 品質ゲート（fail-close）  ［REQ-RWR-05］
 

@@ -91,7 +91,9 @@ CTAはWriting Ticketではない。CTAは読者状態、本文の流れ、CV導�
 
 ### Stage 4: Repair Loop
 
-QAで落ちた箇所だけRepair Ticketを発行する。H2丸ごと、記事全文を再生成しない。最大ループ回数、最大トークン、最大クレジットで停止する。
+QAで落ちた箇所だけRepair Ticketを発行する。H2丸ごと、記事全文を再生成しない。Repair発生を前提に品質を作るのではなく、Research Brief、Outline Contract、Section Brief、入力検証の品質でRepair頻度を低くする。
+
+Preflightは選択品質と固定価格内の限定Repair枠で生成可能かを事前判定し、成立しない見込みなら開始しない。1回の生成に対するユーザー価格は実際のRepair回数で変動させない。ユーザー希望の再生成は新しい有償ジョブとし、サービス障害による中断はcheckpointから無償再開する。
 
 ## 3. Prompt Cache First（Layer A/B/C/D）  ［REQ-AGENT-03］
 
@@ -183,7 +185,7 @@ Workflowは権限スコープを持つ。許可ツール・アクション（外
 
 ゲート強度（`REQ-AGENT-02` のQAで適用）:
 
-- hard gate（自動公開を止め、保留・人手判断へ）: Lowest該当（有害・欺瞞・スパム）およびYMYLトピックでの重大不合格。最終公開判断はユーザーに帰属する（`REQ-PRODUCT-09`）。
+- hard gate（自動公開を止め、保留・人手判断へ）: Lowest該当（有害・欺瞞・スパム）およびYMYLトピックでの重大不合格。ゲート判定自体は無効化・合格化しない。権限者が警告・未解消項目・責任境界を二段階確認し、版付き同意書へ同意した場合だけ、例外記録を伴う手動公開を許可する。最終公開判断はユーザーに帰属する（`REQ-PRODUCT-09`）。
 - advisory（警告・改善提案）: 上記以外の品質不足。Repairループの入力とする。
 
 これらはQuality Gate Registry（`catalog.quality_gate.*`）としてゲート化し、QA Executorが適用する。具体ゲートと機械判定シグナルは`REQ-PACK-09`に定義する。品質の最終的な判断でLLMを用いる部分はエージェントシステム内に限り、一般システムの判定は機械（決定論的）で行う（`REQ-KGA-08`）。ゲートしきい値・YMYL分類は初期値であり、要調整。
@@ -220,6 +222,8 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 - Outline Contract がないまま本文生成しない。Section Briefs がないまま本文生成しない。
 - Quality Gate を通らない記事をWP下書きに送らない（fail-close）。
 - Preview または Automation承認なしに予約投稿しない。
+- 最初の15記事は完成記事Previewの承認を必須とする。Outline確認はSite設定で任意に有効化し、有効時は見出しを修正・freezeしてから再開する。
+- リライト・全文再生成はAutomation承認だけで公開記事へ直接反映せず、WP下書きとユーザー承認を必須とする。
 - Cleanup が完了しないジョブを完了扱いにしない。
 
 工程ごとに引くPack/CatalogはLayer A/B/C/D（`REQ-AGENT-03`）と3スコープ（`REQ-PACK-14`）に従う。`rewrite_patch`（`rewrite` workflow）は別の状態機械として定義する（原因分析→対象特定→patch→QA→Repair Loop）。具体トポロジは各Workflowの個別設定（`REQ-AGENT-06`）で、`new_article_fast/standard/premium/custom_recipe` 等のモード差は工程の深度・モデル配分の違いとして表す（`custom_recipe` はユーザー自己サーブの定義機能ではなく、コンサルティング経由で開発管理者が登録する運用経路。`REQ-PRODUCT-12`）。
@@ -239,7 +243,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 
 ## 11. 全体整合パス（記事コヒーレンス）  ［REQ-AGENT-11］
 
-意味ユニット単位の並列執筆＋限定Repair（`REQ-AGENT-02` / `REQ-PACK-18`）は、ユニット間の繋ぎ目で論旨・声・用語が痩せる構造リスクを持つ。全文再生成禁止の原則は維持したまま、記事全体のまとまりを工程として担保する。
+意味ユニット単位の並列執筆＋限定Repair（`REQ-AGENT-02` / `REQ-PACK-18`）は、ユニット間の繋ぎ目で論旨・声・用語が痩せる構造リスクを持つ。同一生成ジョブ内のRepairで全文再生成しない原則は維持したまま、記事全体のまとまりを工程として担保する。ユーザーが別途選ぶ有償の全文再生成ジョブはこの禁止と区別する。
 
 - 用語ロック（Term Lock・決定論）: Outline Contract凍結時に、記事内で用いる用語・表記の固定リスト（例: サーバー/サーバ、ですます調の統一、固有名詞の表記）を確定し、任意フィールド `terminology_lock[]` としてContractに封入する（Gate A-5の任意追加=minor規則内）。全Writing/Repair Ticketへ固定制約として注入し（`REQ-AGENT-07`）、逸脱は決定論検査（`term_consistency`）で検出する。
 - 隣接文脈つきSection Brief: 各Section Brief（`REQ-AGENT-09`状態7）は、前ユニットの結び要旨・次ユニットのブリーフ要約を含めて発行し、ユニットが孤立文脈で書かれることを防ぐ（Layer Dのタスク動的入力。`REQ-AGENT-03`）。
