@@ -138,6 +138,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - CMS共通Publication Contractを内部境界とし、WordPress固有形式を内部記事モデルの正本にしない。
 - WordPress互換性は最新安定版を主検証基準とし、保守中の旧系列をCompatibility MatrixとCapability Testで `full`、`degraded`、`update_required`、`unsupported` に分類する。
 - Core REST APIと軽量Trackingを最小構成とし、Thin Pluginは標準RESTで不足するCapability、イベント通知、独自構造検証等だけを補う。
+- WordPressの変更検知はThin Pluginの署名付きWebhookを主経路とし、通知後に変更対象だけをREST取得する。PluginなしではRSS／Atomを公開記事の発見へ利用し、手動同期・再接続・欠落復旧・低頻度の整合確認でREST差分同期する。常時の全件Pollingは標準経路にしない。
 - REST外部認証はHTTPS上の取消可能なApplication Password等を利用する。
 - Classic Editor、Block Editor、iframe／non-iframe、Content-Only、Visual Revisions、独自ブロック、第三者Page BuilderをCapabilityとして判別する。
 - 未対応Page Builderへ推測で書き込まず、既存記事を上書きしない。標準ブロックの別下書き、互換HTMLの別下書き、HTML／Markdown持ち出しへ段階的に縮退する。
@@ -178,9 +179,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 次は要求の欠落ではなく、今後の判断または設計較正が必要な項目である。
 
-1. REST Pollingの通常周期と、公開・更新直後の短期監視周期。
-2. SLO、RPO、RTO、通知保持、ジョブ保留期限等の商用初期値。
-3. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
+1. SLO、RPO、RTO、通知保持、ジョブ保留期限等の商用初期値。
+2. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
 
 ## 16. 監査上の注意
 

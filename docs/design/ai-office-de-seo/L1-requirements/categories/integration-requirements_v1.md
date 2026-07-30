@@ -59,6 +59,10 @@ GSCおよびURL Inspectionの利用可能な観測結果から、公開URLのイ
 
 WordPress連携はCore REST APIと軽量トラッキングコードを基礎とし、初期の標準Connection ProfileをThin Plugin併用とする。PluginはTrackerの自動設置、Siteペアリング、version・更新通知、標準RESTで不足するCapabilityとイベント通知だけを補う。Site接続時にREST到達性、Application Password可否、投稿・メディア・Block Type API、Plugin version、トラッキング稼働、独自ブロック・Page Builderを診断する。
 
+WordPressの公開、更新、予約状態変更、削除、Media変更等の検知はThin Pluginが送る署名付きWebhookを主経路とする。WebhookはイベントID、Site、対象ID、状態、更新日時、content hash、schema versionを持ち、本文全文を含めない。受信側は署名、時刻、replay、冪等性を検証し、重複通知で二重処理しない。
+
+RSS／AtomはPluginを導入できない環境における公開済みコンテンツの新着・更新発見へ利用できる。ただし下書き、予約、削除、権限、Media、独自投稿状態の正本にはしない。WebhookまたはFeedで変化を検知した対象だけをREST取得し、常時の全件Pollingを標準経路にしない。手動同期、再接続時、欠落疑い、定期整合確認ではREST差分同期を実行できる。
+
 連携方式の比較では、導入容易性だけでなく、WordPress／Gutenberg更新追従、障害分離、認証・秘密管理、イベント即時性、Capability精度、独自構造対応、保守原価、Site負荷を評価する。Profile変更時も記事・メディア・計測の識別子と履歴を引き継ぎ、再登録・二重計測を起こさない。
 
 Page Builder／独自テーマは、検出できることと安全に書き込めることを分離する。対応済みAdapterは対象Builder version、投稿タイプ、読取、下書き、更新、Preview、Revisionの対応表とContract Testを持つ。検出だけ可能なBuilderへ書込み互換を表示しない。

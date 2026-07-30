@@ -105,7 +105,7 @@ WordPressプラグインは必須の業務実行基盤ではなく、SaaSとWP�
 WordPress Siteの初期既定は `thin_plugin` とする。Pluginを導入できない環境では他Profileへ縮退できる。
 
 - `thin_plugin`: 初期既定。Core REST API＋軽量Tracker＋薄いプラグイン。Tracker自動設置、Siteペアリング、version・更新通知、イベント駆動通知、詳細Capabilityを提供する。
-- `rest_tracking`: Pluginを導入できないWordPress向け縮退。投稿・メディア操作はREST、CV・遷移計測は手動設置した非同期Trackerで行う。更新検知はpollingまたは取得時差分となる。
+- `rest_tracking`: Pluginを導入できないWordPress向け縮退。投稿・メディア操作はREST、CV・遷移計測は手動設置した非同期Trackerで行う。公開済み記事の更新発見にはRSS／Atomを利用でき、Feedで不足する状態は手動同期、再接続時または定期整合確認のREST差分取得で補う。
 - `limited_rest`: REST制限、認証無効、WAF遮断等があるSite。利用可能な読取・下書き・計測機能だけ提供し、不足機能を明示する。
 
 プラグインが担うもの:
@@ -115,6 +115,8 @@ WordPress Siteの初期既定は `thin_plugin` とする。Pluginを導入でき
 - メディア: 初期リリースでは生成アイキャッチのWordPressメディア登録、Media ID・URL・派生サイズの返却、featured mediaへの参照設定。本文Image blockへの生成画像配置は後続versionとする。
 - トラッキング: トラッキングパラメータの挿入と、CV等の計測データの蓄積・送出（日別・URL別・ゴール別の集計前提。個別行動ログは持たない。`REQ-WPA-05`）。
 - 初期リリース境界: WordPress内の独自編集UI、AI生成版との差分表示、編集履歴のSaaS同期は別機構として後続提供し、初期プラグインの必須責務に含めない。
+
+Thin PluginはWordPressの公開、更新、予約状態変更、削除、Media変更等を署名付きWebhookで通知する。通知payloadは対象ID、状態、更新日時、content hash、イベントID、schema version等の差分取得に必要なmetadataへ限定し、本文全文を送らない。SaaSはWebhook受信後に必要な対象だけをCore REST APIで取得する。常時の全件Pollingは行わず、欠落疑い、再接続、ユーザー手動同期、低頻度の整合確認に限定する。
 
 接続と権限:
 
