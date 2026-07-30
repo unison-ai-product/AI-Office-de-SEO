@@ -54,6 +54,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 課金、クレジット、WordPress投稿、Webhook、ジョブ起動、通知等の副作用を伴う処理は冪等キーを必須とする。再試行は指数バックオフ、上限、再試行可能エラー分類を持ち、同一対象への競合実行は排他またはversion検証で制御する。再試行による二重課金、二重公開、二重通知を禁止する。
 
+WordPress AdapterはPortとして抽象化し、Core REST、Tracking、Thin Pluginの実装を分離する。業務Workflowは特定プラグインのPHP hook、Gutenberg内部Data Store、DOM構造、非公開APIを直接参照しない。WordPress更新による変更はAdapterのCapability変換内へ閉じ込め、REST標準機能の継続利用とプラグイン固有機能のdegraded運転を分離する。
+
 ### REQ-TECH-08 整合性境界
 
 強い整合性が必要な契約、請求、クレジット、権限変更はトランザクション境界を明示する。AI実行、外部連携、分析、通知は結果整合性を許容するが、outbox等の確実なイベント連携、再処理、照合手段を持つ。分散トランザクションを前提にしない。

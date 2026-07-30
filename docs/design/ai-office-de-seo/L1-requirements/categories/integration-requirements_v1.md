@@ -55,9 +55,16 @@ GA4等の外部分析は補助連携として扱い、初期のページ遷移�
 
 GSCおよびURL Inspectionの利用可能な観測結果から、公開URLのインデックス状態、問題種別、確認日時、quota状態を取得する。クォータ配下では新規公開、順位なし、要監視URLを優先する。取得不能時は推測で正常・異常を確定せずavailability理由を返す。診断結果はユーザーエスカレーションへ渡し、本連携からサイト設定を自動修復しない。
 
+### REQ-INT-05 WordPress連携方式
+
+WordPress連携はCore REST APIと軽量トラッキングコードを最小構成とし、プラグインは標準RESTで不足する機能だけを補う薄いAdapterとして選択可能にする。Site接続時にREST到達性、Application Password可否、投稿・メディア・Block Type API、Webhook相当のイベント通知、独自ブロック・Page Builder、トラッキング設置可否を診断し、Connection Profileと利用可能機能を決定する。
+
+連携方式の比較では、導入容易性だけでなく、WordPress／Gutenberg更新追従、障害分離、認証・秘密管理、イベント即時性、Capability精度、独自構造対応、保守原価、Site負荷を評価する。Profile変更時も記事・メディア・計測の識別子と履歴を引き継ぎ、再登録・二重計測を起こさない。
+
 ## 受入条件
 
 - [ ] AC-INT-01: 初期Pluginが本文・フォーム値を送らず、ページ遷移と指定CVを取得できる。
 - [ ] AC-INT-02: Pluginとイベントschemaを互換性確認後に段階更新・rollbackできる。
 - [ ] AC-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。
 - [ ] AC-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。
+- [ ] AC-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離できる。

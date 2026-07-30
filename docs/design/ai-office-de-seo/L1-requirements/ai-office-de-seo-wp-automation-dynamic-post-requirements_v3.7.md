@@ -98,7 +98,15 @@ CVは日別・URL別・ゴール別の集計であり、個別セッションを
 
 ## 7. WordPressプラグインの責務  ［REQ-WPA-07］
 
-WordPressプラグインは、SaaSとWPの間のデータ交換エンドポイント（ソケットに近い薄い連結点）である。業務ロジック・判定・生成の利用はすべてシステム（SaaS）側で行い、プラグインは持たない。
+WordPress連携はCore REST APIを基礎経路とし、記事・メディア・投稿タイプ・Block Type等の標準APIで完結する機能をプラグインへ重複実装しない。外部認証はHTTPS上のApplication Password等、WordPress標準の取消可能な認証を利用できる。
+
+WordPressプラグインは必須の業務実行基盤ではなく、SaaSとWPの間の薄い拡張Adapterとする。標準RESTで不足するSiteペアリング、Capability差分、イベント通知、Preview URL補助、独自ブロック検証等だけを担い、業務ロジック・判定・生成を持たない。WordPress／Gutenberg更新への追従範囲を最小化する。
+
+Siteは次のConnection Profileを選択または自動判定できる。
+
+- `rest_tracking`: WordPress Core REST API＋軽量トラッキングコード。投稿・メディア操作はREST、CV・遷移計測は非同期コードで行う。更新検知はpollingまたは取得時差分となる。
+- `thin_plugin`: Core REST API＋軽量トラッキング＋薄いプラグイン。イベント駆動通知、詳細Capability、独自構造検証等を追加する。
+- `limited_rest`: REST制限、認証無効、WAF遮断等があるSite。利用可能な読取・下書き・計測機能だけ提供し、不足機能を明示する。
 
 プラグインが担うもの:
 
@@ -110,8 +118,9 @@ WordPressプラグインは、SaaSとWPの間のデータ交換エンドポイ�
 
 接続と権限:
 
-- プラグインは導入するだけで連携される仕様とする。インストール時にサイトを当該Tenant/Siteへペアリングし、以降は設定作業なしで連携が有効になる。
+- プラグインを使用するConnection Profileでは、導入時にサイトを当該Tenant/Siteへペアリングし、以降は追加設定を最小化する。REST＋トラッキングだけのProfileでは、Application Password等の認証とトラッキングコード設置を接続手順とする。
 - プラグイン↔SaaSの接続は認証され、Tenant/Siteスコープに限定する（`REQ-SEC-09`）。プラグインは正本（WP）へ書き込む経路のため、最小権限とチャネル完全性（署名・改竄検知）を前提にする（`REQ-SEC-01`）。
+- プラグイン停止・更新失敗時もCore REST経路で安全に継続できる操作は継続し、プラグイン固有機能だけをdegradedとする。プラグインversion不一致だけで記事閲覧・成果物持出し・REST接続全体を停止しない。
 
 配布と更新通知:
 
