@@ -20,7 +20,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 法人・個人が利用できるSEO運用システムとする。代理店利用、OEM、完全委託は初期スコープに含めない。
 - `UNISON-TECHNOLOGY/seo-agent` の社内運用で得た知見を発展させる。
 - 記事制作・リライトはRecommendationを業務起点とし、採用後の工程をイベント駆動Workflowで接続する。
-- 製品はWordPress専用品として内部設計せず、CMS非依存のPublication Contractを持つ。ただし初期実装・検証・動作保証はWordPress 7.0.2に限定する。
+- 製品はWordPress専用品として内部設計せず、CMS非依存のPublication Contractを持つ。初期AdapterはWordPressとし、最新安定版を主検証基準にしながら保守中の旧系列の最新security patchまで広く受け入れる。
 - 重い本文・生HTMLを恒久保持するデータベースを避け、記事の構造、要点、イベント、検索・CV遍歴を中心に保持する。
 
 正本: `categories/business-requirements_v1.md`、`categories/technical-architecture-requirements_v1.md`、`categories/data-requirements_v1.md`
@@ -134,7 +134,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## 12. WordPress・CMS連携
 
 - CMS共通Publication Contractを内部境界とし、WordPress固有形式を内部記事モデルの正本にしない。
-- 初期互換検証はWordPress 7.0.2を基準とする。
+- WordPress互換性は最新安定版を主検証基準とし、保守中の旧系列をCompatibility MatrixとCapability Testで `full`、`degraded`、`update_required`、`unsupported` に分類する。
 - Core REST APIと軽量Trackingを最小構成とし、Thin Pluginは標準RESTで不足するCapability、イベント通知、独自構造検証等だけを補う。
 - REST外部認証はHTTPS上の取消可能なApplication Password等を利用する。
 - Classic Editor、Block Editor、iframe／non-iframe、Content-Only、Visual Revisions、独自ブロック、第三者Page BuilderをCapabilityとして判別する。
