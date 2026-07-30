@@ -23,7 +23,7 @@
 | パス | 内容 |
 |---|---|
 | `docs/design/ai-office-de-seo/L0-charter/` | 企画書・ビジネス要求（市場・商品・価格・KPIの正本） |
-| `docs/design/ai-office-de-seo/L1-requirements/` | 15分類の要求体系、機能別ロジック要求、既存v3.7要求、受入条件トレース |
+| `docs/design/ai-office-de-seo/L1-requirements/` | 16分類の要求体系、機能別ロジック要求、既存v3.7要求、受入条件トレース |
 | `docs/design/ai-office-de-seo/L2-domain/` | ドメインモデル（DDD）・用語集 |
 | `docs/design/ai-office-de-seo/L3-implementation/` | 実装設計（DDL・契約スキーマ・Quality Gate・設定レジストリ・Gate A凍結物） |
 | `docs/design/ai-office-de-seo/L3-ui-prototype/` | 画面台帳（S1〜S7/W1〜W10/A0〜A8・ADM-S1〜S12）・画面フロー・接続マップ |

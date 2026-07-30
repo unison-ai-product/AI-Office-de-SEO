@@ -36,6 +36,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 | 13 | 成長・アップセル要求 | `categories/growth-upsell-requirements_v1.md` | いつ何を根拠に追加提案するか |
 | 14 | ユーザー組織・権限統制要求 | `categories/customer-organization-governance-requirements_v1.md` | 顧客組織の所属・承認・予算・権限をどう統治するか |
 | 15 | 開発管理・画面制御要求 | `categories/platform-administration-control-requirements_v1.md` | 開発・運用側が画面から何を安全に制御するか |
+| 16 | 技術・アーキテクチャ要求 | `categories/technical-architecture-requirements_v1.md` | 実装全体が守る技術方針・境界・処理方式は何か |
 
 ## 3. 分類ルール
 
@@ -52,6 +53,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 顧客組織と運営組織を分離する: ユーザー企業の階層・所属・承認・予算と、プラットフォーム内部Roleを同じ権限体系へ混在させない。
 - UI制御を認可にしない: 画面の非表示・無効化とサーバー側Permission判定は同じポリシーを参照し、UIだけでアクセスを防がない。
 - 管理画面も安全境界を越えない: 通常運用は管理画面で解決可能にしつつ、安全不変条件は内部Roleや設定でも解除不能にする。
+- 技術方針と詳細設計を分離する: L1技術要求は全実装が守る制約、L2/L3は具体的な構成・API・テーブル・採用技術を正本にする。
 - 受入条件は各分類の要求IDへ接続し、横断一覧を `ai-office-de-seo-acceptance-trace_v3.7.md` に置く。
 
 ## 4. 詳細ロジック文書
