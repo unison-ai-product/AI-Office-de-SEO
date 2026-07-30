@@ -117,7 +117,7 @@ freeze後の各工程は Layer A/B/C を cache prefix として再利用し、�
 
 ## 4. Claude-first  ［REQ-AGENT-04］
 
-本文生成・最終Repair・構成判断はClaude Sonnetを優先する。軽量分類、SERP整理、候補生成、簡易QAはHaikuを使える。モデル名は一般ユーザー画面には出さず、品質グレード、クレジット、残り本数として表示する。
+品質段階の主モデルは低い段階から `GPT Luna`、`GPT tera`、`Sonnet`、`Opus` の順とし、工程別の補助モデル、fallback、調査量、検査回数、Repair回数はversion付きProvider Routingで設計・管理する。特定モデルを本文生成・Repair・構成判断へ固定しない。モデル名は一般ユーザー画面には出さず、品質段階、予測クレジット、残り本数として表示する。
 
 ## 5. データ取得（Source Pack経由・直テーブル禁止）  ［REQ-AGENT-05］
 

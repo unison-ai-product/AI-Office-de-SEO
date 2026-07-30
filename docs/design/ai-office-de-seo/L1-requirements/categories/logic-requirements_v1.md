@@ -53,6 +53,8 @@ updated_at: 2026-07-30
 
 新規記事またはリライトのRecommendation Item採用を起点に、Ticket生成、調査、構成、生成・編集、品質検査、承認判定、WordPress下書き・予約・公開、効果計測をversion付きイベントで接続する。各段階は冪等で、停止・再開・取消・再試行可能とする。
 
+新規記事は `Intake Gate → Sandbox Fix → Keyword Intent → SERP Research → Site Strategy → Outline freeze → Section Brief → Meaning Unit Writing → Quality Gate／限定Repair → WP Draft → Preview／Automation判定 → Cleanup` の順序を強制する。リライトは別Workflowとして `原因分析 → 対象特定 → Edit Plan freeze → 一時Workspace → 限定Patch → Diff → Quality Gate／限定Repair → Preview／Automation判定 → 反映 → Cleanup` を強制する。OutlineまたはEdit Planにない範囲を生成・変更せず、全文再生成を既定にしない。
+
 ### REQ-LOGIC-04 自動投稿判定
 
 新規記事の自動投稿は、当該Siteで本システム作成の新規記事15件へ人間承認と公開成功が記録され、権限者が版付き同意書へチェックし、対象Site・記事種別、予算、品質ゲート、公開時間、変更量、cooldown、外部接続状態を設定した場合だけ解放する。既存記事とリライトを15件へ算入しない。リライト自動適用は別Permissionと同意を要求し、15件到達だけで解放しない。重大品質不合格、YMYL追加条件、好調記事保護、予算超過、stale根拠、Kill Switchは常に自動公開を停止する。
