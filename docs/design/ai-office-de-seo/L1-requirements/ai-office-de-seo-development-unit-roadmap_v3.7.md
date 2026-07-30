@@ -5,7 +5,7 @@ version: 3.7
 layer: L1
 kind: design
 status: draft
-updated_at: 2026-07-05
+updated_at: 2026-07-30
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
 
@@ -63,7 +63,7 @@ Query Fanout、Research Brief、Outline Contractを作る。
 
 ### DU-10 新規記事の最小縦切り
 
-Keyword → Research → Outline → Meaning Unit Writing → QA → WP Draft。
+ArticleSummary / Keyword Map / GSC → 新規記事recommendation → 採用 → Research → Outline → Meaning Unit Writing → QA → WP Draft。手動Keyword起点は補助経路として同じ下流契約へ合流する。
 
 計測ファースト（本設計の3つの経験的仮説の検証をDU-10の受入に含める）:
 
@@ -75,7 +75,7 @@ Keyword → Research → Outline → Meaning Unit Writing → QA → WP Draft。
 
 ### DU-11 リライトの最小縦切り
 
-Article → GSC Query Drift → Cause Analysis → Repair Ticket → QA → WP Draft。
+ArticleSummary / GSC Query Drift → リライトrecommendation → 採用 → Cause Analysis → Repair Ticket / Edit Plan → QA → WP Draft。
 
 ### DU-12 投稿予約・承認
 

@@ -96,6 +96,16 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | perf.db.scanned_rows_budget | TODO(L3・代表クエリ別に実測) | REQ-SEC-06 |
 | retention.site_storage_budget | TODO(L3・データ群別に定義) | REQ-SEC-06 |
 
+### 記事能力サマリー・レコメンド（REQ-PRODUCT-20/24）
+| config_key | 初期値 | 出典 |
+|---|---|---|
+| summary.digest.max_chars / summary.array.max_items | TODO(L3・保存量と推薦精度を実測) | REQ-PRODUCT-20 |
+| summary.freshness.max_age / summary.retry_limit | TODO(L3・記事タイプ別に定義) | REQ-PRODUCT-20 |
+| summary.storage.max_bytes_per_article | TODO(L3・代表記事で実測) | REQ-PRODUCT-20, REQ-SEC-06 |
+| recommendation.weights.value / urgency / confidence / cost / risk | TODO(L3・説明可能な成分別重み) | REQ-PRODUCT-24 |
+| recommendation.stale_after / repeat_suppression_window | TODO(L3・運用結果で較正) | REQ-PRODUCT-24 |
+| recommendation.queue.max_items / batch.max_items | TODO(L3・画面性能と変更予算で確定) | REQ-PRODUCT-24, REQ-SEC-06 |
+
 ### 課金・原価（REQ-BILL-06/10）
 | config_key | 初期値 | 出典 |
 |---|---|---|

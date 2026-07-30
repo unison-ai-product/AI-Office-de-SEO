@@ -5,7 +5,7 @@ version: 3.7
 layer: L1
 kind: design
 status: draft
-updated_at: 2026-07-05
+updated_at: 2026-07-30
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
 
@@ -136,7 +136,7 @@ Executorが引ける Source Pack を、キー・スコープ・出力JSONの契�
 | キー | 取得データ | 主なJSON項目 |
 |---|---|---|
 | `source.gsc.page_query_matrix.v1` | URL×クエリ日次実績 | `rows[{url_hash, query_group, clicks, impressions, position, ctr, date}]` |
-| `source.article.summary.v1` | 記事サマリー（契約準拠） | `{articles[{url_hash, headings_tree, digest, units[], tier, tags[], content_hash, updated_at}]}`（本文なし、`REQ-PRODUCT-20`） |
+| `source.article.summary.v1` | 記事能力サマリー（契約準拠） | `{articles[{url_hash, digest, headings_tree, topics[], intent, audience[], funnel_stage?, questions[], claims[], unit_types[], entities[], keywords[], tier, categories[], tags[], cta_types[], outbound_topics[], linkable_topics[], freshness, gaps[], quality, completeness, confidence, content_hash, summary_schema_version, analyzed_at}]}`（各配列・短文に上限、本文なし、`REQ-PRODUCT-20`） |
 | `source.showcase.cases.v1` | 事例素材（許諾済み転用・マスターテナント限定） | `{cases[{consent_ref, industry, before_after_metrics, period, display_name?}]}`（撤回で削除、`REQ-PRODUCT-23`） |
 | `source.site.cv_points.v1` | CVポイント台帳 | `{points[{cv_id, kind, target_ref, valid_until?}], assignments[{article_ref, cv_id}]}`（`REQ-WPA-13`。CTA Placementの解決先） |
 | `source.site.facts.v1` | 導出事実（低変化・小型） | `{facts[{fact_key, value, observed_at, confidence, source_ref}]}`（本文なし、`REQ-PRODUCT-19`） |

@@ -5,7 +5,7 @@ version: 3.7
 layer: L1
 kind: design
 status: draft
-updated_at: 2026-07-01
+updated_at: 2026-07-30
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
 
@@ -52,7 +52,11 @@ Agent Officeが実状態を反映するため、ユーザー向けペルソナ�
 
 ## 5. 画面の2軸（探索 / おすすめ）  ［REQ-AOUI-05］
 
-各画面は2軸を共通に持つ: ユーザー探索軸（自分でURL/キーワードを選び操作）と、システムおすすめ軸（機械判定による施策候補）。おすすめの採用/却下/編集/予約結果は `recommendation_feedback`、探索状態は `saved_views` / `user_exploration_sessions` として最小限保存する（`REQ-SEC`）。セッション単位の詳細行動ログ・クリックログ・遷移ログは保存しない。
+各画面は2軸を共通に持つが、記事制作・リライトではシステムおすすめ軸を主導線、ユーザー探索軸を補助導線とする（`REQ-PRODUCT-24`）。
+
+- おすすめ軸: 優先順位付き候補から、根拠・変更範囲・費用・リスクを確認して採用/編集/保留/却下/予約する。
+- 探索軸: ユーザーがURL/キーワードを指定して調査・手動起動できる。おすすめにない対象も扱えるが、起動前に既存ArticleSummaryとの重複・保護・競合を検査する。
+- 共通状態: おすすめの採用/却下/編集/予約結果は `recommendation_feedback`、探索状態は `saved_views` / `user_exploration_sessions` として最小限保存する（`REQ-SEC`）。セッション単位の詳細行動ログ・クリックログ・遷移ログは保存しない。
 
 ## 6. Console Mode / 全画面ワークベンチ  ［REQ-AOUI-06］
 

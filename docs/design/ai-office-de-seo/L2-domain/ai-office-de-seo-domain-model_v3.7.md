@@ -5,7 +5,7 @@ version: 3.7
 layer: L2
 kind: design
 status: draft
-updated_at: 2026-07-05
+updated_at: 2026-07-30
 related_plan: PLAN-L2-01-ai-office-de-seo-domain-model
 ---
 
@@ -69,7 +69,8 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 
 ### 4.3 ArticleSummary / KeywordMap（Content Index）
 - ルート: ArticleSummary（url_master単位）, KeywordMap（site単位グラフ）。
-- 不変条件: 記事本文全文を保持しない（REQ-PRODUCT-04）／canonical_url_hashが正本で照会はURL・管理はID（REQ-PRODUCT-03）／正規化で表記ゆれを寄せ修飾語違いは別キーワード（REQ-KGA-02）／1キーワードグループの主担当記事は高々1で、オーファン・二重アサインはアラート（REQ-KGA-14）。
+- ArticleSummaryの値: ArticleIdentity、ContentInventory（topics / intent / audience / questions / claims / unit types / entities）、BusinessInventory（tier / category / tags / CTA / linkability / freshness）、GapInventory、SummaryQuality（completeness / confidence / schema version / analyzed_at）。
+- 不変条件: 記事本文全文を保持しない（REQ-PRODUCT-04）／各配列・短文は上限つき／content hash未変更時は再解析しない／解析失敗で直前の有効サマリーを消さない／recommendationは使用したsummary fieldと外部根拠を説明できる／canonical_url_hashが正本で照会はURL・管理はID（REQ-PRODUCT-03）／正規化で表記ゆれを寄せ修飾語違いは別キーワード（REQ-KGA-02）／1キーワードグループの主担当記事は高々1で、オーファン・二重アサインはアラート（REQ-KGA-14）。
 
 ### 4.4 RewriteJob / ArticleWorkspace（Rewrite）
 - ルート: RewriteJob（ArticleWorkspaceを内包）。

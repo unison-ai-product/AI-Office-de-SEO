@@ -5,7 +5,7 @@ version: 3.7
 layer: L2
 kind: design
 status: draft
-updated_at: 2026-07-05
+updated_at: 2026-07-30
 related_plan: PLAN-L2-01-ai-office-de-seo-domain-model
 ---
 
@@ -44,7 +44,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Site Topology | 幹→枝→葉の階層とカテゴリ×タグ網目。生成順序（CV近接）とリンク再調整ループの正本 | REQ-KGA-19 |
 | Derived Facts（導出事実） | 調査由来の低変化事実のコンパクト蓄積。鮮度期限内は外部再取得を省略 | REQ-PRODUCT-19 |
 | Intervention Ledger（施策台帳） | 施策タイプ×文脈×効果デルタの記録。較正・好調分析・成果較正の入力 | REQ-PRODUCT-19 |
-| Article Summary Contract | 記事サマリーの保持契約（見出しツリー・要旨上限・ユニット・tier/タグ・hash。本文なし）と、サマリー由来限定の軽量意味索引 | REQ-PRODUCT-20 |
+| Article Summary Contract | 記事が持つトピック・意図・読者・問い・主張・意味ユニット・エンティティ・CTA・リンク可能性・鮮度・不足を、上限つきの構造化インベントリとして保持する契約。本文は保持せず、推薦の一次入力と軽量意味索引の入力に使う | REQ-PRODUCT-20 |
 
 ## 検索実績（Search Performance / GSC）
 | 用語 | 定義 | 根拠 |
