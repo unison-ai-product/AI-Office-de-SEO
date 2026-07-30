@@ -90,11 +90,15 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-  A[W9 登録・同意] --> B[S7 サイト作成/Google接続/WP接続]
+  A[W9 登録・同意] --> B[S7 顧客組織/サイト作成<br/>Google接続/WP接続]
   B -->|失敗| B2[再認可導線] --> B
   B --> C[S6 サンプル10本選定→文体学習<br/>10本未満=暫定プロファイル表示]
   C --> D[S6 ターゲット軸/主張軸]
   D --> E[S2 マップ確認・補充] --> F[S3 初回生成] --> G[W4 承認→公開]
+  G --> H{承認済み新規記事<br/>15件到達?}
+  H -->|未達| F
+  H -->|到達| I[W9 自動公開の責任範囲・予算・品質・停止条件へ同意]
+  I --> J[新規記事の自動公開を解放]
 ```
 
 ## 6. 管理コンソール全体（UJ-08）
@@ -112,12 +116,12 @@ flowchart LR
   subgraph INCIDENT[障害]
     A1 -->|起票| A6[ADM-S6 トレース] --> A10[ADM-S10 Flag/Kill Switch] --> A1
   end
-  A9[ADM-S9 なりすまし/オフボーディング] --- A5[ADM-S5 監査ログ]
+  A9[ADM-S9 期限付き顧客アクセス/オフボーディング] --- A5[ADM-S5 監査ログ]
   A3[ADM-S3 プロバイダ/Canary] --> A4
   A11[ADM-S11 データ保護/DR]
   subgraph SUPPORT[サポート]
     A12[ADM-S12 サポートデスク<br/>キュー/SLA/deflection] -->|FAQ還流起票| A8
-    A12 -.->|なりすまし調査導線| A9
+    A12 -.->|顧客調査の権限申請導線| A9
   end
 ```
 
