@@ -40,10 +40,10 @@ Adminは内部権限の付与、Managerは期限・顧客・Site・操作種別�
 
 ### REQ-ACCESS-03 期限付き顧客アクセス
 
-Managerが顧客データへアクセスする場合、対象、目的、理由、Permission、有効期限、付与者を必須とし、期限到達時に自動失効する。アクセスと変更はacting user、target organization、対象resource、変更前後を監査する。
+Managerが顧客データへアクセスする場合、Adminによる付与を必須とし、対象、目的、理由、Permission、有効期限、付与者を記録して期限到達時に自動失効する。アクセスと変更はacting user、target organization、対象resource、変更前後を監査する。
 
 ## 受入条件
 
 - [ ] AC-ACCESS-01: 顧客ユーザーの資格情報で開発管理画面・APIへアクセスできない。
 - [ ] AC-ACCESS-02: Operatorが顧客データ変更、本文、秘密情報へアクセスできない。
-- [ ] AC-ACCESS-03: Managerの顧客アクセスが許可範囲外と期限後に拒否される。
+- [ ] AC-ACCESS-03: AdminだけがManagerの顧客アクセスを付与でき、許可範囲外と期限後のアクセスが拒否される。
