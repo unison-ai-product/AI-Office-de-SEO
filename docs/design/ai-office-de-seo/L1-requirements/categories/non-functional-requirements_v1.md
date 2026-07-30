@@ -27,5 +27,6 @@ updated_at: 2026-07-30
 
 性能はProduction Hardeningで後付けせず、各開発ユニットの受入条件に含める。
 
-既存ソース: `ai-office-de-seo-security-observability-requirements_v3.7.md` §6、`ai-office-de-seo-development-unit-roadmap_v3.7.md` §6〜10。
+可用性目標に対するincident対応、SLA補償、成果非保証の境界は `incident-warranty-requirements_v1.md` を参照する。
 
+既存ソース: `ai-office-de-seo-security-observability-requirements_v3.7.md` §6、`ai-office-de-seo-development-unit-roadmap_v3.7.md` §6〜10。

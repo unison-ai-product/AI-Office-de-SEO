@@ -32,6 +32,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 | 9 | 課金・会計要求 | `categories/billing-accounting-requirements_v1.md` | 金銭・クレジットをどう整合させるか |
 | 10 | 計測・運用要求 | `categories/measurement-operations-requirements_v1.md` | 何を測り、異常時にどう運用するか |
 | 11 | コスト要求 | `categories/cost-requirements_v1.md` | 何にいくらかかり、どこで止めるか |
+| 12 | 障害対応・保証要求 | `categories/incident-warranty-requirements_v1.md` | 障害時にどう守り、復旧・補償するか |
+| 13 | 成長・アップセル要求 | `categories/growth-upsell-requirements_v1.md` | いつ何を根拠に追加提案するか |
 
 ## 3. 分類ルール
 
@@ -43,6 +45,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 外部仕様と内部判断を分離する: API制約は外部連携、優先順位計算はロジックへ置く。
 - UIは計算しない: UIはロジック結果を表示・操作し、独自判定を持たない。
 - 原価と請求を分離する: コスト要求は提供原価、課金・会計要求は顧客請求と台帳を正本にする。
+- 障害と通常運用を分離する: 計測・運用は平常時、障害対応・保証はincident、復旧、補償、責任境界を正本にする。
+- アップセルは根拠を持つ: 成長提案は利用上限、実行不足、統制、支援、経済適合から判定し、製品不具合を課金で解決させない。
 - 受入条件は各分類の要求IDへ接続し、横断一覧を `ai-office-de-seo-acceptance-trace_v3.7.md` に置く。
 
 ## 4. 詳細ロジック文書

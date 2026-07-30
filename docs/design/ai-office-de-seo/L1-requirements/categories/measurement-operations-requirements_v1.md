@@ -32,5 +32,6 @@ updated_at: 2026-07-30
 - support escalationとナレッジ還流
 - capacityとスケール判断
 
-既存ソース: `ai-office-de-seo-admin-console-requirements_v3.7.md`、`ai-office-de-seo-security-observability-requirements_v3.7.md`、`ai-office-de-seo-development-unit-roadmap_v3.7.md`。
+incident発生後の封じ込め、顧客連絡、復旧、補償、postmortemは `incident-warranty-requirements_v1.md` を正本とする。
 
+既存ソース: `ai-office-de-seo-admin-console-requirements_v3.7.md`、`ai-office-de-seo-security-observability-requirements_v3.7.md`、`ai-office-de-seo-development-unit-roadmap_v3.7.md`。
