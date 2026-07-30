@@ -105,6 +105,7 @@ WordPressプラグインは、SaaSとWPの間のデータ交換エンドポイ�
 - 取得: 記事サマリー、見出し構造、投稿能力（Dynamic Post Schema導出用）、公開/更新/CVイベント等の取得。
 - 公開: 下書き作成・更新・予約・公開の実行（投稿形式チェックを通した内容の反映）。
 - トラッキング: トラッキングパラメータの挿入と、CV等の計測データの蓄積・送出（日別・URL別・ゴール別の集計前提。個別行動ログは持たない。`REQ-WPA-05`）。
+- 初期リリース境界: WordPress内の独自編集UI、AI生成版との差分表示、編集履歴のSaaS同期は別機構として後続提供し、初期プラグインの必須責務に含めない。
 
 接続と権限:
 
@@ -121,6 +122,8 @@ WordPressプラグインは、SaaSとWPの間のデータ交換エンドポイ�
 ## 8. WP Capability Snapshot  ［REQ-WPA-08］
 
 WP接続時・プラグイン更新時・テーマ/SEOプラグイン/カスタムブロック変更検知時に `WPCapabilitySnapshot` を再取得する。`snapshotKey` と `schemaVersion` をDynamic Post Schemaに記録し、投稿反映時に照合する。取得できない能力は「未対応」と扱い、生成側が勝手にHTMLで代替しない。古いプラグインが必要能力を返せない場合、その機能のTicketは `blocked` / `degraded` とする。
+
+装飾能力として、利用中テーマ、標準・独自ブロック、ショートコード、登録済みCSS class、依存プラグイン、Preview可否を取得する。検出した独自パーツは一律排除せず候補化するが、互換性を表示してユーザーが採用したものだけをDynamic Post Schemaへ含める。
 
 ## 9. Dynamic Post Schema と封入フロー  ［REQ-WPA-09］
 
