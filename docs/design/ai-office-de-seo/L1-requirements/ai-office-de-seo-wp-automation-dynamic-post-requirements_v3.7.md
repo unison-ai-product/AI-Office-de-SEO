@@ -112,7 +112,7 @@ Siteは次のConnection Profileを選択または自動判定できる。
 
 - 取得: 記事サマリー、見出し構造、投稿能力（Dynamic Post Schema導出用）、公開/更新/CVイベント等の取得。
 - 公開: 下書き作成・更新・予約・公開の実行（投稿形式チェックを通した内容の反映）。下書き作成時は投稿ID、編集URL、Preview URL、投稿状態をSaaSへ返し、ユーザー承認後の公開・更新命令を受け付けて結果イベントを返す。
-- メディア: 生成画像のWordPressメディア登録、Media ID・URL・派生サイズの返却、Image blockとfeatured mediaへの参照設定。
+- メディア: 初期リリースでは生成アイキャッチのWordPressメディア登録、Media ID・URL・派生サイズの返却、featured mediaへの参照設定。本文Image blockへの生成画像配置は後続versionとする。
 - トラッキング: トラッキングパラメータの挿入と、CV等の計測データの蓄積・送出（日別・URL別・ゴール別の集計前提。個別行動ログは持たない。`REQ-WPA-05`）。
 - 初期リリース境界: WordPress内の独自編集UI、AI生成版との差分表示、編集履歴のSaaS同期は別機構として後続提供し、初期プラグインの必須責務に含めない。
 
@@ -139,13 +139,13 @@ WordPress 7.0.2は重大なセキュリティ修正を含むため、7.0／7.0.1
 
 装飾能力として、利用中テーマ、標準・独自ブロック、ショートコード、登録済みCSS class、依存プラグイン、Preview可否を取得する。検出した独自パーツは一律排除せず候補化するが、互換性を表示してユーザーが採用したものだけをDynamic Post Schemaへ含める。
 
-メディア能力として、アップロード上限、許可MIME、画像サイズ、派生サイズ、featured media対応、画像最適化プラグインの有無を取得する。生成画像は記事本文と別リクエストで順次登録し、画像本体を投稿JSONへ埋め込まない。登録済み画像はcontent hashとSiteスコープの冪等キーで二重登録を防ぎ、本文送信失敗時も再利用できる。負荷・容量・タイムアウト時は同時数を下げ、本文画像を減らし、最終的にアイキャッチのみへ縮退する。
+メディア能力として、アップロード上限、許可MIME、画像サイズ、派生サイズ、featured media対応、画像最適化プラグインの有無を取得する。初期リリースの生成画像はアイキャッチだけとし、記事本文と別リクエストで登録して画像本体を投稿JSONへ埋め込まない。登録済み画像はcontent hashとSiteスコープの冪等キーで二重登録を防ぎ、本文送信失敗時も再利用できる。
 
 ## 9. Dynamic Post Schema と封入フロー  ［REQ-WPA-09］
 
 Outline Contract作成後、Orchestratorが `dynamicPostSchemaKey` を確定する。Writing TicketはHTML構造を自由に決めずSchemaを変更しない。Assembly TicketがWriting SnapshotをPostSlotへ割り当てる。CTAはWriting Ticketで生成せずQA/Placement後に `cta_box` slotへ（`REQ-PACK-17`）。FAQは `faq` slot（能力があればFAQ block/schema、無ければdegrade/人手確認）、tableは `table` slot（能力がある場合のみtable block化、非対応/破壊時はfail-close）。WP能力にないslot/blockを出力したらfail-close。WP Plugin validation失敗時はDraft Applyを止めRepair Ticketを発行する。最終HTML/Gutenbergブロックは恒久保存せず、`dynamicPostSchemaKey`・slot assignment metadata・content hash・validation result・WP draft URL・job resultのみ保存する（`PostEnvelopeSnapshot` は一時保存）。
 
-出力形式はEditor Capabilityに合わせて分岐する。Block Editorは登録済みblock markup、Classic Editorは互換HTML、Content-Only Patternは許可された内容フィールド、第三者Page Builderは検証済みAdapterがある場合だけ専用構造を使用する。未対応Page Builderや未知の独自構造へ推測で書き込まず、HTML下書きまたはアイキャッチのみ等の縮退候補をユーザーへ提示する。
+出力形式はEditor Capabilityに合わせて分岐する。Block Editorは登録済みblock markup、Classic Editorは互換HTML、Content-Only Patternは許可された内容フィールド、第三者Page Builderは検証済みAdapterがある場合だけ専用構造を使用する。未対応Page Builderや未知の独自構造へ推測で書き込まず、HTML下書き等の縮退候補をユーザーへ提示する。
 
 ## 10. Keyword Map Pack と結合  ［REQ-WPA-10］
 
