@@ -33,3 +33,57 @@ updated_at: 2026-07-30
 
 既存ソース: `ai-office-de-seo-product-requirements_v3.7.md`、`ai-office-de-seo-keyword-gsc-article-map-requirements_v3.7.md`、`ai-office-de-seo-security-observability-requirements_v3.7.md`。
 
+## 要求
+
+### REQ-DATA-01 データ所有と境界
+
+顧客由来データはContract Account、Customer Organization、tenant、必要なsiteの所有境界を持つ。外部正本、製品内正本、派生データ、共有可能な公共観測を区別し、所有境界のない顧客データを作らない。
+
+### REQ-DATA-02 Article Summary
+
+記事本文の代わりに、URL、title、meta、見出し構造、記事タイプ、更新日、content hash、短い要旨、トピック、意図、対象読者、問い、主張、根拠種別、CTA、内部リンク、鮮度、不足分類を有界なArticle Summaryとして保持する。
+
+### REQ-DATA-03 本文非保持
+
+本文全文、段落全文、生HTML、長い引用、LLM raw response、プロンプト全文を恒久DBへ保持しない。本文は隔離された一時領域で解析し、Article Summaryと必要なhash・位置参照を生成後に削除する。
+
+### REQ-DATA-04 鮮度・完全性・根拠
+
+派生データは `observed_at`、`source_ref`、`schema_version`、`confidence`、`completeness`、鮮度期限を持つ。取得失敗または部分解析時は旧値を無条件に削除せず、staleまたはincompleteとして再取得対象にする。
+
+### REQ-DATA-05 差分更新
+
+WordPress同期、生成、公開、リライト時にcontent hashとcheckpointを比較し、未変更記事を再取得・再解析しない。変更された対象と依存する派生データだけを更新する。
+
+### REQ-DATA-06 推薦データ
+
+Recommendation Itemは対象、推薦種別、根拠、期待改善、使用したsummary field、実績またはルール根拠、信頼度、鮮度、費用、リスク、反証条件、状態を持つ。本文の再取得なしに一覧と基本説明を生成できるデータ量に抑える。
+
+### REQ-DATA-07 施策台帳
+
+実行施策は推薦、Ticket、対象記事、変更種別、実行日、費用、承認、公開結果、事前・事後指標へ参照可能なappend-only履歴を持つ。後から算定した効果は元記録を上書きせず追記する。
+
+### REQ-DATA-08 容量と世代管理
+
+配列、文字列、記事当たり保存量、Site当たり件数、履歴世代、検索索引に上限を持つ。古い高頻度データは日次から月次等へロールアップし、再現・監査に不要な派生データを期限で削除する。
+
+### REQ-DATA-09 エクスポート・削除・移管
+
+顧客は権限範囲内の組織、設定、記事メタデータ、推薦、施策、分析を機械可読形式で取得できる。契約終了、削除要求、組織・Site移管では、法定・会計・監査保持を除くデータの削除または所有先変更を追跡可能にする。
+
+### REQ-DATA-10 共有データ制約
+
+テナント横断で利用できるのは公共観測キャッシュまたはk匿名・識別子除去済み集計に限定する。記事内容、URL、クエリ内訳、サイト戦略、Prompt Packを横断共有しない。
+
+## 受入条件
+
+- [ ] AC-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
+- [ ] AC-DATA-02: Article Summaryだけで記事の役割・不足・推薦根拠を判定できる。
+- [ ] AC-DATA-03: DB、ログ、キュー、一時領域を検査し本文恒久保持がない。
+- [ ] AC-DATA-04: stale・incompleteな派生値を識別し再取得できる。
+- [ ] AC-DATA-05: 未変更記事が再取得・再解析されない。
+- [ ] AC-DATA-06: Recommendation Itemから理由、費用、リスクを表示できる。
+- [ ] AC-DATA-07: 施策と効果の追記履歴が元記録を改変しない。
+- [ ] AC-DATA-08: 保存量と索引量が設定上限を超えて無制限に増加しない。
+- [ ] AC-DATA-09: エクスポート、削除、移管の対象と結果を監査できる。
+- [ ] AC-DATA-10: 横断集計から顧客、Site、URLを特定できない。
