@@ -1,7 +1,7 @@
 ---
 document_id: AOS-L1-MEASUREMENT-OPERATIONS-REQUIREMENTS
-title: AI Office de SEO 計測・運用要求 v1.0
-version: 1.0
+title: AI Office de SEO 計測・運用要求 v1.1
+version: 1.1
 layer: L1
 kind: measurement_operations_requirements
 status: draft
@@ -56,9 +56,44 @@ CVはSiteごとに到達URLまたは明示イベントを設定し、定義versi
 
 Trackerはcookie、常時heartbeat、MutationObserverによる全DOM監視、全click自動取得、heatmap、session replay、フォーム入力取得、スクロール高頻度送信を初期機能に含めない。設定はサーバー側のSite Configurationで変更し、計測項目の追加だけを理由にSite側scriptを頻繁に差し替えない。
 
+### REQ-MEASURE-05 運用Telemetry・Dashboard
+
+平常時運用は `REQ-NFR-13/14` のmetrics、logs、tracesを、ユーザー経路、API、queue、AI Provider、CMS、GSC、課金、Tracker、database、cacheごとのdashboardへ集約する。各panelはSLO、error rate、latency、traffic、saturation、queue age、DLQ、cost anomaly、data freshnessを必要な粒度で表示し、tenant/site別調査へ安全にdrill downできる。
+
+### REQ-MEASURE-06 Alert設計
+
+alertは症状、影響範囲、severity候補、owner、runbook、相関IDまたは検索条件を持つ。単一エラーではなく継続時間、割合、件数、error budget消費、queue age等でactionableにし、同一原因のalert stormを集約する。通知先不達、acknowledgeなし、長期継続時のescalationを検証する。
+
+### REQ-MEASURE-07 Runbook・定常操作
+
+再試行、DLQ redrive、接続再認可、Tracker確認、cache失効、job取消、capacity変更、Feature Flag rollback等の定常操作は、前提、権限、対象範囲、実行手順、成功確認、rollback、監査eventを持つrunbookへ接続する。本番DBの直接更新をrunbookの通常手順にしない。
+
+### REQ-MEASURE-08 Backup・Retention・Cleanup検証
+
+backup作成だけでなくrestore test、PITR到達性、object lifecycle、通知90日、監査1年以上、保留job 7日、本文一時領域TTL、集約・削除jobの成功を計測する。失敗・遅延・容量超過はalert化し、削除不能を正常完了として扱わない。incident発生後の復旧判断は `REQ-IRG-*` を参照する。
+
+### REQ-MEASURE-09 Rollout・Rollback観測
+
+model、Prompt、Catalog、Tracker、Plugin、Feature Flag、application releaseは、version、対象tenant/site、canary比率、開始・終了、主要KPI、停止条件を記録する。新旧群の品質、error、latency、costを比較し、停止条件到達時は自動または承認済み操作でrollbackできる。
+
+### REQ-MEASURE-10 Capacity・負荷運用
+
+API、worker、queue、database、storage、Provider quota、WordPress送信、GSC取得のcapacityを予測・実績で監視する。対話APIを優先し、閾値到達前にbatch同時数、優先度、rate limit、scale設定を変更する。増強判断は需要、SLO、費用、運用人数を併記し、単純な常時過剰provisioningを既定にしない。
+
+### REQ-MEASURE-11 Support・改善還流
+
+顧客申告、alert、job失敗、操作問い合わせを相関ID、分類、回避策、原因、解決versionへ接続し、同一問題を検索可能にする。再発傾向は要求、runbook、監視、FAQ、テストへ還流し、個別担当者の記憶だけを運用正本にしない。
+
 ## 受入条件
 
 - [ ] AC-L1-MEASURE-01: 同一のページ遷移から再現可能なイベント結果が得られる。
 - [ ] AC-L1-MEASURE-02: CV定義versionと重複規則に従いサンクスページ到達を計上できる。
 - [ ] AC-L1-MEASURE-03: 生イベントが期限後に集約・削除され、記事遍歴と施策評価は維持される。
 - [ ] AC-L1-MEASURE-04: 単一の非同期Trackerでpage view、明示CTA、到達URL CVを計測でき、未提供の高度計測を読み込まずページ表示を阻害しない。
+- [ ] AC-L1-MEASURE-05: 主要経路のSLO、error、latency、queue、Provider、cost、freshnessをdashboardから相関調査できる。
+- [ ] AC-L1-MEASURE-06: alertが影響・owner・runbookを持ち、storm集約と未応答escalationを検証できる。
+- [ ] AC-L1-MEASURE-07: 定常復旧操作を本番DB直接更新なしでrunbookどおり実行・rollback・監査できる。
+- [ ] AC-L1-MEASURE-08: backup restore、保持、TTL、cleanupの失敗・容量超過を検知できる。
+- [ ] AC-L1-MEASURE-09: canaryの新旧KPIを比較し、停止条件から対象versionをrollbackできる。
+- [ ] AC-L1-MEASURE-10: capacity予測から対話API優先のscale・rate・batch制御を実行できる。
+- [ ] AC-L1-MEASURE-11: support事例を相関IDと解決versionへ接続し、要求・runbook・テストへ還流できる。

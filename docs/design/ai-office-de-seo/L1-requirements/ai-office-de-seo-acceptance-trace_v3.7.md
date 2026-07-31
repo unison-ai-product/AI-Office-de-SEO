@@ -429,6 +429,17 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。 ｜ 検証: REQ-DATA-11 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴とWordPress Media参照を保持できる。 ｜ 検証: REQ-DATA-12 ｜ 正本: `categories/data-requirements_v1.md`
 
+### design-experience-requirements_v1
+
+- [ ] AC-L1-DESIGN-01: 通常ビューとAgent Officeビューが同一jobの状態・進行・失敗理由を一致して表示する。 ｜ 検証: REQ-DESIGN-01 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-02: 非専門者が主要画面で次の操作・状態・理由・影響・費用を内部実装用語なしに理解できる。 ｜ 検証: REQ-DESIGN-02 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-03: Recommendationの根拠、優先度成分、unknown、再評価条件をロジック結果どおり表示できる。 ｜ 検証: REQ-DESIGN-03 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-04: 主要操作が狭幅、keyboard、screen reader、reduced motionで完了できる。 ｜ 検証: REQ-DESIGN-04 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-05: 長時間処理から離脱・復帰しても相関IDと実stageが維持され、架空進捗を表示しない。 ｜ 検証: REQ-DESIGN-05 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。 ｜ 検証: REQ-DESIGN-06 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。 ｜ 検証: REQ-DESIGN-07 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。 ｜ 検証: REQ-DESIGN-08 ｜ 正本: `categories/design-experience-requirements_v1.md`
+
 ### growth-upsell-requirements_v1
 
 - [ ] AC-L1-UPSELL-01: 提案がcapacity/execution/governance/support/economic fitへ分解される。 ｜ 検証: REQ-UPSELL-01 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
@@ -486,6 +497,13 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-MEASURE-02: CV定義versionと重複規則に従いサンクスページ到達を計上できる。 ｜ 検証: REQ-MEASURE-02 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-MEASURE-03: 生イベントが期限後に集約・削除され、記事遍歴と施策評価は維持される。 ｜ 検証: REQ-MEASURE-03 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-MEASURE-04: 単一の非同期Trackerでpage view、明示CTA、到達URL CVを計測でき、未提供の高度計測を読み込まずページ表示を阻害しない。 ｜ 検証: REQ-MEASURE-04 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-05: 主要経路のSLO、error、latency、queue、Provider、cost、freshnessをdashboardから相関調査できる。 ｜ 検証: REQ-MEASURE-05 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-06: alertが影響・owner・runbookを持ち、storm集約と未応答escalationを検証できる。 ｜ 検証: REQ-MEASURE-06 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-07: 定常復旧操作を本番DB直接更新なしでrunbookどおり実行・rollback・監査できる。 ｜ 検証: REQ-MEASURE-07 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-08: backup restore、保持、TTL、cleanupの失敗・容量超過を検知できる。 ｜ 検証: REQ-MEASURE-08 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-09: canaryの新旧KPIを比較し、停止条件から対象versionをrollbackできる。 ｜ 検証: REQ-MEASURE-09 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-10: capacity予測から対話API優先のscale・rate・batch制御を実行できる。 ｜ 検証: REQ-MEASURE-10 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-11: support事例を相関IDと解決versionへ接続し、要求・runbook・テストへ還流できる。 ｜ 検証: REQ-MEASURE-11 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 
 ### non-functional-requirements_v1
 
@@ -543,6 +561,15 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-ACCESS-01: 顧客ユーザーの資格情報で開発管理画面・APIへアクセスできない。 ｜ 検証: REQ-ACCESS-01 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-02: Operatorが顧客データ変更、本文、秘密情報へアクセスできない。 ｜ 検証: REQ-ACCESS-02 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-03: AdminだけがManagerの顧客アクセスを付与でき、許可範囲外と期限後のアクセスが拒否される。 ｜ 検証: REQ-ACCESS-03 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-04: sessionがUser・active organization・Role・認証強度へ束縛され、切替・失効後に再認可される。 ｜ 検証: REQ-ACCESS-04 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-05: SiteSandboxContext欠落・不一致時にAPI、job、Executor、Adapterがdefault-denyになる。 ｜ 検証: REQ-ACCESS-05 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-06: Repository強制点とRLSの越境queryが拒否され、管理画面も迂回できない。 ｜ 検証: REQ-ACCESS-06 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-07: 秘密情報が接続単位で暗号化・rotationされ、ログ・trace・画面へ原文表示されない。 ｜ 検証: REQ-ACCESS-07 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-08: 重要操作がstep-upなしではAPIからも拒否される。 ｜ 検証: REQ-ACCESS-08 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-09: 招待tokenの再利用・期限後利用を拒否し、Owner回復が本人確認と監査を伴う。 ｜ 検証: REQ-ACCESS-09 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-10: Executorが本番DBへ直接接続できず、許可toolのSite scopeを越えられない。 ｜ 検証: REQ-ACCESS-10 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-11: 代理操作のacting principalとcustomer contextを監査上区別できる。 ｜ 検証: REQ-ACCESS-11 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-12: 全data pathの越境負テストがCIまたはrelease gateで通過する。 ｜ 検証: REQ-ACCESS-12 ｜ 正本: `categories/security-access-requirements_v1.md`
 
 ### technical-architecture-requirements_v1
 
