@@ -121,14 +121,14 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 
 ## 10. 受入条件
 
-- [ ] AC-COST-01: コストが分類され、tenant/site/workflow/job/stage/attemptへ帰属できる。
-- [ ] AC-COST-02: expected/reserved/worst-caseを実行前に算出できる。
-- [ ] AC-COST-03: 見積式、単価、route、workflowのversionを後から再現できる。
-- [ ] AC-COST-04: retry、fallback、repair、外部再取得が元ジョブ原価へ含まれる。
-- [ ] AC-COST-05: soft/hard limitとKill Switchが追加費用発生前に機能する。
-- [ ] AC-COST-06: recommendationがexpected costとconfidenceを持ち、新規・部分修正・見送りを比較できる。
-- [ ] AC-COST-07: クレジット対象外処理にも運用原価が記録される。
-- [ ] AC-COST-08: Provider請求値と内部実績の照合差異を検出できる。
-- [ ] AC-COST-09: DB・ストレージ・バックアップの増加量と原価をテナント単位で観測できる。
-- [ ] AC-COST-10: 商品・プラン別粗利を実績原価から算出できる。
-- [ ] AC-COST-11: 画像の解析cacheによる削減と新規output原価を分離し、画像job単位で見積・実績を算出できる。
+- [ ] AC-L1-COST-01: コストが分類され、tenant/site/workflow/job/stage/attemptへ帰属できる。
+- [ ] AC-L1-COST-02: expected/reserved/worst-caseを実行前に算出できる。
+- [ ] AC-L1-COST-03: 見積式、単価、route、workflowのversionを後から再現できる。
+- [ ] AC-L1-COST-04: retry、fallback、repair、外部再取得が元ジョブ原価へ含まれる。
+- [ ] AC-L1-COST-05: soft/hard limitとKill Switchが追加費用発生前に機能する。
+- [ ] AC-L1-COST-06: recommendationがexpected costとconfidenceを持ち、新規・部分修正・見送りを比較できる。
+- [ ] AC-L1-COST-07: クレジット対象外処理にも運用原価が記録される。
+- [ ] AC-L1-COST-08: Provider請求値と内部実績の照合差異を検出できる。
+- [ ] AC-L1-COST-09: DB・ストレージ・バックアップの増加量と原価をテナント単位で観測できる。
+- [ ] AC-L1-COST-10: 商品・プラン別粗利を実績原価から算出できる。
+- [ ] AC-L1-COST-11: 画像の解析cacheによる削減と新規output原価を分離し、画像job単位で見積・実績を算出できる。

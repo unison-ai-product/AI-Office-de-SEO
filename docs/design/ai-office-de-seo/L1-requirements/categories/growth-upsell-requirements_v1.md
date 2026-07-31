@@ -103,13 +103,13 @@ SEO成果が上がらないことだけを上位プラン提案の根拠にし�
 
 ## 10. 受入条件
 
-- [ ] AC-UPSELL-01: 提案がcapacity/execution/governance/support/economic fitへ分解される。
-- [ ] AC-UPSELL-02: 障害・争議・解約中と却下cooldown中に提案されない。
-- [ ] AC-UPSELL-03: 現プラン内の代替策とダウングレードを含む適正化が先に比較される。
-- [ ] AC-UPSELL-04: 未採用recommendationを全実行する過大見積にならない。
-- [ ] AC-UPSELL-05: 料金、適用日、日割り、増える機能、増えない機能が表示される。
-- [ ] AC-UPSELL-06: 購入・プラン変更が権限者の明示操作なしに確定しない。
-- [ ] AC-UPSELL-07: 同一提案の回数上限とcooldownが機能する。
-- [ ] AC-UPSELL-08: 営業連携へ本文・秘密情報が渡らない。
-- [ ] AC-UPSELL-09: 購入率だけでなく継続・利用・粗利・苦情・解約が計測される。
-- [ ] AC-UPSELL-10: 製品不具合や設定不備を上位契約で解決させない。
+- [ ] AC-L1-UPSELL-01: 提案がcapacity/execution/governance/support/economic fitへ分解される。
+- [ ] AC-L1-UPSELL-02: 障害・争議・解約中と却下cooldown中に提案されない。
+- [ ] AC-L1-UPSELL-03: 現プラン内の代替策とダウングレードを含む適正化が先に比較される。
+- [ ] AC-L1-UPSELL-04: 未採用recommendationを全実行する過大見積にならない。
+- [ ] AC-L1-UPSELL-05: 料金、適用日、日割り、増える機能、増えない機能が表示される。
+- [ ] AC-L1-UPSELL-06: 購入・プラン変更が権限者の明示操作なしに確定しない。
+- [ ] AC-L1-UPSELL-07: 同一提案の回数上限とcooldownが機能する。
+- [ ] AC-L1-UPSELL-08: 営業連携へ本文・秘密情報が渡らない。
+- [ ] AC-L1-UPSELL-09: 購入率だけでなく継続・利用・粗利・苦情・解約が計測される。
+- [ ] AC-L1-UPSELL-10: 製品不具合や設定不備を上位契約で解決させない。

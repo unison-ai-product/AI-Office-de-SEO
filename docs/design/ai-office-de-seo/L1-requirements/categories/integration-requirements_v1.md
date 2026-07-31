@@ -79,10 +79,10 @@ Page Builder／独自テーマは、検出できることと安全に書き込�
 
 ## 受入条件
 
-- [ ] AC-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。
-- [ ] AC-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。
-- [ ] AC-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。
-- [ ] AC-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。
-- [ ] AC-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離できる。
-- [ ] AC-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。
-- [ ] AC-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。
+- [ ] AC-L1-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。
+- [ ] AC-L1-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。
+- [ ] AC-L1-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。
+- [ ] AC-L1-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。
+- [ ] AC-L1-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離できる。
+- [ ] AC-L1-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。
+- [ ] AC-L1-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。

@@ -99,15 +99,15 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 
 ## 受入条件
 
-- [ ] AC-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
-- [ ] AC-DATA-02: 見出し構造、要点、イベント発生ポイントを機械抽出したArticle Summaryだけで記事の役割・不足・推薦根拠を判定できる。
-- [ ] AC-DATA-03: DB、ログ、キュー、一時領域を検査し本文恒久保持がない。
-- [ ] AC-DATA-04: stale・incompleteな派生値を識別し再取得できる。
-- [ ] AC-DATA-05: 未変更記事が再取得・再解析されない。
-- [ ] AC-DATA-06: Recommendation Itemから理由、費用、リスクを表示できる。
-- [ ] AC-DATA-07: 施策、獲得キーワード、順位、確実なページ遷移・CV、公開・更新の遍歴が、過剰な詳細ログなしで追跡できる。
-- [ ] AC-DATA-08: 保存量と索引量が設定上限を超えて無制限に増加しない。
-- [ ] AC-DATA-09: エクスポート、削除、移管の対象と結果を監査できる。
-- [ ] AC-DATA-10: 横断集計から顧客、Site、URLを特定できない。
-- [ ] AC-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。
-- [ ] AC-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴とWordPress Media参照を保持できる。
+- [ ] AC-L1-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
+- [ ] AC-L1-DATA-02: 見出し構造、要点、イベント発生ポイントを機械抽出したArticle Summaryだけで記事の役割・不足・推薦根拠を判定できる。
+- [ ] AC-L1-DATA-03: DB、ログ、キュー、一時領域を検査し本文恒久保持がない。
+- [ ] AC-L1-DATA-04: stale・incompleteな派生値を識別し再取得できる。
+- [ ] AC-L1-DATA-05: 未変更記事が再取得・再解析されない。
+- [ ] AC-L1-DATA-06: Recommendation Itemから理由、費用、リスクを表示できる。
+- [ ] AC-L1-DATA-07: 施策、獲得キーワード、順位、確実なページ遷移・CV、公開・更新の遍歴が、過剰な詳細ログなしで追跡できる。
+- [ ] AC-L1-DATA-08: 保存量と索引量が設定上限を超えて無制限に増加しない。
+- [ ] AC-L1-DATA-09: エクスポート、削除、移管の対象と結果を監査できる。
+- [ ] AC-L1-DATA-10: 横断集計から顧客、Site、URLを特定できない。
+- [ ] AC-L1-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。
+- [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴とWordPress Media参照を保持できる。

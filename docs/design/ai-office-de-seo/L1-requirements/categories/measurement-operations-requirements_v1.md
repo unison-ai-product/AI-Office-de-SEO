@@ -58,7 +58,7 @@ Trackerはcookie、常時heartbeat、MutationObserverによる全DOM監視、全
 
 ## 受入条件
 
-- [ ] AC-MEASURE-01: 同一のページ遷移から再現可能なイベント結果が得られる。
-- [ ] AC-MEASURE-02: CV定義versionと重複規則に従いサンクスページ到達を計上できる。
-- [ ] AC-MEASURE-03: 生イベントが期限後に集約・削除され、記事遍歴と施策評価は維持される。
-- [ ] AC-MEASURE-04: 単一の非同期Trackerでpage view、明示CTA、到達URL CVを計測でき、未提供の高度計測を読み込まずページ表示を阻害しない。
+- [ ] AC-L1-MEASURE-01: 同一のページ遷移から再現可能なイベント結果が得られる。
+- [ ] AC-L1-MEASURE-02: CV定義versionと重複規則に従いサンクスページ到達を計上できる。
+- [ ] AC-L1-MEASURE-03: 生イベントが期限後に集約・削除され、記事遍歴と施策評価は維持される。
+- [ ] AC-L1-MEASURE-04: 単一の非同期Trackerでpage view、明示CTA、到達URL CVを計測でき、未提供の高度計測を読み込まずページ表示を阻害しない。
