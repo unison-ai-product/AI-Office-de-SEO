@@ -22,7 +22,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - `Organization Unit`: 事業部、部門、チーム、ブランド等の組織ノード。
 - `Membership`: UserとCustomer Organizationの所属関係。
 - `Base Permission`: Owner、Admin、Memberの3種類から選ぶ基本権限。
-- `Operation Tag`: キーワード操作、ブランド操作、生成操作等の業務単位で変更能力を付与するタグ。
+- `Business Role Tag`: SEO運用で担当する役割を表す業務タグ。
 
 基本構造は `Contract Account → Customer Organization Tree → Membership（基本権限 + 業務タグ）` とする。アクセス対象は所属しているCustomer Organization、Organization Unit、Siteから決まり、権限タグごとに別のScope、継承、有効期間を設定しない。
 
@@ -46,16 +46,15 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - `Admin`: 組織、Site、Membership、設定を管理できるが、Owner固有操作は実行できない。
 - `Member`: 所属先の情報を閲覧できる。業務状態を変更する能力は業務タグで追加する。
 
-Viewer、SEO Manager、Strategist、Editor、Approver、Analyst、Billing担当等を基本権限として増やさない。閲覧だけの利用者は業務タグを持たないMemberとして表現する。変更能力は次の業務タグとして付与する。
+Viewer、SEO Manager、Strategist、Editor、Approver、Analyst、Billing担当等を基本権限として増やさない。閲覧だけの利用者は業務タグを持たないMemberとして表現する。SEO運用上の変更能力は、実際の担当業務に対応する次の5タグだけで付与する。
 
-- `キーワード操作`: キーワード調査、cluster、優先度、推薦方針の変更
-- `ブランド操作`: ブランド、商品・サービス、顧客、文体、装飾、画像Pattern等のSite表現設定
-- `生成操作`: 新規記事、リライト、画像等の生成・再生成
-- `公開操作`: WordPress下書き送信、承認、予約・公開、自動運用
-- `計測操作`: GSC、CV、計測設定、評価条件の変更
-- `接続操作`: WordPress、GSC、Webhook等の外部接続管理
-- `予算・課金操作`: 利用上限、追加credit、請求、契約変更
-- `組織管理操作`: Membership、基本権限、業務タグ、組織・Site所属の変更
+- `目標管理`: Siteの目的、KPI、優先方針、月次計画、予算配分を設定・確定する。
+- `キーワード・サイト戦略`: キーワードcluster、優先順位、記事配分、サイト構造、内部リンク、ブランド・商品・顧客情報、推薦方針を設定する。
+- `記事執筆`: 新規記事、リライト、画像・装飾の生成、編集、WordPress下書き送信を行う。
+- `記事検収`: 完成記事、リライト差分、品質結果を確認し、差し戻し、承認、予約・公開を行う。
+- `サイト分析`: GSC、順位、獲得キーワード、流入、CV、記事評価、要監視対象を分析する。
+
+外部接続、Membership、基本権限、業務タグ、請求、契約の管理はSEO業務タグにせず、Owner／Adminの管理権限として扱う。追加credit購入、契約終了、Owner移譲等の契約主体操作はOwnerに限定する。自動運用の有効化・停止は、対象業務のタグに加えてOwnerまたはAdminの管理権限を要求する。
 
 各タグは版管理されたPermission bundleへ解決するが、画面上は細かなPermissionを個別設定させない。タグの付与先はMembershipであり、そのMembershipがアクセスできる組織・Site全体へ適用する。タグごとのScope、継承、有効期間、競合規則、顧客独自タグ作成は初期要求に含めない。
 
@@ -65,7 +64,7 @@ Viewer、SEO Manager、Strategist、Editor、Approver、Analyst、Billing担当�
 
 ### REQ-ORG-05 業務操作権限
 
-業務状態を変更する操作は、REQ-ORG-03の業務タグで制御する。Memberはタグなしでは閲覧だけとし、Adminは組織・Siteの管理、Ownerは契約主体の最終管理を基本権限として持つ。公開、課金、接続等はAdminまたはOwnerであることだけを理由に許可せず、対応する業務タグも確認する。顧客が閲覧するTask Historyと開発側の内部監査ログを分離し、顧客権限から内部監査ログ、trace、stack、秘密情報、他tenant・管理操作詳細へ到達できない。
+SEO業務状態を変更する操作は、REQ-ORG-03の5つの業務タグで制御する。Memberはタグなしでは閲覧だけとする。Adminは接続、組織、Site設定を管理し、Ownerは契約・請求を含む契約主体の最終管理を行う。記事作成や承認等のSEO業務は、AdminまたはOwnerであることだけを理由に許可せず、対応する業務タグも確認する。顧客が閲覧するTask Historyと開発側の内部監査ログを分離し、顧客権限から内部監査ログ、trace、stack、秘密情報、他tenant・管理操作詳細へ到達できない。
 
 ### REQ-ORG-06 承認フロー
 
@@ -108,7 +107,7 @@ Contract Accountは法人または個人を契約主体として識別し、請�
 - [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとにOwner／Admin／Memberの基本権限と業務タグを持てる。
 - [ ] AC-L1-ORG-03: UI非表示だけでなくAPI側で同一Permission判定が強制される。
 - [ ] AC-L1-ORG-04: 現在選択した組織・SiteのMembershipだけからアクセス範囲が決まり、別顧客・未所属Site・内部管理面へ権限が広がらない。
-- [ ] AC-L1-ORG-05: キーワード、ブランド、生成、公開、計測、接続、予算・課金、組織管理の業務タグで変更操作を制御できる。
+- [ ] AC-L1-ORG-05: 目標管理、キーワード・サイト戦略、記事執筆、記事検収、サイト分析の5タグでSEO業務を制御し、接続・組織・請求・契約はOwner／Adminの管理権限で制御できる。
 - [ ] AC-L1-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。
 - [ ] AC-L1-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。
 - [ ] AC-L1-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。

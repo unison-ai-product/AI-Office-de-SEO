@@ -423,7 +423,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとにOwner／Admin／Memberの基本権限と業務タグを持てる。 ｜ 検証: REQ-ORG-02 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-03: UI非表示だけでなくAPI側で同一Permission判定が強制される。 ｜ 検証: REQ-ORG-03 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-04: 現在選択した組織・SiteのMembershipだけからアクセス範囲が決まり、別顧客・未所属Site・内部管理面へ権限が広がらない。 ｜ 検証: REQ-ORG-04 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-05: キーワード、ブランド、生成、公開、計測、接続、予算・課金、組織管理の業務タグで変更操作を制御できる。 ｜ 検証: REQ-ORG-05 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-05: 目標管理、キーワード・サイト戦略、記事執筆、記事検収、サイト分析の5タグでSEO業務を制御し、接続・組織・請求・契約はOwner／Adminの管理権限で制御できる。 ｜ 検証: REQ-ORG-05 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。 ｜ 検証: REQ-ORG-06 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。 ｜ 検証: REQ-ORG-07 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。 ｜ 検証: REQ-ORG-09 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
