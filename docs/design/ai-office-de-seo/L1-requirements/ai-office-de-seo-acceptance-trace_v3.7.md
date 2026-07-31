@@ -592,3 +592,29 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-TECH-17: 具体的な技術選定と例外にADRまたは期限付き記録がある。 ｜ 検証: REQ-TECH-17 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-18: 技術的禁止事項を自動検査またはレビューゲートで検出できる。 ｜ 検証: REQ-TECH-18 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-19: AWS上の代表E2Eで相関IDがAPI、queue、worker、Provider、WordPress結果まで維持され、DLQから原因確認と安全なredriveができる。 ｜ 検証: REQ-TECH-19 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
+
+## 26. 詳細ロジック受入トレース
+
+### Article Summary抽出・完全性
+
+- [ ] AC-L1-ASUM-01: 本文取得不能と本文なしを区別し、取得不能を不足score 0として扱わない。 ｜ 検証: REQ-ASUM-01, REQ-ASUM-03 ｜ 正本: `logic/article-summary-completeness-logic-requirements_v1.md`
+- [ ] AC-L1-ASUM-02: 既知重み59%ではscoreを出さず、60%以上で初めて完全性を算出する。 ｜ 検証: REQ-ASUM-03 ｜ 正本: `logic/article-summary-completeness-logic-requirements_v1.md`
+- [ ] AC-L1-ASUM-03: 必須field欠落時はscore 0.8以上でも `incomplete_required` になる。 ｜ 検証: REQ-ASUM-03 ｜ 正本: `logic/article-summary-completeness-logic-requirements_v1.md`
+- [ ] AC-L1-ASUM-04: 同一content hash・rule versionの再同期で本文再解析を行わない。 ｜ 検証: REQ-ASUM-05 ｜ 正本: `logic/article-summary-completeness-logic-requirements_v1.md`
+- [ ] AC-L1-ASUM-05: Summary生成後に本文一時領域が期限内削除され、抽出事実から不足理由を追跡できる。 ｜ 検証: REQ-ASUM-02, REQ-ASUM-04 ｜ 正本: `logic/article-summary-completeness-logic-requirements_v1.md`
+
+### Keyword Portfolio診断
+
+- [ ] AC-L1-KPD-01: 匿名化されたqueryを流入0としてカバー率へ算入しない。 ｜ 検証: REQ-KPD-01, REQ-KPD-02 ｜ 正本: `logic/keyword-portfolio-diagnostics-logic-requirements_v1.md`
+- [ ] AC-L1-KPD-02: drift shareが30%未満、または1評価窓だけの場合はdrift確定しない。 ｜ 検証: REQ-KPD-03 ｜ 正本: `logic/keyword-portfolio-diagnostics-logic-requirements_v1.md`
+- [ ] AC-L1-KPD-03: query被覆率50%以下、または第2URL click share30%未満ではカニバリ候補にしない。 ｜ 検証: REQ-KPD-04 ｜ 正本: `logic/keyword-portfolio-diagnostics-logic-requirements_v1.md`
+- [ ] AC-L1-KPD-04: index障害・市場変化・低confidence時は記事失敗ではなくobserveまたはinsufficient_dataになる。 ｜ 検証: REQ-KPD-05 ｜ 正本: `logic/keyword-portfolio-diagnostics-logic-requirements_v1.md`
+- [ ] AC-L1-KPD-05: 判定結果から入力値、除外、rule version、次回評価を再現できる。 ｜ 検証: REQ-KPD-06 ｜ 正本: `logic/keyword-portfolio-diagnostics-logic-requirements_v1.md`
+
+### 品質Gate・Repair・Routing
+
+- [ ] AC-L1-CQR-01: freeze入力欠落またはversion不一致で有償生成・検査を開始しない。 ｜ 検証: REQ-CQR-01, REQ-CQR-06 ｜ 正本: `logic/content-quality-repair-routing-logic-requirements_v1.md`
+- [ ] AC-L1-CQR-02: Repairがfail section外、ユーザー編集、合格sectionを変更しない。 ｜ 検証: REQ-CQR-03 ｜ 正本: `logic/content-quality-repair-routing-logic-requirements_v1.md`
+- [ ] AC-L1-CQR-03: advisoryだけでは公開を停止せず、hard判定は例外公開後も監査に残る。 ｜ 検証: REQ-CQR-02, REQ-CQR-05 ｜ 正本: `logic/content-quality-repair-routing-logic-requirements_v1.md`
+- [ ] AC-L1-CQR-04: route選択とfallbackをModel Registry version、品質、費用、availabilityから再現できる。 ｜ 検証: REQ-CQR-04 ｜ 正本: `logic/content-quality-repair-routing-logic-requirements_v1.md`
+- [ ] AC-L1-CQR-05: 限定Repairと障害再開で二重課金せず、別成果の再生成だけが新規jobになる。 ｜ 検証: REQ-CQR-06, REQ-CQR-07 ｜ 正本: `logic/content-quality-repair-routing-logic-requirements_v1.md`

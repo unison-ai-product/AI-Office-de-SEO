@@ -63,9 +63,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 | 対象 | 文書 | 状態 |
 |---|---|---|
 | キーワード動的レコメンド | `logic/keyword-dynamic-recommendation-logic-requirements_v1.md` | 初版 |
-| Article Summary抽出・不足判定 | `logic/article-summary-completeness-logic-requirements_v1.md` | 未起票 |
-| Query Drift・カニバリ・カバー率 | `logic/keyword-portfolio-diagnostics-logic-requirements_v1.md` | 未起票 |
-| 品質ゲート・Repair・Routing | `logic/content-quality-repair-routing-logic-requirements_v1.md` | 未起票 |
+| Article Summary抽出・不足判定 | `logic/article-summary-completeness-logic-requirements_v1.md` | 初版 |
+| Query Drift・カニバリ・カバー率 | `logic/keyword-portfolio-diagnostics-logic-requirements_v1.md` | 初版 |
+| 品質ゲート・Repair・Routing | `logic/content-quality-repair-routing-logic-requirements_v1.md` | 初版 |
 
 ## 5. 横断監査
 
