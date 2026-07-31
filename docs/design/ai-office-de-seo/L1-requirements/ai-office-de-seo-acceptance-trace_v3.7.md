@@ -462,7 +462,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。 ｜ 検証: REQ-INT-02 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。 ｜ 検証: REQ-INT-03 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。 ｜ 検証: REQ-INT-04 ｜ 正本: `categories/integration-requirements_v1.md`
-- [ ] AC-L1-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離できる。 ｜ 検証: REQ-INT-05 ｜ 正本: `categories/integration-requirements_v1.md`
+- [ ] AC-L1-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離し、投稿単位のCompatibility Matrixから安全な出力経路を決定できる。 ｜ 検証: REQ-INT-05 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。 ｜ 検証: REQ-INT-06 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。 ｜ 検証: REQ-INT-07 ｜ 正本: `categories/integration-requirements_v1.md`
 
@@ -475,6 +475,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-LOGIC-05: 急変対象が即時推薦されず要監視キューへ移り、ユーザー指定予定は継続し、システム予定は選択理由と現在順位により差し替えまたは続行される。 ｜ 検証: REQ-LOGIC-05 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-06: プライマリ＋セカンダリの割当クラスタへの順位付与を評価し、順位なしは自動修復せず診断内容をユーザーへエスカレーションし、CVなし単体を失敗とせず、十分な母数がある場合だけCVRを評価できる。 ｜ 検証: REQ-LOGIC-06 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-07: 直近1か月で1,000クリック到達後も記事単位で予測可否を判定し、予測可能数・ロック数・不足データを返す。 ｜ 検証: REQ-LOGIC-07 ｜ 正本: `categories/logic-requirements_v1.md`
+- [ ] AC-L1-LOGIC-08: 投稿単位のCompatibility Matrixと対象operationから出力経路を再現でき、unknown時も既存記事の危険な上書きだけを保留できる。 ｜ 検証: REQ-LOGIC-08 ｜ 正本: `categories/logic-requirements_v1.md`
+- [ ] AC-L1-LOGIC-09: 許可済み装飾だけを適用し、互換性不足時に本文を変更せず装飾なしまたは互換パーツへ縮退できる。 ｜ 検証: REQ-LOGIC-09 ｜ 正本: `categories/logic-requirements_v1.md`
+- [ ] AC-L1-LOGIC-10: Pattern・Profile・記事slot・CMS size・model versionから画像生成を再現し、技術的不成立とadvisoryを区別できる。 ｜ 検証: REQ-LOGIC-10 ｜ 正本: `categories/logic-requirements_v1.md`
+- [ ] AC-L1-LOGIC-11: Provider課金前に入力・固定商品枠・請求reserve・接続・技術上限を判定し、readyまたは再開条件を返せる。 ｜ 検証: REQ-LOGIC-11 ｜ 正本: `categories/logic-requirements_v1.md`
 
 ### measurement-operations-requirements_v1
 

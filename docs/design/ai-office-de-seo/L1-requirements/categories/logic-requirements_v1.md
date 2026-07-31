@@ -1,7 +1,7 @@
 ---
 document_id: AOS-L1-LOGIC-REQUIREMENTS
-title: AI Office de SEO ロジック要求 v1.1
-version: 1.1
+title: AI Office de SEO ロジック要求 v1.2
+version: 1.2
 layer: L1
 kind: logic_requirements
 status: draft
@@ -63,28 +63,23 @@ updated_at: 2026-07-30
 
 リライトと全文再生成はWordPress下書きまで自動化できるが、公開記事への更新はユーザー承認を必須とする。重大品質不合格、YMYL追加条件、虚偽・欺瞞、スパム、構造破壊等のhard gate該当成果は通常承認だけでは更新できない。同一権限者が対象、警告、未解消項目、責任境界を二段階で確認し、版付き同意書へ同意した場合だけ手動公開できる。異なる2名による承認は必須としない。予算超過、stale根拠、Kill Switchは引き続き公開を停止する。
 
-本文生成・リライト完了後に装飾工程を実行し、装飾済みコンテンツをWordPress下書きとして保存する。最終プレビューはWordPressが発行する認証付きPreview URLを正規表示とし、当該Siteの実テーマ、ブロック、CSS、表示系プラグインを通した結果を確認してから公開する。AI Office内のHTML表示は簡易確認に限定し、正規プレビューと同一であることを保証しない。
+### REQ-LOGIC-08 CMS出力方式の選択
 
-WordPress AdapterはConnection Profileで取得可能な範囲の投稿ID、編集URL、Preview URL、登録Media ID・URL、投稿状態を下書き作成応答として返す。AI Officeは同一相関IDへ保存し、確認導線と承認操作を提供する。ユーザー承認後の公開・更新命令も選択中のAdapter経由で実行し、結果イベントを記事遍歴へ記録する。
+入力は、`REQ-INT-05` が返す投稿単位のCompatibility Matrix、対象が新規か既存か、元記事ID、許可operation、ユーザー選択である。出力形式・縮退順序・保持すべきWordPress内部データは `REQ-INT-05` を正本とし、本要求で再定義しない。
 
-WordPress出力はClassic Editor、Block Editor、iframe／non-iframe、Content-Only Pattern、第三者Page BuilderをCapabilityとして判別し、対象投稿タイプと記事の実効編集方式に合う形式を選ぶ。最新安定版を主検証基準とし、保守中の旧系列も最新security patchとCapability Testを満たす範囲で受け入れる。7.0系のVisual Revisions、Content-Only mode、Isolated Editorは利用可能能力として記録するが、記事本文の新しい正本形式とはみなさない。未対応方式には推測で構造を書き込まず、安全な縮退またはユーザー対応へ切り替える。
+判定は、互換性が `full` なら対応Adapter、`degraded` なら許可された縮退経路、`update_required / unsupported / unknown` なら既存記事を上書きしない別成果へ遷移する。既存記事の安全な更新可否がunknownの場合は更新だけを `awaiting_user` とし、分析・Recommendation・成果物生成は継続する。出力は選択経路、根拠、Compatibility Matrix version、外部投稿ID、元記事との関係、次の操作を返す。
 
-Page Builder CapabilityはSite単位だけでなく対象投稿単位で判定し、Builder識別子、post meta、shortcode、block namespace、template、投稿タイプ、利用Plugin、検出confidenceを返す。未知または複数Builder混在時は自動的に対応済みとみなさない。
+再計算はConnection Profile、WordPress・Plugin・Builder version、投稿タイプ、対象記事の実効Editor、ユーザー選択の変更時に行う。同一入力と冪等キーでは別投稿を重複作成しない。
 
-出力経路は次の順で解決する。
-
-1. 対応済みBuilder Adapterによる構造化下書き。
-2. 対象投稿タイプで利用可能なWordPress標準Block Editorの別下書き。
-3. Classic Editor互換HTMLの別下書き。
-4. HTML／Markdown／画像等の成果物持ち出し。
-
-既存Builder記事のリライトで1を利用できない場合、2または3を既存URLへ直接適用せず、差分案または別下書きとして出力する。未知のpost meta、shortcode、Builder JSON、template dataを削除・再構成しない。Builder対応不能を記事生成失敗とせず、選択可能な縮退成果と制限理由を返す。
-
-WordPress送信後の下書きは引渡し済みSnapshotとして扱い、標準WorkflowではAI Officeから再取得・上書きしない。WordPress内編集、AI生成版との差分表示、変更履歴取得は別機構の後続要件とし、初期リリースではWordPress標準編集機能との自動同期を行わない。後続機構で取得する差分は、ユーザー同意の範囲で品質改善・Site学習へ利用できるが、取得差分を根拠に本文を自動変更しない。
+### REQ-LOGIC-09 装飾方式
 
 装飾工程はSiteのWordPress Capabilityを解析し、テーマ、標準ブロック、独自ブロック、ショートコード、登録済みCSS classを候補化する。利用候補は互換性、依存プラグイン、Preview可否とともにユーザーへ提示し、選択・承認されたパーツだけを生成に使用する。
 
 装飾学習は言い回し学習から分離し、既存記事から抽出した頻出ブロック、配色、CTA、画像比率、装飾パターンを候補として提示する。ユーザーが選択した候補だけをSite装飾プロファイルへ登録する。
+
+入力は本文完成Snapshot、Site装飾プロファイル、`REQ-INT-05` の利用可能Capability、ユーザーが許可したパーツである。互換性未確認・依存Plugin不足・Preview不能なパーツは自動選択せず、装飾なしまたは互換パーツへ縮退する。出力は装飾済み成果、利用パーツ、依存関係、Preview可否、縮退理由を返し、本文の意味内容を装飾工程で変更しない。
+
+### REQ-LOGIC-10 アイキャッチ画像生成
 
 初期リリースの生成画像はアイキャッチに限定する。画像最適化後にWordPress Media APIへアップロードし、成功時に返されたMedia ID・URL・派生サイズをfeatured mediaへ参照設定する。記事本文の送信ペイロードへbase64等で画像本体を埋め込まない。画像アップロードは本文下書き作成と分離して冪等化し、ファイルサイズ、解像度、再試行回数を制御する。
 
@@ -112,7 +107,13 @@ variation toleranceは少なくとも `fixed`、`controlled`、`creative` を持
 
 WordPressから公開・更新イベントを受信した場合は、WordPressの更新日時を記事の最新変更日時として遍歴へ追加する。これは記事変更履歴であり、過去Snapshotや当時の施策・評価記録を上書きしない。変更内容を取得できない初期リリースでは、更新日時だけを根拠に変更量やSEO影響を断定しない。
 
+入力契約は、Featured Image Pattern version、Image Style Profile version、記事slot、CMS要求size、参照画像hash、quality、model snapshot、予算である。生成状態は `configured → estimated → generating → generated → selected/rejected → media_registered` とし、技術的不成立またはユーザー設定不一致だけを `blocked`、主観的な差異を `advisory` とする。同一入力の重複生成は防ぐが、ユーザーが明示した再生成は新しい有償jobとする。
+
+### REQ-LOGIC-11 生成Preflight
+
 生成開始前に、選択品質、入力、予算、固定価格内の限定Repair枠で成果生成が成立するかをPreflight判定する。成立しない見込みなら生成を開始せず、品質変更、入力追加または別実行を提案する。1回の生成価格は途中Repair回数で変動させず、ユーザー希望による再生成は新しいジョブとしてクレジットを消費する。サービス障害による中断はcheckpointから再開し、同一成果の再開を再生成として課金しない。
+
+入力はWorkflow version、必須入力availability、品質段階、Provider route候補、`REQ-COST-04` の原価見積、`REQ-BILLING-04` の請求reserve、外部接続、実行上限である。全必須入力が利用可能で、固定商品枠と技術上限の双方に収まる場合だけ `ready` とする。不足時は `input_required / budget_required / connection_required / capacity_wait` のいずれかと、不足項目、変更候補、再計算条件を返す。PreflightはProviderの有償呼出し前に完了し、価格・route・入力・接続・設定version変更時に再計算する。
 
 ### REQ-LOGIC-05 急変時の推薦抑制
 
@@ -161,3 +162,7 @@ AIO観測は短期間の表示差へ追従して反復取得せず、週次ま�
 - [ ] AC-L1-LOGIC-05: 急変対象が即時推薦されず要監視キューへ移り、ユーザー指定予定は継続し、システム予定は選択理由と現在順位により差し替えまたは続行される。
 - [ ] AC-L1-LOGIC-06: プライマリ＋セカンダリの割当クラスタへの順位付与を評価し、順位なしは自動修復せず診断内容をユーザーへエスカレーションし、CVなし単体を失敗とせず、十分な母数がある場合だけCVRを評価できる。
 - [ ] AC-L1-LOGIC-07: 直近1か月で1,000クリック到達後も記事単位で予測可否を判定し、予測可能数・ロック数・不足データを返す。
+- [ ] AC-L1-LOGIC-08: 投稿単位のCompatibility Matrixと対象operationから出力経路を再現でき、unknown時も既存記事の危険な上書きだけを保留できる。
+- [ ] AC-L1-LOGIC-09: 許可済み装飾だけを適用し、互換性不足時に本文を変更せず装飾なしまたは互換パーツへ縮退できる。
+- [ ] AC-L1-LOGIC-10: Pattern・Profile・記事slot・CMS size・model versionから画像生成を再現し、技術的不成立とadvisoryを区別できる。
+- [ ] AC-L1-LOGIC-11: Provider課金前に入力・固定商品枠・請求reserve・接続・技術上限を判定し、readyまたは再開条件を返せる。

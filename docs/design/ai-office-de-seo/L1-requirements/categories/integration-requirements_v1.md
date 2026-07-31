@@ -1,7 +1,7 @@
 ---
 document_id: AOS-L1-INTEGRATION-REQUIREMENTS
-title: AI Office de SEO 外部連携要求 v1.0
-version: 1.0
+title: AI Office de SEO 外部連携要求 v1.1
+version: 1.1
 layer: L1
 kind: integration_requirements
 status: draft
@@ -67,6 +67,19 @@ RSS／AtomはPluginを導入できない環境における公開済みコンテ�
 
 Page Builder／独自テーマは、検出できることと安全に書き込めることを分離する。対応済みAdapterは対象Builder version、投稿タイプ、読取、下書き、更新、Preview、Revisionの対応表とContract Testを持つ。検出だけ可能なBuilderへ書込み互換を表示しない。
 
+WordPress互換性と出力縮退の正本は本要求とする。Compatibility MatrixはWordPress version、投稿タイプ、Core REST、Media、Classic／Block Editor、Block API version、iframe可否、Content-Only、Visual Revisions、Preview、Revision、Tracker、Thin Plugin、第三者Page BuilderをCapability単位で判定し、`full / degraded / update_required / unsupported` を返す。version文字列だけで対応可否を決めず、対象記事の実効Editorと投稿単位のBuilder識別子、post meta、shortcode、block namespace、template、利用Plugin、検出confidenceを評価する。
+
+出力経路は次の順序で解決する。
+
+1. 対応済みBuilder Adapterによる構造化下書き。
+2. 対象投稿タイプで利用可能なWordPress標準Block Editorの別下書き。
+3. Classic Editor互換HTMLの別下書き。
+4. HTML、Markdown、画像等の成果物持ち出し。
+
+対応Adapterがない既存Builder記事へ2または3を直接上書きしない。元記事ID、元URL、差分、選択した縮退経路を保持し、別下書きまたは持ち出し成果として返す。未知のpost meta、shortcode、Builder JSON、template dataを削除・再構成しない。Builder未対応を分析・Recommendation・成果物生成の全体失敗とせず、既存記事の構造を破壊し得る更新操作だけを保留する。
+
+下書き作成応答は、外部投稿ID、編集URL、Preview URL、Media ID・URL、投稿状態、利用Capability、Compatibility Matrix version、縮退理由、元記事との関係、冪等キーを返す。WordPressへ引き渡した下書きはCMS側の成果物とし、初期WorkflowではAI Officeから再取得・上書きしない。
+
 ### REQ-INT-06 CMS Adapter拡張境界
 
 記事制作・リライト・計測WorkflowはCMS非依存のPublication Contractを経由し、WordPressは初期Adapterとして実装する。他CMSの検証環境がない初期段階では、WordPress以外を対応済み・互換保証・提供予定確定として表示しない。将来Adapterを追加する場合はCMSごとの実環境でContract TestとE2E検証を通し、対応version、利用可能機能、制限、縮退動作を版管理する。
@@ -83,6 +96,6 @@ Page Builder／独自テーマは、検出できることと安全に書き込�
 - [ ] AC-L1-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。
 - [ ] AC-L1-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。
 - [ ] AC-L1-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。
-- [ ] AC-L1-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離できる。
+- [ ] AC-L1-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離し、投稿単位のCompatibility Matrixから安全な出力経路を決定できる。
 - [ ] AC-L1-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。
 - [ ] AC-L1-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。
