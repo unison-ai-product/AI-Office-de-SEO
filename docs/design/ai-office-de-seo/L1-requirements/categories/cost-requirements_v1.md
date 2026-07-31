@@ -59,6 +59,8 @@ updated_at: 2026-07-30
 
 見積はworkflow version、Provider route、品質グレード、入力規模、ArticleSummary利用可否、cache状態、外部取得範囲を入力とする。見積式と単価表はversion固定する。
 
+初期企画では標準的な記事生成1件当たり提供原価を約350円と仮置きする。ただし記事数・販売枠の根拠にはせず、実装後に品質段階別のtoken、画像、外部取得、Repair、cache、インフラ、失敗原価を実測して置換する。350円との差異と内訳をβ期間中に計測し、Price Catalog確定前に採算性を再評価する。
+
 ## 5. 実績精算  ［REQ-COST-05］
 
 - 各attemptの使用量と費用をappend-onlyで記録する。

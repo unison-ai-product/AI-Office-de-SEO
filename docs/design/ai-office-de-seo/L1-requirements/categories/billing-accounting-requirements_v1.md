@@ -39,6 +39,8 @@ updated_at: 2026-07-30
 
 品質段階は `economy / standard / high / premium` 等の安定した商品コードで管理し、Provider名・モデル名を商品コードにしない。`GPT Luna / GPT tera / Sonnet / Opus` 等の名称を表示する場合は商品上の暫定ラベルまたはrouting aliasとして扱い、実際のProvider、model、snapshot、調査量、検査、Repair、fallbackはversion付きModel Registryで解決する。
 
+個人・小規模利用向けの初期商品仮説として、最低品質段階と最小クレジットを含む月額19,800円（税込・税別の最終表示はPrice Catalog確定時に決定）のEntry Planを置く。法人・個人で別システムを作らず、利用量、品質、組織機能、バックアップ、サポート範囲を商品差とする。19,800円は販売確定価格ではなく、β原価・需要検証前の企画基準値としてversion管理する。
+
 ### REQ-BILLING-02 契約・Subscription正本
 
 法人・個人の契約は、契約主体、Price Catalog version、状態、開始日、更新日、請求周期、支払方法、通貨、税情報、解約予定、外部決済IDを持つ。内部契約状態とStripe等の外部状態を区別し、外部イベントだけで認可・利用可能状態を直接上書きせず、検証済み状態遷移を通す。
@@ -48,6 +50,8 @@ updated_at: 2026-07-30
 各プランは月間クレジット利用上限と週次生成枠を持つ。記事本数を固定で請求せず、選択品質とPreflight予測消費から作成可能本数を算出する。追加クレジットは商品上の利用枠を増やすが、技術的な同時実行数、rate limit、queue制御を解除しない。
 
 クレジットは付与元、付与量、残量、有効開始、失効日、繰越可否、返金可否、契約・購入・補償との参照を持つlotとして管理する。消費順は期限が近いlotを優先し、同一期限では付与時刻順とする。失効・繰越はPrice Catalogと契約versionに従い、後から規則を変えて既存lotを再計算しない。
+
+初期方針では月額プラン付与分は当該請求期間末に失効し、追加購入分は購入から180日を上限とする。追加購入creditが資金決済法上の前払式支払手段に該当するか、有効期限表示、未使用残高、払戻し、販売停止時対応を販売開始前に法務・決済確認する。確認結果なしに180日を延長しない。
 
 ### REQ-BILLING-04 Reserve・Commit・Release
 
@@ -91,6 +95,12 @@ Price Catalog、契約、invoice、ledger eventはISO通貨コードを持ち、
 
 顧客請求は本要求のledger、提供原価は `REQ-COST-*` を正本とする。商品・契約・tenant・Site・workflow・job単位で売上と原価を同じ分析軸へ接続し、粗利を導出できるようにするが、原価eventを顧客請求ledgerへ混在させない。
 
+### REQ-BILLING-13 支払失敗・Dunning
+
+更新支払失敗時はStripe Smart Retries相当の回収処理を使用し、初期値を14日間・最大8回の再試行とする。`invoice.payment_failed / invoice.updated / invoice.paid / subscription.updated` 等の検証済みeventから、次回試行、残り期間、支払方法更新導線を通知する。hard declineまたは認証要求では無意味な連続試行を行わず、支払方法更新を要求する。
+
+猶予期間中は契約を `past_due` とし、既存データの閲覧・export・支払修正を維持する一方、新規有償job、自動投稿、新しい追加費用の発生を停止する。支払成功時は冪等に復旧する。14日経過後は `unpaid` とし、データ保持方針に従ってread-only accessまたはexport導線を維持するが、有償機能を再開しない。初回契約の決済失敗は更新失敗と区別し、支払成功前に利用枠を付与しない。
+
 ## 受入条件
 
 - [ ] AC-L1-BILLING-01: 契約時のPrice Catalog versionから商品、価格、付与量、制限、適用期間を再現できる。
@@ -105,3 +115,4 @@ Price Catalog、契約、invoice、ledger eventはISO通貨コードを持ち、
 - [ ] AC-L1-BILLING-10: 通貨最小単位、税、丸め、換算rateのversionから請求額を再計算できる。
 - [ ] AC-L1-BILLING-11: 顧客と内部Roleの課金操作がサーバー側で認可され、Operatorが調整を実行できない。
 - [ ] AC-L1-BILLING-12: 請求ledgerと原価eventを混在させず、共通分析軸から商品・契約・job別粗利を導出できる。
+- [ ] AC-L1-BILLING-13: 更新支払失敗後14日間の再試行・通知・機能制限と、支払成功時の復旧を二重付与なしに実行できる。
