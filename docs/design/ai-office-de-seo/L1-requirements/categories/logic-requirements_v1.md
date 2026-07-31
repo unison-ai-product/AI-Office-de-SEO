@@ -37,7 +37,7 @@ updated_at: 2026-07-30
 
 計算で使う実行原価・予算・停止条件は `cost-requirements_v1.md` を参照し、ロジック文書内で単価を重複定義しない。
 
-詳細文書: `../logic/keyword-dynamic-recommendation-logic-requirements_v1.md`。
+詳細文書: `../logic/keyword-dynamic-recommendation-logic-requirements_v1.md`、`../logic/crawler-ai-visibility-logic-requirements_v1.md`。
 
 ## 横断要求
 

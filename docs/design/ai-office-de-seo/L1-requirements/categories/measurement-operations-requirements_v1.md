@@ -84,6 +84,14 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 顧客申告、alert、job失敗、操作問い合わせを相関ID、分類、回避策、原因、解決versionへ接続し、同一問題を検索可能にする。再発傾向は要求、runbook、監視、FAQ、テストへ還流し、個別担当者の記憶だけを運用正本にしない。
 
+### REQ-MEASURE-12 検索・AI可視性ファネル
+
+検索およびAI面を `取得可能 → 実取得 → 検索候補・回答取得 → 順位／引用／言及 → 参照流入 → CV` の段階で計測する。ユーザー画面の主要評価は「SEO／AI取得性」と「検索順位／AI回答表示性」の二軸とするが、内部データでは各段階を分離し、crawlをindex・citationの証拠、citationを流入・CVの証拠として扱わない。
+
+SEO取得性はGooglebot等、AI取得性はProviderおよびBot用途別に、許可状態、probe成功、検証済み実crawl、2xx／3xx／4xx／5xx／429、本文完全性、応答時間、coverage、freshnessを表示する。SEO表示性はGSCのimpression、順位、click、AI表示性はprompt cluster別の回答面出現、ブランド言及、URL引用、引用share、反復時の安定性、AI referralをavailabilityと観測方法付きで表示する。AI面を通常検索実績へ合算するProviderでは、分離不能な値を推定でAI専用値に割り当てない。
+
+二軸は `取得高・表示高=維持／保護`、`取得高・表示低=選択性・内容・根拠・競合を診断`、`取得低・表示高=cache・第三者・過去取得等を確認し技術要監視`、`取得低・表示低=取得障害を先に診断` の決定表へ接続する。総合点だけで原因を隠さず、構成値、confidence、未観測理由、最終観測日時を保持する。
+
 ## 受入条件
 
 - [ ] AC-L1-MEASURE-01: 同一のページ遷移から再現可能なイベント結果が得られる。
@@ -97,3 +105,4 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 - [ ] AC-L1-MEASURE-09: canaryの新旧KPIを比較し、停止条件から対象versionをrollbackできる。
 - [ ] AC-L1-MEASURE-10: capacity予測から対話API優先のscale・rate・batch制御を実行できる。
 - [ ] AC-L1-MEASURE-11: support事例を相関IDと解決versionへ接続し、要求・runbook・テストへ還流できる。
+- [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。

@@ -92,6 +92,14 @@ WordPress互換性と出力縮退の正本は本要求とする。Compatibility 
 
 画像生成・編集の初期ProviderはOpenAI GPT Image 2（`gpt-image-2`）とする。Provider request／responseの識別子・状態等のメタデータ、model snapshot、prompt version、reference hash、quality、size、usage、費用、失敗分類を画像jobへ記録し、raw payloadを恒久保持しない。Provider障害時は本文生成・公開全体ではなく画像工程だけを保留・縮退できる。
 
+### REQ-INT-08 SEO／AIクローラー観測連携
+
+Googlebot等の検索クローラーと、OAI-SearchBot等のAI検索・回答取得、インデックス、学習等のクローラーを、共通のCrawler Observation Contractで受け入れる。観測値は `provider、verified_bot_id、bot_purpose、site、URL、HTTP状態、bytes、latency、cache、observed_at、source、verification_method` を持ち、検索クローラーとAIクローラー、ならびにAI Botの用途を混合しない。
+
+初期は外部fetch probeによるrobots、meta robots、canonical、HTTP、redirect、本文取得可能性、JavaScript依存、WAF／認証阻害の外形診断を提供する。後続でAWS CloudFront／WAF等のserver・edge logを受け入れ、User-Agent文字列だけで実在Botと断定せず、公式IP範囲、reverse DNS、edgeのverified bot識別等、Providerごとの検証方法とversionを記録する。さらに後続でCloudflare等のAdapterを追加できるが、未接続のProviderを実測済みと表示しない。
+
+client-side Trackerは人間の遷移・CV用であり、JavaScriptを実行しないCrawler観測の必須経路にしない。生access logは短期object storageへ隔離し、日次集約後に削除する。robots変更やWAF allowlist等のサイト設定修正は診断結果と手順をユーザーへ提示し、本連携が無断で変更しない。
+
 ## 受入条件
 
 - [ ] AC-L1-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。
@@ -101,3 +109,4 @@ WordPress互換性と出力縮退の正本は本要求とする。Compatibility 
 - [ ] AC-L1-INT-05: 認証済みCore RESTと投稿権限がある場合だけ記事を送信し、未接続・読取専用・認証切れ・権限不足時は送信を止めたまま分析・生成・持ち出しを継続できる。
 - [ ] AC-L1-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。
 - [ ] AC-L1-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。
+- [ ] AC-L1-INT-08: SEO／AIクローラーを共通契約で用途別に観測し、初期の外形診断と後続の検証済みserver／edge log実測を混同せず、client-side Trackerなしでも取得状態を判定できる。

@@ -105,6 +105,14 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 
 顧客実績の事例利用は、匿名集計と個別事例を分離する。匿名集計は利用目的を公表し、最小標本数等の再識別防止条件を満たす。個別事例は明示opt-in、許諾対象、項目、表示名、期間、媒体、撤回条件を記録し、許諾範囲だけをversion付きShowcase Snapshotとしてマスターテナントへコピーする。顧客tenantへの横断参照を許可せず、撤回時は新規利用を停止し、公開物・cache・検索索引を追跡して削除または更新する。
 
+### REQ-DATA-14 Crawler・AI可視性データ
+
+Crawler観測は `Site × URL × 日 × Provider × verified Bot × Bot用途 × source` を集約単位とし、request数、HTTP状態別件数、bytes、latency分位、cache状態、最終取得時刻、verification method／versionを保持する。外形probeと実access log、検索BotとAI Bot、検索・回答取得・インデックス・学習等の用途を別値として保持する。
+
+回答面観測は `Site × prompt cluster × AI surface × locale／device等の観測条件 × observation run` を単位に、回答面出現、ブランド言及、引用URL、引用位置・share、sentiment、実行日時、取得方法、再現回数、confidenceを保持する。検索順位、AIO、AI回答、AI referral、CVは共通URL／clusterへ接続するが、provenanceを保ち別の事実として保存する。
+
+生server／edge logは暗号化object storageへ短期保持し、Siteごとの保持上限と削除jobを持つ。通常DBには日次集約と異常sampleの参照だけを置き、IP、header全文、本文、無制限なrequest列を恒久保持しない。
+
 ## 受入条件
 
 - [ ] AC-L1-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
@@ -120,3 +128,4 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 - [ ] AC-L1-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。
 - [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴とWordPress Media参照を保持できる。
 - [ ] AC-L1-DATA-13: マスターテナントの自社実績と明示許諾済みShowcase Snapshotだけを紹介記事・デモへ使用し、顧客横断参照なしに許諾撤回を反映できる。
+- [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。
