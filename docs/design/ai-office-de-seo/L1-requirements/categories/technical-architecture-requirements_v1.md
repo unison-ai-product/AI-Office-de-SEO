@@ -82,6 +82,8 @@ Provider・model追加時は共通Contract Test、代表SEO taskのgolden evalua
 
 将来の拡張アプリはCore内部コードへ無制限に組み込まず、version付きApp ManifestとCapability Contractを介して、画面slot、command、event購読、job、外部Connector、保存schemaを宣言する。Coreはapp key／version、tenant／Site、Entitlement、Permission、予算、rate limitを検証してから実行する。アプリ停止・削除時もCore Workflowを壊さず、固有データのexport、保持、削除、再導入を定義する。特定AI・CMS・hostingの変化は可能な範囲でアプリ更新へ隔離する。
 
+Agent拡張は既存のPack問い合わせ方式を正規経路とする。App ManifestはRole Profile、Workflow、Prompt Pack、Source Pack、Schema、Catalog、Tool Capabilityのkeyと互換versionだけを宣言し、Pack本文や任意system promptを埋め込まない。インストール済みappのkeyだけをCatalogへ公開し、Ticket発行時にEntitlementとSite Scopeを検証して、既存Pack Resolver／Injectorからversion固定して解決する。
+
 ### REQ-TECH-11 API・イベント契約
 
 API、Webhook、イベント、ジョブ、Pack、Snapshotはversion付きスキーマを持ち、入力検証、後方互換期間、廃止手順を定義する。イベントは発生元、tenant/site、actor、相関ID、冪等キー、schema version、発生時刻を持ち、本文全文・秘密情報を含めない。

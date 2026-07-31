@@ -139,6 +139,8 @@ Executorは直テーブルにアクセスせず、必要データを Source Need
 
 Workflowは、ステージ列・遷移・ループ・停止条件を持つ実行手順であり、`workflowKey`で参照し版固定する（`REQ-PACK-04`）。専用エージェントを増やさず、専門性はWorkflow・Pack・Schemaに寄せる。
 
+将来の拡張アプリもこの原則を維持する。Officeに専門Agentが追加されても、実行時はApp Manifestが宣言したRole Profile、Workflow、Prompt／Source Pack、Schema、Tool Capabilityのキーを既存Ticketへ束ね、各ExecutorのPackキーインジェクターが解決する。画面上のAgent追加と実行基盤のプロセス追加を同義にせず、Pack差替えで成立する専門性のために専用runtimeを増やさない。
+
 Workflowは権限スコープを持つ。許可ツール・アクション（外部取得、WP書き込み、投稿予約など）はWorkflowに定義し、そのWorkflow配下で実行される全Ticketに最小権限として適用する。Ticketは個別に権限を持たず、`workflowKey`で権限を継承する。権限はサブエージェントへ固定制約として注入される側であり、タスク固有の指示は`userPrompt`（自由入力）で与える（`REQ-AGENT-07`）。**強制ポイントはプロンプトではない**: system promptへの権限注入は表明（モデルへの教示）であり、実際の強制はツール実行層（サンドボックス内のtool dispatch）でWorkflow定義とサーバー側照合するdefault-denyで行う（`REQ-RWR-02`のTool Server限定と同型を全Workflowへ一般化）。モデルが未許可ツールを要求した場合は実行せず拒否し、監査ログに残す（`REQ-SEC-07`と同じfail-close）。
 
 主要Workflow（列挙）:

@@ -384,6 +384,10 @@ Pack/Catalog の引き当ては、ステージ別の一枚テーブル（`REQ-PA
 
 Pack本体はOrchestrator側の正本であり、Executorには必要最小限の **PackExtract** を渡す（`REQ-PACK-06`）。PackExtractには構造・few-shot・制約を必ず含め、巨大なSource Pack全文・Webページ本文全文・記事本文全文は渡さない。PackExtractは可能な限りcanonical JSON化し、同一Pack hashで再利用する（Prompt Cache、`REQ-AGENT-03`）。User PromptはPackより後方のdynamic suffixに置く。Packが存在しない・古い・サイト境界外の場合は、捏造せずTicketを `blocked` / `needs_pack` にする。Pack Dispatch は `Pack + User Prompt` を発行する実行単位である。
 
+将来の拡張アプリは専用Executorを無条件に増設せず、App Manifestから `required_agent_roles[]、workflowKeys[]、promptPackKeys[]、sourceNeedKeys[]、schemaKeys[]、catalogKeys[]、toolCapabilityKeys[]` を登録する。Task起動時は既存Ticketがキーだけを発行し、Pack Resolverがapp Entitlement、Site割当、Permission、app／Pack互換versionを検証して通常と同じPack問い合わせ・注入経路で解決する。アプリの説明文、Officeの部屋名またはAgent外見をPrompt Packとして直接実行しない。
+
+アプリ固有の専門Agentは新しい人格モデルではなく、原則として既存ExecutorにRole Profile、Workflow、Pack、Tool集合を束ねた実行構成とする。独立Executorが必要な場合は、隔離、費用、latency、失敗domain、追加権限を設計審査で示す。アプリ停止・version不一致・Entitlement失効時は `app_required／app_update_required／permission_required` としてfail-closeし、Packを推測補完しない。
+
 ## 16. Pack Compiler と User Knowledge  ［REQ-PACK-16］
 
 見本記事10本は本文保持せず、抽出後に用途別Packへ圧縮する。`compressed_sample_profile_pack` は廃止し、Pack Compilerが次を生成する: Domain Positioning Pack（Research/Outline/Heading Structure/Site Authority上流）、Content Regulation Pack（Writing/QA/Repairへ常時注入）、Site Authority Pack、CTA Policy Pack、Regulation Policy Pack。`User Knowledge Pack` はユーザー指定情報の正本であり、サンプル記事由来の推定より優先する。矛盾は `pack_compile_warnings` に保存する。
