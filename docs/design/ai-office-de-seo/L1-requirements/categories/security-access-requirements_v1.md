@@ -74,6 +74,8 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 
 各Feature Objectには実行時Principalを割り当て、tenant／Site、Object key／version、command、resource、外部送信先、予算を含むObject Execution Contextを強制する。Object Aへ与えたPermissionをObject Bへ継承せず、Package内でもObjectごとに最小権限を評価する。停止・アンインストール・Entitlement失効時は新規token、job、外部送信を停止し、既発行資格情報を失効またはrotateする。
 
+Feature ProviderがMCP等の動的Discoveryを利用する場合も、接続先が提示したTool、Resource、Prompt、Schemaを自動承認しない。前回承認済みManifestとの差分、追加Permission、外部送信、破壊的operation、課金meterを検査し、Scopeが増える更新は管理承認と顧客再同意を要求する。Provider由来の説明・Resource・Promptは外部入力として扱い、固定安全制約を上書きさせない。
+
 ### REQ-ACCESS-11 監査・なりすまし表示
 
 認証、拒否、Role変更、秘密アクセス、step-up、代理アクセス、公開、課金、Kill Switch、設定変更をappend-only監査eventへ記録する。代理操作中はacting principalとcustomer contextを画面・API・監査で分離し、顧客本人の操作として記録しない。監査eventにも本文・秘密原文を含めない。

@@ -34,6 +34,10 @@ Coreへ固定するのは、tenant／Site境界、認証・認可、契約・Ent
 
 Feature Objectはclass継承ではなく、安定IDとversionを持つ構成オブジェクトである。`manifest、capabilities、commands、events、workflows、Pack keys、tools、schemas、data ownership、UI slots、Office scene、permissions、entitlements、billing meters、dependencies、lifecycle` を宣言する。アプリは1個以上のFeature Objectを販売・導入単位として束ねるPackageであり、Feature Objectそのものと同一視しない。
 
+接続モデルはCoreへコードを埋め込む従来型Pluginより、MCP ServerのようにFeature Providerが利用可能なCapability、Tool、Resource、Prompt／Pack、Schemaを公開し、CoreがManifestを発見・検証して呼び出す方式を基準とする。ただしMCP protocol自体を必須実装へ固定せず、同一のFeature Object Contractをin-process module、別process、remote service、将来のMCP Adapterで実装できるようにする。
+
+用語は、内部の最小機能単位を `Feature Object`、それを提供する接続先を `Feature Provider`、接続設定を `Feature Connection`、複数Objectを束ねる販売・導入単位を `App Package` とする。「Plugin」はWordPress Plugin等の実在する連携方式または一般向け説明に限定し、Core内部へ任意コードを挿入できる意味では使用しない。
+
 ### REQ-TECH-02 軽量データ構成
 
 トランザクションDBには業務上の正本、短い派生事実、参照キー、状態、監査メタデータだけを保持する。記事本文全文、生HTML、長い外部レスポンス、無制限配列を通常テーブルへ保持してはならない。用途別に容量上限、索引上限、ロールアップ、削除条件を持つ。
@@ -93,6 +97,8 @@ Agent拡張は既存のPack問い合わせ方式を正規経路とする。App M
 API、Webhook、イベント、ジョブ、Pack、Snapshotはversion付きスキーマを持ち、入力検証、後方互換期間、廃止手順を定義する。イベントは発生元、tenant/site、actor、相関ID、冪等キー、schema version、発生時刻を持ち、本文全文・秘密情報を含めない。
 
 Feature Object間は直接テーブル参照・内部関数呼出しへ依存せず、公開command、query、event、Source Pack、Snapshot契約で連携する。Objectは自分が所有する状態だけを更新し、他Objectの変更はcommandまたはeventで依頼する。依存は安定keyと互換version範囲で宣言し、循環依存、未宣言依存、同じ業務事実の複数Object所有を検査する。
+
+Feature Connectionは `initialize／capability discovery／health／invoke／cancel／event subscription／version negotiation／shutdown` を共通操作として持つ。remote Providerは認証、署名、tenant／Site Scope、timeout、rate limit、idempotency、stream上限、egress allowlist、監査を必須とし、接続先が返す説明文・Prompt・Schemaを信頼済みsystem指示として無条件に採用しない。公開されたTool／ResourceはPlatform側Catalogで承認したkeyとversionだけを有効化する。
 
 ### REQ-TECH-12 設定とversion固定
 

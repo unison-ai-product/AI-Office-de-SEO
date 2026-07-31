@@ -386,6 +386,8 @@ Pack本体はOrchestrator側の正本であり、Executorには必要最小限�
 
 将来の拡張アプリは専用Executorを無条件に増設せず、App Manifestから `required_agent_roles[]、workflowKeys[]、promptPackKeys[]、sourceNeedKeys[]、schemaKeys[]、catalogKeys[]、toolCapabilityKeys[]` を登録する。Task起動時は既存Ticketがキーだけを発行し、Pack Resolverがapp Entitlement、Site割当、Permission、app／Pack互換versionを検証して通常と同じPack問い合わせ・注入経路で解決する。アプリの説明文、Officeの部屋名またはAgent外見をPrompt Packとして直接実行しない。
 
+Feature ProviderがMCP等を介してTool／Resource／Prompt候補を公開する場合、Discovery結果をそのままTicketへ入れず、App Manifestとの一致確認とPlatform Catalogへの承認登録を経て安定keyへ変換する。TicketとOrchestratorは接続先固有名や本文ではなく承認済みkeyだけを扱い、Pack Resolverがlocal／remote transport差を隠蔽する。
+
 アプリ固有の専門Agentは新しい人格モデルではなく、原則として既存ExecutorにRole Profile、Workflow、Pack、Tool集合を束ねた実行構成とする。独立Executorが必要な場合は、隔離、費用、latency、失敗domain、追加権限を設計審査で示す。アプリ停止・version不一致・Entitlement失効時は `app_required／app_update_required／permission_required` としてfail-closeし、Packを推測補完しない。
 
 ## 16. Pack Compiler と User Knowledge  ［REQ-PACK-16］
