@@ -455,6 +455,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-UPSELL-08: FAQチャットから根拠付き回答または適切な有人引継ぎへ到達でき、営業連携へ本文・秘密情報が渡らない。 ｜ 検証: REQ-UPSELL-08 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-09: 購入率だけでなく継続・利用・粗利・苦情・解約が計測される。 ｜ 検証: REQ-UPSELL-09 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-10: 製品不具合や設定不備を上位契約で解決させない。 ｜ 検証: REQ-UPSELL-01, REQ-UPSELL-02, REQ-UPSELL-03, REQ-UPSELL-04, REQ-UPSELL-05, REQ-UPSELL-06, REQ-UPSELL-07, REQ-UPSELL-08, REQ-UPSELL-09 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-11: 容量接近時にEntry／StandardへPrimeを提示し、Prime／EnterpriseではPlan変更と追加容量を比較して権限者が選択できる。 ｜ 検証: REQ-UPSELL-02, REQ-UPSELL-04, REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 
 ### incident-warranty-requirements_v1
 
@@ -561,6 +562,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。 ｜ 検証: REQ-SCREEN-14 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、保留理由、WordPress反映、再開・追加見積を同一相関IDで確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、解放条件と現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できない。 ｜ 検証: REQ-SCREEN-16 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。 ｜ 検証: REQ-SCREEN-17 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 
 ### security-access-requirements_v1
 
