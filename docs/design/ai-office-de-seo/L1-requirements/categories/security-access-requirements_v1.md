@@ -78,6 +78,12 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 
 全API、Repository、cache、queue、object key、search index、log、export、Webhookを対象に、別tenant/site ID、欠落Context、推測ID、期限切れ権限、Role変更直後、並行実行の越境負テストを持つ。新しいdata pathは負テストがない状態で本番公開しない。
 
+### REQ-ACCESS-13 マスターテナント・Showcase境界
+
+開発者スーパーアカウントおよびマスターテナントであっても、顧客tenantへの常時横断参照権限を持たせない。顧客実績をサービス紹介へ利用する場合は、`REQ-DATA-13` の明示許諾、許諾範囲、期限、撤回条件を検証する専用処理だけが、許可項目をversion付きShowcase Snapshotへコピーできる。コピー元tenant、実行者、許諾version、コピー項目、公開先、撤回・削除を監査する。
+
+限定TrialのCustomer Organizationも通常顧客と同じtenant分離を適用する。Trialであること、内部招待であること、開発者スーパーアカウントが発行したことを、顧客データへの広いアクセス権限や品質・公開ゲートの迂回根拠にしてはならない。
+
 ## 受入条件
 
 - [ ] AC-L1-ACCESS-01: 顧客ユーザーの資格情報で開発管理画面・APIへアクセスできない。
@@ -92,3 +98,4 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 - [ ] AC-L1-ACCESS-10: Executorが本番DBへ直接接続できず、許可toolのSite scopeを越えられない。
 - [ ] AC-L1-ACCESS-11: 代理操作のacting principalとcustomer contextを監査上区別できる。
 - [ ] AC-L1-ACCESS-12: 全data pathの越境負テストがCIまたはrelease gateで通過する。
+- [ ] AC-L1-ACCESS-13: マスターテナントが顧客tenantを直接参照できず、許諾済みShowcase Snapshotの作成・公開・撤回だけを監査可能な専用経路で実行できる。

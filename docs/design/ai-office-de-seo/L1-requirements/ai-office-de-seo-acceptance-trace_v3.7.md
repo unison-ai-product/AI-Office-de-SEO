@@ -371,6 +371,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-BILLING-12: 請求ledgerと原価eventを混在させず、共通分析軸から商品・契約・job別粗利を導出できる。 ｜ 検証: REQ-BILLING-12 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-13: 更新支払失敗後14日間の再試行・通知・機能制限と、支払成功時の復旧を二重付与なしに実行できる。 ｜ 検証: REQ-BILLING-13 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-14: 初期OFFの自動チャージについて残高しきい値・購入額・月間上限または無制限を権限者が設定でき、上限到達・決済失敗時に二重購入せず停止できる。 ｜ 検証: REQ-BILLING-14 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-15: 最大10社の招待制Trialを管理発行し、一般公開せず、終了時に明示契約なしで有償化しない。 ｜ 検証: REQ-BILLING-15 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-16: 月・年契約の期間末解約、自動更新通知、14日・利用履歴なしの返金判定、計画Upgrade、更新時Downgradeを再現できる。 ｜ 検証: REQ-BILLING-16 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 
 ### business-requirements_v1
 
@@ -386,6 +388,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-BUS-10: 例外時に影響範囲、担当、解除条件、期限、戻り先または終端が記録される。 ｜ 検証: REQ-BUS-10 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-11: 顧客ユーザーと当社内部管理領域が分離され、ManagerとOperatorの操作範囲が区別される。 ｜ 検証: REQ-BUS-11 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-12: 下位の画面、ロジック、データ、連携、技術、権限、非機能、費用、障害要求が対応する業務要求IDを参照する。 ｜ 検証: REQ-BUS-12 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-13: マスターテナントが一般顧客と同じSEO運用経路でサービス紹介記事を公開し、内部請求なしで実原価・流入・問い合わせ・CVを計測できる。 ｜ 検証: REQ-BUS-13 ｜ 正本: `categories/business-requirements_v1.md`
 
 ### cost-requirements_v1
 
@@ -431,6 +434,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DATA-10: 横断集計から顧客、Site、URLを特定できない。 ｜ 検証: REQ-DATA-10 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。 ｜ 検証: REQ-DATA-11 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴とWordPress Media参照を保持できる。 ｜ 検証: REQ-DATA-12 ｜ 正本: `categories/data-requirements_v1.md`
+- [ ] AC-L1-DATA-13: マスターテナントの自社実績と明示許諾済みShowcase Snapshotだけを紹介記事・デモへ使用し、顧客横断参照なしに許諾撤回を反映できる。 ｜ 検証: REQ-DATA-13 ｜ 正本: `categories/data-requirements_v1.md`
 
 ### design-experience-requirements_v1
 
@@ -543,6 +547,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-PAC-12: いずれの内部Roleでも安全不変条件を解除できない。 ｜ 検証: REQ-PAC-12 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 - [ ] AC-L1-PAC-13: 本番・非本番の権限、秘密情報、設定が分離され、管理操作を環境別に監査できる。 ｜ 検証: REQ-PAC-13 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 - [ ] AC-L1-PAC-14: Planをコード変更なしに追加・複製・改版・販売終了でき、価格・契約・利用枠・機能・品質・バックアップを設定し、既存契約を維持したまま対象と適用日を指定して変更・Rollbackできる。 ｜ 検証: REQ-PAC-14 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
+- [ ] AC-L1-PAC-15: internalマスターテナントと最大10社のTrialをAdminだけが発行・停止でき、通常の品質・境界・監査を迂回できない。 ｜ 検証: REQ-PAC-15 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 
 ### screen-operation-requirements_v1
 
@@ -578,6 +583,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-ACCESS-10: Executorが本番DBへ直接接続できず、許可toolのSite scopeを越えられない。 ｜ 検証: REQ-ACCESS-10 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-11: 代理操作のacting principalとcustomer contextを監査上区別できる。 ｜ 検証: REQ-ACCESS-11 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-12: 全data pathの越境負テストがCIまたはrelease gateで通過する。 ｜ 検証: REQ-ACCESS-12 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-13: マスターテナントが顧客tenantを直接参照できず、許諾済みShowcase Snapshotの作成・公開・撤回だけを監査可能な専用経路で実行できる。 ｜ 検証: REQ-ACCESS-13 ｜ 正本: `categories/security-access-requirements_v1.md`
 
 ### technical-architecture-requirements_v1
 

@@ -97,6 +97,12 @@ Site画像Style Profileは目的、トーン、画風、構図、palette、明�
 
 Featured Image PatternはCMS要求size、layer、領域、位置、比率、余白、安全領域、固定・可変slot、palette、トーン、参照画像hash、variation tolerance、可変属性と範囲、ロゴ配置・余白、合成方式、作成者、確定者、version、既定状態を保持する。編集中、確定、廃止を区別し、生成jobが使用したPattern versionを追跡する。
 
+### REQ-DATA-13 Showcase・マスターテナントデータ
+
+マスターテナントの自社データは `internal` tenant境界内で通常データと同じ正本・保持規則を適用し、顧客横断学習・業界priorへ既定で含めない。自社運用の集計実績は、第三者情報・個人情報を除いたうえでサービス紹介、Help、デモへ利用できる。
+
+顧客実績の事例利用は、匿名集計と個別事例を分離する。匿名集計は利用目的を公表し、最小標本数等の再識別防止条件を満たす。個別事例は明示opt-in、許諾対象、項目、表示名、期間、媒体、撤回条件を記録し、許諾範囲だけをversion付きShowcase Snapshotとしてマスターテナントへコピーする。顧客tenantへの横断参照を許可せず、撤回時は新規利用を停止し、公開物・cache・検索索引を追跡して削除または更新する。
+
 ## 受入条件
 
 - [ ] AC-L1-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
@@ -111,3 +117,4 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 - [ ] AC-L1-DATA-10: 横断集計から顧客、Site、URLを特定できない。
 - [ ] AC-L1-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。
 - [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴とWordPress Media参照を保持できる。
+- [ ] AC-L1-DATA-13: マスターテナントの自社実績と明示許諾済みShowcase Snapshotだけを紹介記事・デモへ使用し、顧客横断参照なしに許諾撤回を反映できる。

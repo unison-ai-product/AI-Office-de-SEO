@@ -98,6 +98,14 @@ Planは固定4行として実装せず、安定した `plan_key`、表示名、�
 
 公開前に差分、対象契約数、売上・粗利、利用可能機能、保存データ、実行中jobへの影響をPreviewし、Validate、承認、予約適用、Rollbackを行う。tenant分離、台帳不変性、サーバー側認可等の安全不変条件はPlan設定で解除できない。
 
+### REQ-PAC-15 マスターテナント・Trial管理
+
+Admin管理面からだけ、開発者スーパーアカウント配下へ `tenant.kind=internal` のマスターテナントと、その配下の自社運用Site・デモSiteを作成、変更、停止できる。セルフサインアップや顧客管理面からinternal区分を作成・昇格できない。
+
+マスターテナントは内部請求mode、実原価計測、master先行Feature Flag、showcase素材を持てるが、顧客と同じtenant境界、品質ゲート、承認、公開、変更予算、監査を通る。内部Roleでも顧客データを自由に転用できず、`REQ-DATA-13` の許諾済みShowcase Snapshotだけを参照する。
+
+限定Trialは最大10社のcohort、招待先、期間、Plan version、credit、機能、状態、終了処理を管理できる。同一Customer Organizationまたは実質同一主体への重複発行を検出し、一般公開用の無制限なTrial作成経路を持たない。
+
 ## 4. 接続要求
 
 - 既存の詳細管理面は `ai-office-de-seo-admin-console-requirements_v3.7.md` を移行元として参照する。
@@ -122,3 +130,4 @@ Planは固定4行として実装せず、安定した `plan_key`、表示名、�
 - [ ] AC-L1-PAC-12: いずれの内部Roleでも安全不変条件を解除できない。
 - [ ] AC-L1-PAC-13: 本番・非本番の権限、秘密情報、設定が分離され、管理操作を環境別に監査できる。
 - [ ] AC-L1-PAC-14: Planをコード変更なしに追加・複製・改版・販売終了でき、価格・契約・利用枠・機能・品質・バックアップを設定し、既存契約を維持したまま対象と適用日を指定して変更・Rollbackできる。
+- [ ] AC-L1-PAC-15: internalマスターテナントと最大10社のTrialをAdminだけが発行・停止でき、通常の品質・境界・監査を迂回できない。
