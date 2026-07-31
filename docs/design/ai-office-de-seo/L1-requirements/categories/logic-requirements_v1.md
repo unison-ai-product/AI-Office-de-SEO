@@ -157,6 +157,14 @@ AIOおよびAI回答面の観測は月次を基本とし、短期間の表示差
 
 流入・CV等の数値予測は、当該SiteのGSCクリックが直近1か月で1,000件に達した後、実績から計測可能な記事・対象範囲だけ算出する。Site全体を一括解放せず、予測可能な記事とデータ不足でロックされた記事を分離し、予測可能数とロック数を返す。ロック記事には市場情報、サイトとして必要な情報、商品、対象顧客、CV定義を用いた方向性推薦と不足データを返す。
 
+### REQ-LOGIC-12 Site別Article読取り経路選択
+
+入力はSiteで許可済みの読取り経路、用途、Connection Health、取得完全性、freshness、成功率、latency、Site負荷、外部費用、rate limit、連続失敗、前回選択、cooldown、Policy versionである。候補外・未同意・認証未成立・必要項目不足の経路を除外し、用途要件を満たす候補から、負荷と費用を抑えつつ安定して鮮度を満たす経路を決定論で `primary`、次点を `standby` とする。
+
+用途は少なくとも `change_discovery、published_render_verification、draft_read、structure_extract、manual_recovery` を分離し、単一経路を全用途へ強制しない。選択状態は `probing → active → degraded → failover → recovering → active / connection_required` とし、最小固定期間、連続失敗閾値、回復成功回数、cooldownでflappingを抑止する。経路、認証、Capability、schema、負荷、費用またはPolicy versionの変更時に再計算し、選択理由、除外理由、切替履歴を返す。
+
+経路選択は取得方法だけを変え、Article、URL、Snapshot、Summaryの正本識別子を変更しない。同一content hashを別経路から取得しても重複Articleを作らず、内容差がある場合は公開render、CMS保存値、Plugin Snapshotのsourceと取得時刻を併記して勝手に上書き統合しない。
+
 ## 受入条件
 
 - [ ] AC-L1-LOGIC-01: Siteごとに月次目的を単純選択し、未実行候補へ方向性としての施策配分が計算され、達成保証として表示されない。
@@ -170,3 +178,4 @@ AIOおよびAI回答面の観測は月次を基本とし、短期間の表示差
 - [ ] AC-L1-LOGIC-09: 許可済み装飾だけを適用し、互換性不足時に本文を変更せず装飾なしまたは互換パーツへ縮退できる。
 - [ ] AC-L1-LOGIC-10: Pattern・Profile・記事slot・CMS size・model versionから画像生成を再現し、技術的不成立とadvisoryを区別できる。
 - [ ] AC-L1-LOGIC-11: Provider課金前に入力・固定商品枠・請求reserve・接続・技術上限を判定し、readyまたは再開条件を返せる。
+- [ ] AC-L1-LOGIC-12: Site・用途ごとに許可済みArticle読取り経路のprimary／standbyを同じPolicy入力から再現し、差分取得、負荷抑制、連続失敗時のfailover、回復時のflapping抑止、全経路不成立の案内を実行できる。

@@ -650,6 +650,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-KRL-10: 同条件で却下された候補の反復が抑制される。 ｜ 検証: REQ-KRL-10 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-11: 検索ボリュームと表示回数の変化から季節性・需要変化を分離し、AIO・リスティング出現率による自然検索面の縮小を記事固有の悪化へ直接帰属させない。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-INT-08: SEO／AIクローラーを共通契約で用途別に観測し、初期の外形診断と後続の検証済みserver／edge log実測を混同せず、client-side Trackerなしでも取得状態を判定できる。 ｜ 検証: REQ-INT-08 ｜ 正本: `categories/integration-requirements_v1.md`
+- [ ] AC-L1-INT-09: Siteごとに許可済みの複数Article読取り経路を共通Snapshotへ正規化し、完全性・鮮度・成功率・負荷・費用からprimary／standbyを選択して、差分対象だけを取得し、障害時にflappingなくfailoverできる。 ｜ 検証: REQ-INT-09 ｜ 正本: `categories/integration-requirements_v1.md`
+- [ ] AC-L1-LOGIC-12: Site・用途ごとに許可済みArticle読取り経路のprimary／standbyを同じPolicy入力から再現し、差分取得、負荷抑制、連続失敗時のfailover、回復時のflapping抑止、全経路不成立の案内を実行できる。 ｜ 検証: REQ-LOGIC-12 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。 ｜ 検証: REQ-MEASURE-12 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。 ｜ 検証: REQ-DATA-14 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`

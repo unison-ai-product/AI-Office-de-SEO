@@ -49,6 +49,8 @@ CoreとFeature Objectの主境界はContext接続とする。Objectは `Context 
 
 サイト構造・内部リンクのread modelは、WordPress等から取得したカテゴリ／階層／URL／記事所属、Article Summary、Keyword cluster assignment、内部link edgeを集約して生成する。既存のKeyword・記事正本から再構築可能な集約table／viewとし、同じ事実を別の恒久グラフ正本として二重保持しない。提案構造と外部実構造、提案linkと反映済みlinkを状態で区別する。
 
+Article Read ProfileはSite、用途、候補経路、許可状態、primary／standby、Adapter／Policy version、Connection Health集約、最終probe／成功、連続失敗、cooldown、切替理由・履歴を持つ。資格情報そのものをProfileへ保存せずsecret参照だけを保持する。経路変更後も同じexternal article ID、canonical URL、content hash、Snapshot lineageへ接続し、経路ごとに記事を複製しない。
+
 ### REQ-DATA-03 本文非保持
 
 本文全文、段落全文、生HTML、長い引用、LLM raw response、プロンプト全文を恒久DBへ保持しない。本文は隔離された一時領域で解析し、Article Summaryと必要なhash・位置参照を生成後に削除する。

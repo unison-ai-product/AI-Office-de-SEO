@@ -241,6 +241,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 正本: `categories/billing-accounting-requirements_v1.md`、`categories/cost-requirements_v1.md`、`categories/growth-upsell-requirements_v1.md`
 
+- Article読取りはpublic／authenticated crawl、CMS REST rendered、Plugin Snapshot push、manual importを共通Snapshotへ収束させる。Site・用途別のArticle Read Profileが、許可済み経路から完全性、鮮度、成功率、Site負荷、費用でprimary／standbyを自動選択する。変更発見と内容取得を分離して差分対象だけを読み、連続失敗時はcooldown付きでfailoverし、セキュリティ設定を弱めず全経路不成立を案内する。読取りとCMS書込みの権限・経路は分離する。
+
 ## 15. 未確定事項
 
 次は要求の欠落ではなく、今後の判断または設計較正が必要な項目である。

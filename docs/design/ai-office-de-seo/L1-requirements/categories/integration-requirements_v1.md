@@ -102,6 +102,18 @@ Googlebot等の検索クローラーと、OAI-SearchBot等のAI検索・回答�
 
 client-side Trackerは人間の遷移・CV用であり、将来もCrawler観測の必須経路にしない。Crawler log連携は全顧客の必須設定にせず、対応環境の任意高度機能または問い合わせ導入候補とする。採用時も生access logは取込stream内または短期object storageでBot検証と集約に必要な間だけ扱い、日次カウント等を生成後に削除する。robots変更やWAF allowlist等のサイト設定修正はユーザーへ提示し、本連携が無断で変更しない。
 
+### REQ-INT-09 Site別Article読取り経路
+
+公開・更新済み記事の読取りは単一経路へ固定せず、`public_crawl、authenticated_crawl、cms_rest_rendered、plugin_snapshot_push、manual_import` を共通Article Snapshot Contractへ正規化する。SiteごとにArticle Read Profileを持ち、ユーザーが許可・設定した経路だけを候補とする。認証情報、固定IP許可、Plugin導入等をシステムが無断で追加せず、セキュリティ設定を弱めて経路を成立させない。
+
+経路は変更発見と本文・構造取得を分離する。Webhook／Plugin push、RSS／Atom、sitemap、REST modified日時等の軽い変更信号から対象URLを特定し、変更対象だけを選択中の読取り経路で取得する。外部Crawlerによる全件定期走査を既定にせず、content hash未変更ならArticle Summary再解析を省略する。
+
+Connection Adapterは経路ごとに、到達性、認証成立、取得完全性、freshness、P95 latency、成功率、Site／CMS負荷、製品側費用、rate limit、最終成功、連続失敗、必要なユーザー操作をConnection Healthとして返す。自動制御はこの情報からSite専属の `primary、standby、disabled` を選び、同じ入力で再現可能なPolicy versionと選択理由を保持する。
+
+初期優先は、必要な情報を完全に取得できる経路のうちSite負荷・外部呼出し・保守費が小さいものとする。候補が同等ならpush／差分通知をpollingより、対象取得を全件crawlより優先する。ただしPlugin Snapshotが必要情報を欠く場合、公開Rendered HTMLの検証が必要な場合、下書き等でRESTだけが成立する場合は、用途ごとに異なるprimaryを選べる。
+
+primaryの一時失敗だけで即時切替を反復せず、error分類、連続失敗、cooldown、最小固定期間、回復probe、切替後の観測期間を持つ。認証失効、明示拒否、継続する403／429／5xx、schema不一致、stale超過時はstandbyへfailoverし、全経路不成立なら `read_connection_required` として理由と設定案を返す。回復時も自動復帰Policyに従いflappingを防ぐ。記事の書込み経路と読取り経路は独立して選択し、読取り経路の切替をWordPress等への書込み許可として扱わない。
+
 ## 受入条件
 
 - [ ] AC-L1-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。
@@ -112,3 +124,4 @@ client-side Trackerは人間の遷移・CV用であり、将来もCrawler観測�
 - [ ] AC-L1-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。
 - [ ] AC-L1-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。
 - [ ] AC-L1-INT-08: SEO／AIクローラーを共通契約で用途別に観測し、初期の外形診断と後続の検証済みserver／edge log実測を混同せず、client-side Trackerなしでも取得状態を判定できる。
+- [ ] AC-L1-INT-09: Siteごとに許可済みの複数Article読取り経路を共通Snapshotへ正規化し、完全性・鮮度・成功率・負荷・費用からprimary／standbyを選択して、差分対象だけを取得し、障害時にflappingなくfailoverできる。
