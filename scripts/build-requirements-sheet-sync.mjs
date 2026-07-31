@@ -10,34 +10,9 @@ const traceText = fs.readFileSync(
 const acceptanceRequirement = new Map();
 for (const line of traceText.split(/\r?\n/)) {
   const match = line.match(
-    /\b(AC-[A-Z0-9-]+)\b.*?検証:\s*(REQ-[A-Z0-9-]+)/,
+    /\b(AC-[A-Z0-9-]+)\b.*?検証:\s*((?:REQ-[A-Z0-9-]+(?:\.\d+)?)(?:\s*,\s*REQ-[A-Z0-9-]+(?:\.\d+)?)*)/,
   );
-  if (match) acceptanceRequirement.set(match[1], match[2]);
-}
-const keywordAcceptanceRequirement = {
-  "AC-KRL-01": "REQ-KRL-02",
-  "AC-KRL-02": "REQ-KRL-02",
-  "AC-KRL-03": "REQ-KRL-05",
-  "AC-KRL-04": "REQ-KRL-06",
-  "AC-KRL-05": "REQ-KRL-07",
-  "AC-KRL-06": "REQ-KRL-07",
-  "AC-KRL-07": "REQ-KRL-09",
-  "AC-KRL-08": "REQ-KRL-08",
-  "AC-KRL-09": "REQ-KRL-08",
-  "AC-KRL-10": "REQ-KRL-10",
-  "AC-KRL-11": "REQ-KRL-09",
-  "AC-KRL-12": "REQ-KRL-09",
-  "AC-KRL-13": "REQ-KRL-09",
-  "AC-KRL-14": "REQ-KRL-09",
-  "AC-KRL-15": "REQ-KRL-09",
-  "AC-KRL-16": "REQ-KRL-09",
-};
-for (const [acceptanceId, requirementId] of Object.entries(
-  keywordAcceptanceRequirement,
-)) {
-  if (!acceptanceRequirement.has(acceptanceId)) {
-    acceptanceRequirement.set(acceptanceId, requirementId);
-  }
+  if (match) acceptanceRequirement.set(match[1], match[2].replace(/\s*,\s*/g, ", "));
 }
 
 const sources = [
@@ -58,6 +33,9 @@ const sources = [
   ["15_開発管理", 2015, "categories/platform-administration-control-requirements_v1.md"],
   ["16_技術", 2016, "categories/technical-architecture-requirements_v1.md"],
   ["17_KW推薦ロジック", 2017, "logic/keyword-dynamic-recommendation-logic-requirements_v1.md"],
+  ["18_記事要約ロジック", 2018, "logic/article-summary-completeness-logic-requirements_v1.md"],
+  ["19_KW診断ロジック", 2019, "logic/keyword-portfolio-diagnostics-logic-requirements_v1.md"],
+  ["20_品質修復ロジック", 2020, "logic/content-quality-repair-routing-logic-requirements_v1.md"],
 ];
 
 function parseFrontmatter(text) {

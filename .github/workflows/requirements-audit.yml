@@ -1,0 +1,28 @@
+name: Requirements Audit
+
+on:
+  pull_request:
+    paths:
+      - "docs/design/ai-office-de-seo/**"
+      - "scripts/audit-requirements.mjs"
+      - ".github/workflows/requirements-audit.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/design/ai-office-de-seo/**"
+      - "scripts/audit-requirements.mjs"
+      - ".github/workflows/requirements-audit.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node scripts/audit-requirements.mjs

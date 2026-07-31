@@ -377,31 +377,31 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ### business-requirements_v1
 
 - [ ] AC-L1-BUS-01: `REQ-UJ-01〜09` の全ジャーニーが、対応する業務循環と業務要求へ追跡できる。 ｜ 検証: REQ-BUS-01 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-02: 各業務に担当、開始契機、入力、判断、成果物、完了条件、次工程または戻り先がある。 ｜ 検証: REQ-BUS-02 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-02: 各業務に担当、開始契機、入力、判断、成果物、完了条件、次工程または戻り先がある。 ｜ 検証: REQ-BUS-01 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-03: 月初に目的・重点領域・施策・予算を持つ計画案を作成し、自動運用では期限確定、手動運用では明示確定できる。 ｜ 検証: REQ-BUS-03 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-04: 各業務の手動操作、Event、Cron候補、WorkflowまたはLoopへの配分が識別できる。 ｜ 検証: REQ-BUS-04 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-04: 各業務の手動操作、Event、Cron候補、WorkflowまたはLoopへの配分が識別できる。 ｜ 検証: REQ-BUS-02, REQ-BUS-03, REQ-BUS-04, REQ-BUS-05, REQ-BUS-06, REQ-BUS-07, REQ-BUS-08, REQ-BUS-09, REQ-BUS-10, REQ-BUS-11, REQ-BUS-12, REQ-BUS-13 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-05: 週次上限内の実行予定を自動・手動運用別に選択し、未実行候補を再評価でき、ユーザー割込みには指定を維持した推奨順序を相談できる。 ｜ 検証: REQ-BUS-05 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-06: 月次目的から実行可能量内の方向性配分が作成され、達成保証として扱われない。 ｜ 検証: REQ-BUS-06 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-06: 月次目的から実行可能量内の方向性配分が作成され、達成保証として扱われない。 ｜ 検証: REQ-BUS-03, REQ-BUS-05, REQ-BUS-06 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-07: 日次判断を承認期限、停止、今週の予定、新規Recommendation、完了・評価の順で処理し、未処理項目へ理由・期限を持たせられる。 ｜ 検証: REQ-BUS-07 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-08: 公開または更新されたページが、1か月後、3か月後、6か月後の段階評価へ進み、更新時は承認、保護、復元条件を持つ。 ｜ 検証: REQ-BUS-08 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-09: 新規Siteの新規記事15件まで個別承認され、既存記事、外部記事、リライトが件数から除外される。 ｜ 検証: REQ-BUS-09 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-10: 例外時に影響範囲、担当、解除条件、期限、戻り先または終端が記録される。 ｜ 検証: REQ-BUS-10 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-11: 顧客ユーザーと当社内部管理領域が分離され、ManagerとOperatorの操作範囲が区別される。 ｜ 検証: REQ-BUS-11 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-12: 下位の画面、ロジック、データ、連携、技術、権限、非機能、費用、障害要求が対応する業務要求IDを参照する。 ｜ 検証: REQ-BUS-12 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-08: 公開または更新されたページが、1か月後、3か月後、6か月後の段階評価へ進み、更新時は承認、保護、復元条件を持つ。 ｜ 検証: REQ-BUS-08, REQ-BUS-09, REQ-BUS-10 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-09: 新規Siteの新規記事15件まで個別承認され、既存記事、外部記事、リライトが件数から除外される。 ｜ 検証: REQ-BUS-02, REQ-BUS-08 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-10: 例外時に影響範囲、担当、解除条件、期限、戻り先または終端が記録される。 ｜ 検証: REQ-BUS-11, REQ-BUS-12 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-11: 顧客ユーザーと当社内部管理領域が分離され、ManagerとOperatorの操作範囲が区別される。 ｜ 検証: REQ-BUS-12 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-12: 下位の画面、ロジック、データ、連携、技術、権限、非機能、費用、障害要求が対応する業務要求IDを参照する。 ｜ 検証: REQ-BUS-01, REQ-BUS-02, REQ-BUS-03, REQ-BUS-04, REQ-BUS-05, REQ-BUS-06, REQ-BUS-07, REQ-BUS-08, REQ-BUS-09, REQ-BUS-10, REQ-BUS-11, REQ-BUS-12, REQ-BUS-13 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-13: マスターテナントが一般顧客と同じSEO運用経路でサービス紹介記事を公開し、内部請求なしで実原価・流入・問い合わせ・CVを計測できる。 ｜ 検証: REQ-BUS-13 ｜ 正本: `categories/business-requirements_v1.md`
 
 ### cost-requirements_v1
 
-- [ ] AC-L1-COST-01: コストが分類され、tenant/site/workflow/job/stage/attemptへ帰属できる。 ｜ 検証: REQ-COST-01 ｜ 正本: `categories/cost-requirements_v1.md`
-- [ ] AC-L1-COST-02: expected/reserved/worst-caseを実行前に算出できる。 ｜ 検証: REQ-COST-02 ｜ 正本: `categories/cost-requirements_v1.md`
-- [ ] AC-L1-COST-03: 見積式、単価、route、workflowのversionを後から再現できる。 ｜ 検証: REQ-COST-03 ｜ 正本: `categories/cost-requirements_v1.md`
-- [ ] AC-L1-COST-04: retry、fallback、repair、外部再取得が元ジョブ原価へ含まれる。 ｜ 検証: REQ-COST-04 ｜ 正本: `categories/cost-requirements_v1.md`
-- [ ] AC-L1-COST-05: soft/hard limitとKill Switchが追加費用発生前に機能する。 ｜ 検証: REQ-COST-05 ｜ 正本: `categories/cost-requirements_v1.md`
-- [ ] AC-L1-COST-06: recommendationがexpected costとconfidenceを持ち、新規・部分修正・見送りを比較できる。 ｜ 検証: REQ-COST-06 ｜ 正本: `categories/cost-requirements_v1.md`
-- [ ] AC-L1-COST-07: クレジット対象外処理にも運用原価が記録される。 ｜ 検証: REQ-COST-07 ｜ 正本: `categories/cost-requirements_v1.md`
-- [ ] AC-L1-COST-08: Provider請求値と内部実績の照合差異を検出できる。 ｜ 検証: REQ-COST-08 ｜ 正本: `categories/cost-requirements_v1.md`
-- [ ] AC-L1-COST-09: DB・ストレージ・バックアップの増加量と原価をテナント単位で観測できる。 ｜ 検証: REQ-COST-09 ｜ 正本: `categories/cost-requirements_v1.md`
-- [ ] AC-L1-COST-10: 商品・プラン別粗利を実績原価から算出できる。 ｜ 検証: REQ-COST-10 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-01: コストが分類され、tenant/site/workflow/job/stage/attemptへ帰属できる。 ｜ 検証: REQ-COST-02, REQ-COST-03 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-02: expected/reserved/worst-caseを実行前に算出できる。 ｜ 検証: REQ-COST-04 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-03: 見積式、単価、route、workflowのversionを後から再現できる。 ｜ 検証: REQ-COST-04 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-04: retry、fallback、repair、外部再取得が元ジョブ原価へ含まれる。 ｜ 検証: REQ-COST-05 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-05: soft/hard limitとKill Switchが追加費用発生前に機能する。 ｜ 検証: REQ-COST-06 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-06: recommendationがexpected costとconfidenceを持ち、新規・部分修正・見送りを比較できる。 ｜ 検証: REQ-COST-07 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-07: クレジット対象外処理にも運用原価が記録される。 ｜ 検証: REQ-COST-05 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-08: Provider請求値と内部実績の照合差異を検出できる。 ｜ 検証: REQ-COST-05 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-09: DB・ストレージ・バックアップの増加量と原価をテナント単位で観測できる。 ｜ 検証: REQ-COST-08 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-10: 商品・プラン別粗利を実績原価から算出できる。 ｜ 検証: REQ-COST-09 ｜ 正本: `categories/cost-requirements_v1.md`
 - [ ] AC-L1-COST-11: 画像の解析cacheによる削減と新規output原価を分離し、画像job単位で見積・実績を算出できる。 ｜ 検証: REQ-COST-10 ｜ 正本: `categories/cost-requirements_v1.md`
 - [ ] AC-L1-COST-12: 外部APIと自己管理LLMの総提供原価・品質・latency・失敗率を同一route単位で比較し、品質基準内で低コストrouteへ段階移行できる。 ｜ 検証: REQ-COST-11 ｜ 正本: `categories/cost-requirements_v1.md`
 
@@ -414,11 +414,12 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-ORG-05: 記事実行、公開、接続、課金、データ出力を個別に制御できる。 ｜ 検証: REQ-ORG-05 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。 ｜ 検証: REQ-ORG-06 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。 ｜ 検証: REQ-ORG-07 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。 ｜ 検証: REQ-ORG-08 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-09: 退職・契約終了時にアクセスが失効し、成果物と履歴は失われない。 ｜ 検証: REQ-ORG-09 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-10: 組織・Site移管前に権限、データ、請求への影響が表示される。 ｜ 検証: REQ-ORG-10 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-11: Ownerが権限棚卸しを実行し、是正履歴を確認できる。 ｜ 検証: REQ-ORG-11 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。 ｜ 検証: REQ-ORG-09 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-09: 退職・契約終了時にアクセスが失効し、成果物と履歴は失われない。 ｜ 検証: REQ-ORG-10 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-10: 組織・Site移管前に権限、データ、請求への影響が表示される。 ｜ 検証: REQ-ORG-11 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-11: Ownerが権限棚卸しを実行し、是正履歴を確認できる。 ｜ 検証: REQ-ORG-12 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-12: 所属・権限・承認・予算変更の実行者、理由、期限、差分を監査できる。 ｜ 検証: REQ-ORG-12 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-13: 部門・ブランド間の非公開境界とExternal Memberの可視範囲が、画面とAPIの双方で同じScopeとして強制される。 ｜ 検証: REQ-ORG-08 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 
 ### data-requirements_v1
 
@@ -441,7 +442,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DESIGN-01: 通常ビューとAgent Officeビューが同一jobの業務状態を一致して表示しつつ、Office固有の部屋・会話・詳細設定を保持できる。 ｜ 検証: REQ-DESIGN-01 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-02: 非専門者が主要画面で次の操作・状態・理由・影響・費用を内部実装用語なしに理解できる。 ｜ 検証: REQ-DESIGN-02 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-03: Recommendationの根拠、優先度成分、unknown、再評価条件をロジック結果どおり表示できる。 ｜ 検証: REQ-DESIGN-03 ｜ 正本: `categories/design-experience-requirements_v1.md`
-- [ ] AC-L1-DESIGN-04: 主要操作が狭幅、keyboard、screen reader、reduced motionで完了できる。 ｜ 検証: REQ-DESIGN-04 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-04: desktopの主要操作がkeyboard、screen reader、reduced motionで完了でき、狭幅でも重要状態を失わず、初期mobile非対応範囲を誤表示しない。 ｜ 検証: REQ-DESIGN-04 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-05: 長時間処理から離脱・復帰しても相関IDと実stageが維持され、架空進捗を表示しない。 ｜ 検証: REQ-DESIGN-05 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。 ｜ 検証: REQ-DESIGN-06 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。 ｜ 検証: REQ-DESIGN-07 ｜ 正本: `categories/design-experience-requirements_v1.md`
@@ -453,31 +454,32 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### growth-upsell-requirements_v1
 
-- [ ] AC-L1-UPSELL-01: 提案がcapacity/execution/governance/support/economic fitへ分解される。 ｜ 検証: REQ-UPSELL-01 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
-- [ ] AC-L1-UPSELL-02: 障害・争議・解約中と却下cooldown中に提案されない。 ｜ 検証: REQ-UPSELL-02 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
-- [ ] AC-L1-UPSELL-03: 現プラン内の代替策とダウングレードを含む適正化が先に比較される。 ｜ 検証: REQ-UPSELL-03 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-01: 提案がcapacity/execution/governance/support/economic fitへ分解される。 ｜ 検証: REQ-UPSELL-04 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-02: 障害・争議・解約中と却下cooldown中に提案されない。 ｜ 検証: REQ-UPSELL-05 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-03: 現プラン内の代替策とダウングレードを含む適正化が先に比較される。 ｜ 検証: REQ-UPSELL-04 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-04: 未採用recommendationを全実行する過大見積にならない。 ｜ 検証: REQ-UPSELL-04 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
-- [ ] AC-L1-UPSELL-05: 料金、適用日、日割り、増える機能、増えない機能が表示される。 ｜ 検証: REQ-UPSELL-05 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-05: 料金、適用日、日割り、増える機能、増えない機能が表示される。 ｜ 検証: REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-06: 購入・プラン変更が権限者の明示操作なしに確定しない。 ｜ 検証: REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
-- [ ] AC-L1-UPSELL-07: 同一提案の回数上限とcooldownが機能する。 ｜ 検証: REQ-UPSELL-07 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-07: 同一提案の回数上限とcooldownが機能する。 ｜ 検証: REQ-UPSELL-05 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-08: 全PlanのFAQチャットから根拠付き回答または適切な有人引継ぎへ到達でき、Premiumの優先対応とEnterpriseの個別SLAを区別し、営業連携へ本文・秘密情報が渡らない。 ｜ 検証: REQ-UPSELL-08 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-09: 購入率だけでなく継続・利用・粗利・苦情・解約が計測される。 ｜ 検証: REQ-UPSELL-09 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
-- [ ] AC-L1-UPSELL-10: 製品不具合や設定不備を上位契約で解決させない。 ｜ 検証: REQ-UPSELL-01, REQ-UPSELL-02, REQ-UPSELL-03, REQ-UPSELL-04, REQ-UPSELL-05, REQ-UPSELL-06, REQ-UPSELL-07, REQ-UPSELL-08, REQ-UPSELL-09 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-10: 製品不具合や設定不備を上位契約で解決させない。 ｜ 検証: REQ-UPSELL-01 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-11: 容量接近時にEntry／StandardへPremiumを提示し、Premium／EnterpriseではPlan変更と追加容量を比較して権限者が選択できる。 ｜ 検証: REQ-UPSELL-02, REQ-UPSELL-04, REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 
 ### incident-warranty-requirements_v1
 
-- [ ] AC-L1-IRG-01: 障害をSEV-1〜4へ一貫した基準で分類できる。 ｜ 検証: REQ-IRG-01 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
-- [ ] AC-L1-IRG-02: tenant/site/workflow/provider/全体の各粒度で封じ込めできる。 ｜ 検証: REQ-IRG-02 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
-- [ ] AC-L1-IRG-03: 顧客通知とステータス更新に確認済み事実・影響・次回更新予定が含まれる。 ｜ 検証: REQ-IRG-03 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
-- [ ] AC-L1-IRG-04: checkpoint、rollback、PITR、テナント復元の選択基準がある。 ｜ 検証: REQ-IRG-04 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
-- [ ] AC-L1-IRG-05: 復旧がE2E・台帳整合・越境負テストで確認される。 ｜ 検証: REQ-IRG-05 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
-- [ ] AC-L1-IRG-06: システム障害のクレジット返還と金銭調整が監査可能である。 ｜ 検証: REQ-IRG-06 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-01: 障害をSEV-1〜4へ一貫した基準で分類できる。 ｜ 検証: REQ-IRG-02 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-02: tenant/site/workflow/provider/全体の各粒度で封じ込めできる。 ｜ 検証: REQ-IRG-04 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-03: 顧客通知とステータス更新に確認済み事実・影響・次回更新予定が含まれる。 ｜ 検証: REQ-IRG-05 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-04: checkpoint、rollback、PITR、テナント復元の選択基準がある。 ｜ 検証: REQ-IRG-06 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-05: 復旧がE2E・台帳整合・越境負テストで確認される。 ｜ 検証: REQ-IRG-06 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-06: システム障害のクレジット返還と金銭調整が監査可能である。 ｜ 検証: REQ-IRG-07 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
 - [ ] AC-L1-IRG-07: SLA補償とSEO成果非保証が対外表示で区別される。 ｜ 検証: REQ-IRG-07 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
-- [ ] AC-L1-IRG-08: 障害再開・成果未提供の補償と、ユーザー希望の有償再生成・安心保証の非成果保証を区別できる。 ｜ 検証: REQ-IRG-08 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
-- [ ] AC-L1-IRG-09: SEV-1/2の恒久対策が要求・設計・テストへ戻される。 ｜ 検証: REQ-IRG-09 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
-- [ ] AC-L1-IRG-10: 復旧・停止・調整演習が記録される。 ｜ 検証: REQ-IRG-01, REQ-IRG-02, REQ-IRG-03, REQ-IRG-04, REQ-IRG-05, REQ-IRG-06, REQ-IRG-07, REQ-IRG-08, REQ-IRG-09 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
-- [ ] AC-L1-IRG-11: 外部サービス起因でも回避策・再試行・説明が提供される。 ｜ 検証: REQ-IRG-01, REQ-IRG-02, REQ-IRG-03, REQ-IRG-04, REQ-IRG-05, REQ-IRG-06, REQ-IRG-07, REQ-IRG-08, REQ-IRG-09 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-08: 障害再開・成果未提供の補償と、ユーザー希望の有償再生成・安心保証の非成果保証を区別できる。 ｜ 検証: REQ-IRG-06, REQ-IRG-07 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-09: SEV-1/2の恒久対策が要求・設計・テストへ戻される。 ｜ 検証: REQ-IRG-08 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-10: 復旧・停止・調整演習が記録される。 ｜ 検証: REQ-IRG-09 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-11: 外部サービス起因でも回避策・再試行・説明が提供される。 ｜ 検証: REQ-IRG-04, REQ-IRG-05, REQ-IRG-06 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-12: incident recordに検知時刻、対象、症状、検知元、correlation key、暫定severityが記録され、alert stormが同一incidentへ集約される。 ｜ 検証: REQ-IRG-03 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
 
 ### integration-requirements_v1
 
@@ -613,6 +615,25 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-TECH-19: AWS上の代表E2Eで相関IDがAPI、queue、worker、Provider、WordPress結果まで維持され、DLQから原因確認と安全なredriveができる。 ｜ 検証: REQ-TECH-19 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 
 ## 26. 詳細ロジック受入トレース
+
+### Keyword Dynamic Recommendation
+
+- [ ] AC-L1-KRL-01: 市場影響3軸と戦略必要性3軸が独立して算出・保存される。 ｜ 検証: REQ-KRL-04, REQ-KRL-05 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-02: unknownが0扱いされず、availabilityとconfidenceに反映される。 ｜ 検証: REQ-KRL-02, REQ-KRL-03, REQ-KRL-04 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-03: strategy mix変更だけで優先順位が再計算され、元の観測値は変わらない。 ｜ 検証: REQ-KRL-05, REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-04: 総合点から各加点・減点と根拠を再現できる。 ｜ 検証: REQ-KRL-06, REQ-KRL-08 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-05: 充足済みキーワードに新規記事を重複推薦しない。 ｜ 検証: REQ-KRL-07 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-06: 急変・変動中の対象が要監視キューへ分離され、cooldown中、効果測定待ちとともに自動実行対象にならない。 ｜ 検証: REQ-KRL-07, REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-07: 入力更新時に対象グループだけが増分再計算される。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-08: recommendationからTicket/Edit Planへ対象・目的・根拠・予算が引き継がれる。 ｜ 検証: REQ-KRL-08 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-09: UIで6成分と順位変動理由を確認できる。 ｜ 検証: REQ-KRL-06, REQ-KRL-08 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-10: 同条件で却下された候補の反復が抑制される。 ｜ 検証: REQ-KRL-10 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-11: 検索ボリュームと表示回数の変化から季節性・需要変化を分離し、AIO・リスティング出現率による自然検索面の縮小を記事固有の悪化へ直接帰属させない。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-12: プライマリ高々1つと複数セカンダリの割当集合で獲得順位を評価し、順位なしをインデックス診断へ送り、CVなし単体では失敗判定しない。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-13: セカンダリ優位時に単純な主従入れ替えを行わず、業界別実績からクラスタ・代表語・主従重みの補正候補を再計算し、版と根拠を追跡できる。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-14: 実績不足時は複数の業界／業種priorとユーザー指定の横断軸を使用し、Site実績の蓄積に応じてSite固有補正の比重を高められる。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-15: 業界の優先順とSite実績等から配分比率を算出し、未設定時は非保証の業界推定を行い、順位悪化リスクがあるSite固有補正を承認待ちへ切り替えられる。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-16: ユーザー修正分類を正本・較正データとして使用し、手動／自動の業界優先方式を選択でき、分類変更時は自動予約の未実行項目だけを再検証できる。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 
 ### Article Summary抽出・完全性
 

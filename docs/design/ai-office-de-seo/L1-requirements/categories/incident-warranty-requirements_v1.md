@@ -98,3 +98,4 @@ Severityは影響範囲、データ機密性、不可逆性、継続時間、顧
 - [ ] AC-L1-IRG-09: SEV-1/2の恒久対策が要求・設計・テストへ戻される。
 - [ ] AC-L1-IRG-10: 復旧・停止・調整演習が記録される。
 - [ ] AC-L1-IRG-11: 外部サービス起因でも回避策・再試行・説明が提供される。
+- [ ] AC-L1-IRG-12: incident recordに検知時刻、対象、症状、検知元、correlation key、暫定severityが記録され、alert stormが同一incidentへ集約される。
