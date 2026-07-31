@@ -176,12 +176,13 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 品質段階は安定した商品コードで管理し、実Provider名・モデル名を商品IDに固定しない。`GPT Luna → GPT tera → Sonnet → Opus` は当初想定した品質順の表示ラベル／routing aliasとして保持できるが、各aliasから実Provider、model、snapshot、調査量、検査、Repair、fallbackへの対応をModel Registryで版管理する。
 - 将来の原価率改善に向け、Kimi、Grok、Qwen系等の外部APIおよび自己管理・ローカルLLMを共通Model Capability Contractへ接続できる技術互換性を維持する。routeは必要能力、品質評価、latency、実効原価から選び、特定ProviderやOpenAI互換APIだけへ中核Workflowを固定しない。
 - 顧客請求はappend-only ledgerを正本とし、credit lot、reserve、commit、release、失効、繰越、refund、manual adjustmentを追跡する。障害要求が返還可否を判断し、課金要求が元取引を参照して返還を記帳する。
-- 初期価格階段はEntry 39,800円、Standard 98,000円、Prime 198,000円、Enterprise 398,000円〜（月額・税別）とする。EntryとStandardはセルフ月契約、Primeはセルフ年契約のみ、Enterpriseは問い合わせによる年契約のみとする。公開画面では各税込総額を同一領域へ明瞭に併記する。
+- 初期価格階段はEntry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜（月額・税別）とする。EntryとStandardはセルフ月契約、Premiumはセルフ年契約のみ、Enterpriseは問い合わせによる年契約のみとする。公開画面では各税込総額を同一領域へ明瞭に併記する。
 - 12か月契約はシステム利用料を10%割引し、追加credit、初期設定、導入支援、コンサル、オプション、従量利用は対象外とする。
 - Stripe標準構成の初期決済原価は国内カード3.6%＋Billing 0.7%＝4.3%を仮置きし、顧客へカード手数料として都度上乗せせず価格・粗利へ含める。Enterprise等の高額契約では銀行振込を含めた回収原価を比較する。
 - 価格、契約期間、年割引、申込経路、Site・ユーザー上限、credit、品質、機能ロック、自動投稿、バックアップ、予測、監査、外部連携、サポートはversion付きPlan Configurationから変更可能にする。既存契約は契約時versionを維持し、新規・更新・個別overrideの適用対象を分ける。
 - サーバー負荷とPlan上限は記事本数だけで決めず、管理記事・キーワード、GSC・同期取込、履歴・画像・バックアップ保存、再計算・AI job、同時実行・DB走査等をCapacity Dimensionとして分離する。追加creditは技術的安全上限を解除しない。
-- 容量接近時はEntry／StandardへPrimeを推奨し、Prime／Enterpriseは追加容量を購入可能にする。ユーザー画面にはDimension別使用量、上限、到達予測を表示する。
+- 容量接近時はEntry／StandardへPremiumを推奨し、Premium／Enterpriseは管理記事・キーワード・保存領域・画像・バックアップ等の追加容量を購入可能にする。同時実行・瞬間取込等の安全上限は販売しない。ユーザー画面にはDimension別使用量、上限、到達予測を表示する。
+- Planは固定4段階にせず、安定IDを持つCatalogとして管理画面から追加・複製・改版・販売終了できるようにする。
 - 大規模Siteの初回取込は「自動構築期間」として数日へ分散でき、進捗・完了見込み・制限中の機能を表示しながら、成立した機能から段階開放する。
 - 価格は汎用生成AIのtoken原価ではなく、SEO戦略、制作・リライト、WordPress入稿、計測、評価、再推薦までの代行業務価値を基準に設計する。汎用AI、SEO分析ツール、記事制作代行、SEO運用代行との担当範囲を比較可能にする。
 - 月額付与creditは請求期間末、追加購入creditは購入から180日で失効する初期方針とする。追加購入creditは販売開始前に資金決済法上の取扱いを法務・決済確認する。

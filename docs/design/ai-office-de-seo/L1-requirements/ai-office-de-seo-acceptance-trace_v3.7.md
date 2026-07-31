@@ -358,7 +358,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ### billing-accounting-requirements_v1
 
 - [ ] AC-L1-BILLING-01: 契約時のPrice Catalog versionから商品、価格、付与量、制限、適用期間と、人間代行・汎用AI・SEOツールとの比較範囲および算定根拠を再現できる。 ｜ 検証: REQ-BILLING-01 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
-- [ ] AC-L1-BILLING-02: Entry・Standardの月契約、Primeのセルフ年契約、Enterpriseの問い合わせ年契約および年契システム利用料10%割引を再現でき、内部契約と外部Subscriptionの状態差を検出して未検証Webhookで利用権限が直接変更されない。 ｜ 検証: REQ-BILLING-02 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-02: Entry・Standardの月契約、Premiumのセルフ年契約、Enterpriseの問い合わせ年契約および年契システム利用料10%割引を再現でき、内部契約と外部Subscriptionの状態差を検出して未検証Webhookで利用権限が直接変更されない。 ｜ 検証: REQ-BILLING-02 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-03: クレジットlotの付与元、期限、消費順、繰越・失効を契約versionどおりに再現できる。 ｜ 検証: REQ-BILLING-03 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-04: 有償ジョブがreserve後に開始し、成功時commit、未使用時releaseされ、再試行で二重commitされない。 ｜ 検証: REQ-BILLING-04 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-05: append-only ledgerから利用可能・予約・消費・失効・返還残高を再構築できる。 ｜ 検証: REQ-BILLING-05 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
@@ -455,7 +455,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-UPSELL-08: FAQチャットから根拠付き回答または適切な有人引継ぎへ到達でき、営業連携へ本文・秘密情報が渡らない。 ｜ 検証: REQ-UPSELL-08 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-09: 購入率だけでなく継続・利用・粗利・苦情・解約が計測される。 ｜ 検証: REQ-UPSELL-09 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-10: 製品不具合や設定不備を上位契約で解決させない。 ｜ 検証: REQ-UPSELL-01, REQ-UPSELL-02, REQ-UPSELL-03, REQ-UPSELL-04, REQ-UPSELL-05, REQ-UPSELL-06, REQ-UPSELL-07, REQ-UPSELL-08, REQ-UPSELL-09 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
-- [ ] AC-L1-UPSELL-11: 容量接近時にEntry／StandardへPrimeを提示し、Prime／EnterpriseではPlan変更と追加容量を比較して権限者が選択できる。 ｜ 検証: REQ-UPSELL-02, REQ-UPSELL-04, REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-11: 容量接近時にEntry／StandardへPremiumを提示し、Premium／EnterpriseではPlan変更と追加容量を比較して権限者が選択できる。 ｜ 検証: REQ-UPSELL-02, REQ-UPSELL-04, REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 
 ### incident-warranty-requirements_v1
 
@@ -542,7 +542,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-PAC-11: 本番変更に差分、理由、承認、適用、Rollback記録が残る。 ｜ 検証: REQ-PAC-11 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 - [ ] AC-L1-PAC-12: いずれの内部Roleでも安全不変条件を解除できない。 ｜ 検証: REQ-PAC-12 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 - [ ] AC-L1-PAC-13: 本番・非本番の権限、秘密情報、設定が分離され、管理操作を環境別に監査できる。 ｜ 検証: REQ-PAC-13 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
-- [ ] AC-L1-PAC-14: 価格・契約・利用枠・機能・品質・バックアップ等のPlan設定をコード変更なしに改版し、既存契約を維持したまま対象と適用日を指定して変更・Rollbackできる。 ｜ 検証: REQ-PAC-14 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
+- [ ] AC-L1-PAC-14: Planをコード変更なしに追加・複製・改版・販売終了でき、価格・契約・利用枠・機能・品質・バックアップを設定し、既存契約を維持したまま対象と適用日を指定して変更・Rollbackできる。 ｜ 検証: REQ-PAC-14 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 
 ### screen-operation-requirements_v1
 
