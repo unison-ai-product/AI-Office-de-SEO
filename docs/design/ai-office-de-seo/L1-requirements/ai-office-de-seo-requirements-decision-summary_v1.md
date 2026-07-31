@@ -67,6 +67,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 将来は製品内アプリストアを設け、AI可視性、Crawlerログ、hosting／CMS／分析連携等をSite単位の有償拡張アプリとして追加できる構想を持つ。初期は自社開発アプリだけを想定し、第三者市場は別判断とする。購入、インストール、権限同意を分離し、月額・買切り・従量・導入支援をCatalog化する。標準契約機能を後からアプリへ移して二重課金しない。
 - 拡張アプリは通常ビューへ機能・設定・レポートを追加すると同時に、Agent Officeをフロア、部屋、設備、専門Agentまたは設備upgradeとして拡張する。購入前の区画、工事中、設定待ち、稼働中、停止中をOffice体験へ対応付けるが、業務正本・権限・課金は通常ビューと共通にし、Office経由の迂回を作らない。未導入アプリの重い3D assetは読み込まない。
 - 拡張アプリの専門Agentは、原則として新しい専用runtimeではなく、既存ExecutorへRole Profile、Workflow、Prompt／Source Pack、Schema、Catalog、Tool Capabilityを束ねる構成とする。App Manifestはkeyと互換versionを宣言し、Ticket→Pack Resolver→Executor側Injectorという既存の問い合わせ経路で解決する。Office上のAgent追加とバックエンドプロセス追加を同義にしない。
+- 基本機能以外は、安定keyとversionを持つFeature Objectとして追加・交換・停止可能な構成を目指す。Coreはtenant／Site、認可、契約・課金、Object Registry、command／event／job、監査、共通UI／Office slotに絞る。Feature ObjectはManifestでCapability、Workflow／Pack、Tool、Schema、所有データ、UI／Office拡張、Permission、Entitlement、課金meter、依存、lifecycleを宣言し、アプリは複数Objectを束ねる販売・導入Packageとする。
 - プライマリキーワードと3〜5件程度の補助キーワードを検索意図・SERPからクラスタ化し、記事へ割り当てる。
 - 獲得キーワードが意図したクラスタで順位を得ることを記事評価の第一条件とし、CV可能な記事はCV取得を次の評価軸とする。
 - 想定外のキーワード獲得は単純な主従入替えにせず、業界・Site実績を再計算してロジック補正へ使う。

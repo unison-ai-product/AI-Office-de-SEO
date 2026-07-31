@@ -181,6 +181,8 @@ Agent Officeでは、担当Agentへ話しかける、エレベーターで担当
 
 将来の拡張アプリをSiteへインストールした場合、App Manifestに従って通常ビューのNavigation／WidgetとAgent Officeのフロア／部屋／設備／Agentを同時に追加する。Office表現は同じapp command、Permission、Entitlement、job、eventを利用し、部屋を経由すると権限や料金を迂回できる別経路を作らない。アンインストール時は入口と稼働演出を除去し、保持・export対象データ、未完了job、再導入条件を確認させる。
 
+画面拡張はFeature Objectが宣言したNavigation、Dashboard Widget、Detail Panel、Setting Section、Recommendation Action、Office Scene等の許可slotへだけ配置する。任意DOM挿入やCore画面置換を許可せず、同じslotで競合するObjectは優先度、ユーザー配置、表示上限で決定する。Objectを停止しても標準画面の主要操作と既存データ閲覧を壊さない。
+
 OfficeでAgentへ行う質問・分析依頼は業務状態を変更せず回答する。設定、予定または実行内容を変える会話指示は、即時実行せず「設定変更案」「追加Task」「既存Task修正案」のいずれかへ構造化する。確定前に対象Site、適用範囲、影響する未実行Recommendation・Task、再計算、費用、元へ戻す方法を表示する。変更はversion付きで同じ正本へ保存し、通常ビューへ即時反映する。通常ビューでの採否、承認、停止、再開も同じeventとしてOfficeのAgent、設備、Task History、Knowledge Graphへ反映する。Office内のゲーム的な部屋・設備・装備表現だけを根拠に重要な変更を確定させない。
 
 ### REQ-SCREEN-19 業務通知・完了表示

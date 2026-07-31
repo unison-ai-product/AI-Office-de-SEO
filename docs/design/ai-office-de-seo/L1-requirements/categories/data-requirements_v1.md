@@ -39,6 +39,8 @@ updated_at: 2026-07-30
 
 顧客由来データはContract Account、Customer Organization、tenant、必要なsiteの所有境界を持つ。外部正本、製品内正本、派生データ、共有可能な公共観測を区別し、所有境界のない顧客データを作らない。
 
+Feature Objectが追加するデータはObject key／version、tenant／Site、schema version、owner Object、保持class、容量計測、export／delete handlerを持つ。Core共通データへの拡張は無制限な列追加ではなく、安定したextension referenceまたはObject所有storeを使用する。Object削除後に孤立データ、索引、queue、secret、object storageを残さず、保持が必要な場合だけ読み取り専用tombstoneとして期限付き保持する。
+
 ### REQ-DATA-02 Article Summary
 
 記事本文の代わりに、URL、title、meta、見出し構造、記事タイプ、更新日、content hash、見出し単位の要点、イベント発生ポイント、トピック、意図、対象読者、問い、主張、根拠種別、CTA、内部リンク、鮮度、不足分類を有界なArticle Summaryとして機械抽出し保持する。抽出器とschema versionを記録し、LLMの自由要約だけを正本にしない。

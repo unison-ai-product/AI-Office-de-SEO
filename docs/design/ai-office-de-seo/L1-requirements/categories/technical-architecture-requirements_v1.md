@@ -30,6 +30,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 システムを少なくとも、ユーザーUI、プラットフォーム管理UI、アプリケーションAPI、認可、ジョブ制御、AI実行、外部連携、課金台帳、観測の責務へ分離する。各責務間の入力、出力、所有データ、失敗時の扱いをL2で定義し、UIまたはAI Executorが他責務のデータを直接更新しない。
 
+Coreへ固定するのは、tenant／Site境界、認証・認可、契約・Entitlement、課金台帳、Feature Object Registry、command／event／job実行、監査、設定・version、共通UI／Office slot等の基盤責務とする。SEO業務機能、分析、Connector、Agent専門性、レポート、Office設備等は、Coreへ直接分岐を増やす前にFeature Objectとして実装可能かを検討する。
+
+Feature Objectはclass継承ではなく、安定IDとversionを持つ構成オブジェクトである。`manifest、capabilities、commands、events、workflows、Pack keys、tools、schemas、data ownership、UI slots、Office scene、permissions、entitlements、billing meters、dependencies、lifecycle` を宣言する。アプリは1個以上のFeature Objectを販売・導入単位として束ねるPackageであり、Feature Objectそのものと同一視しない。
+
 ### REQ-TECH-02 軽量データ構成
 
 トランザクションDBには業務上の正本、短い派生事実、参照キー、状態、監査メタデータだけを保持する。記事本文全文、生HTML、長い外部レスポンス、無制限配列を通常テーブルへ保持してはならない。用途別に容量上限、索引上限、ロールアップ、削除条件を持つ。
@@ -88,9 +92,13 @@ Agent拡張は既存のPack問い合わせ方式を正規経路とする。App M
 
 API、Webhook、イベント、ジョブ、Pack、Snapshotはversion付きスキーマを持ち、入力検証、後方互換期間、廃止手順を定義する。イベントは発生元、tenant/site、actor、相関ID、冪等キー、schema version、発生時刻を持ち、本文全文・秘密情報を含めない。
 
+Feature Object間は直接テーブル参照・内部関数呼出しへ依存せず、公開command、query、event、Source Pack、Snapshot契約で連携する。Objectは自分が所有する状態だけを更新し、他Objectの変更はcommandまたはeventで依頼する。依存は安定keyと互換version範囲で宣言し、循環依存、未宣言依存、同じ業務事実の複数Object所有を検査する。
+
 ### REQ-TECH-12 設定とversion固定
 
 価格、しきい値、推薦重み、Provider Routing、Prompt Pack、Quality Gate、Feature Flag等は版管理された設定を正本とする。ジョブ開始時に参照versionを固定し、処理途中の設定変更で結果の再現性を失わない。設定変更は影響Preview、検証、承認、段階適用、Rollbackを経る。
+
+Feature Objectは `draft → validated → installed → configured → active → suspended → uninstalling → removed` のlifecycleを持つ。install／upgrade／suspend／uninstallは依存、権限、Entitlement、data migration、未完了job、rollback、保持・export・削除をPreflightし、実行中jobが参照するObject／Pack／Schema versionを途中で切り替えない。
 
 ### REQ-TECH-13 キャッシュ・キュー・オブジェクト利用
 
@@ -123,6 +131,8 @@ API、ジョブ、外部連携、AI実行を相関IDで接続し、ログ、メ�
 - tenant/siteを含まない顧客データのキャッシュ・キュー・検索キー
 - Provider固有仕様を中核業務ロジックへ直接埋め込むこと
 - 記事本文、秘密情報、プロンプト全文をログへ出力すること
+- Feature Objectが未宣言のDB、command、event、外部接続、画面slotへ到達すること
+- アプリ削除によりCore起動、標準Workflowまたは他Objectの正本状態を破壊すること
 
 ### REQ-TECH-19 AWS配置・観測
 

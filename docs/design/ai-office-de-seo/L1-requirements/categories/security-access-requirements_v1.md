@@ -72,6 +72,8 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 
 将来の拡張アプリも同じ境界に従い、Manifestで要求Permission、対象Site、外部送信先、取得データ、write operationを宣言する。インストール権限者は許可内容と費用を確認し、必要最小Scopeだけを付与する。アプリの購入、インストール、権限付与を同一操作として暗黙確定せず、権限追加・version更新でScopeが増える場合は再同意を要求する。
 
+各Feature Objectには実行時Principalを割り当て、tenant／Site、Object key／version、command、resource、外部送信先、予算を含むObject Execution Contextを強制する。Object Aへ与えたPermissionをObject Bへ継承せず、Package内でもObjectごとに最小権限を評価する。停止・アンインストール・Entitlement失効時は新規token、job、外部送信を停止し、既発行資格情報を失効またはrotateする。
+
 ### REQ-ACCESS-11 監査・なりすまし表示
 
 認証、拒否、Role変更、秘密アクセス、step-up、代理アクセス、公開、課金、Kill Switch、設定変更をappend-only監査eventへ記録する。代理操作中はacting principalとcustomer contextを画面・API・監査で分離し、顧客本人の操作として記録しない。監査eventにも本文・秘密原文を含めない。

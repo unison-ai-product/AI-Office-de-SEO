@@ -35,6 +35,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 機能、画面、メニュー、タブ、操作を、環境、プラン、Customer Organization、Site、Role、割合、期間の条件で有効化・無効化できなければならない。master、canary、限定顧客、一般の段階公開と、旧状態へのロールバックを扱う。
 
+基本機能以外はFeature Object Registryから、利用可能、インストール済み、設定待ち、稼働中、停止中、更新必要、依存不足、削除予定を管理する。Object単位またはPackage単位で互換性検証、限定公開、version昇格、Kill Switch、rollbackを行える。Feature Flagは未契約ObjectのEntitlementを付与せず、Object導入はCoreの安全不変条件を解除しない。
+
 ### REQ-PAC-03 画面構成制御
 
 表示ラベル、説明、注意、同意、ヘルプ導線、障害バナー、メンテナンス表示、入力必須性、選択肢、上限値を版管理された設定から制御できなければならない。任意HTML・任意スクリプトの注入は許可せず、定義済みコンポーネントと安全なスキーマに限定する。
