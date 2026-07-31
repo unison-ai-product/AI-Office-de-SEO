@@ -605,6 +605,11 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-ACCESS-11: 代理操作のacting principalとcustomer contextを監査上区別できる。 ｜ 検証: REQ-ACCESS-11 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-12: 全data pathの越境負テストがCIまたはrelease gateで通過する。 ｜ 検証: REQ-ACCESS-12 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-13: マスターテナントが顧客tenantを直接参照できず、許諾済みShowcase Snapshotの作成・公開・撤回だけを監査可能な専用経路で実行できる。 ｜ 検証: REQ-ACCESS-13 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-14: 画面、API、worker、Agent toolが同じprincipal・action・resource・contextとpolicy versionから同じ認可結果を返し、不明入力を拒否する。 ｜ 検証: REQ-ACCESS-14 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-15: 顧客Roleと内部Roleが別namespace・別Assignmentとして管理され、Role名やFeature Flagでtenant境界・明示拒否を上書きできない。 ｜ 検証: REQ-ACCESS-15 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-16: 自動運用jobが委任範囲内だけで副作用を実行し、設定者の権限喪失・Site移管・Kill Switch後は公開等を継続しない。 ｜ 検証: REQ-ACCESS-16 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-17: 本文一時取得、内部観測、Provider送信、匿名較正、Showcase利用が別Permission・目的・保持policyとして強制される。 ｜ 検証: REQ-ACCESS-17 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-18: break-glassが重大incidentに限定され、短期失効・強認証・対象限定・事後reviewを伴い、安全不変条件を解除できない。 ｜ 検証: REQ-ACCESS-18 ｜ 正本: `categories/security-access-requirements_v1.md`
 
 ### technical-architecture-requirements_v1
 

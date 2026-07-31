@@ -1,7 +1,7 @@
 ---
 document_id: AOS-L1-SECURITY-ACCESS-REQUIREMENTS
-title: AI Office de SEO セキュリティ・権限要求 v1.1
-version: 1.1
+title: AI Office de SEO セキュリティ・権限要求 v1.2
+version: 1.2
 layer: L1
 kind: security_access_requirements
 status: draft
@@ -84,6 +84,41 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 
 限定TrialのCustomer Organizationも通常顧客と同じtenant分離を適用する。Trialであること、内部招待であること、開発者スーパーアカウントが発行したことを、顧客データへの広いアクセス権限や品質・公開ゲートの迂回根拠にしてはならない。
 
+### REQ-ACCESS-14 認可判定契約
+
+すべての画面、API、job、Agent tool、外部Adapter、管理操作は、共通の認可判定契約 `AuthorizationDecision(principal, action, resource, context)` を使用する。判定入力は少なくとも次を持つ。
+
+- `principal`: customer user、internal operator、service、AI executorの種別と認証済みID
+- `action`: read、create、update、delete、execute、approve、publish、connect、purchase、export、impersonate等のPermission
+- `resource`: tenant、organization node、Site、記事、Keyword、Recommendation、Task、connection、credit、billing、secret等のIDと所有境界
+- `context`: active tenant／organization／Site、Role Assignment、継承、明示拒否、Plan Entitlement、認証強度、代理権限、期限、job、環境
+
+出力は `allow / deny / step_up_required / approval_required`、適用したPermission、Scope、理由code、policy version、有効期限とする。UIはこの結果を説明・表示するが独自判定を持たず、API、非同期worker、Agent toolは実行直前に同じ契約で再判定する。入力欠落、競合未解決、policy不明はdefault-denyとする。
+
+### REQ-ACCESS-15 Role・Permission・Scopeの責務境界
+
+顧客Roleと組織Scopeの正本は `REQ-ORG-03`～`REQ-ORG-05`、内部Admin／Manager／Operatorの正本は `REQ-PAC-01`、強制方式は本書とする。Role名をコード内の操作許可として直接比較せず、version付きPermission集合へ解決する。顧客Roleと内部Roleを同一namespace、同一token claim、同一Role Assignmentへ格納しない。
+
+判定順序は、環境・tenant境界 → resource所有境界 → principal種別 → Membership／期限付き代理権限 → 明示拒否 → Permission → Resource Scopeと継承 → 認証強度・承認 → Plan Entitlement・予算等の業務条件とする。上位Role、複数Role、組織継承、Officeの詳細画面、Feature Flag、Plan変更は、前段の境界または明示拒否を上書きできない。同じ入力とpolicy versionから同じ判定を再現できなければならない。
+
+### REQ-ACCESS-16 自動運用・Agent委任境界
+
+自動投稿、定期実行、イベント駆動Task、Agentへの会話指示は、設定した顧客ユーザーの権限をAgentへ恒久付与する仕組みにしない。Automation Policyは、設定者、対象Site、許可operation、上限、予算、同意version、有効期間、停止条件を持つ委任契約として保存する。job起動時と外部変更・公開等の副作用直前に、service principal、委任契約、対象resource、現在policyを組み合わせて再認可する。
+
+自動運用ON、最初の15記事の承認完了、Agent Officeの詳細操作、会話による変更案、内部Managerの代理操作のいずれも、tenant境界、顧客Permission、公開対象、予算、外部接続Scopeを拡張する根拠にしない。設定者の退会・権限喪失、委任期限切れ、Site移管、接続変更、Kill Switch時は新規副作用を停止し、既存jobを安全な確認待ちへ遷移させる。
+
+### REQ-ACCESS-17 データ利用・外部送信境界
+
+データは少なくとも、顧客業務データ、本文一時データ、認証・秘密情報、課金・契約データ、内部観測データ、匿名較正データ、公開Showcaseデータへ分類する。各分類は保存先、暗号化、保持期間、閲覧Permission、外部送信先、AI Provider利用可否、export可否をpolicyとして持つ。分類変更または外部送信はデータ所有tenant、目的、送信先、最小項目、同意・契約根拠を検証する。
+
+顧客向け通常ビュー／Agent Office、内部管理面、AI Provider、ログ・trace、匿名全体較正、Showcaseの間で、用途が異なるデータを暗黙転用しない。記事本文を一時取得できるPermissionは、本文の恒久保存、内部閲覧、学習、Showcase利用、別tenantへの提供を許可しない。
+
+### REQ-ACCESS-18 緊急アクセス・Break-glass
+
+通常のAdmin／Manager権限で解決できない重大障害に限り、事前定義した緊急Permissionと短い有効期限を持つbreak-glass手続きを使用できる。実行者の強い再認証、理由、incident ID、対象tenant／Site／resource、許可operation、開始・終了、使用eventを必須とし、常設の全tenant参照tokenを発行しない。
+
+break-glassでも秘密原文の一括取得、tenant分離解除、監査停止、台帳改変、顧客本人としての記録は許可しない。使用後は自動失効、関係者通知、監査review、取得データ・一時credentialの破棄確認を行う。通常運用、顧客支援、機能検証、営業目的には使用しない。
+
 ## 受入条件
 
 - [ ] AC-L1-ACCESS-01: 顧客ユーザーの資格情報で開発管理画面・APIへアクセスできない。
@@ -99,3 +134,8 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 - [ ] AC-L1-ACCESS-11: 代理操作のacting principalとcustomer contextを監査上区別できる。
 - [ ] AC-L1-ACCESS-12: 全data pathの越境負テストがCIまたはrelease gateで通過する。
 - [ ] AC-L1-ACCESS-13: マスターテナントが顧客tenantを直接参照できず、許諾済みShowcase Snapshotの作成・公開・撤回だけを監査可能な専用経路で実行できる。
+- [ ] AC-L1-ACCESS-14: 画面、API、worker、Agent toolが同じprincipal・action・resource・contextとpolicy versionから同じ認可結果を返し、不明入力を拒否する。
+- [ ] AC-L1-ACCESS-15: 顧客Roleと内部Roleが別namespace・別Assignmentとして管理され、Role名やFeature Flagでtenant境界・明示拒否を上書きできない。
+- [ ] AC-L1-ACCESS-16: 自動運用jobが委任範囲内だけで副作用を実行し、設定者の権限喪失・Site移管・Kill Switch後は公開等を継続しない。
+- [ ] AC-L1-ACCESS-17: 本文一時取得、内部観測、Provider送信、匿名較正、Showcase利用が別Permission・目的・保持policyとして強制される。
+- [ ] AC-L1-ACCESS-18: break-glassが重大incidentに限定され、短期失効・強認証・対象限定・事後reviewを伴い、安全不変条件を解除できない。
