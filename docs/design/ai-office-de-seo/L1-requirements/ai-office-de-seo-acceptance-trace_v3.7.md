@@ -561,7 +561,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-13: 急変対象が通常推薦と分離され、1か月・3か月・6か月評価の状態と既存予定の継続を区別できる。 ｜ 検証: REQ-SCREEN-13 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。 ｜ 検証: REQ-SCREEN-14 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、保留理由、WordPress反映、再開・追加見積を同一相関IDで確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、解放条件と現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できない。 ｜ 検証: REQ-SCREEN-16 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。 ｜ 検証: REQ-SCREEN-16 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。 ｜ 検証: REQ-SCREEN-17 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 
 ### security-access-requirements_v1
