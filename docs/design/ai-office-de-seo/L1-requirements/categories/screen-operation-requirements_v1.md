@@ -179,6 +179,8 @@ soft limitでは削減・archive、処理延期、Plan変更、購入可能な�
 
 Agent Officeでは、担当Agentへ話しかける、エレベーターで担当部門へ移動する、部屋の設備または詳細Panelを開く操作により、通常ビューでは省略した一覧、根拠、関係、履歴、方針、条件を確認・変更できる。通常ビューに業務操作を追加するときは、その操作に詳細確認・詳細設定・根拠探索が必要かを判定し、必要な場合は同じ権限、業務entity、command、eventを使うOffice側の詳細操作を対応付ける。Office専用の別正本や、開発者権限を必要とする迂回操作を作らない。Keyword業務では少なくともKeyword一覧、cluster、採用・除外根拠、優先度成分を表示し、権限範囲内で選択条件、重み、除外、Recommendation方向を変更できる。
 
+将来の拡張アプリをSiteへインストールした場合、App Manifestに従って通常ビューのNavigation／WidgetとAgent Officeのフロア／部屋／設備／Agentを同時に追加する。Office表現は同じapp command、Permission、Entitlement、job、eventを利用し、部屋を経由すると権限や料金を迂回できる別経路を作らない。アンインストール時は入口と稼働演出を除去し、保持・export対象データ、未完了job、再導入条件を確認させる。
+
 OfficeでAgentへ行う質問・分析依頼は業務状態を変更せず回答する。設定、予定または実行内容を変える会話指示は、即時実行せず「設定変更案」「追加Task」「既存Task修正案」のいずれかへ構造化する。確定前に対象Site、適用範囲、影響する未実行Recommendation・Task、再計算、費用、元へ戻す方法を表示する。変更はversion付きで同じ正本へ保存し、通常ビューへ即時反映する。通常ビューでの採否、承認、停止、再開も同じeventとしてOfficeのAgent、設備、Task History、Knowledge Graphへ反映する。Office内のゲーム的な部屋・設備・装備表現だけを根拠に重要な変更を確定させない。
 
 ### REQ-SCREEN-19 業務通知・完了表示
