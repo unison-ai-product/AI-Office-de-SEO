@@ -102,8 +102,8 @@ manual運用の実績後に、制限付き自動化を追加する。
 検索・AI可視性は次の依存順で段階開放する。商品version名ではなく、Feature FlagでSite単位に開放可能な開発単位とする。
 
 1. **DU-17A Crawler外形診断**: SEO／AI Bot別のrobots、meta、canonical、HTTP、redirect、本文可読性、JavaScript依存、WAF／認証兆候を外部probeで診断し、GSC・SERP／AIO・AI回答観測と取得性×表示性の二軸を成立させる。
-2. **DU-17B AWS Crawler実測**: CloudFront／WAF等のaccess logを短期object storageへ受け、公式情報等で検証したBotだけを日次集約する。User-Agentのみのrequestは実Bot実績へ含めない。
-3. **DU-17C Edge／CMS Adapter拡張**: Cloudflare等を共通Crawler Observation Contractへ追加し、実環境のContract Test後に対応済みと表示する。
+2. **DU-17B 任意Crawler log実測**: AWS CloudFront／WAF、XServer等から取得可能なaccess logをConnectorまたは手動取込で受け、公式情報等で検証したBotだけを日次カウントへ集約して生logを削除する。設定難度があるため必須導入にせず、任意高度機能または問い合わせ案件とする。
+3. **DU-17C Edge／Hosting Adapter拡張**: Cloudflare等を共通Crawler Observation Contractへ追加し、実環境のContract Test後に対応済みと表示する。
 4. **DU-17D 可視性較正**: crawl、検索候補・順位、AI取得・引用・言及、referral、CVを時系列で接続し、Site／業界別のconfidence付き診断へ発展させる。
 
 前段のデータモデルとURL／cluster識別子を後段でも継続し、upgrade時の再登録を要求しない。外形probeを実crawl、crawlをindex・引用、引用を流入・CVの証拠として扱わない。

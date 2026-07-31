@@ -655,9 +655,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-CAV-01: Googlebot等のSEO BotとAI Botを共通契約で取り込み、事業者・用途・検証状態を分離してspoof疑いを実crawlから除外できる。 ｜ 検証: REQ-CAV-01 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
 - [ ] AC-L1-CAV-02: robots許可、外部probe、検証済み実crawl、本文可読性、freshnessを別成分として取得性を再現可能に判定できる。 ｜ 検証: REQ-CAV-02 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
-- [ ] AC-L1-CAV-03: SEO順位・表示とAI回答の言及・URL引用・share・安定性をcluster単位で分離し、分離不能値をunknown／combinedとして扱える。 ｜ 検証: REQ-CAV-03 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
+- [ ] AC-L1-CAV-03: Buy／ブランドquery中心の評価セットについて、SEO順位・表示と複数AI surfaceの言及・URL引用・share・安定性をcluster単位で分離し、分離不能値をunknown／combinedとして扱える。 ｜ 検証: REQ-CAV-03 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
 - [ ] AC-L1-CAV-04: 取得性×表示性の4象限から異なる診断を返し、crawl、index／retrieval、順位／引用、referral、CVを同一成果として混同しない。 ｜ 検証: REQ-CAV-04 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
-- [ ] AC-L1-CAV-05: 外形診断からAWS実crawl、Adapter拡張、高度較正へ段階開放し、未実装・未接続段階を観測済みとして表示しない。 ｜ 検証: REQ-CAV-05 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
+- [ ] AC-L1-CAV-05: 月次の外形・回答面診断から任意ログ実測、Adapter拡張、高度較正へ段階開放し、未実装・未接続段階を観測済みとして表示しない。 ｜ 検証: REQ-CAV-05 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-12: プライマリ高々1つと複数セカンダリの割当集合で獲得順位を評価し、順位なしをインデックス診断へ送り、CVなし単体では失敗判定しない。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-13: セカンダリ優位時に単純な主従入れ替えを行わず、業界別実績からクラスタ・代表語・主従重みの補正候補を再計算し、版と根拠を追跡できる。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-14: 実績不足時は複数の業界／業種priorとユーザー指定の横断軸を使用し、Site実績の蓄積に応じてSite固有補正の比重を高められる。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`

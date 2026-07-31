@@ -96,9 +96,9 @@ WordPress互換性と出力縮退の正本は本要求とする。Compatibility 
 
 Googlebot等の検索クローラーと、OAI-SearchBot等のAI検索・回答取得、インデックス、学習等のクローラーを、共通のCrawler Observation Contractで受け入れる。観測値は `provider、verified_bot_id、bot_purpose、site、URL、HTTP状態、bytes、latency、cache、observed_at、source、verification_method` を持ち、検索クローラーとAIクローラー、ならびにAI Botの用途を混合しない。
 
-初期は外部fetch probeによるrobots、meta robots、canonical、HTTP、redirect、本文取得可能性、JavaScript依存、WAF／認証阻害の外形診断を提供する。後続でAWS CloudFront／WAF等のserver・edge logを受け入れ、User-Agent文字列だけで実在Botと断定せず、公式IP範囲、reverse DNS、edgeのverified bot識別等、Providerごとの検証方法とversionを記録する。さらに後続でCloudflare等のAdapterを追加できるが、未接続のProviderを実測済みと表示しない。
+初期は外部fetch probeによるrobots、meta robots、canonical、HTTP、redirect、本文取得可能性、JavaScript依存、WAF／認証阻害の外形診断を提供する。後続でAWS CloudFront／WAF、XServer等のhosting access log、Cloudflare等のedge logを、環境別Connectorまたは手動取込で受け入れる。User-Agent文字列だけで実在Botと断定せず、公式IP範囲、reverse DNS、edgeのverified bot識別等、Providerごとの検証方法とversionを記録する。実環境で取得方法、形式、権限、利用Planを検証していないConnectorや未接続Providerを実測済みと表示しない。
 
-client-side Trackerは人間の遷移・CV用であり、JavaScriptを実行しないCrawler観測の必須経路にしない。生access logは短期object storageへ隔離し、日次集約後に削除する。robots変更やWAF allowlist等のサイト設定修正は診断結果と手順をユーザーへ提示し、本連携が無断で変更しない。
+client-side Trackerは人間の遷移・CV用であり、JavaScriptを実行しないCrawler観測の必須経路にしない。Crawler log連携は全顧客の必須設定にせず、外形診断だけでも利用開始できる。設定難度、hosting権限、Plan制限、保守原価があるため、対応環境の任意高度機能または問い合わせ導入として提供できる。生access logは取込stream内または短期object storageでBot検証と集約に必要な間だけ扱い、日次カウント・状態別件数・最終取得時刻等を生成後に削除する。robots変更やWAF allowlist等のサイト設定修正は診断結果と手順をユーザーへ提示し、本連携が無断で変更しない。
 
 ## 受入条件
 

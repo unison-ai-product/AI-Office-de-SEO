@@ -41,6 +41,12 @@ URLごとに `declared_access、probe_access、observed_crawl、content_readabil
 
 SEO表示性はclusterに対するimpression、順位、click、検索結果featureを用いる。AI表示性はprompt clusterとAI surfaceごとに `surface_trigger、brand_mention、url_citation、citation_share、position、sentiment、repeat_stability、referral` を評価する。回答の一回取得を安定した表示とせず、観測回数とばらつきを併記する。
 
+初期の対象候補は Google AI Overview／AI Mode、Microsoft Copilot／Bing AI回答、ChatGPT Search、Perplexity、Gemini、Claude Web Searchとする。Grok等の新規surfaceを同じ契約へ追加可能にする。名称を記載しただけでは対応済みとせず、直接観測、公式Webmasterデータ、正規API等の取得方法と再現条件を検証できたsurfaceだけを有効化する。
+
+観測promptは全Know queryを網羅せず、Buy／Commercial investigation queryと、ブランド・商品・サービス名を含むcitation確認を優先する。Keyword cluster、商品・サービス、対象顧客、比較対象、地域、ファネルから「比較、選び方、推奨、費用、導入、代替、課題解決」等の候補を生成し、ユーザーが追加・除外・固定できる。単純Know queryは事業価値または引用機会が認められる場合だけ追加し、表示回数だけで高価値としない。
+
+ブランド観測は、自社ブランド／商品／サービスが回答へ言及されること、正しい自社URLがcitationされること、第三者URLだけが根拠となることを分離し、対象Buy query群に対するcitation coverageと競合shareを推定する。観測promptは実ユーザーqueryそのものと断定せず、生成規則とversionを持つ評価セットとして扱う。
+
 Google等のAI面が通常検索値へ合算され、専用値を取得できない場合は `combined` とし、通常検索値から推定差引してAI値を捏造しない。AI回答にURL引用がなくブランドだけが現れる場合と、URLだけが引用されブランド言及がない場合を別状態にする。
 
 ### REQ-CAV-04 ファネル・二軸診断
@@ -64,13 +70,15 @@ robots、header、WAF、canonical、公開・更新、Crawler観測、GSC、SERP
 
 取得障害はサイト設定の自動修復ではなく、原因、影響Provider／Bot／URL、確認証拠、推奨確認手順をユーザーへ返す。取得可能だが表示されない場合だけ、内容・構造・根拠・競合に関するRecommendation候補へ進める。
 
+AIOおよびAI回答面の定期観測は月次を基本とする。急変を理由に反復取得せず、月次では対象評価セット全体を観測する。追加観測はユーザー明示実行、Provider仕様変更の検証、障害復旧確認等に限定し、頻度追加はPlan／creditとProvider原価の対象にできる。日次・週次の常時観測を初期既定にしない。
+
 ## 4. 段階的リリース
 
 | 段階 | 提供範囲 | 判定できること | 提供しない断定 |
 |---|---|---|---|
 | Release 1 外形診断 | robots、meta、canonical、HTTP、redirect、HTML本文、JS依存、WAF／認証兆候の外部probe。GSC・SERP／AIO・prompt cluster観測との二軸表示 | 「現在のprobe条件で取得可能か」「検索／AI回答で観測されたか」 | 実Botが訪問した、index・引用されたという断定 |
-| Release 2 AWS実測 | CloudFront／WAF等のlog取込、Bot検証、日次URL集約、取得頻度・status・latency・coverage・freshness | SEO／AI Botの検証済み実crawlと阻害原因 | 未接続Providerの実crawl、crawlからの引用因果 |
-| Release 3 Adapter拡張 | Cloudflare等のedge Adapter、CMS／host別診断、Provider別Bot Catalog更新 | 複数環境を同一契約で比較、運用通知 | 実環境未検証Adapterの互換保証 |
+| Release 2 任意ログ実測 | AWS CloudFront／WAF、XServerの取得可能なaccess log等をConnectorまたは手動取込で受け、Bot検証、日次URL集約、取得頻度・status・latency・coverage・freshnessを算出 | 対応環境におけるSEO／AI Botの実crawlと阻害原因 | 未接続環境の実crawl、crawlからの引用因果 |
+| Release 3 Adapter拡張 | Cloudflare等のedge Adapter、hosting／CMS別診断、Provider別Bot Catalog更新 | 複数環境を同一契約で比較、運用通知 | 実環境未検証Adapterの互換保証 |
 | Release 4 高度較正 | crawl・検索順位・AI回答・referral・CVの時系列較正、Site／業界prior | 選択性、引用安定性、施策前後差のconfidence付き評価 | 表示・成果の保証、crawlだけを根拠にした因果断定 |
 
 各段階はFeature FlagでSite単位に開放し、前段データを再登録させず後段へ移行する。Release番号は商品versionを固定せず、依存順を表す。
@@ -79,6 +87,6 @@ robots、header、WAF、canonical、公開・更新、Crawler観測、GSC、SERP
 
 - [ ] AC-L1-CAV-01: Googlebot等のSEO BotとAI Botを共通契約で取り込み、事業者・用途・検証状態を分離してspoof疑いを実crawlから除外できる。
 - [ ] AC-L1-CAV-02: robots許可、外部probe、検証済み実crawl、本文可読性、freshnessを別成分として取得性を再現可能に判定できる。
-- [ ] AC-L1-CAV-03: SEO順位・表示とAI回答の言及・URL引用・share・安定性をcluster単位で分離し、分離不能値をunknown／combinedとして扱える。
+- [ ] AC-L1-CAV-03: Buy／ブランドquery中心の評価セットについて、SEO順位・表示と複数AI surfaceの言及・URL引用・share・安定性をcluster単位で分離し、分離不能値をunknown／combinedとして扱える。
 - [ ] AC-L1-CAV-04: 取得性×表示性の4象限から異なる診断を返し、crawl、index／retrieval、順位／引用、referral、CVを同一成果として混同しない。
-- [ ] AC-L1-CAV-05: 外形診断からAWS実crawl、Adapter拡張、高度較正へ段階開放し、未実装・未接続段階を観測済みとして表示しない。
+- [ ] AC-L1-CAV-05: 月次の外形・回答面診断から任意ログ実測、Adapter拡張、高度較正へ段階開放し、未実装・未接続段階を観測済みとして表示しない。
