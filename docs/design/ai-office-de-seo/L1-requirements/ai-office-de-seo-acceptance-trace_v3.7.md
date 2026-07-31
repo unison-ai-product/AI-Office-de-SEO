@@ -540,6 +540,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-PAC-11: 本番変更に差分、理由、承認、適用、Rollback記録が残る。 ｜ 検証: REQ-PAC-11 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 - [ ] AC-L1-PAC-12: いずれの内部Roleでも安全不変条件を解除できない。 ｜ 検証: REQ-PAC-12 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 - [ ] AC-L1-PAC-13: 本番・非本番の権限、秘密情報、設定が分離され、管理操作を環境別に監査できる。 ｜ 検証: REQ-PAC-13 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
+- [ ] AC-L1-PAC-14: 価格・契約・利用枠・機能・品質・バックアップ等のPlan設定をコード変更なしに改版し、既存契約を維持したまま対象と適用日を指定して変更・Rollbackできる。 ｜ 検証: REQ-PAC-14 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 
 ### screen-operation-requirements_v1
 

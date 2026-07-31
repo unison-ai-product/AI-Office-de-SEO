@@ -88,6 +88,14 @@ Kill Switch、read-onlyモード、機能別停止、キュー保留、公開停
 
 管理操作は実行者、内部Role、対象環境、対象顧客、変更前後、理由、承認、結果、Rollbackを不変監査ログへ記録する。本番、staging、developmentの権限と設定を分離し、非本番操作が本番へ波及しない。
 
+### REQ-PAC-14 Plan Configuration
+
+プラン名、価格参照、契約期間、年契割引、申込経路、Site数、ユーザー数、月間・週次credit、品質段階、利用可能機能、自動投稿、バックアップ容量・保持期間、予測、監査、外部連携、サポート、追加購入可否を、コード変更なしにversion付きPlan Configurationとして変更できなければならない。
+
+変更は適用対象を新規契約、更新契約、指定契約、Customer Organization、Siteから選び、適用開始日と終了日を持つ。既存契約へ遡及適用せず、契約version、Price Catalog、Entitlement Snapshotを保持する。個別overrideは理由、承認者、期限を必須とし、標準Planへ戻る条件を持たせる。
+
+公開前に差分、対象契約数、売上・粗利、利用可能機能、保存データ、実行中jobへの影響をPreviewし、Validate、承認、予約適用、Rollbackを行う。tenant分離、台帳不変性、サーバー側認可等の安全不変条件はPlan設定で解除できない。
+
 ## 4. 接続要求
 
 - 既存の詳細管理面は `ai-office-de-seo-admin-console-requirements_v3.7.md` を移行元として参照する。
@@ -111,3 +119,4 @@ Kill Switch、read-onlyモード、機能別停止、キュー保留、公開停
 - [ ] AC-L1-PAC-11: 本番変更に差分、理由、承認、適用、Rollback記録が残る。
 - [ ] AC-L1-PAC-12: いずれの内部Roleでも安全不変条件を解除できない。
 - [ ] AC-L1-PAC-13: 本番・非本番の権限、秘密情報、設定が分離され、管理操作を環境別に監査できる。
+- [ ] AC-L1-PAC-14: 価格・契約・利用枠・機能・品質・バックアップ等のPlan設定をコード変更なしに改版し、既存契約を維持したまま対象と適用日を指定して変更・Rollbackできる。

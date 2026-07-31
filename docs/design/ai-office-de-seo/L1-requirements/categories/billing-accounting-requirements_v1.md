@@ -37,6 +37,8 @@ updated_at: 2026-07-31
 
 契約プラン、追加クレジット、バックアップ容量、保持延長等の商品は、商品ID、価格ID、通貨、税区分、請求周期、付与量、利用上限、有効期間、販売開始・終了、適用対象を持つversion付きPrice Catalogを正本とする。既存契約へ価格改定を遡及適用せず、契約が参照したcatalog versionを保持する。
 
+価格・請求条件はPrice Catalog、機能・容量・品質・利用枠は `REQ-PAC-14` のPlan Configurationを正本とし、契約時の両versionからEntitlement Snapshotを確定する。初期価格階段とプラン配分は販売開始後も管理設定から改版できるが、既存契約の請求・利用権を暗黙変更しない。
+
 品質段階は `economy / standard / high / premium` 等の安定した商品コードで管理し、Provider名・モデル名を商品コードにしない。`GPT Luna / GPT tera / Sonnet / Opus` 等の名称を表示する場合は商品上の暫定ラベルまたはrouting aliasとして扱い、実際のProvider、model、snapshot、調査量、検査、Repair、fallbackはversion付きModel Registryで解決する。
 
 初期価格階段は次を企画基準値とする。法人・個人で別システムを作らず、利用量、品質、組織機能、バックアップ、サポート範囲を商品差とする。プラン別credit、Site数、ユーザー数等は実装・β原価計測後に同じPrice Catalog versionへ固定する。
