@@ -35,6 +35,8 @@ updated_at: 2026-07-30
 
 外部取得値の解釈・優先順位計算はロジック要求へ置く。
 
+すべての外部連携は共通のFeature Connection Adapter境界を使用する。Adapterの責務は認証、接続、quota、取得・送信、再試行、Provider固有payloadの正規化までとし、SEO優先順位、推薦、成果判定を持たない。入力系はContext Envelope、出力系はversion付きCommand Result、状態系はConnection Healthへ変換し、Core WorkflowがProvider固有responseを直接解釈しない。
+
 既存ソース: `ai-office-de-seo-dataforseo-competitor-batch-requirements_v3.7.md`、`ai-office-de-seo-wp-automation-dynamic-post-requirements_v3.7.md`、`ai-office-de-seo-billing-credit-provider-requirements_v3.7.md`。
 
 ## 要求

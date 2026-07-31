@@ -102,6 +102,10 @@ Feature Object間は直接テーブル参照・内部関数呼出しへ依存せ
 
 Feature Connectionは `initialize／capability discovery／health／invoke／cancel／event subscription／version negotiation／shutdown` を共通操作として持つ。remote Providerは認証、署名、tenant／Site Scope、timeout、rate limit、idempotency、stream上限、egress allowlist、監査を必須とし、接続先が返す説明文・Prompt・Schemaを信頼済みsystem指示として無条件に採用しない。公開されたTool／ResourceはPlatform側Catalogで承認したkeyとversionだけを有効化する。
 
+Coreは `Feature Connection Adapter` Portだけへ依存し、Provider固有SDK、endpoint、認証、pagination、rate limit、webhook、polling、payload、error codeを参照しない。Adapterは外部値を共通の `Capability Descriptor、Context Envelope、Command Result、Connection Health、Usage／Cost` へ正規化する。DataForSEO、GSC、CMS、hosting、AI surface、MCP Server等はこのPortの実装として追加し、同一ProviderでもAPI世代または取得方式が異なる場合はAdapter versionで分離する。
+
+Adapterが提供する能力は `context_source`、`action_tool`、`event_source`、`content_destination` の組合せとして宣言する。分析データだけを返す接続へwrite権限を付与せず、記事送信等の副作用を持つAdapterはread系とcommand系を別Permission・別冪等契約にする。Adapter停止時はConnection Healthとavailabilityを返し、Core entityをProvider固有状態へ書き換えない。
+
 ### REQ-TECH-12 設定とversion固定
 
 価格、しきい値、推薦重み、Provider Routing、Prompt Pack、Quality Gate、Feature Flag等は版管理された設定を正本とする。ジョブ開始時に参照versionを固定し、処理途中の設定変更で結果の再現性を失わない。設定変更は影響Preview、検証、承認、段階適用、Rollbackを経る。
