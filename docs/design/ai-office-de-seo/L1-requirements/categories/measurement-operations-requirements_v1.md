@@ -84,6 +84,8 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 顧客申告、alert、job失敗、操作問い合わせを相関ID、分類、回避策、原因、解決versionへ接続し、同一問題を検索可能にする。再発傾向は要求、runbook、監視、FAQ、テストへ還流し、個別担当者の記憶だけを運用正本にしない。
 
+接続・同期障害は認証、WAF／network、rate limit、schema／Capability、本文欠落、JavaScript依存、外部Provider、AI Office内部処理へ機械分類する。顧客向けFAQチャットは分類結果をそのまま開発用語で見せず、顧客側で必要な操作、システム側で対応中、問い合わせが必要のいずれかへ変換して案内する。内部ログ、trace、相関ID、経路切替履歴は開発・support面だけで参照し、FAQ回答と担当側の切り分け根拠へ接続する。
+
 接続異常はWAF／認証拒否、rate limit、schema・Capability変更、本文欠落、JavaScript描画、外部Provider障害、内部Adapter・worker障害等へ機械分類する。顧客向けFAQチャットは公開可能な診断code、影響範囲、Site側かシステム側か、確認手順、ユーザーが実施できる設定、問い合わせ要否を受け取り、関連FAQまたは対応状況を案内する。内部log、secret、stack trace、他tenant情報をチャットへ渡さず、システム側障害をユーザー設定の問題として案内しない。
 
 ### REQ-MEASURE-12 検索・AI可視性ファネル

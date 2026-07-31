@@ -242,6 +242,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 正本: `categories/billing-accounting-requirements_v1.md`、`categories/cost-requirements_v1.md`、`categories/growth-upsell-requirements_v1.md`
 
 - Article読取りはpublic／authenticated crawl、CMS REST rendered、Plugin Snapshot push、manual importを共通Snapshotへ収束させる。Site・用途別のArticle Read Profileが、許可済み経路から完全性、鮮度、成功率、Site負荷、費用でprimary／standbyを自動選択する。変更発見と内容取得を分離して差分対象だけを読み、連続失敗時はcooldown付きでfailoverし、セキュリティ設定を弱めず全経路不成立を案内する。読取りとCMS書込みの権限・経路は分離する。
+- Article読取りの経路選択は内部制御とし、顧客へCrawler、REST、primary／standby等を設定させない。顧客画面は業務の利用可否、影響、必要な操作だけを示し、詳細診断は開発管理面とFAQチャットの切り分け根拠へ使用する。通常同期は更新駆動、初回・大規模取込はPlanの同期規模Capacityとして分割処理する。
+- 公開記事差分は機械処理を基本とし、CTA・CV経路、SEO評価対象、取得・公開error、軽微変更の順に分類する。必要な評価起点だけを更新し、意味要約等の規則処理で作れない派生情報に限ってLLMを使用する。
 - 記事同期は初回の分割全体取込と、通常の更新通知・差分取得を分離する。技術経路の固定をユーザー設定にせず、管理記事数・月間変更量・取得bytes・render取得等をPlan Capacityへ接続する。Web Archiveは公開状態の正本にせず、JavaScript render取得は負荷と費用を実測してから後続提供を判断する。
 - 公開記事の差分は原則として機械比較し、`CTA・CV経路 > SEO評価対象 > error・取得状態 > 軽微変更` の順で処理する。意味判定が必要な場合だけLLMを補助利用し、誤字・装飾で評価周期をリセットしない。接続異常はSite側とシステム側を分類し、公開可能な診断codeをFAQチャットへ接続する。
 

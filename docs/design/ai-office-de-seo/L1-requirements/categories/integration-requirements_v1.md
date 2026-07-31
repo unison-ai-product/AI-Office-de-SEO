@@ -108,6 +108,8 @@ client-side Trackerは人間の遷移・CV用であり、将来もCrawler観測�
 
 経路は変更発見と本文・構造取得を分離する。Webhook／Plugin push、RSS／Atom、sitemap、REST modified日時等の軽い変更信号から対象URLを特定し、変更対象だけを選択中の読取り経路で取得する。外部Crawlerによる全件定期走査を既定にせず、content hash未変更ならArticle Summary再解析を省略する。
 
+初回接続時だけ取得可能な記事一覧を分割同期し、通常運用は更新通知・更新日時・sitemap差分・content hashに基づく増分同期を既定とする。記事数・更新件数・取得量・一時処理量はPlanのCapacity Dimensionへ計上し、大規模Siteは自動構築期間として分割処理する。顧客へ技術経路を選択させず、上限接近時はPlan変更または容量対応の業務導線を提示する。
+
 初回接続時だけ取得可能範囲を分割して全体同期し、通常運用は更新通知・差分取得を基本とする。初回同期件数、月間同期件数、再取得量、処理待ち時間はSite規模とPlan Capacityへ接続し、大規模Siteは自動構築期間として分散する。429、応答遅延、timeout、CMS負荷兆候を検知した場合は同時数と取得間隔を自動調整し、追加料金で接続先の安全上限を解除しない。
 
 通常HTMLで必要本文を取得できないJavaScript描画Siteは `render_required` として分離し、Headless Browser等のrender取得は実測した負荷・費用・成功率がPlan内に収まる場合だけ後続候補とする。公開時点の再現性と鮮度を保証できないWeb Archiveを通常同期や公開状態の正本として使用しない。
@@ -117,6 +119,8 @@ Connection Adapterは経路ごとに、到達性、認証成立、取得完全�
 初期優先は、必要な情報を完全に取得できる経路のうちSite負荷・外部呼出し・保守費が小さいものとする。候補が同等ならpush／差分通知をpollingより、対象取得を全件crawlより優先する。ただしPlugin Snapshotが必要情報を欠く場合、公開Rendered HTMLの検証が必要な場合、下書き等でRESTだけが成立する場合は、用途ごとに異なるprimaryを選べる。
 
 primaryの一時失敗だけで即時切替を反復せず、error分類、連続失敗、cooldown、最小固定期間、回復probe、切替後の観測期間を持つ。認証失効、明示拒否、継続する403／429／5xx、schema不一致、stale超過時はstandbyへfailoverし、全経路不成立なら `read_connection_required` として理由と設定案を返す。回復時も自動復帰Policyに従いflappingを防ぐ。記事の書込み経路と読取り経路は独立して選択し、読取り経路の切替をWordPress等への書込み許可として扱わない。
+
+公開HTMLを通常取得できないSiteに対するHeadless Browser等の描画取得は、実測した負荷・成功率・費用から採用可否を判断する後続経路とし、初期の常用経路へ含めない。Wayback Machine等の外部Archiveは古い状態または欠落を含み得るため現在状態の正本・通常fallbackにせず、ユーザーが復旧調査へ明示利用する場合だけ補助資料として扱う。
 
 ## 受入条件
 
