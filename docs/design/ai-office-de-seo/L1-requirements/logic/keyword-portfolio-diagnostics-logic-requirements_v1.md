@@ -26,6 +26,8 @@ updated_at: 2026-07-31
 
 同一Keyword Groupで複数URLの獲得query集合のJaccard被覆率が50%超、かつ上位2URLへのclick分散で第2URL shareが30%以上の場合を候補とする。canonical違い、pagination、意図の異なるSERP、campaign URLは除外する。候補は統合、主担当再割当、内部link調整、意図分離、observeへ分類し、自動統合しない。
 
+公開前の新規記事またはリライトではGSC実績を待たず、対象clusterと既存記事clusterのSERP上位URL集合の重複、検索意図、主従keyword、既存assignment、記事typeを比較する。SERP重複がrule versionの警告域を超え、同一意図・同一主担当を競合する場合は `cannibal_risk` とし、新規作成の抑制、既存記事への追記、意図分離、主担当再割当を提案する。SERP重複だけで公開を禁止またはカニバリ確定せず、比較対象SERPの取得日時とconfidenceを表示する。
+
 ## REQ-KPD-05 confidence・unknown
 
 診断confidenceは期間充足、click母数、query可視率、match confidence、indexability、SERP鮮度から算出する。最低click母数と期間はSite規模別rule versionへ持ち、未達時は `insufficient_data` とする。匿名化率が高い場合は観測可能範囲の結果と構造的上限を併記する。

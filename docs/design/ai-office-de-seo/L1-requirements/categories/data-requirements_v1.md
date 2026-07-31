@@ -47,6 +47,8 @@ CoreとFeature Objectの主境界はContext接続とする。Objectは `Context 
 
 記事本文の代わりに、URL、title、meta、見出し構造、記事タイプ、更新日、content hash、見出し単位の要点、イベント発生ポイント、トピック、意図、対象読者、問い、主張、根拠種別、CTA、内部リンク、鮮度、不足分類を有界なArticle Summaryとして機械抽出し保持する。抽出器とschema versionを記録し、LLMの自由要約だけを正本にしない。
 
+サイト構造・内部リンクのread modelは、WordPress等から取得したカテゴリ／階層／URL／記事所属、Article Summary、Keyword cluster assignment、内部link edgeを集約して生成する。既存のKeyword・記事正本から再構築可能な集約table／viewとし、同じ事実を別の恒久グラフ正本として二重保持しない。提案構造と外部実構造、提案linkと反映済みlinkを状態で区別する。
+
 ### REQ-DATA-03 本文非保持
 
 本文全文、段落全文、生HTML、長い引用、LLM raw response、プロンプト全文を恒久DBへ保持しない。本文は隔離された一時領域で解析し、Article Summaryと必要なhash・位置参照を生成後に削除する。
