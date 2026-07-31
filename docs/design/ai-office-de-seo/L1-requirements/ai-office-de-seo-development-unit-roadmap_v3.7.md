@@ -99,7 +99,7 @@ manual運用の実績後に、制限付き自動化を追加する。
 
 ### DU-17 Production Hardening
 
-検索・AI可視性は次の依存順で段階開放する。商品version名ではなく、Feature FlagでSite単位に開放可能な開発単位とする。
+検索・AI可視性は初期リリースの開発単位に含めず、リリース後にProvider仕様・日本対応・規約・原価を再調査する構想枠とする。採用する場合は次の依存順で試験し、Feature FlagでSite単位に開放する。
 
 1. **DU-17A Crawler外形診断**: SEO／AI Bot別のrobots、meta、canonical、HTTP、redirect、本文可読性、JavaScript依存、WAF／認証兆候を外部probeで診断し、GSC・SERP／AIO・AI回答観測と取得性×表示性の二軸を成立させる。
 2. **DU-17B 任意Crawler log実測**: AWS CloudFront／WAF、XServer等から取得可能なaccess logをConnectorまたは手動取込で受け、公式情報等で検証したBotだけを日次カウントへ集約して生logを削除する。設定難度があるため必須導入にせず、任意高度機能または問い合わせ案件とする。

@@ -107,7 +107,7 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 
 ### REQ-DATA-14 Crawler・AI可視性データ
 
-Crawler観測は `Site × URL × 日 × Provider × verified Bot × Bot用途 × source` を集約単位とし、request数、HTTP状態別件数、bytes、latency分位、cache状態、最終取得時刻、verification method／versionを保持する。外形probeと実access log、検索BotとAI Bot、検索・回答取得・インデックス・学習等の用途を別値として保持する。
+本データは初期リリースの必須保存対象にせず、将来機能を有効化した場合だけ生成する。Crawler観測は `Site × URL × 日 × Provider × verified Bot × Bot用途 × source` を集約単位とし、request数、HTTP状態別件数、bytes、latency分位、cache状態、最終取得時刻、verification method／versionを保持する。
 
 回答面観測は `Site × prompt cluster × AI surface × locale／device等の観測条件 × observation run` を単位に、回答面出現、ブランド言及、引用URL、引用位置・share、sentiment、実行日時、取得方法、再現回数、confidenceを保持する。検索順位、AIO、AI回答、AI referral、CVは共通URL／clusterへ接続するが、provenanceを保ち別の事実として保存する。
 

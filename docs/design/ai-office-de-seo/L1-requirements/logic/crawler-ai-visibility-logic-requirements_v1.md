@@ -4,15 +4,17 @@ title: SEO／AIクローラー取得性・AI回答表示性ロジック要求 v1
 version: 1.0
 layer: L1
 kind: logic_requirements
-status: draft
+status: concept
 updated_at: 2026-07-31
 ---
 
-# SEO／AIクローラー取得性・AI回答表示性ロジック要求
+# SEO／AIクローラー取得性・AI回答表示性ロジック構想
 
 ## 1. 目的
 
-検索エンジンとAIサービスについて、ページを取得できることと、検索結果・AI回答へ表示されることを混同せず評価する。ユーザーには取得性と表示性の二軸で示し、内部では原因を特定できる段階別ファネルを維持する。
+本領域はProviderの仕様、提供データ、日本語・地域対応、利用条件、価格が変化中であり、初期リリースの提供範囲として確定しない。将来の調査・試験導入時に、ページを取得できることと検索結果・AI回答へ表示されることを混同しないための構想と拡張境界を定める。
+
+以下のProvider名、頻度、段階は候補であり、採用・提供予定・互換保証を意味しない。実装着手時に公式仕様、DataForSEO等の集約Provider、各社Webmasterデータ、直接観測の可否、原価、規約、日本市場の再現性を再調査し、L2 ADRとversion付きCapability Catalogで確定する。
 
 ## 2. 共通入力契約
 
@@ -41,7 +43,7 @@ URLごとに `declared_access、probe_access、observed_crawl、content_readabil
 
 SEO表示性はclusterに対するimpression、順位、click、検索結果featureを用いる。AI表示性はprompt clusterとAI surfaceごとに `surface_trigger、brand_mention、url_citation、citation_share、position、sentiment、repeat_stability、referral` を評価する。回答の一回取得を安定した表示とせず、観測回数とばらつきを併記する。
 
-初期の対象候補は Google AI Overview／AI Mode、Microsoft Copilot／Bing AI回答、ChatGPT Search、Perplexity、Gemini、Claude Web Searchとする。Grok等の新規surfaceを同じ契約へ追加可能にする。名称を記載しただけでは対応済みとせず、直接観測、公式Webmasterデータ、正規API等の取得方法と再現条件を検証できたsurfaceだけを有効化する。
+対象候補は Google AI Overview／AI Mode、Microsoft Copilot／Bing AI回答、ChatGPT Search、Perplexity、Gemini、Claude Web Search、Grok等とし、同じ契約へ追加可能にする。名称を記載しただけでは対応済みとせず、直接観測、公式Webmasterデータ、DataForSEO等の正規契約APIで取得方法と日本市場の再現条件を検証できたsurfaceだけを将来有効化する。
 
 観測promptは全Know queryを網羅せず、Buy／Commercial investigation queryと、ブランド・商品・サービス名を含むcitation確認を優先する。Keyword cluster、商品・サービス、対象顧客、比較対象、地域、ファネルから「比較、選び方、推奨、費用、導入、代替、課題解決」等の候補を生成し、ユーザーが追加・除外・固定できる。単純Know queryは事業価値または引用機会が認められる場合だけ追加し、表示回数だけで高価値としない。
 
@@ -70,9 +72,9 @@ robots、header、WAF、canonical、公開・更新、Crawler観測、GSC、SERP
 
 取得障害はサイト設定の自動修復ではなく、原因、影響Provider／Bot／URL、確認証拠、推奨確認手順をユーザーへ返す。取得可能だが表示されない場合だけ、内容・構造・根拠・競合に関するRecommendation候補へ進める。
 
-AIOおよびAI回答面の定期観測は月次を基本とする。急変を理由に反復取得せず、月次では対象評価セット全体を観測する。追加観測はユーザー明示実行、Provider仕様変更の検証、障害復旧確認等に限定し、頻度追加はPlan／creditとProvider原価の対象にできる。日次・週次の常時観測を初期既定にしない。
+将来定期観測を提供する場合は月次を基準案とする。急変を理由に反復取得せず、追加観測はユーザー明示実行、Provider仕様変更の検証、障害復旧確認等に限定する。実際の頻度とPlan／creditは、Provider原価と観測安定性を検証して確定し、日次・週次の常時観測を既定にしない。
 
-## 4. 段階的リリース
+## 4. リリース後の検証候補
 
 | 段階 | 提供範囲 | 判定できること | 提供しない断定 |
 |---|---|---|---|
@@ -81,7 +83,7 @@ AIOおよびAI回答面の定期観測は月次を基本とする。急変を理
 | Release 3 Adapter拡張 | Cloudflare等のedge Adapter、hosting／CMS別診断、Provider別Bot Catalog更新 | 複数環境を同一契約で比較、運用通知 | 実環境未検証Adapterの互換保証 |
 | Release 4 高度較正 | crawl・検索順位・AI回答・referral・CVの時系列較正、Site／業界prior | 選択性、引用安定性、施策前後差のconfidence付き評価 | 表示・成果の保証、crawlだけを根拠にした因果断定 |
 
-各段階はFeature FlagでSite単位に開放し、前段データを再登録させず後段へ移行する。Release番号は商品versionを固定せず、依存順を表す。
+各段階は初期リリース後の候補であり、提供時期を確約しない。採用時はFeature FlagでSite単位に試験開放し、前段データを再登録させず後段へ移行する。Release番号は商品versionではなく検証依存順を表す。
 
 ## 5. 受入条件
 

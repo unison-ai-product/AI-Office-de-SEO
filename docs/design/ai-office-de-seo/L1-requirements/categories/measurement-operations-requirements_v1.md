@@ -86,9 +86,9 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 ### REQ-MEASURE-12 検索・AI可視性ファネル
 
-検索およびAI面を `取得可能 → 実取得 → 検索候補・回答取得 → 順位／引用／言及 → 参照流入 → CV` の段階で計測する。ユーザー画面の主要評価は「SEO／AI取得性」と「検索順位／AI回答表示性」の二軸とするが、内部データでは各段階を分離し、crawlをindex・citationの証拠、citationを流入・CVの証拠として扱わない。
+将来本機能を提供する場合、検索およびAI面を `取得可能 → 実取得 → 検索候補・回答取得 → 順位／引用／言及 → 参照流入 → CV` の段階で計測する。ユーザー画面は「SEO／AI取得性」と「検索順位／AI回答表示性」の二軸候補とするが、内部データでは各段階を分離し、crawlをindex・citationの証拠、citationを流入・CVの証拠として扱わない。
 
-SEO取得性はGooglebot等、AI取得性はProviderおよびBot用途別に、許可状態、probe成功、検証済み実crawl、2xx／3xx／4xx／5xx／429、本文完全性、応答時間、coverage、freshnessを表示する。SEO表示性はGSCのimpression、順位、click、AI表示性は月次のBuy／ブランドquery中心のprompt cluster別に、Google、Microsoft、OpenAI、Perplexity、Anthropic、Google Gemini等の検証済みsurfaceにおける回答面出現、ブランド言及、URL引用、引用share、反復時の安定性、AI referralをavailabilityと観測方法付きで表示する。Grok等は取得方法を検証後に追加する。AI面を通常検索実績へ合算するProviderでは、分離不能な値を推定でAI専用値に割り当てない。
+候補Provider、DataForSEO等の集約API、公式Webmasterデータ、直接観測はCapability Catalogで入替可能にし、特定取得元をL1で標準Providerとして固定しない。提供時はBuy／ブランドquery中心とし、availabilityと観測方法を表示する。AI面を通常検索実績へ合算するProviderでは、分離不能な値を推定でAI専用値に割り当てない。
 
 二軸は `取得高・表示高=維持／保護`、`取得高・表示低=選択性・内容・根拠・競合を診断`、`取得低・表示高=cache・第三者・過去取得等を確認し技術要監視`、`取得低・表示低=取得障害を先に診断` の決定表へ接続する。総合点だけで原因を隠さず、構成値、confidence、未観測理由、最終観測日時を保持する。
 

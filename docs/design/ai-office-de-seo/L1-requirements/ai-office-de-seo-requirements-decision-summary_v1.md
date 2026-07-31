@@ -63,7 +63,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## 6. キーワード・Recommendation
 
 - 市場影響としてAIO、リスティング、ドメイン信用性、検索需要、表示回数、季節性を扱う。
-- SEOとAI検索は、ページへ到達・取得できる「取得性」と、検索順位またはAI回答で言及・引用される「表示性」の二軸で評価する。内部では `取得可能→実crawl→検索候補／回答取得→順位／引用／言及→referral→CV` を分離し、crawlを表示・成果の証拠にしない。Googlebot等のSEO BotとAI Botは共通観測契約を使うが、Provider、Bot用途、検証状態を混合しない。AI回答面は月次、Buy／ブランドquery中心でGoogle、Microsoft、OpenAI、Perplexity、Gemini、Claudeを候補とし、Grok等は取得方法検証後に追加する。初期は外形probe、後続はAWS・XServer等の任意log実測、他edge／hosting Adapter、高度較正の順に開放する（`REQ-CAV-*`, `REQ-INT-08`, `REQ-MEASURE-12`）。
+- SEO／AIの取得性・表示性評価は、技術・サービス仕様が未確定なため初期提供を約束せず、リリース後の更新追従構想として保持する。将来実装時も `取得可能→実crawl→検索候補／回答取得→順位／引用／言及→referral→CV` を分離し、crawlを表示・成果の証拠にしない。DataForSEO、各社Webmasterデータ、直接観測、server／edge logは交換可能な候補とし、日本市場の対応、規約、原価、再現性を再調査して採否・頻度・対象surfaceを決める（`REQ-CAV-*`, `REQ-INT-08`, `REQ-MEASURE-12`）。
 - プライマリキーワードと3〜5件程度の補助キーワードを検索意図・SERPからクラスタ化し、記事へ割り当てる。
 - 獲得キーワードが意図したクラスタで順位を得ることを記事評価の第一条件とし、CV可能な記事はCV取得を次の評価軸とする。
 - 想定外のキーワード獲得は単純な主従入替えにせず、業界・Site実績を再計算してロジック補正へ使う。
