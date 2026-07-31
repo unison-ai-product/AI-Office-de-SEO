@@ -84,6 +84,8 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 顧客申告、alert、job失敗、操作問い合わせを相関ID、分類、回避策、原因、解決versionへ接続し、同一問題を検索可能にする。再発傾向は要求、runbook、監視、FAQ、テストへ還流し、個別担当者の記憶だけを運用正本にしない。
 
+接続異常はWAF／認証拒否、rate limit、schema・Capability変更、本文欠落、JavaScript描画、外部Provider障害、内部Adapter・worker障害等へ機械分類する。顧客向けFAQチャットは公開可能な診断code、影響範囲、Site側かシステム側か、確認手順、ユーザーが実施できる設定、問い合わせ要否を受け取り、関連FAQまたは対応状況を案内する。内部log、secret、stack trace、他tenant情報をチャットへ渡さず、システム側障害をユーザー設定の問題として案内しない。
+
 ### REQ-MEASURE-12 検索・AI可視性ファネル
 
 将来本機能を提供する場合、検索およびAI面を `取得可能 → 実取得 → 検索候補・回答取得 → 順位／引用／言及 → 参照流入 → CV` の段階で計測する。ユーザー画面は「SEO／AI取得性」と「検索順位／AI回答表示性」の二軸候補とするが、内部データでは各段階を分離し、crawlをindex・citationの証拠、citationを流入・CVの証拠として扱わない。
