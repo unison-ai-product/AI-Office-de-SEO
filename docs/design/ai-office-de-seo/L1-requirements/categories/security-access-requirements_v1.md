@@ -91,13 +91,13 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 - `principal`: customer user、internal operator、service、AI executorの種別と認証済みID
 - `action`: read、create、update、delete、execute、approve、publish、connect、purchase、export、impersonate等のPermission
 - `resource`: tenant、organization node、Site、記事、Keyword、Recommendation、Task、connection、credit、billing、secret等のIDと所有境界
-- `context`: active tenant／organization／Site、Role Assignment、継承、明示拒否、Plan Entitlement、認証強度、代理権限、期限、job、環境
+- `context`: active tenant／organization／Site、Base Role Assignment、Permission Tag Assignment、継承、明示拒否、Plan Entitlement、認証強度、代理権限、期限、job、環境
 
 出力は `allow / deny / step_up_required / approval_required`、適用したPermission、Scope、理由code、policy version、有効期限とする。UIはこの結果を説明・表示するが独自判定を持たず、API、非同期worker、Agent toolは実行直前に同じ契約で再判定する。入力欠落、競合未解決、policy不明はdefault-denyとする。
 
 ### REQ-ACCESS-15 Role・Permission・Scopeの責務境界
 
-顧客Roleと組織Scopeの正本は `REQ-ORG-03`～`REQ-ORG-05`、内部Admin／Manager／Operatorの正本は `REQ-PAC-01`、強制方式は本書とする。Role名をコード内の操作許可として直接比較せず、version付きPermission集合へ解決する。顧客Roleと内部Roleを同一namespace、同一token claim、同一Role Assignmentへ格納しない。
+顧客の基本権限・権限タグ・組織Scopeの正本は `REQ-ORG-03`～`REQ-ORG-05`、内部Admin／Manager／Operatorの正本は `REQ-PAC-01`、強制方式は本書とする。基本権限名または権限タグ名をコード内の操作許可として直接比較せず、version付きPermission集合へ解決する。顧客の基本権限・権限タグと内部Roleを同一namespace、同一token claim、同一Assignmentへ格納しない。
 
 判定順序は、環境・tenant境界 → resource所有境界 → principal種別 → Membership／期限付き代理権限 → 明示拒否 → Permission → Resource Scopeと継承 → 認証強度・承認 → Plan Entitlement・予算等の業務条件とする。上位Role、複数Role、組織継承、Officeの詳細画面、Feature Flag、Plan変更は、前段の境界または明示拒否を上書きできない。同じ入力とpolicy versionから同じ判定を再現できなければならない。
 
@@ -135,7 +135,7 @@ break-glassでも秘密原文の一括取得、tenant分離解除、監査停止
 - [ ] AC-L1-ACCESS-12: 全data pathの越境負テストがCIまたはrelease gateで通過する。
 - [ ] AC-L1-ACCESS-13: マスターテナントが顧客tenantを直接参照できず、許諾済みShowcase Snapshotの作成・公開・撤回だけを監査可能な専用経路で実行できる。
 - [ ] AC-L1-ACCESS-14: 画面、API、worker、Agent toolが同じprincipal・action・resource・contextとpolicy versionから同じ認可結果を返し、不明入力を拒否する。
-- [ ] AC-L1-ACCESS-15: 顧客Roleと内部Roleが別namespace・別Assignmentとして管理され、Role名やFeature Flagでtenant境界・明示拒否を上書きできない。
+- [ ] AC-L1-ACCESS-15: 顧客の基本権限・権限タグと内部Roleが別namespace・別Assignmentとして管理され、名称やFeature Flagでtenant境界・明示拒否を上書きできない。
 - [ ] AC-L1-ACCESS-16: 自動運用jobが委任範囲内だけで副作用を実行し、設定者の権限喪失・Site移管・Kill Switch後は公開等を継続しない。
 - [ ] AC-L1-ACCESS-17: 本文一時取得、内部観測、Provider送信、匿名較正、Showcase利用が別Permission・目的・保持policyとして強制される。
 - [ ] AC-L1-ACCESS-18: break-glassが重大incidentに限定され、短期失効・強認証・対象限定・事後reviewを伴い、安全不変条件を解除できない。

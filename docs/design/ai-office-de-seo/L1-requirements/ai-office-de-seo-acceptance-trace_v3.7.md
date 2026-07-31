@@ -420,10 +420,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ### customer-organization-governance-requirements_v1
 
 - [ ] AC-L1-ORG-01: 法人・個人のどちらも必須の契約組織を持ち、その配下に自由名称・自由階層の組織ノードとSiteを構成できる。 ｜ 検証: REQ-ORG-01 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとに異なるRoleとScopeを持てる。 ｜ 検証: REQ-ORG-02 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとに異なる基本権限、権限タグ、Scope、有効期間を持てる。 ｜ 検証: REQ-ORG-02 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-03: UI非表示だけでなくAPI側で同一Permission判定が強制される。 ｜ 検証: REQ-ORG-03 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-04: ユーザーが権限付与ごとに継承有無を選択でき、明示拒否・競合時の結果が再現可能である。 ｜ 検証: REQ-ORG-04 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-05: 記事実行、公開、接続、課金、データ出力を個別に制御できる。 ｜ 検証: REQ-ORG-05 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-04: 基本権限・権限タグごとに継承有無を選択でき、明示拒否・競合時の結果が再現可能である。 ｜ 検証: REQ-ORG-04 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-05: SEO担当・承認者等を基本権限へ増やさず、記事実行、公開、接続、課金、データ出力を権限タグで個別に制御できる。 ｜ 検証: REQ-ORG-05 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。 ｜ 検証: REQ-ORG-06 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。 ｜ 検証: REQ-ORG-07 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。 ｜ 検証: REQ-ORG-09 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
@@ -606,7 +606,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-ACCESS-12: 全data pathの越境負テストがCIまたはrelease gateで通過する。 ｜ 検証: REQ-ACCESS-12 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-13: マスターテナントが顧客tenantを直接参照できず、許諾済みShowcase Snapshotの作成・公開・撤回だけを監査可能な専用経路で実行できる。 ｜ 検証: REQ-ACCESS-13 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-14: 画面、API、worker、Agent toolが同じprincipal・action・resource・contextとpolicy versionから同じ認可結果を返し、不明入力を拒否する。 ｜ 検証: REQ-ACCESS-14 ｜ 正本: `categories/security-access-requirements_v1.md`
-- [ ] AC-L1-ACCESS-15: 顧客Roleと内部Roleが別namespace・別Assignmentとして管理され、Role名やFeature Flagでtenant境界・明示拒否を上書きできない。 ｜ 検証: REQ-ACCESS-15 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-15: 顧客の基本権限・権限タグと内部Roleが別namespace・別Assignmentとして管理され、名称やFeature Flagでtenant境界・明示拒否を上書きできない。 ｜ 検証: REQ-ACCESS-15 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-16: 自動運用jobが委任範囲内だけで副作用を実行し、設定者の権限喪失・Site移管・Kill Switch後は公開等を継続しない。 ｜ 検証: REQ-ACCESS-16 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-17: 本文一時取得、内部観測、Provider送信、匿名較正、Showcase利用が別Permission・目的・保持policyとして強制される。 ｜ 検証: REQ-ACCESS-17 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-18: break-glassが重大incidentに限定され、短期失効・強認証・対象限定・事後reviewを伴い、安全不変条件を解除できない。 ｜ 検証: REQ-ACCESS-18 ｜ 正本: `categories/security-access-requirements_v1.md`

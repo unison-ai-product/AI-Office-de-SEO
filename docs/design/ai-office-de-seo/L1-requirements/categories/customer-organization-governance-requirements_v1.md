@@ -21,10 +21,11 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - `Customer Organization`: 契約主体が管理するユーザー側組織。個人契約でも本人をOwnerとする組織を1つ持つ。
 - `Organization Unit`: 事業部、部門、チーム、ブランド等の組織ノード。
 - `Membership`: UserとCustomer Organizationの所属関係。
-- `Role Assignment`: Role、Resource Scope、有効期間を組み合わせた権限付与。
+- `Base Role Assignment`: 基本権限、Resource Scope、有効期間を組み合わせた権限付与。
+- `Permission Tag Assignment`: 業務能力を表す権限タグ、Resource Scope、有効期間を組み合わせた追加権限付与。
 - `Resource Scope`: 組織、配下組織、サイト、記事、機能等の操作対象範囲。
 
-基本構造は `Contract Account → Customer Organization Tree → Membership → Role Assignment → Resource Scope → Permission` とする。契約関係、データ所有者、操作権限を同一概念にまとめない。
+基本構造は `Contract Account → Customer Organization Tree → Membership → Base Role Assignment + Permission Tag Assignment → Resource Scope → Permission` とする。契約関係、データ所有者、基本権限、業務能力を同一概念にまとめない。
 
 ## 3. 要求
 
@@ -34,19 +35,30 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### REQ-ORG-02 複数所属
 
-1人のUserは複数のCustomer Organization、Organization UnitおよびSiteへ所属でき、所属先ごとに異なるRole Assignmentを持たなければならない。主所属、兼務、外部委託、期間限定所属を区別する。
+1人のUserは複数のCustomer Organization、Organization UnitおよびSiteへ所属でき、所属先ごとに異なるBase Role AssignmentとPermission Tag Assignmentを持たなければならない。主所属、兼務、外部委託、期間限定所属を区別する。
 
 ### REQ-ORG-03 権限モデル
 
-Role名とPermissionを分離し、Role AssignmentはRole、Resource Scope、有効開始・終了日時を持たなければならない。初期RoleはOwner、Billing Admin、Organization Admin、Department Manager、SEO Manager、Site Manager、Strategist、Editor、Approver、Analyst、Viewer、External Memberとするが、Permission集合は版管理された設定を正本とする。
+顧客側権限は「基本権限」と「権限タグ」に分離する。
+
+基本権限は組織内での基礎的な立場と既定の可視範囲を表し、初期値を次の4種類とする。
+
+- `Owner`: 契約主体の最終管理者。契約、請求、Owner移譲、組織、Site、権限を管理できる。
+- `Admin`: 組織、Site、Membership、設定を管理できるが、Owner固有操作は実行できない。
+- `Member`: 付与されたScope内で通常業務を行う。業務上の変更操作は権限タグで追加する。
+- `Viewer`: 付与されたScope内を閲覧できるが、業務状態を変更できない。
+
+SEO Manager、Strategist、Editor、Approver、Analyst、Billing担当等の業務担当名を基本権限として増やさない。これらの能力は、`keyword_strategy`、`recommendation_execute`、`content_create`、`content_rewrite`、`content_edit`、`quality_check`、`publish_approve`、`automation_manage`、`connection_manage`、`budget_use`、`billing_manage`、`analytics_view`、`data_export` 等の版管理された権限タグとして付与する。
+
+各Assignmentは基本権限または権限タグ、Resource Scope、有効開始・終了日時、付与者、理由を持つ。権限タグは単一Permissionまたは相互に関連する最小のPermission bundleへ解決し、名称だけで判定しない。顧客が独自タグを作成できる場合も、既存Permissionの組合せに限定し、新しいsystem Permissionを生成できない。
 
 ### REQ-ORG-04 権限継承と競合
 
-Role Assignmentごとに「配下Organization Unit・Siteへ継承する／このノードだけ」をユーザーが選択できなければならない。継承を既定で強制しない。個別付与、明示拒否、複数Roleが競合する場合の評価順を決定論として定義し、画面表示とAPI認可で同一の判定結果を使用する。Roleまたは上位所属を理由にテナント境界、安全不変条件、契約境界を越えてはならない。
+Base Role AssignmentおよびPermission Tag Assignmentごとに「配下Organization Unit・Siteへ継承する／このノードだけ」をユーザーが選択できなければならない。継承を既定で強制しない。個別付与、明示拒否、複数Assignmentが競合する場合の評価順を決定論として定義し、画面表示とAPI認可で同一の判定結果を使用する。基本権限、権限タグまたは上位所属を理由にテナント境界、安全不変条件、契約境界を越えてはならない。
 
 ### REQ-ORG-05 業務操作権限
 
-少なくとも次のPermissionを個別に制御する。
+少なくとも次の業務能力を権限タグとして個別に付与・取消できる。
 
 - キーワード戦略および目標の閲覧・編集
 - レコメンドの採用、却下、保留、バッチ採用
@@ -57,7 +69,7 @@ Role Assignmentごとに「配下Organization Unit・Siteへ継承する／こ�
 - クレジット利用、予算変更、追加購入、契約変更
 - 分析、エージェントTask History、請求情報、顧客データエクスポート
 
-顧客Roleが閲覧するTask Historyと、開発側の内部監査ログを分離する。顧客Permissionから内部監査ログ、trace、stack、秘密情報、他tenant・管理操作詳細へ到達できない。
+基本権限だけで、公開、課金変更、外部接続、データ出力、自動運用等の強い操作を暗黙許可しない。Owner固有操作を除く業務能力は権限タグとScopeから判定する。顧客が閲覧するTask Historyと、開発側の内部監査ログを分離する。顧客Permissionから内部監査ログ、trace、stack、秘密情報、他tenant・管理操作詳細へ到達できない。
 
 ### REQ-ORG-06 承認フロー
 
@@ -85,7 +97,7 @@ Contract Accountは法人または個人を契約主体として識別し、請�
 
 ### REQ-ORG-12 監査と棚卸し
 
-所属、Role Assignment、承認、代理操作、予算配賦の変更について、実行者、承認者、対象範囲、変更前後、有効期間、理由を監査記録へ残す。Customer OrganizationのOwnerは定期的な権限棚卸しを実施でき、期限切れ・未使用・過剰権限の候補を確認できる。
+所属、基本権限、権限タグ、承認、代理操作、予算配賦の変更について、実行者、承認者、対象範囲、変更前後、有効期間、理由を監査記録へ残す。Customer OrganizationのOwnerは定期的な権限棚卸しを実施でき、期限切れ・未使用・過剰権限の候補を確認できる。
 
 ## 4. 接続要求
 
@@ -97,10 +109,10 @@ Contract Accountは法人または個人を契約主体として識別し、請�
 ## 5. 受入条件
 
 - [ ] AC-L1-ORG-01: 法人・個人のどちらも必須の契約組織を持ち、その配下に自由名称・自由階層の組織ノードとSiteを構成できる。
-- [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとに異なるRoleとScopeを持てる。
+- [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとに異なる基本権限、権限タグ、Scope、有効期間を持てる。
 - [ ] AC-L1-ORG-03: UI非表示だけでなくAPI側で同一Permission判定が強制される。
-- [ ] AC-L1-ORG-04: ユーザーが権限付与ごとに継承有無を選択でき、明示拒否・競合時の結果が再現可能である。
-- [ ] AC-L1-ORG-05: 記事実行、公開、接続、課金、データ出力を個別に制御できる。
+- [ ] AC-L1-ORG-04: 基本権限・権限タグごとに継承有無を選択でき、明示拒否・競合時の結果が再現可能である。
+- [ ] AC-L1-ORG-05: SEO担当・承認者等を基本権限へ増やさず、記事実行、公開、接続、課金、データ出力を権限タグで個別に制御できる。
 - [ ] AC-L1-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。
 - [ ] AC-L1-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。
 - [ ] AC-L1-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。
