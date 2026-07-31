@@ -420,16 +420,16 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ### customer-organization-governance-requirements_v1
 
 - [ ] AC-L1-ORG-01: 法人・個人のどちらも必須の契約組織を持ち、その配下に自由名称・自由階層の組織ノードとSiteを構成できる。 ｜ 検証: REQ-ORG-01 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-02: 契約権限とSiteの基本権限が分離され、同一ユーザーが所属先ごとにサイト責任者／サイト管理者／サイト利用者と業務タグを持てる。 ｜ 検証: REQ-ORG-02 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-02: 同一ユーザーへ契約者／サイトオーナー／ユーザーのいずれかと業務タグを付与できる。 ｜ 検証: REQ-ORG-02 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-03: UI非表示だけでなくAPI側で同一Permission判定が強制される。 ｜ 検証: REQ-ORG-03 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-04: Site指定なしでは全Site、指定ありでは指定Siteだけへアクセスでき、Site指定解除前に全Site化を確認できる。 ｜ 検証: REQ-ORG-04 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-05: 目標管理、キーワード・サイト戦略、記事制作、サイト分析の4タグで変更操作を制御し、契約管理とSite管理を日本語の別権限で制御できる。 ｜ 検証: REQ-ORG-05 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-05: 契約者／サイトオーナー／ユーザーと4つの業務タグだけで、契約管理、Site管理、SEO業務、閲覧を制御できる。 ｜ 検証: REQ-ORG-05 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。 ｜ 検証: REQ-ORG-06 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。 ｜ 検証: REQ-ORG-07 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-08: 個人契約が本人を契約責任者とする初期組織から法人契約と同じ機能を利用できる。 ｜ 検証: REQ-ORG-09 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-08: 個人契約が本人を契約者とする初期組織から法人契約と同じ機能を利用できる。 ｜ 検証: REQ-ORG-09 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-09: 退職・契約終了時にアクセスが失効し、成果物と履歴は失われない。 ｜ 検証: REQ-ORG-10 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-10: 組織・Site移管前に権限、データ、請求への影響が表示される。 ｜ 検証: REQ-ORG-11 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-11: 契約責任者とサイト責任者が担当範囲の権限棚卸しを実行し、是正履歴を確認できる。 ｜ 検証: REQ-ORG-12 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-11: 契約者とサイトオーナーが担当範囲の権限棚卸しを実行し、是正履歴を確認できる。 ｜ 検証: REQ-ORG-12 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-12: 所属・権限・承認・予算変更の実行者、理由、期限、差分を監査できる。 ｜ 検証: REQ-ORG-12 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-13: Site Assignmentによる全Site／指定Siteの可視範囲が、画面とAPIの双方で同じ結果になる。 ｜ 検証: REQ-ORG-08 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 
@@ -600,13 +600,13 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-ACCESS-06: Repository強制点とRLSの越境queryが拒否され、管理画面も迂回できない。 ｜ 検証: REQ-ACCESS-06 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-07: 秘密情報が接続単位で暗号化・rotationされ、ログ・trace・画面へ原文表示されない。 ｜ 検証: REQ-ACCESS-07 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-08: 重要操作がstep-upなしではAPIからも拒否される。 ｜ 検証: REQ-ACCESS-08 ｜ 正本: `categories/security-access-requirements_v1.md`
-- [ ] AC-L1-ACCESS-09: 招待tokenの再利用・期限後利用を拒否し、契約責任者の回復が本人確認と監査を伴う。 ｜ 検証: REQ-ACCESS-09 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-09: 招待tokenの再利用・期限後利用を拒否し、契約者の回復が本人確認と監査を伴う。 ｜ 検証: REQ-ACCESS-09 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-10: Executorが本番DBへ直接接続できず、許可toolのSite scopeを越えられない。 ｜ 検証: REQ-ACCESS-10 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-11: 代理操作のacting principalとcustomer contextを監査上区別できる。 ｜ 検証: REQ-ACCESS-11 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-12: 全data pathの越境負テストがCIまたはrelease gateで通過する。 ｜ 検証: REQ-ACCESS-12 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-13: マスターテナントが顧客tenantを直接参照できず、許諾済みShowcase Snapshotの作成・公開・撤回だけを監査可能な専用経路で実行できる。 ｜ 検証: REQ-ACCESS-13 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-14: 画面、API、worker、Agent toolが同じprincipal・action・resource・contextとpolicy versionから同じ認可結果を返し、不明入力を拒否する。 ｜ 検証: REQ-ACCESS-14 ｜ 正本: `categories/security-access-requirements_v1.md`
-- [ ] AC-L1-ACCESS-15: 顧客の契約権限・Site基本権限・業務タグと内部Roleが分離され、契約責任者／サイト責任者やFeature Flagでtenant・Membership境界を上書きできない。 ｜ 検証: REQ-ACCESS-15 ｜ 正本: `categories/security-access-requirements_v1.md`
+- [ ] AC-L1-ACCESS-15: 顧客の基本権限・業務タグと内部Roleが分離され、契約者／サイトオーナーやFeature Flagでtenant・Membership境界を上書きできない。 ｜ 検証: REQ-ACCESS-15 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-16: 自動運用jobが委任範囲内だけで副作用を実行し、設定者の権限喪失・Site移管・Kill Switch後は公開等を継続しない。 ｜ 検証: REQ-ACCESS-16 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-17: 本文一時取得、内部観測、Provider送信、匿名較正、Showcase利用が別Permission・目的・保持policyとして強制される。 ｜ 検証: REQ-ACCESS-17 ｜ 正本: `categories/security-access-requirements_v1.md`
 - [ ] AC-L1-ACCESS-18: break-glassが重大incidentに限定され、短期失効・強認証・対象限定・事後reviewを伴い、安全不変条件を解除できない。 ｜ 検証: REQ-ACCESS-18 ｜ 正本: `categories/security-access-requirements_v1.md`
