@@ -37,7 +37,7 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | D-18 | Generative AIレポートの提供範囲・API化の再確認（四半期ごと） | 検証 | REQ-KGA-17, 検証ログ | TL（検索基盤） | 四半期レビュー | open |
 | D-19 | Prompt Cache価格・TTL仕様の再確認（原価較正時） | 検証 | REQ-AGENT-03, REQ-BILL-06 | TL（原価） | 較正サイクルごと | open |
 | D-20 | テナント資源プロファイル・ノード密度の実測（負荷試験） | GateC | REQ-DUR-06 | TL（インフラ） | Production Hardening前 | open |
-| D-21 | RPO/RTO実数の確定（初期例示から実測で締める） | GateC | REQ-DUR-08 | TL（インフラ） | Production Hardening前 | open |
+| D-21 | 初期内部目標RPO 1時間／RTO 4時間（`REQ-IRG-06`）の達成可能性を復元演習で検証し、未達時は設計・運用または目標変更を意思決定する | GateC | REQ-DUR-08, REQ-IRG-06 | TL（インフラ） | Production Hardening前 | open |
 | D-22 | エージェント実行ランタイム方式の選定——(a)自作Process Manager on PGキュー（`REQ-DUR-07`初期方針と一致・既定候補） (b)Temporal等の耐久実行エンジン (c)LangGraph等のグラフ実行系。**LLM呼び出し層は候補に含めない**（プロバイダSDK直＋自前Adapter=`REQ-BILL-09`で確定済み。フレームワーク側プロバイダ抽象との二重化は不可） | GateB | REQ-AGENT-01/03/09/10, REQ-PACK-15, REQ-DUR-07 | TL（エージェント基盤） | フェーズ2（DU-07）着手前 | open |
 | D-23 | LLM観測・トレーシング手段の選定——OTel（`REQ-ADM-07`既定）＋自前契約検証を正とし、専用トレーシングツールは**プロンプト全文を永続化しない構成が可能な場合のみ**採用可（`REQ-SEC-11`保存禁止が採用条件。記録項目は`REQ-SEC-02`に限定） | GateC | REQ-SEC-02/11/13, REQ-ADM-07 | TL（観測） | フェーズ2〜3 | open |
 | D-24 | Mock Executor実装形の確定（DU-07先行）——契約（Gate A-5）準拠のSnapshotを返すスタブ形式・イベント発火・fixture（PT-X）との共用方式 | GateB | REQ-DUR-05, REQ-PACK-01, Gate A-1/A-5 | TL（エージェント基盤） | フェーズ2着手時 | open |

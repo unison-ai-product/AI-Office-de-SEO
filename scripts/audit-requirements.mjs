@@ -62,6 +62,7 @@ for (const file of canonicalSources) {
 
 const traceText = fs.readFileSync(tracePath, "utf8");
 const traceAcceptance = new Map();
+const coveredRequirements = new Set();
 const errors = [];
 const tracePattern =
   /^- \[ \] (AC-L1-[A-Z0-9-]+): (.*?) ｜ 検証: (.*?) ｜ 正本: `([^`]+)`$/gm;
@@ -72,12 +73,26 @@ for (const match of traceText.matchAll(tracePattern)) {
   const refs = rawRefs.split(/\s*,\s*/);
   for (const reqId of refs) {
     if (!reqDefinitions.has(reqId)) fail(errors, `${id}: undefined requirement ${reqId}`);
+    coveredRequirements.add(reqId);
   }
   const resolvedCanonicalPath = path.resolve(l1Root, canonicalPath);
   if (!fs.existsSync(resolvedCanonicalPath)) {
     fail(errors, `${id}: missing canonical path ${canonicalPath}`);
   }
   traceAcceptance.set(id, { text, refs, canonicalPath });
+}
+
+for (const match of traceText.matchAll(
+  /^- \[ \] (AC-(?!L1-)[A-Z0-9-]+): .*? ｜ 検証: ([^｜\r\n]+)$/gm,
+)) {
+  const [, id, rawRefs] = match;
+  if (traceAcceptance.has(id)) fail(errors, `duplicate trace AC: ${id}`);
+  const refs = [...rawRefs.matchAll(/REQ-[A-Z0-9-]+(?:\.\d+)?/g)].map((item) => item[0]);
+  for (const reqId of refs) {
+    if (!reqDefinitions.has(reqId)) fail(errors, `${id}: undefined requirement ${reqId}`);
+    coveredRequirements.add(reqId);
+  }
+  traceAcceptance.set(id, { text: "", refs, canonicalPath: "" });
 }
 
 for (const item of duplicateRequirements) fail(errors, `duplicate REQ: ${item}`);
@@ -97,7 +112,13 @@ for (const [id, source] of sourceAcceptance) {
 }
 
 for (const id of traceAcceptance.keys()) {
-  if (!sourceAcceptance.has(id)) fail(errors, `${id}: trace entry has no canonical source AC`);
+  if (id.startsWith("AC-L1-") && !sourceAcceptance.has(id)) {
+    fail(errors, `${id}: trace entry has no canonical source AC`);
+  }
+}
+
+for (const reqId of reqDefinitions.keys()) {
+  if (!coveredRequirements.has(reqId)) fail(errors, `${reqId}: no acceptance condition verifies this requirement`);
 }
 
 if (errors.length) {
@@ -107,5 +128,5 @@ if (errors.length) {
 }
 
 console.log(
-  `Requirements audit passed: ${reqDefinitions.size} REQ definitions, ${sourceAcceptance.size} canonical AC, ${traceAcceptance.size} traced AC.`,
+  `Requirements audit passed: ${reqDefinitions.size} REQ definitions, ${coveredRequirements.size} covered REQ, ${sourceAcceptance.size} canonical AC, ${traceAcceptance.size} traced AC.`,
 );

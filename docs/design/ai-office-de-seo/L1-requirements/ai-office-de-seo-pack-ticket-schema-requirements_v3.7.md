@@ -256,19 +256,19 @@ Workflowの各ステージが、どのPrompt Pack / Source Pack / Schemaを使�
 
 各名前空間の具体タイプを列挙し、タイプごとの型（フィールド）を定義する。列挙は拡張可能・初期集合であり、値・型の最終確定はL3で行う。
 
-### 11.1 catalog.article_type.*（記事タイプ）
+### 11.1 catalog.article_type.*（記事タイプ）  ［REQ-PACK-11.1］
 
 列挙（初期）: `transfer_guide` / `comparison` / `ranking` / `faq_hub` / `knowledge` / `news_column`。
 
 型: `{ article_type, target_intent(Know/Do/Website/Visit), required_meaning_units[], optional_meaning_units[], heading_flow_ref, cta_policy, few_shot_ref }`
 
-### 11.2 catalog.heading_flow.*（見出し内の意味ユニット並び）
+### 11.2 catalog.heading_flow.*（見出し内の意味ユニット並び）  ［REQ-PACK-11.2］
 
 列挙（初期）: `experience_translation` / `problem_solution` / `comparison_matrix` / `step_by_step` / `faq_stack` / `conclusion_first`（PREP/SDS系＝結論先行） / `listicle`（SEO頻出のリスト記事型） / `pas_persuasion`（PAS/BAB系＝問題→煽らない共感→解決） / `story_arc`（ストーリーテリング系＝場面→変化→学び）。構成フレームワーク（PREP/SDS/PAS/BAB/AIDA/QUEST等）は本列挙とh2_sequenceのユニット並びテンプレで表現し、新レイヤを作らない（`REQ-PACK-19`）。
 
 型: `{ heading_flow, h2_sequence[ { h2_role, meaning_units[] } ] }`
 
-### 11.3 catalog.purpose_element.*（意味ユニット＝記述タイプ＝作業単位）
+### 11.3 catalog.purpose_element.*（意味ユニット＝記述タイプ＝作業単位）  ［REQ-PACK-11.3］
 
 意味ユニットを機能別にグルーピングして列挙する（本カタログを正本とし、`REQ-AGENT-02`は代表例）。各ユニットはfew-shot（`REQ-PACK-12`）と主なQuality Gate（`REQ-PACK-09`）に紐づく。列挙は拡張可能・初期集合。
 
@@ -281,13 +281,13 @@ Workflowの各ステージが、どのPrompt Pack / Source Pack / Schemaを使�
 
 型: `{ purpose_element, group, pattern, few_shot[ { role(positive/negative), gate_tags[], example_ref } ], constraints[], primary_gate }`（few-shotの構築は`REQ-PACK-12`）
 
-### 11.4 catalog.quality_gate.*（品質ゲート）
+### 11.4 catalog.quality_gate.*（品質ゲート）  ［REQ-PACK-11.4］
 
 列挙: `REQ-PACK-09`（hard/advisory/修飾）。
 
 型: `{ gate_key, kind(hard/advisory/modifier), signals[], threshold_ref(REQ-PACK-10), source_framework }`
 
-### 11.5 prompt.*（注入系）
+### 11.5 prompt.*（注入系）  ［REQ-PACK-11.5］
 
 取得元はサイト方針データ `source.site.*`（`REQ-PACK-07`）で、内容をPrompt Packとして注入する（取得→注入、`REQ-AGENT-07`）。
 
@@ -295,13 +295,13 @@ Workflowの各ステージが、どのPrompt Pack / Source Pack / Schemaを使�
 - `prompt.content_regulation`: `{ tone, ng_expressions[], cta_strength, evidence_strictness }`
 - `prompt.user_order`: `{ orders[ { text, strength(soft/normal/strong) } ] }`（`source`側で`enabled=false`の要望は除外済みで注入＝soft-disable、`REQ-PRODUCT-07`）
 
-### 11.6 workflow.*（実行手順）
+### 11.6 workflow.*（実行手順）  ［REQ-PACK-11.6］
 
 列挙: `REQ-AGENT-06`（new_article / rewrite / automation）。
 
 型: `{ workflow_key, flow_pack_keys[], stages[ { stage, phase_bindings, transitions[ { to, transition_bindings } ], loop{ converge, stop_guards[] } } ], permissions[], bindings_ref(REQ-PACK-08, REQ-PACK-14) }`
 
-### 11.7 schema.*（Ticket入力・Snapshot出力の型）
+### 11.7 schema.*（Ticket入力・Snapshot出力の型）  ［REQ-PACK-11.7］
 
 - `schema.ticket.<stage>.v1`（Ticket入力、`REQ-PACK-01`）: `{ workflowKey, promptPackKeys[], sourceNeedKeys[], schemaKeys[], returnTo, userPrompt, content_role_map }`
 - `schema.snapshot.research_brief.v1` / `schema.snapshot.outline_contract.v1`: Research Brief / Outline Contract のfreeze成果（Outline ContractはMeaningUnitPlanを含む、`REQ-PACK-18`。`REQ-PACK-08`のResearch & Outlineステージ出力。項目確定はL3）

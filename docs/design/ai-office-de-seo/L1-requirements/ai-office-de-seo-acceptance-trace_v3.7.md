@@ -17,6 +17,14 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 補: `REQ-PACK-11` は `REQ-PACK-11.1`〜`REQ-PACK-11.7` のドット付きサブセクションIDを持つ（ID文法の登録済み例外）。監査・照合ツールはドット付きサブIDを解析対象に含めること（v3.7.23の教訓と同型の解析漏れを防ぐ）。
 
+### 0.1 予約欠番・再利用禁止
+
+次のIDは過去版との衝突を避けるため予約欠番とする。由来の確定や廃止台帳への移管が完了するまでは、新しい受入条件へ割り当ててはならない。
+
+- `AC-SEC-08`〜`AC-SEC-10`
+- `AC-WPA-01`〜`AC-WPA-07`
+- `AC-AOUI-05`、`AC-AOUI-06`
+
 ## Product
 
 - [ ] AC-PRODUCT-01: 正式サービス名がAI Office de SEOで統一されている。 ｜ 検証: REQ-PRODUCT-01
@@ -81,6 +89,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-KGA-21: キーワード価値スコアがdemand・realizable_ctr（自サイト順位別期待CTR基線への実測残差。AIO観測群の系統的負残差でのみ割引し固定低下率を仮定せず、観測不可時はunknownで捏造しない）・SERP構成・intent/CV近接・適合乗数から決定論で算出され、ギャップ/新規候補/リライト優先度/昇格判定へ接続し、順位保証でない旨が明示される。GSCがAI由来をクエリ単位で分離しない前提でAIO判定フラグはSERP観測由来とし、Generative AIレポート（impressionsのみ）は被引用観測の補助としてavailability付きで扱う。 ｜ 検証: REQ-KGA-17, REQ-KGA-08, REQ-WPA-05, REQ-KGA-11
 - [ ] AC-KGA-23: キーワード市場の影響がAIO圧力（ゼロクリックと引用機会を分離）・リスティング広告占有・トピック単位のドメイン信用適合の3軸で観測され、未知値を0扱いせず、需要・実現可能CTR・SERP面・CV近接と分解表示される。 ｜ 検証: REQ-KGA-17, REQ-KGA-08
 - [ ] AC-KGA-24: キーワードがサイト基盤としての必要性・流入機会・CV機会の3目的を持ち、foundation/growth/conversion/authority/balancedの戦略配分と現在データから動的優先度が増分再計算され、内訳付きで記事制作・リライトrecommendationへ供給される。 ｜ 検証: REQ-KGA-23, REQ-PRODUCT-24, REQ-SEC-06
+- [ ] AC-KGA-25: 地域指定ごとにLocal Pack・地図・オーガニック順位を分離して観測し、地域ページ生成では実在する地域固有情報を必須とし、NAP・構造化データの不整合を自動修復せずユーザー確認事項として提示できる。 ｜ 検証: REQ-KGA-22
 
 ## Agent Runtime
 
@@ -317,6 +326,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-PACK-22: 手書きfew-shot例示が登録Validateで検品パイプラインに通されgate_tags主張ゲートの不合格で差し戻され、human_authoredフラグでネットワーク学習対象外となり、ゴールデン評価セットと素材が重複せず、検品レンズが既存ゲートの束ね（view）として動作して第二の合否体系を作らない。 ｜ 検証: REQ-PACK-19, REQ-PACK-20, REQ-ADM-10
 - [ ] AC-PACK-23: writing_methodのvariant（sales: push/pull/assist_only）がOutline凍結時にprimary_variantとして確定してcta_density_hintがCTA配置判断へ渡り、hard上限がvariantに関係なく不変であり、Persona Simulationがセグメント転生の構造化出力（理解度・違和感・AIらしさ知覚・離脱予測・行動意向）を返してValidate/ゴールデン評価の補助（advisory）に限定され、既定で記事単体QAに適用されず、実行数上限とコスト明示が機能する。 ｜ 検証: REQ-PACK-19, REQ-PACK-21, REQ-PACK-17
 - [ ] AC-PACK-24: human_voiceゲートがAI定型表現の決定論検出（ai_phrase_density・辞書はADM統制）と参照アンカー対比（gate_tags付き手書き例示＋style_color）で評価し、style_colorがサンプル抜粋のtoken上限・同意フロー内・サイト削除での消去を守り、デモグラフィックセグメントが検証用途限定（差別的出し分け転用禁止）である。 ｜ 検証: REQ-PACK-09, REQ-PACK-16, REQ-PACK-21
+- [ ] AC-PACK-25: Pack Typeカタログが記事タイプ、見出しフロー、意味ユニット、品質ゲート、Prompt、Workflow、Ticket・Snapshot Schemaの7サブIDで宣言され、各型を個別に参照・検証できる。 ｜ 検証: REQ-PACK-11.1, REQ-PACK-11.2, REQ-PACK-11.3, REQ-PACK-11.4, REQ-PACK-11.5, REQ-PACK-11.6, REQ-PACK-11.7
 - [ ] AC-RWR-03: 差分プレビューが理由・対象・変更前後・各差分・Quality Gate結果・予想creditsを提示する。 ｜ 検証: REQ-RWR-04
 - [ ] AC-RWR-04: リライト対象/種別がGSC実績・カニバリから機械判定され、強い部分を残し弱い箇所だけ直す。 ｜ 検証: REQ-RWR-06
 - [ ] AC-RWR-05: リライトも実行前Preflightで予約し成功commit/失敗release、モード別消費係数を持つ。 ｜ 検証: REQ-RWR-07
@@ -325,6 +335,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-SRC-05: 重い処理を画面表示時に走らせず、夜間バッチでtenant/site分散・checkpoint・budgetを持つ。 ｜ 検証: REQ-SRC-05
 - [ ] AC-WPA-10: WP連携が取得/公開/トラッキングのデータ交換で、本文正本をWP側に置く。 ｜ 検証: REQ-WPA-01
 - [ ] AC-WPA-11: WP能力にないslot/blockをfail-close/degradeし、捏造HTMLで代替しない。 ｜ 検証: REQ-WPA-03
+- [ ] AC-WPA-12: 生成完了成果物がWP送信失敗時も暗号化されたOutput Vaultへ退避され、保持期限内に表示・コピー・ダウンロード・再送でき、期限到達時に本文が削除される。 ｜ 検証: REQ-WPA-14
 - [ ] AC-BILL-08: 決済/請求/カード情報がStripe正本、クレジット台帳がSaaS正本という責務分担で提示される。 ｜ 検証: REQ-BILL-01
 - [ ] AC-BILL-09: 品質グレード別の消費係数・原価前提が定義される（実数は設定レジストリ、REQ-BILL-10）。 ｜ 検証: REQ-BILL-03
 - [ ] AC-BILL-10: AI Provider拡張の位置づけが定義され、本文生成はClaude優先である。 ｜ 検証: REQ-BILL-04
@@ -404,6 +415,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-COST-10: 商品・プラン別粗利を実績原価から算出できる。 ｜ 検証: REQ-COST-09 ｜ 正本: `categories/cost-requirements_v1.md`
 - [ ] AC-L1-COST-11: 画像の解析cacheによる削減と新規output原価を分離し、画像job単位で見積・実績を算出できる。 ｜ 検証: REQ-COST-10 ｜ 正本: `categories/cost-requirements_v1.md`
 - [ ] AC-L1-COST-12: 外部APIと自己管理LLMの総提供原価・品質・latency・失敗率を同一route単位で比較し、品質基準内で低コストrouteへ段階移行できる。 ｜ 検証: REQ-COST-11 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-13: 原価の観測・帰属・予算停止と顧客への請求・残高変更が分離され、原価記録から請求台帳を直接変更できない。 ｜ 検証: REQ-COST-01 ｜ 正本: `categories/cost-requirements_v1.md`
 
 ### customer-organization-governance-requirements_v1
 
@@ -454,10 +466,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### growth-upsell-requirements_v1
 
-- [ ] AC-L1-UPSELL-01: 提案がcapacity/execution/governance/support/economic fitへ分解される。 ｜ 検証: REQ-UPSELL-04 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-01: 提案がcapacity/execution/governance/support/economic fitへ分解される。 ｜ 検証: REQ-UPSELL-03, REQ-UPSELL-04 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-02: 障害・争議・解約中と却下cooldown中に提案されない。 ｜ 検証: REQ-UPSELL-05 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-03: 現プラン内の代替策とダウングレードを含む適正化が先に比較される。 ｜ 検証: REQ-UPSELL-04 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
-- [ ] AC-L1-UPSELL-04: 未採用recommendationを全実行する過大見積にならない。 ｜ 検証: REQ-UPSELL-04 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-04: 未採用recommendationを全実行する過大見積にならない。 ｜ 検証: REQ-UPSELL-04, REQ-UPSELL-07 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-05: 料金、適用日、日割り、増える機能、増えない機能が表示される。 ｜ 検証: REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-06: 購入・プラン変更が権限者の明示操作なしに確定しない。 ｜ 検証: REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-07: 同一提案の回数上限とcooldownが機能する。 ｜ 検証: REQ-UPSELL-05 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
@@ -480,6 +492,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-IRG-10: 復旧・停止・調整演習が記録される。 ｜ 検証: REQ-IRG-09 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
 - [ ] AC-L1-IRG-11: 外部サービス起因でも回避策・再試行・説明が提供される。 ｜ 検証: REQ-IRG-04, REQ-IRG-05, REQ-IRG-06 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
 - [ ] AC-L1-IRG-12: incident recordに検知時刻、対象、症状、検知元、correlation key、暫定severityが記録され、alert stormが同一incidentへ集約される。 ｜ 検証: REQ-IRG-03 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
+- [ ] AC-L1-IRG-13: 障害対応が検知、分類、封じ込め、連絡、復旧、補償、再発防止を一貫して追跡し、SEO成果保証とは区別される。 ｜ 検証: REQ-IRG-01 ｜ 正本: `categories/incident-warranty-requirements_v1.md`
 
 ### integration-requirements_v1
 
@@ -618,7 +631,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### Keyword Dynamic Recommendation
 
-- [ ] AC-L1-KRL-01: 市場影響3軸と戦略必要性3軸が独立して算出・保存される。 ｜ 検証: REQ-KRL-04, REQ-KRL-05 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-01: 市場影響3軸と戦略必要性3軸が独立して算出・保存される。 ｜ 検証: REQ-KRL-01, REQ-KRL-04, REQ-KRL-05 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-02: unknownが0扱いされず、availabilityとconfidenceに反映される。 ｜ 検証: REQ-KRL-02, REQ-KRL-03, REQ-KRL-04 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-03: strategy mix変更だけで優先順位が再計算され、元の観測値は変わらない。 ｜ 検証: REQ-KRL-05, REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-04: 総合点から各加点・減点と根拠を再現できる。 ｜ 検証: REQ-KRL-06, REQ-KRL-08 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
