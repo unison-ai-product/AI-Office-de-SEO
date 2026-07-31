@@ -438,7 +438,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### design-experience-requirements_v1
 
-- [ ] AC-L1-DESIGN-01: 通常ビューとAgent Officeビューが同一jobの状態・進行・失敗理由を一致して表示する。 ｜ 検証: REQ-DESIGN-01 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-01: 通常ビューとAgent Officeビューが同一jobの業務状態を一致して表示しつつ、Office固有の部屋・会話・詳細設定を保持できる。 ｜ 検証: REQ-DESIGN-01 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-02: 非専門者が主要画面で次の操作・状態・理由・影響・費用を内部実装用語なしに理解できる。 ｜ 検証: REQ-DESIGN-02 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-03: Recommendationの根拠、優先度成分、unknown、再評価条件をロジック結果どおり表示できる。 ｜ 検証: REQ-DESIGN-03 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-04: 主要操作が狭幅、keyboard、screen reader、reduced motionで完了できる。 ｜ 検証: REQ-DESIGN-04 ｜ 正本: `categories/design-experience-requirements_v1.md`
@@ -446,7 +446,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。 ｜ 検証: REQ-DESIGN-06 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。 ｜ 検証: REQ-DESIGN-07 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。 ｜ 検証: REQ-DESIGN-08 ｜ 正本: `categories/design-experience-requirements_v1.md`
-- [ ] AC-L1-DESIGN-09: 通常ビューで選択・承認を行い、Contextを維持してOfficeの該当Agent・Task・詳細を確認し、元の判断位置へ復帰できる。 ｜ 検証: REQ-DESIGN-09 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-09: 通常ビューの簡単操作からContextを維持してOfficeの該当部屋・Agent・詳細へ移動し、推薦条件・Agent指示を変更して再計算結果を通常ビューへ戻せる。 ｜ 検証: REQ-DESIGN-09 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-10: Officeを標準3D、簡略3D、軽量2Dへ切り替えても、同じTask状態・詳細・会話・操作を利用できる。 ｜ 検証: REQ-DESIGN-10 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-11: Recommendationから制作・計測・評価・学習・次回Recommendationまでを実entityに基づくLoop／Knowledge Graphと一覧の両方で追跡できる。 ｜ 検証: REQ-DESIGN-11 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-12: 初期リリースがdesktop標準として成立し、後続mobile Chatへ通知・確認・説明・修正指示を追加してもdesktop業務の正本を分岐させない。 ｜ 検証: REQ-DESIGN-12 ｜ 正本: `categories/design-experience-requirements_v1.md`
@@ -572,6 +572,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、保留理由、WordPress反映、再開・追加見積を同一相関IDで確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。 ｜ 検証: REQ-SCREEN-16 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。 ｜ 検証: REQ-SCREEN-17 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-18: 通常ビューの対象からOfficeの担当部屋・Agentへ移動し、Keyword選択条件等の詳細方針を影響確認後に変更して、結果を通常ビューへ戻せる。 ｜ 検証: REQ-SCREEN-18 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 
 ### security-access-requirements_v1
 
