@@ -357,10 +357,18 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### billing-accounting-requirements_v1
 
-- [ ] AC-L1-BILLING-01: 選択品質と1記事当たり予測クレジットから、プラン内の月間・週次作成可能本数、追加クレジット消費、残り利用可能量を確認できる。 ｜ 検証: REQ-BILLING-01 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
-- [ ] AC-L1-BILLING-02: 追加クレジットを保有していても技術的レート上限を超えて同時実行されない。 ｜ 検証: REQ-BILLING-01 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
-- [ ] AC-L1-BILLING-03: 品質段階ごとの主モデルと予測クレジット消費を内部設定として解決でき、ユーザーにはモデル名ではなく品質段階、消費予測、作成可能本数を表示し、詳細ルーティングの版を追跡できる。 ｜ 検証: REQ-BILLING-01 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
-- [ ] AC-L1-BILLING-04: 限定Repairで生成価格が変動せず、ユーザー希望の再生成だけを新規課金し、サービス障害からの再開を二重課金しない。 ｜ 検証: REQ-BILLING-01 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-01: 契約時のPrice Catalog versionから商品、価格、付与量、制限、適用期間を再現できる。 ｜ 検証: REQ-BILLING-01 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-02: 内部契約と外部Subscriptionの状態差を検出し、未検証Webhookで利用権限が直接変更されない。 ｜ 検証: REQ-BILLING-02 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-03: クレジットlotの付与元、期限、消費順、繰越・失効を契約versionどおりに再現できる。 ｜ 検証: REQ-BILLING-03 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-04: 有償ジョブがreserve後に開始し、成功時commit、未使用時releaseされ、再試行で二重commitされない。 ｜ 検証: REQ-BILLING-04 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-05: append-only ledgerから利用可能・予約・消費・失効・返還残高を再構築できる。 ｜ 検証: REQ-BILLING-05 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-06: Stripe Webhookの重複・順不同・再送を処理しても二重請求・二重付与が発生しない。 ｜ 検証: REQ-BILLING-06 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-07: invoice・支払・refundと内部ledgerの差異を自動検出し、根拠付きで解消できる。 ｜ 検証: REQ-BILLING-07 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-08: Upgrade・Downgrade・解約前に差額、適用日、利用枠、保持データへの影響を確認できる。 ｜ 検証: REQ-BILLING-08 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-09: 障害返還・金銭refund・手動調整が元取引、判断根拠、承認者へ追跡でき、二重補償されない。 ｜ 検証: REQ-BILLING-09 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-10: 通貨最小単位、税、丸め、換算rateのversionから請求額を再計算できる。 ｜ 検証: REQ-BILLING-10 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-11: 顧客と内部Roleの課金操作がサーバー側で認可され、Operatorが調整を実行できない。 ｜ 検証: REQ-BILLING-11 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-12: 請求ledgerと原価eventを混在させず、共通分析軸から商品・契約・job別粗利を導出できる。 ｜ 検証: REQ-BILLING-12 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 
 ### business-requirements_v1
 

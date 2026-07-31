@@ -173,7 +173,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - プラン内利用上限と、超過分の追加クレジットを持つ。
 - 品質段階ごとの生成クレジット予測から作成可能本数を算出し、週次作成上限でWordPress・外部API負荷を制御する。
-- 品質段階の主モデル順は `GPT Luna → GPT tera → Sonnet → Opus` とし、詳細Routingは設計時に版管理する。
+- 品質段階は安定した商品コードで管理し、実Provider名・モデル名を商品IDに固定しない。`GPT Luna → GPT tera → Sonnet → Opus` は当初想定した品質順の表示ラベル／routing aliasとして保持できるが、各aliasから実Provider、model、snapshot、調査量、検査、Repair、fallbackへの対応をModel Registryで版管理する。
+- 顧客請求はappend-only ledgerを正本とし、credit lot、reserve、commit、release、失効、繰越、refund、manual adjustmentを追跡する。障害要求が返還可否を判断し、課金要求が元取引を参照して返還を記帳する。
 - 専用バックアップ、保持延長、復元支援を上位プランの「安心保証」として提案できる。
 - 安心保証は復元可能性と支援範囲の保証であり、SEO成果保証ではない。
 
