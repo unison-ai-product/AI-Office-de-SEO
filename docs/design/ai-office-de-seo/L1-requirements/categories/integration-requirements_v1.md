@@ -104,7 +104,7 @@ client-side Trackerは人間の遷移・CV用であり、将来もCrawler観測�
 
 ### REQ-INT-09 Site別Article読取り経路
 
-公開・更新済み記事の読取りは単一経路へ固定せず、`public_crawl、authenticated_crawl、cms_rest_rendered、plugin_snapshot_push、manual_import` を共通Article Snapshot Contractへ正規化する。SiteごとにArticle Read Profileを持ち、ユーザーが許可・設定した経路だけを候補とする。認証情報、固定IP許可、Plugin導入等をシステムが無断で追加せず、セキュリティ設定を弱めて経路を成立させない。
+公開・更新済み記事の読取りは単一経路へ固定せず、`public_crawl、authenticated_crawl、cms_rest_rendered、plugin_snapshot_push、manual_import` を共通Article Snapshot Contractへ正規化する。SiteごとにArticle Read Profileを持ち、契約Plan、接続状態、取得済みCapability、認証範囲からシステムが利用可能な経路だけを候補とする。ユーザーが設定するのはSite URL、CMS接続、認証、Plugin導入等、そのSiteで業務を成立させるために必要な項目だけとし、経路名、優先順位、fallback、取得頻度、rate limitを選択させない。セキュリティ設定を弱めて経路を成立させない。
 
 経路は変更発見と本文・構造取得を分離する。Webhook／Plugin push、RSS／Atom、sitemap、REST modified日時等の軽い変更信号から対象URLを特定し、変更対象だけを選択中の読取り経路で取得する。外部Crawlerによる全件定期走査を既定にせず、content hash未変更ならArticle Summary再解析を省略する。
 
@@ -120,7 +120,7 @@ Connection Adapterは経路ごとに、到達性、認証成立、取得完全�
 
 primaryの一時失敗だけで即時切替を反復せず、error分類、連続失敗、cooldown、最小固定期間、回復probe、切替後の観測期間を持つ。認証失効、明示拒否、継続する403／429／5xx、schema不一致、stale超過時はstandbyへfailoverし、全経路不成立なら `read_connection_required` として理由と設定案を返す。回復時も自動復帰Policyに従いflappingを防ぐ。記事の書込み経路と読取り経路は独立して選択し、読取り経路の切替をWordPress等への書込み許可として扱わない。
 
-公開HTMLを通常取得できないSiteに対するHeadless Browser等の描画取得は、実測した負荷・成功率・費用から採用可否を判断する後続経路とし、初期の常用経路へ含めない。Wayback Machine等の外部Archiveは古い状態または欠落を含み得るため現在状態の正本・通常fallbackにせず、ユーザーが復旧調査へ明示利用する場合だけ補助資料として扱う。
+公開HTMLを通常取得できないSiteに対するHeadless Browser等の描画取得は、実測した負荷・成功率・費用から採用可否を判断する後続経路とし、初期の常用経路へ含めない。Wayback Machine等の外部Archiveは古い状態または欠落を含み得るため現在状態の正本・通常fallbackにせず、supportまたは復旧調査で必要な場合だけ補助資料として扱う。
 
 ## 受入条件
 
