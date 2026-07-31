@@ -1,12 +1,8 @@
 name: Requirements Audit
 
 on:
+  workflow_dispatch:
   pull_request:
-    paths:
-      - "docs/design/ai-office-de-seo/**"
-      - "scripts/audit-requirements.mjs"
-      - ".github/workflows/requirements-audit.yml"
-  push:
     branches:
       - main
     paths:
@@ -14,15 +10,25 @@ on:
       - "scripts/audit-requirements.mjs"
       - ".github/workflows/requirements-audit.yml"
 
+concurrency:
+  group: requirements-audit-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: node scripts/audit-requirements.mjs
+
+      - name: Audit requirements
+        run: node scripts/audit-requirements.mjs
