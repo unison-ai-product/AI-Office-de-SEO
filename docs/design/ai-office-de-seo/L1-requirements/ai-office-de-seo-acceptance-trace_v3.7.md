@@ -422,8 +422,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-ORG-01: 法人・個人のどちらも必須の契約組織を持ち、その配下に自由名称・自由階層の組織ノードとSiteを構成できる。 ｜ 検証: REQ-ORG-01 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとにOwner／Admin／Memberの基本権限と業務タグを持てる。 ｜ 検証: REQ-ORG-02 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-03: UI非表示だけでなくAPI側で同一Permission判定が強制される。 ｜ 検証: REQ-ORG-03 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-04: 現在選択した組織・SiteのMembershipだけからアクセス範囲が決まり、別顧客・未所属Site・内部管理面へ権限が広がらない。 ｜ 検証: REQ-ORG-04 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-05: 目標管理、キーワード・サイト戦略、記事制作、サイト分析の4タグでSEO業務を制御し、執筆と検収の分担は承認Workflowで表現できる。 ｜ 検証: REQ-ORG-05 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-04: Site指定なしでは全Site、指定ありでは指定Siteだけへアクセスでき、Site指定解除前に全Site化を確認できる。 ｜ 検証: REQ-ORG-04 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-05: 目標管理、キーワード・サイト戦略、記事制作、サイト分析の4タグで変更操作を制御し、Memberは完成済み情報を閲覧でき、予算・接続・組織・契約はOwner／Adminで制御できる。 ｜ 検証: REQ-ORG-05 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。 ｜ 検証: REQ-ORG-06 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。 ｜ 検証: REQ-ORG-07 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。 ｜ 検証: REQ-ORG-09 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
@@ -431,7 +431,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-ORG-10: 組織・Site移管前に権限、データ、請求への影響が表示される。 ｜ 検証: REQ-ORG-11 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-11: Ownerが権限棚卸しを実行し、是正履歴を確認できる。 ｜ 検証: REQ-ORG-12 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 - [ ] AC-L1-ORG-12: 所属・権限・承認・予算変更の実行者、理由、期限、差分を監査できる。 ｜ 検証: REQ-ORG-12 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
-- [ ] AC-L1-ORG-13: 部門・ブランド間の非公開境界とExternal Memberの可視範囲が、画面とAPIの双方で同じScopeとして強制される。 ｜ 検証: REQ-ORG-08 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
+- [ ] AC-L1-ORG-13: Site Assignmentによる全Site／指定Siteの可視範囲が、画面とAPIの双方で同じ結果になる。 ｜ 検証: REQ-ORG-08 ｜ 正本: `categories/customer-organization-governance-requirements_v1.md`
 
 ### data-requirements_v1
 

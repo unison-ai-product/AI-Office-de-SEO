@@ -23,8 +23,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - `Membership`: UserとCustomer Organizationの所属関係。
 - `Base Permission`: Owner、Admin、Memberの3種類から選ぶ基本権限。
 - `Business Role Tag`: SEO運用で担当する役割を表す業務タグ。
+- `Site Assignment`: MembershipがアクセスできるSiteを任意に絞り込む指定。
 
-基本構造は `Contract Account → Customer Organization Tree → Membership（基本権限 + 業務タグ）` とする。アクセス対象は所属しているCustomer Organization、Organization Unit、Siteから決まり、権限タグごとに別のScope、継承、有効期間を設定しない。
+基本構造は `Contract Account → Customer Organization Tree → Membership（基本権限 + 業務タグ + 任意のSite Assignment）` とする。業務タグごとにSite範囲を分けず、MembershipのSite Assignmentをすべての業務タグへ共通適用する。
 
 ## 3. 要求
 
@@ -34,7 +35,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### REQ-ORG-02 複数所属
 
-1人のUserは複数のCustomer Organization、Organization UnitおよびSiteへ所属でき、所属先ごとに基本権限と業務タグを持てる。主所属、兼務、外部委託、期間限定所属はMembershipの状態として区別する。
+1人のUserは複数のCustomer Organizationへ所属でき、Membershipごとに基本権限、業務タグ、任意のSite Assignmentを持てる。主所属、兼務、外部委託、期間限定所属はMembershipの状態として区別する。
 
 ### REQ-ORG-03 権限モデル
 
@@ -48,26 +49,28 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 Viewer、SEO Manager、Strategist、Editor、Approver、Analyst、Billing担当等を基本権限として増やさない。閲覧だけの利用者は業務タグを持たないMemberとして表現する。SEO運用上の変更能力は、実際の担当業務に対応する次の4タグだけで付与する。
 
-- `目標管理`: Siteの目的、KPI、優先方針、月次計画、予算配分を設定・確定する。
+- `目標管理`: Siteの目的、KPI、優先方針、月次計画を設定・確定する。予算の設定・配分は含めない。
 - `キーワード・サイト戦略`: キーワードcluster、優先順位、記事配分、サイト構造、内部リンク、ブランド・商品・顧客情報、推薦方針を設定する。
-- `記事制作`: 新規記事、リライト、画像・装飾の生成・編集、完成記事・差分・品質結果の確認、差し戻し、承認、WordPress下書き送信、予約・公開を行う。執筆者と検収者を分ける場合は承認Workflowの割当で表現し、別の権限タグを作らない。
-- `サイト分析`: GSC、順位、獲得キーワード、流入、CV、記事評価、要監視対象を分析する。
+- `記事制作`: LLMによる新規記事、リライト、画像・装飾の生成・編集、完成記事・差分・品質結果の確認、差し戻し、承認、WordPress下書き送信、予約・公開を行う。人間の執筆担当・検収担当を別権限または必須割当として設けない。
+- `サイト分析`: GSC、順位、獲得キーワード、流入、CV、記事評価、要監視対象について、分析条件、比較、評価、レポート設定を変更する。完成済みDashboard・分析結果の閲覧権限とは分離する。
 
-外部接続、Membership、基本権限、業務タグ、請求、契約の管理はSEO業務タグにせず、Owner／Adminの管理権限として扱う。追加credit購入、契約終了、Owner移譲等の契約主体操作はOwnerに限定する。自動運用の有効化・停止は、対象業務のタグに加えてOwnerまたはAdminの管理権限を要求する。
+外部接続、Membership、基本権限、業務タグ、予算、請求、契約の管理はSEO業務タグにせず、Owner／Adminの管理権限として扱う。追加credit購入、契約終了、Owner移譲等の契約主体操作はOwnerに限定する。OwnerはAdmin／Memberの基本権限と業務タグを付与・取消でき、AdminはMemberの業務タグを付与・取消できる。AdminはOwnerの付与、移譲、取消を行えない。自動運用の有効化・停止は、対象業務のタグに加えてOwnerまたはAdminの管理権限を要求する。
 
-各タグは版管理されたPermission bundleへ解決するが、画面上は細かなPermissionを個別設定させない。タグの付与先はMembershipであり、そのMembershipがアクセスできる組織・Site全体へ適用する。タグごとのScope、継承、有効期間、競合規則、顧客独自タグ作成は初期要求に含めない。
+各タグは版管理されたPermission bundleへ解決するが、画面上は細かなPermissionを個別設定させない。タグの付与先はMembershipであり、Site Assignmentが空の場合は契約組織内の全Site、1件以上ある場合は指定Siteだけへ共通適用する。タグごとのSite指定、継承、有効期間、競合規則、顧客独自タグ作成は初期要求に含めない。
 
-### REQ-ORG-04 所属境界
+### REQ-ORG-04 Site付与境界
 
-ユーザーが操作できる範囲はMembershipで所属しているCustomer Organization、Organization Unit、Siteから決定する。基本権限と業務タグは所属範囲内だけで有効とし、別顧客、未所属Site、内部管理面へ継承しない。複数Membershipがある場合は、現在選択している組織・SiteのMembershipだけを認可へ使用する。
+Site Assignmentは任意とし、指定がないMembershipは契約組織内の現在および将来の全Siteへアクセスできる。1件以上のSiteを指定したMembershipは指定Siteだけへアクセスでき、新しいSiteを自動追加しない。基本権限と4つの業務タグはこのSite範囲へ共通適用し、Siteごとにタグを設定し直さない。
+
+複数Customer Organizationへ所属する場合は、現在選択している組織のMembershipとSite Assignmentだけを認可へ使用する。別顧客および内部管理面へ権限を広げない。Site指定を全件解除すると全Siteアクセスへ戻るため、画面は「指定なし＝全Site」を明示し、変更前に影響を確認させる。
 
 ### REQ-ORG-05 業務操作権限
 
-SEO業務状態を変更する操作は、REQ-ORG-03の5つの業務タグで制御する。Memberはタグなしでは閲覧だけとする。Adminは接続、組織、Site設定を管理し、Ownerは契約・請求を含む契約主体の最終管理を行う。記事作成や承認等のSEO業務は、AdminまたはOwnerであることだけを理由に許可せず、対応する業務タグも確認する。顧客が閲覧するTask Historyと開発側の内部監査ログを分離し、顧客権限から内部監査ログ、trace、stack、秘密情報、他tenant・管理操作詳細へ到達できない。
+SEO業務状態を変更する操作は、REQ-ORG-03の4つの業務タグで制御する。Memberはタグなしでも所属先のDashboard、Recommendation、記事、Task History、完成済み分析結果を閲覧できるが、設定や業務状態を変更できない。Adminは接続、組織、Site設定、予算を管理し、Ownerは契約・請求を含む契約主体の最終管理を行う。記事生成、戦略変更、分析設定等のSEO業務は、AdminまたはOwnerであることだけを理由に許可せず、対応する業務タグも確認する。顧客が閲覧するTask Historyと開発側の内部監査ログを分離し、顧客権限から内部監査ログ、trace、stack、秘密情報、他tenant・管理操作詳細へ到達できない。
 
 ### REQ-ORG-06 承認フロー
 
-組織、サイト、処理種別、金額、リスク分類に応じて承認経路を設定できなければならない。作成者と承認者の職務分離、多段階承認、差し戻し、再承認、期限、代理承認を扱う。YMYL、重要ページ、自動公開、予算超過は通常操作より強い承認条件を設定できる。
+組織、Site、処理種別、運用modeに応じて、停止なし、プレビュー確認、承認待ち、差し戻し、再承認を設定できなければならない。記事はLLMが生成するため、人間の作成者と承認者を別担当として必須化しない。最初の新規15記事は記事制作タグを持つ人間の確認記録を公開条件とし、その後の自動運用は既定の同意・解放条件へ従う。hard gate対象は既定どおり二段階確認と同意を要求する。
 
 ### REQ-ORG-07 予算・クレジット配賦
 
@@ -75,7 +78,7 @@ Contract Accountのクレジットおよび利用予算をCustomer Organization�
 
 ### REQ-ORG-08 情報可視性
 
-記事、キーワード、分析、成果、請求、監査の可視範囲を独立して制御する。同一Customer Organization内でも部門・ブランド間を非公開にでき、External Memberは割当対象だけ、経営層は許可された集計だけを閲覧できる。
+記事、キーワード、分析、成果等の顧客業務データは、MembershipのSite Assignmentに従って可視化する。Site Assignmentがない場合は全Site、指定がある場合は指定Siteの情報だけを表示する。請求・契約情報はSite AssignmentではなくOwner／Adminの基本権限で制御する。内部監査情報は顧客面へ表示しない。
 
 ### REQ-ORG-09 契約主体と組織
 
@@ -105,8 +108,8 @@ Contract Accountは法人または個人を契約主体として識別し、請�
 - [ ] AC-L1-ORG-01: 法人・個人のどちらも必須の契約組織を持ち、その配下に自由名称・自由階層の組織ノードとSiteを構成できる。
 - [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとにOwner／Admin／Memberの基本権限と業務タグを持てる。
 - [ ] AC-L1-ORG-03: UI非表示だけでなくAPI側で同一Permission判定が強制される。
-- [ ] AC-L1-ORG-04: 現在選択した組織・SiteのMembershipだけからアクセス範囲が決まり、別顧客・未所属Site・内部管理面へ権限が広がらない。
-- [ ] AC-L1-ORG-05: 目標管理、キーワード・サイト戦略、記事制作、サイト分析の4タグでSEO業務を制御し、執筆と検収の分担は承認Workflowで表現できる。
+- [ ] AC-L1-ORG-04: Site指定なしでは全Site、指定ありでは指定Siteだけへアクセスでき、Site指定解除前に全Site化を確認できる。
+- [ ] AC-L1-ORG-05: 目標管理、キーワード・サイト戦略、記事制作、サイト分析の4タグで変更操作を制御し、Memberは完成済み情報を閲覧でき、予算・接続・組織・契約はOwner／Adminで制御できる。
 - [ ] AC-L1-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。
 - [ ] AC-L1-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。
 - [ ] AC-L1-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。
@@ -114,4 +117,4 @@ Contract Accountは法人または個人を契約主体として識別し、請�
 - [ ] AC-L1-ORG-10: 組織・Site移管前に権限、データ、請求への影響が表示される。
 - [ ] AC-L1-ORG-11: Ownerが権限棚卸しを実行し、是正履歴を確認できる。
 - [ ] AC-L1-ORG-12: 所属・権限・承認・予算変更の実行者、理由、期限、差分を監査できる。
-- [ ] AC-L1-ORG-13: 部門・ブランド間の非公開境界とExternal Memberの可視範囲が、画面とAPIの双方で同じScopeとして強制される。
+- [ ] AC-L1-ORG-13: Site Assignmentによる全Site／指定Siteの可視範囲が、画面とAPIの双方で同じ結果になる。

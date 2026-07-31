@@ -91,7 +91,7 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 - `principal`: customer user、internal operator、service、AI executorの種別と認証済みID
 - `action`: read、create、update、delete、execute、approve、publish、connect、purchase、export、impersonate等のPermission
 - `resource`: tenant、organization node、Site、記事、Keyword、Recommendation、Task、connection、credit、billing、secret等のIDと所有境界
-- `context`: active tenant／organization／Site、Membership、基本権限、業務タグ、Plan Entitlement、認証強度、代理権限、job、環境
+- `context`: active tenant／organization／Site、Membership、Site Assignment、基本権限、業務タグ、Plan Entitlement、認証強度、代理権限、job、環境
 
 出力は `allow / deny / step_up_required / approval_required`、適用したPermission、Scope、理由code、policy version、有効期限とする。UIはこの結果を説明・表示するが独自判定を持たず、API、非同期worker、Agent toolは実行直前に同じ契約で再判定する。入力欠落、競合未解決、policy不明はdefault-denyとする。
 
