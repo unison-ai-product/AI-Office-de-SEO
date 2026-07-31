@@ -15,6 +15,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 SEO業務Workflowは `categories/business-requirements_v1.md`、判定・状態遷移は `categories/logic-requirements_v1.md`、実行原価は `categories/cost-requirements_v1.md`、job・Executor境界は `categories/technical-architecture-requirements_v1.md` を現在の正本とする。本書の `REQ-AGENT-*` はAgent実行詳細として有効であり、分類別正本と重なる横断判断は移行先を優先する。
 
+Agent関連変更の横断責務、既存Pack／Ticketへの接続、追加前監査は `ai-office-de-seo-agent-requirements-map_v1.md` を起点とする。分類別正本へ新しい業務判断を追加しても、本書のExecutor、Workflow、状態機械をゼロベースで再定義しない。
+
 ## 1. 基本思想  ［REQ-AGENT-01］
 
 新規記事とリライトは、固定プロンプト一発生成ではなく、Research / Outlineを正本とするAgentic Workflowで実行する。
@@ -121,7 +123,7 @@ Orchestratorが見るのはCatalogと対応キーであり、本文は保持し�
 
 freeze後の各工程は Layer A/B/C を cache prefix として再利用し、工程・遷移で変わる分だけ Layer D の suffix を差し替える。Repair Loop は QA issue と対象セクションだけを suffix に置き、Research/Outline prefix（C）を再利用する。Outline変更が必要な場合は Writing Loop 内で勝手に修正せず、Outline再設計フェーズへ差し戻す。工程の順序は Layer A の状態機械が強制し、ゲート（Intake / Quality Gate / Preview承認 / Cleanup）を飛ばさない。
 
-## 4. Claude-first  ［REQ-AGENT-04］
+## 4. 品質段階・Provider Routing  ［REQ-AGENT-04］
 
 品質段階の主モデルは低い段階から `GPT Luna`、`GPT tera`、`Sonnet`、`Opus` の順とし、工程別の補助モデル、fallback、調査量、検査回数、Repair回数はversion付きProvider Routingで設計・管理する。特定モデルを本文生成・Repair・構成判断へ固定しない。モデル名は一般ユーザー画面には出さず、品質段階、予測クレジット、残り本数として表示する。
 

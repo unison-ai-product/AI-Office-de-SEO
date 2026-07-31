@@ -247,6 +247,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 記事同期は初回の分割全体取込と、通常の更新通知・差分取得を分離する。技術経路の固定をユーザー設定にせず、管理記事数・月間変更量・取得bytes・render取得等をPlan Capacityへ接続する。Web Archiveは公開状態の正本にせず、JavaScript render取得は負荷と費用を実測してから後続提供を判断する。
 - 公開記事の差分は原則として機械比較し、`CTA・CV経路 > SEO評価対象 > error・取得状態 > 軽微変更` の順で処理する。意味判定が必要な場合だけLLMを補助利用し、誤字・装飾で評価周期をリセットしない。接続異常はSite側とシステム側を分類し、公開可能な診断codeをFAQチャットへ接続する。
 - Siteは複数CV Goalを持ち、検索インテントと月次目的から記事ごとの優先CVまたはサイト認知への貢献方向を割り当てる。CTA資産はpartとlink先だけを扱い、既存のCTA Policy Pack、QA Ticket、Placement、Automation Ticket、必要箇所だけのRepair Ticketへ接続する。CTA専用Agent・Writing Ticket・新規作業Packは増やさず、変更月と累積の双方で評価する。
+- Agent要求は `ai-office-de-seo-agent-requirements-map_v1.md` を横断索引とし、現行の `REQ-AGENT-01〜11`、`REQ-PACK-01〜21`、`REQ-AOUI-01〜07` を有効な実行詳細として扱う。分類別要求へ新しい業務判断を追加してもAgent構造をゼロベースで再定義せず、既存Workflow／Ticket／Pack／Schema／Executorへ接続し、表現不能な場合だけ旧要求を同時改版する。
 
 ## 15. 未確定事項
 

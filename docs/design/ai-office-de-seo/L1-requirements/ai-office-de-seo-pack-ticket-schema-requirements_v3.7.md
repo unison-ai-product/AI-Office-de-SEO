@@ -13,6 +13,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 分類別正本への移行
 
+Agent関連変更の横断責務と追加前監査は `ai-office-de-seo-agent-requirements-map_v1.md` を起点とする。分類別要求へ業務施策を追加するだけで新しいPack、Ticket、Schemaを作らず、既存Catalog／Workflow／Source Needの組合せで表現できるかを先に確認する。
+
 業務Workflowは `categories/business-requirements_v1.md`、判定・状態は `categories/logic-requirements_v1.md`、正本データは `categories/data-requirements_v1.md`、job・schema・version境界は `categories/technical-architecture-requirements_v1.md` を現在の正本とする。本書の `REQ-PACK-*` はPack・Ticket・Schema固有詳細として維持する。
 
 ## 1. 分離原則  ［REQ-PACK-01］
@@ -394,7 +396,7 @@ Feature ProviderがMCP等を介してTool／Resource／Prompt候補を公開す�
 
 ## 16. Pack Compiler と User Knowledge  ［REQ-PACK-16］
 
-見本記事10本は本文保持せず、抽出後に用途別Packへ圧縮する。`compressed_sample_profile_pack` は廃止し、Pack Compilerが次を生成する: Domain Positioning Pack（Research/Outline/Heading Structure/Site Authority上流）、Content Regulation Pack（Writing/QA/Repairへ常時注入）、Site Authority Pack、CTA Policy Pack、Regulation Policy Pack。`User Knowledge Pack` はユーザー指定情報の正本であり、サンプル記事由来の推定より優先する。矛盾は `pack_compile_warnings` に保存する。
+Siteの言い回し学習をユーザーがONにした場合だけ、指定された見本記事を本文保持せず抽出後に用途別Packへ圧縮する。10本は学習ON時に使用できる標準サンプル数であり、全Siteの導入必須条件にしない。`compressed_sample_profile_pack` は廃止し、Pack Compilerが次を生成する: Domain Positioning Pack（Research/Outline/Heading Structure/Site Authority上流）、Content Regulation Pack（Writing/QA/Repairへ常時注入）、Site Authority Pack、CTA Policy Pack、Regulation Policy Pack。`User Knowledge Pack` はユーザー指定情報の正本であり、サンプル記事由来の推定より優先する。矛盾は `pack_compile_warnings` に保存する。
 
 Style Color（サイトの声の実例アンカー）: Pack CompilerはContent Regulationに `style_color` を同梱する——サンプル記事からの代表抜粋（token上限は設定・`REQ-ADM-09`）＋構造化文体特徴（一人称・語尾・文長リズム・比喩/口語の頻度・段落呼吸）。抽出ルールだけでは失われる「このサイトの人間の声」を実例として保持し、(a) Writing/Repairへの文体参照（Layer B・サイト安定層）と (b) `human_voice` ゲートのサイト別対比アンカー（`REQ-PACK-09`）に用いる。本文非保持原則との整合: 抜粋はユーザー自身のサンプル記事に由来する学習派生資産であり、全文でなく上限内の抜粋のみ・登録同意フロー内・サイト削除で消去される。生成記事本文の非保持（WP正本）は不変。Pack Compilerは hash と version を発行し、ジョブ開始時にfreeze、更新後も旧version/hashを保持して再現性を担保する（`REQ-PACK-04`）。本文全文は恒久保存しない。
 

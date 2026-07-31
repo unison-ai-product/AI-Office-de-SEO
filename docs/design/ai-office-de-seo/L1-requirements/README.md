@@ -68,6 +68,19 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 | 品質ゲート・Repair・Routing | `logic/content-quality-repair-routing-logic-requirements_v1.md` | 初版 |
 | SEO／AIクローラー取得性・AI回答表示性 | `logic/crawler-ai-visibility-logic-requirements_v1.md` | 初版 |
 
+## 4.1 エージェント要求体系
+
+Agent関連要求は分類別正本だけからゼロベースで追加しない。変更前に `ai-office-de-seo-agent-requirements-map_v1.md` を起点として、既存の `REQ-AGENT-*`、`REQ-PACK-*`、`REQ-AOUI-*` との接続を確認する。
+
+| 対象 | 正本／索引 |
+|---|---|
+| 横断責務・変更監査 | `ai-office-de-seo-agent-requirements-map_v1.md` |
+| Executor・Workflow・状態機械 | `ai-office-de-seo-agent-runtime-requirements_v3.7.md` |
+| Pack・Ticket・Source・Schema・Gate | `ai-office-de-seo-pack-ticket-schema-requirements_v3.7.md` |
+| Agent Officeのペルソナ・工程表示 | `ai-office-de-seo-agent-office-ui-requirements_v3.7.md` |
+
+分類別文書へAgent関連の業務入力・判断を追加する場合も、実行方式は既存REQ-IDを参照する。既存構造で表現できない場合だけ、影響する旧要求と受入条件を同一変更で改版する。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

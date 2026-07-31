@@ -351,7 +351,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-NAV-06: 主要行動がキーボードのみで到達・実行でき、フォーカスが常に可視で、コントラストがWCAG AA目安を満たし、prefers-reduced-motionでアニメーションが停止し、操作要素がラベルを持ち、全操作が通常ビューで完結する（Agent Officeが唯一経路にならない）。 ｜ 検証: REQ-NAV-08, REQ-AOUI-01, REQ-UJ-01
 - [ ] AC-NAV-07: ユーザー面の文言（ラベル・エラー/確認文言・空状態案内・通知テンプレ）がui.text.*レジストリの版activateのみで差し替わり（デプロイ不要）、未定義キーがベース文言へフォールバックして欠落が観測され、変数欠落がValidateで検出され、禁止語（内部用語・provider名）混入が機械検査され、法務文言が対象外として同意版管理に従う。レジストリから型付きアクセサが自動生成されて存在しないキー参照がビルドエラーになり、UIコードの日本語リテラルがCI lintで検出され、日本語→キーの逆引きが機能し（同一名前空間の完全一致重複はValidate警告）、管理面（REQ-ADM-11）と共通術語基盤で訳語が一致する。 ｜ 検証: REQ-NAV-09, REQ-ADM-10, REQ-PRODUCT-09
 - [ ] AC-PRODUCT-04: WordPress連携（プラグイン・データ交換ソケット）が定義される。 ｜ 検証: REQ-PRODUCT-06
-- [ ] AC-AGENT-15: 本文生成のdefaultがClaude優先で、非Claudeは分類/要約/fallback用途に限定される。 ｜ 検証: REQ-AGENT-04
+- [ ] AC-AGENT-15: 品質段階と工程に応じてversion付きProvider Routingが主モデル・補助モデル・fallbackを選択し、特定Providerへ固定せず、一般ユーザーにはモデル名でなく品質段階と予測クレジットを表示する。 ｜ 検証: REQ-AGENT-04
 - [ ] AC-AGENT-16: ジョブが保留系状態（手動停止/Kill Switch/予算待ち/hard gate/承認待ち）から、freeze済みversion・サンドボックス不変のままステージ境界checkpointで再開でき、完了済みステージを再課金せず、TTL失効後の再開はキャッシュ再ウォーム費が再Preflightに明示され、保留期限超過は自動キャンセル・通知される。 ｜ 検証: REQ-AGENT-10, REQ-PACK-04, REQ-SEC-12
 - [ ] AC-AGENT-17: Outline Contract凍結時に用語ロックが確定して全Writing/Repairへ注入され、Section Briefが隣接ユニット文脈を含み、Assembly後にCohesion QA（coherence_flowゲート＋inter_unit_redundancy / term_consistencyのmetrics）が実行され、不合格は接続部の限定Repairへ回り（全文再生成しない）、指標がQA Snapshotに記録される。 ｜ 検証: REQ-AGENT-11, REQ-PACK-09, REQ-PACK-18
 - [ ] AC-AGENT-18: Orchestratorのクラッシュ・再実行が安全であり、Ticket発行がticket_id冪等キーでdedupeされ、記録済みSnapshotのあるTicketはLLM再呼び出しされず、reserve/commitがticket_id単位で冪等で、障害注入の負のテストでLLM費用・クレジットの二重計上が発生しない。 ｜ 検証: REQ-AGENT-10, REQ-BILL-07, REQ-SEC-02

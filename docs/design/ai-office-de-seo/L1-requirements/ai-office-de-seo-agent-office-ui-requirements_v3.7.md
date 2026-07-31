@@ -13,6 +13,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 分類別正本への移行
 
+Agent Officeと内部Executor／Workflowの境界は `ai-office-de-seo-agent-requirements-map_v1.md` を横断索引とする。部屋、ペルソナ、キャラクタ、会話体験を追加しても、それだけを理由に専用Executor、Ticket、Packまたはruntimeを増やさない。
+
 画面操作と状態は `categories/screen-operation-requirements_v1.md`、視覚表現・Agent Office体験は `categories/design-experience-requirements_v1.md`、性能は `categories/non-functional-requirements_v1.md` を現在の正本とする。本書の `REQ-AOUI-*` は画面固有の詳細・資産参照として維持し、同じ判断を再定義しない。
 
 （正本: 旧 agent-office-information-architecture / ui-two-axis と UI Assets Bundle v3.7 を移植）
