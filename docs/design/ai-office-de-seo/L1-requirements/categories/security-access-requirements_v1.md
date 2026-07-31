@@ -21,7 +21,7 @@ updated_at: 2026-07-30
 - 共有DB上のID型論理分離
 - Repository単一強制ポイントとRLS
 - OAuth token、API key、Webhook secret、KMS
-- step-up認証、招待、全端末失効、Owner回復
+- step-up認証、招待、全端末失効、契約責任者回復
 - Executorの直DB禁止
 - 監査ログ、なりすまし、越境負テスト
 - 一時本文、ログ、キャッシュ、キュー、オブジェクトの分離
@@ -60,11 +60,11 @@ OAuth token、Application Password、API key、Webhook secret、決済識別子�
 
 ### REQ-ACCESS-08 Step-up・重要操作
 
-課金購入・解約、権限付与、Owner移譲、自動投稿解放、秘密再発行、金銭調整、Manager代理権限付与等は、通常sessionより強い再認証またはstep-upを要求する。重要操作の一覧と認証有効時間をversion管理し、UI非表示だけで代替しない。
+課金購入・解約、権限付与、契約責任者交代、自動投稿解放、秘密再発行、金銭調整、Manager代理権限付与等は、通常sessionより強い再認証またはstep-upを要求する。重要操作の一覧と認証有効時間をversion管理し、UI非表示だけで代替しない。
 
-### REQ-ACCESS-09 招待・Owner回復
+### REQ-ACCESS-09 招待・契約責任者回復
 
-招待は対象組織、Role、期限、単回token、招待者を持ち、転送・再利用・期限後利用を拒否する。Owner不在を防ぐ移譲規則を持ち、Owner回復は本人確認、既存Ownerへの通知、待機期間、監査を伴う別手続きとする。Support担当者が本人確認なしにOwnerへ昇格させない。
+招待は対象組織、付与権限、期限、単回token、招待者を持ち、転送・再利用・期限後利用を拒否する。契約責任者不在を防ぐ交代規則を持ち、回復は本人確認、既存契約管理者への通知、待機期間、監査を伴う別手続きとする。サポート担当者が本人確認なしに契約責任者へ変更しない。
 
 ### REQ-ACCESS-10 Executor・Provider境界
 
@@ -91,15 +91,15 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 - `principal`: customer user、internal operator、service、AI executorの種別と認証済みID
 - `action`: read、create、update、delete、execute、approve、publish、connect、purchase、export、impersonate等のPermission
 - `resource`: tenant、organization node、Site、記事、Keyword、Recommendation、Task、connection、credit、billing、secret等のIDと所有境界
-- `context`: active tenant／organization／Site、Membership、Site Assignment、基本権限、業務タグ、Plan Entitlement、認証強度、代理権限、job、環境
+- `context`: active tenant／organization／Site、Membership、Site Assignment、契約権限、Site基本権限、業務タグ、Plan Entitlement、認証強度、代理権限、job、環境
 
 出力は `allow / deny / step_up_required / approval_required`、適用したPermission、Scope、理由code、policy version、有効期限とする。UIはこの結果を説明・表示するが独自判定を持たず、API、非同期worker、Agent toolは実行直前に同じ契約で再判定する。入力欠落、競合未解決、policy不明はdefault-denyとする。
 
 ### REQ-ACCESS-15 Role・Permission・Scopeの責務境界
 
-顧客の基本権限・業務タグ・所属境界の正本は `REQ-ORG-03`～`REQ-ORG-05`、内部Admin／Manager／Operatorの正本は `REQ-PAC-01`、強制方式は本書とする。業務タグはversion付きPermission bundleへ解決する。顧客の基本権限・業務タグと内部Roleを同一namespaceまたは同一Assignmentへ格納しない。
+顧客の契約権限・Site基本権限・業務タグ・所属境界の正本は `REQ-ORG-03`～`REQ-ORG-05`、内部管理者／運用管理者／運用監視者の正本は `REQ-PAC-01`、強制方式は本書とする。業務タグはversion付きPermission bundleへ解決する。顧客権限と内部Roleを同一namespaceまたは同一Assignmentへ格納しない。
 
-判定順序は、環境・tenant境界 → resource所有境界 → principal種別 → 現在選択したMembership／期限付き代理権限 → 基本権限・業務タグ → 認証強度・承認 → Plan Entitlement・予算等の業務条件とする。Owner、Admin、Officeの詳細画面、Feature Flag、Plan変更は前段の境界を上書きできない。同じ入力とpolicy versionから同じ判定を再現できなければならない。
+判定順序は、環境・tenant境界 → resource所有境界 → principal種別 → 現在選択したMembership／期限付き代理権限 → 契約権限・Site基本権限・業務タグ → 認証強度・承認 → Plan Entitlement・予算等の業務条件とする。契約責任者、サイト責任者、Officeの詳細画面、Feature Flag、Plan変更は前段の境界を上書きできない。同じ入力とpolicy versionから同じ判定を再現できなければならない。
 
 ### REQ-ACCESS-16 自動運用・Agent委任境界
 
@@ -129,13 +129,13 @@ break-glassでも秘密原文の一括取得、tenant分離解除、監査停止
 - [ ] AC-L1-ACCESS-06: Repository強制点とRLSの越境queryが拒否され、管理画面も迂回できない。
 - [ ] AC-L1-ACCESS-07: 秘密情報が接続単位で暗号化・rotationされ、ログ・trace・画面へ原文表示されない。
 - [ ] AC-L1-ACCESS-08: 重要操作がstep-upなしではAPIからも拒否される。
-- [ ] AC-L1-ACCESS-09: 招待tokenの再利用・期限後利用を拒否し、Owner回復が本人確認と監査を伴う。
+- [ ] AC-L1-ACCESS-09: 招待tokenの再利用・期限後利用を拒否し、契約責任者の回復が本人確認と監査を伴う。
 - [ ] AC-L1-ACCESS-10: Executorが本番DBへ直接接続できず、許可toolのSite scopeを越えられない。
 - [ ] AC-L1-ACCESS-11: 代理操作のacting principalとcustomer contextを監査上区別できる。
 - [ ] AC-L1-ACCESS-12: 全data pathの越境負テストがCIまたはrelease gateで通過する。
 - [ ] AC-L1-ACCESS-13: マスターテナントが顧客tenantを直接参照できず、許諾済みShowcase Snapshotの作成・公開・撤回だけを監査可能な専用経路で実行できる。
 - [ ] AC-L1-ACCESS-14: 画面、API、worker、Agent toolが同じprincipal・action・resource・contextとpolicy versionから同じ認可結果を返し、不明入力を拒否する。
-- [ ] AC-L1-ACCESS-15: 顧客の3基本権限・業務タグと内部Roleが分離され、Owner／AdminやFeature Flagでtenant・Membership境界を上書きできない。
+- [ ] AC-L1-ACCESS-15: 顧客の契約権限・Site基本権限・業務タグと内部Roleが分離され、契約責任者／サイト責任者やFeature Flagでtenant・Membership境界を上書きできない。
 - [ ] AC-L1-ACCESS-16: 自動運用jobが委任範囲内だけで副作用を実行し、設定者の権限喪失・Site移管・Kill Switch後は公開等を継続しない。
 - [ ] AC-L1-ACCESS-17: 本文一時取得、内部観測、Provider送信、匿名較正、Showcase利用が別Permission・目的・保持policyとして強制される。
 - [ ] AC-L1-ACCESS-18: break-glassが重大incidentに限定され、短期失効・強認証・対象限定・事後reviewを伴い、安全不変条件を解除できない。
