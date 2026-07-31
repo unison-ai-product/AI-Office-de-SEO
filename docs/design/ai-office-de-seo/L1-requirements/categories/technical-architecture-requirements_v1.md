@@ -74,6 +74,12 @@ Tracking runtimeはCMS Adapterと分離した小さい非同期scriptとし、�
 
 LLM、検索・競合データ、メール、WordPress、GSC、課金等の外部サービスはAdapterとversion付き契約で分離する。特定Providerのモデル名、レスポンス形、認証方式を業務ロジックへ直接埋め込まない。timeout、rate limit、circuit breaker、fallback、停止条件をProviderごとに定義する。
 
+LLM境界は共通のModel Capability Contractを持ち、少なくともtext生成、structured output、tool calling、streaming、context・output上限、画像入力、cache、batch、rate limit、データ取扱地域、保持方針を能力として宣言する。WorkflowはProvider名ではなく必要Capability、品質段階、latency、原価上限からrouteを選択し、未対応能力を推測で呼び出さない。OpenAI互換APIであることだけを完全互換の根拠にしない。
+
+商用API Providerに加え、Kimi、Grok、Qwen系を含む将来の低コストモデルおよび自己管理・ローカル推論基盤を同じAdapter境界へ接続可能にする。自己管理モデルではendpointだけでなく、serving engine、model weight・quantization、GPU/CPU構成、warm-up、concurrency、license、利用規約、更新versionをRegistryへ記録する。候補名の記載は採用・品質保証を意味せず、評価Gateを通過したrouteだけを本番有効化する。
+
+Provider・model追加時は共通Contract Test、代表SEO taskのgolden evaluation、structured output適合率、tool実行、長文破損、言語品質、latency、失敗率、実効原価、fallback互換性を現行routeと比較する。品質段階の最低基準を満たさない低コストrouteは、価格優位だけを理由に昇格させない。
+
 ### REQ-TECH-11 API・イベント契約
 
 API、Webhook、イベント、ジョブ、Pack、Snapshotはversion付きスキーマを持ち、入力検証、後方互換期間、廃止手順を定義する。イベントは発生元、tenant/site、actor、相関ID、冪等キー、schema version、発生時刻を持ち、本文全文・秘密情報を含めない。
@@ -144,7 +150,7 @@ application telemetryはOpenTelemetry互換とし、CloudWatch Application Signa
 - [ ] AC-L1-TECH-07: 再試行で二重課金・二重公開・二重通知が発生しない。
 - [ ] AC-L1-TECH-08: 結果整合処理の失敗を検出し再処理・照合できる。
 - [ ] AC-L1-TECH-09: DB、キャッシュ、キュー、検索、ログでtenant/site境界が検証される。
-- [ ] AC-L1-TECH-10: Provider停止時に設定変更で停止・切替・fallbackできる。
+- [ ] AC-L1-TECH-10: 商用API・自己管理モデルを共通Capability Contractで評価し、Provider停止・原価変化・品質差に応じて設定変更で停止・切替・fallbackできる。
 - [ ] AC-L1-TECH-11: API・イベントのversion互換性が契約テストで検証される。
 - [ ] AC-L1-TECH-12: 実行中ジョブが設定変更の影響を受けず再現できる。
 - [ ] AC-L1-TECH-13: キャッシュ、キュー、一時オブジェクトに容量・期限・異常監視がある。

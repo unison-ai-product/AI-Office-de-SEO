@@ -121,6 +121,14 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 - 同一生成条件の既存成果を再利用する場合と、新規生成・編集・ユーザー希望の再生成を区別する。
 - 画像解析、生成、最適化、WordPress Media転送、storage、egressを分けて原価計測する。
 
+## 9.2 Provider Route最適化  ［REQ-COST-11］
+
+- Kimi、Grok、Qwen系等の外部APIと、自己管理・ローカルLLMを同じ品質段階のroute候補として比較できるようにする。
+- 外部APIはtoken、cache、batch、tool、network、失敗・fallbackを含む実効原価で比較する。
+- 自己管理モデルはGPU/CPU稼働、idle、warm-up、autoscaling、storage、network、serving運用、監視、更新・評価工数、失敗・fallbackを含む総提供原価で比較し、token単価だけを原価低下の根拠にしない。
+- route変更前後で品質合格率、Repair率、latency、失敗率、記事・workflow当たり実効原価を比較し、品質段階の最低基準を満たす範囲で低コストrouteの比率を上げる。
+- model、snapshotまたはweight、quantization、serving engine、prompt・workflow version、評価結果、原価versionを固定し、後からroute判断を再現できるようにする。
+
 ## 10. 受入条件
 
 - [ ] AC-L1-COST-01: コストが分類され、tenant/site/workflow/job/stage/attemptへ帰属できる。
@@ -134,3 +142,4 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 - [ ] AC-L1-COST-09: DB・ストレージ・バックアップの増加量と原価をテナント単位で観測できる。
 - [ ] AC-L1-COST-10: 商品・プラン別粗利を実績原価から算出できる。
 - [ ] AC-L1-COST-11: 画像の解析cacheによる削減と新規output原価を分離し、画像job単位で見積・実績を算出できる。
+- [ ] AC-L1-COST-12: 外部APIと自己管理LLMの総提供原価・品質・latency・失敗率を同一route単位で比較し、品質基準内で低コストrouteへ段階移行できる。

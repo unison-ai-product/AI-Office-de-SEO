@@ -174,6 +174,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - プラン内利用上限と、超過分の追加クレジットを持つ。
 - 品質段階ごとの生成クレジット予測から作成可能本数を算出し、週次作成上限でWordPress・外部API負荷を制御する。
 - 品質段階は安定した商品コードで管理し、実Provider名・モデル名を商品IDに固定しない。`GPT Luna → GPT tera → Sonnet → Opus` は当初想定した品質順の表示ラベル／routing aliasとして保持できるが、各aliasから実Provider、model、snapshot、調査量、検査、Repair、fallbackへの対応をModel Registryで版管理する。
+- 将来の原価率改善に向け、Kimi、Grok、Qwen系等の外部APIおよび自己管理・ローカルLLMを共通Model Capability Contractへ接続できる技術互換性を維持する。routeは必要能力、品質評価、latency、実効原価から選び、特定ProviderやOpenAI互換APIだけへ中核Workflowを固定しない。
 - 顧客請求はappend-only ledgerを正本とし、credit lot、reserve、commit、release、失効、繰越、refund、manual adjustmentを追跡する。障害要求が返還可否を判断し、課金要求が元取引を参照して返還を記帳する。
 - 個人・小規模利用向けは最低品質・最小creditを含む月額19,800円（税別）をEntry Planの企画基準値とする。一般消費者向け公開画面では税抜価格を主表示できるが、同一領域へ税込21,780円を明瞭に併記し、支払総額を誤認させない。標準記事1件当たり原価は約350円を仮説とし、実装・β実測後に記事枠と販売価格を確定する。
 - 月額付与creditは請求期間末、追加購入creditは購入から180日で失効する初期方針とする。追加購入creditは販売開始前に資金決済法上の取扱いを法務・決済確認する。

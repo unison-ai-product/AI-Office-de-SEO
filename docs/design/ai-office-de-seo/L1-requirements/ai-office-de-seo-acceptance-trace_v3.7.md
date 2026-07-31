@@ -400,6 +400,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-COST-09: DB・ストレージ・バックアップの増加量と原価をテナント単位で観測できる。 ｜ 検証: REQ-COST-09 ｜ 正本: `categories/cost-requirements_v1.md`
 - [ ] AC-L1-COST-10: 商品・プラン別粗利を実績原価から算出できる。 ｜ 検証: REQ-COST-10 ｜ 正本: `categories/cost-requirements_v1.md`
 - [ ] AC-L1-COST-11: 画像の解析cacheによる削減と新規output原価を分離し、画像job単位で見積・実績を算出できる。 ｜ 検証: REQ-COST-10 ｜ 正本: `categories/cost-requirements_v1.md`
+- [ ] AC-L1-COST-12: 外部APIと自己管理LLMの総提供原価・品質・latency・失敗率を同一route単位で比較し、品質基準内で低コストrouteへ段階移行できる。 ｜ 検証: REQ-COST-11 ｜ 正本: `categories/cost-requirements_v1.md`
 
 ### customer-organization-governance-requirements_v1
 
@@ -585,7 +586,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-TECH-07: 再試行で二重課金・二重公開・二重通知が発生しない。 ｜ 検証: REQ-TECH-07 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-08: 結果整合処理の失敗を検出し再処理・照合できる。 ｜ 検証: REQ-TECH-08 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-09: DB、キャッシュ、キュー、検索、ログでtenant/site境界が検証される。 ｜ 検証: REQ-TECH-09 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
-- [ ] AC-L1-TECH-10: Provider停止時に設定変更で停止・切替・fallbackできる。 ｜ 検証: REQ-TECH-10 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
+- [ ] AC-L1-TECH-10: 商用API・自己管理モデルを共通Capability Contractで評価し、Provider停止・原価変化・品質差に応じて設定変更で停止・切替・fallbackできる。 ｜ 検証: REQ-TECH-10 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-11: API・イベントのversion互換性が契約テストで検証される。 ｜ 検証: REQ-TECH-11 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-12: 実行中ジョブが設定変更の影響を受けず再現できる。 ｜ 検証: REQ-TECH-12 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-13: キャッシュ、キュー、一時オブジェクトに容量・期限・異常監視がある。 ｜ 検証: REQ-TECH-13 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
