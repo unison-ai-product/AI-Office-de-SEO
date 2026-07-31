@@ -388,6 +388,8 @@ Pack本体はOrchestrator側の正本であり、Executorには必要最小限�
 
 Feature ProviderがMCP等を介してTool／Resource／Prompt候補を公開する場合、Discovery結果をそのままTicketへ入れず、App Manifestとの一致確認とPlatform Catalogへの承認登録を経て安定keyへ変換する。TicketとOrchestratorは接続先固有名や本文ではなく承認済みkeyだけを扱い、Pack Resolverがlocal／remote transport差を隠蔽する。
 
+基本SEO WorkflowはCore所有のWorkflow／Pack／Schemaだけで成立させる。Feature Objectは主として追加 `sourceNeedKey` とContext Envelopeを提供し、必要に応じて承認済みの分析Pack、Tool Capability、表示Schemaを加える。Object未導入・停止・stale時は追加Contextを `unavailable` として外し、Core Workflowを `app_required` で全面停止しない。ただしユーザーが当該追加Contextを必須条件として明示したTaskだけは、理由付きで保留できる。
+
 アプリ固有の専門Agentは新しい人格モデルではなく、原則として既存ExecutorにRole Profile、Workflow、Pack、Tool集合を束ねた実行構成とする。独立Executorが必要な場合は、隔離、費用、latency、失敗domain、追加権限を設計審査で示す。アプリ停止・version不一致・Entitlement失効時は `app_required／app_update_required／permission_required` としてfail-closeし、Packを推測補完しない。
 
 ## 16. Pack Compiler と User Knowledge  ［REQ-PACK-16］

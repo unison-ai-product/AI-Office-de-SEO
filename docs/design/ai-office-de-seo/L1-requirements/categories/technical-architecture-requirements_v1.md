@@ -30,7 +30,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 システムを少なくとも、ユーザーUI、プラットフォーム管理UI、アプリケーションAPI、認可、ジョブ制御、AI実行、外部連携、課金台帳、観測の責務へ分離する。各責務間の入力、出力、所有データ、失敗時の扱いをL2で定義し、UIまたはAI Executorが他責務のデータを直接更新しない。
 
-Coreへ固定するのは、tenant／Site境界、認証・認可、契約・Entitlement、課金台帳、Feature Object Registry、command／event／job実行、監査、設定・version、共通UI／Office slot等の基盤責務とする。SEO業務機能、分析、Connector、Agent専門性、レポート、Office設備等は、Coreへ直接分岐を増やす前にFeature Objectとして実装可能かを検討する。
+Core Productへ固定するのは、tenant／Site境界、認証・認可、契約・Entitlement、課金台帳、Feature Object Registry、command／event／job実行、監査、設定・version、共通UI／Office slotに加え、SEO代行の基本Lifecycleを完結する業務機能である。Site設定、キーワード市場探索・分類・戦略、Recommendation、新規記事、リライト、品質確認、承認、CMS引渡し、公開・更新後評価、基本計測・レポート、通常ビュー、基本Agent Officeを、追加Object購入なしで成立させる。
+
+Feature Objectは基本SEO業務を分割販売する境界ではなく、Core業務へ新しいContext、外部データSource、分析レンズ、Provider／CMS Connector、専門評価、追加実行Capability、レポート表現、Office設備を接続する境界とする。Objectがなくても基本Workflowは完了でき、Object停止時は追加Context／能力だけをavailability付きで外してCoreの既定入力・判定へ縮退する。
 
 Feature Objectはclass継承ではなく、安定IDとversionを持つ構成オブジェクトである。`manifest、capabilities、commands、events、workflows、Pack keys、tools、schemas、data ownership、UI slots、Office scene、permissions、entitlements、billing meters、dependencies、lifecycle` を宣言する。アプリは1個以上のFeature Objectを販売・導入単位として束ねるPackageであり、Feature Objectそのものと同一視しない。
 

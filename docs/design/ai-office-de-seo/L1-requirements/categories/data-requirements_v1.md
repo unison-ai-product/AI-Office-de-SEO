@@ -41,6 +41,8 @@ updated_at: 2026-07-30
 
 Feature Objectが追加するデータはObject key／version、tenant／Site、schema version、owner Object、保持class、容量計測、export／delete handlerを持つ。Core共通データへの拡張は無制限な列追加ではなく、安定したextension referenceまたはObject所有storeを使用する。Object削除後に孤立データ、索引、queue、secret、object storageを残さず、保持が必要な場合だけ読み取り専用tombstoneとして期限付き保持する。
 
+CoreとFeature Objectの主境界はContext接続とする。Objectは `Context Envelope` として、context key、対象entity／cluster／URL、valueまたは短い参照、source、observed_at、freshness、availability、confidence、schema／calculation version、利用可能なWorkflow stage、tenant／Site Scopeを返す。CoreはEnvelopeをSource Pack／Resourceとして読み、Objectの内部storeを直接参照しない。同種Contextが複数ある場合はsource優先、競合、欠損、staleの解決規則をversion管理し、値を黙って混合しない。
+
 ### REQ-DATA-02 Article Summary
 
 記事本文の代わりに、URL、title、meta、見出し構造、記事タイプ、更新日、content hash、見出し単位の要点、イベント発生ポイント、トピック、意図、対象読者、問い、主張、根拠種別、CTA、内部リンク、鮮度、不足分類を有界なArticle Summaryとして機械抽出し保持する。抽出器とschema versionを記録し、LLMの自由要約だけを正本にしない。
