@@ -41,14 +41,13 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 顧客側権限は「基本権限」と「権限タグ」に分離する。
 
-基本権限は組織内での基礎的な立場と既定の可視範囲を表し、初期値を次の4種類とする。
+基本権限は組織内での基礎的な立場と既定の可視範囲を表し、初期値を次の3種類とする。
 
 - `Owner`: 契約主体の最終管理者。契約、請求、Owner移譲、組織、Site、権限を管理できる。
 - `Admin`: 組織、Site、Membership、設定を管理できるが、Owner固有操作は実行できない。
-- `Member`: 付与されたScope内で通常業務を行う。業務上の変更操作は権限タグで追加する。
-- `Viewer`: 付与されたScope内を閲覧できるが、業務状態を変更できない。
+- `Member`: 付与されたScope内を閲覧できる。業務状態を変更する能力は権限タグで追加する。
 
-SEO Manager、Strategist、Editor、Approver、Analyst、Billing担当等の業務担当名を基本権限として増やさない。これらの能力は、`keyword_strategy`、`recommendation_execute`、`content_create`、`content_rewrite`、`content_edit`、`quality_check`、`publish_approve`、`automation_manage`、`connection_manage`、`budget_use`、`billing_manage`、`analytics_view`、`data_export` 等の版管理された権限タグとして付与する。
+Viewer、SEO Manager、Strategist、Editor、Approver、Analyst、Billing担当等を基本権限として増やさない。閲覧だけの利用者は権限タグを持たないMemberとして表現する。変更能力は、`keyword_strategy`、`recommendation_execute`、`content_create`、`content_rewrite`、`content_edit`、`quality_check`、`publish_approve`、`automation_manage`、`connection_manage`、`budget_use`、`billing_manage`、`analytics_view`、`data_export` 等の版管理された権限タグとして付与する。
 
 各Assignmentは基本権限または権限タグ、Resource Scope、有効開始・終了日時、付与者、理由を持つ。権限タグは単一Permissionまたは相互に関連する最小のPermission bundleへ解決し、名称だけで判定しない。顧客が独自タグを作成できる場合も、既存Permissionの組合せに限定し、新しいsystem Permissionを生成できない。
 
