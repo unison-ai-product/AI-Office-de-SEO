@@ -398,6 +398,8 @@ Source Pack: `source.keyword.assignment.v1` を追加する（`REQ-PACK-07`。`{
 
 キーワードの優先順位は固定値にしない。市場圧力、サイトの現在地、事業目標、既存コンテンツ、GSC/CV実績の変化に応じて再計算し、`REQ-PRODUCT-24` の記事制作・リライトrecommendationへ供給する。
 
+既存SiteもGSC獲得語だけを診断母集団にせず、公共キーワード資産、業界・商品・顧客候補、ユーザー登録語、GSC Query、適格な検索競合の獲得語を統合したキーワード市場を先に構築する。詳細な市場状態、SERP実績型cluster、代表語、自Site固有難易度、traffic potential range、動的検索競合、Content Gapから施策種別への判定は `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`（`REQ-KRL-02〜08`）を正本とする。
+
 戦略目的は重ね合わせ可能な3軸で保持する。
 
 - `site_necessity`: サイトとして説明責任を果たすために必要な基礎・定義・サービス・信頼形成キーワード。短期流入やCVが小さくても、情報構造、トピック被覆、ドメイン信用性の土台として必要になりうる。

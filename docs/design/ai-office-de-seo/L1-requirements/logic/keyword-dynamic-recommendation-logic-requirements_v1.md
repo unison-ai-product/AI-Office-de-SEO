@@ -43,20 +43,27 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### 2.3 補助入力
 
-`target_fit / industry_fit / freshness / cost_estimate / execution_risk / content_dependency / content_feasibility / cooldown / summary_coverage / assignment_state / effect_measurement_state`。
+`target_fit / industry_fit / freshness / cost_estimate / execution_risk / content_dependency / content_feasibility / site_attainability / traffic_potential_range / competitor_cohort / market_state / cooldown / summary_coverage / assignment_state / effect_measurement_state`。
 
 `content_feasibility`は、Siteの主目的と想定読者への適合、商品・サービス・一次情報・実務知識等の利用可能な独自材料、読了後に達成させる目的、既存上位との差分、単純要約ではない付加価値を記事として成立させられる度合いとする。材料不足を検索量やLLM生成能力で補ったことにせず、不足項目とユーザーへ依頼する入力を返す。
+
+`site_attainability`は一つの不透明な難易度値にせず、被リンク差、トピック信用差、content充足差、検索意図適合差、記事type適合差、Site構造・内部link差、上位domain多様性、SERP安定性、AIO・広告圧力、自Siteの過去順位実績へ分解する。外部ProviderのKDは被リンク競争等の一成分として利用できるが、総合判定の代替にしない。
+
+`traffic_potential_range`は単一語の検索量ではなく、同一clusterで上位ページが獲得するQuery群と流入分布を基に、保守、標準、上位到達の範囲で持つ。AIO・広告控除後の実現可能範囲、予測不能部分およびデータ不足lockを別に示し、Siteが直近1か月1,000click未満の場合は数値予測を公開しない。
 
 ## 3. 前処理  ［REQ-KRL-03］
 
 1. キーワードを正規化し、同一SERP/intentクラスタへ集約する。
 2. ArticleSummaryとAssignment Ledgerから既存記事の充足、担当、重複、保護を取得する。
+2a. 既存Siteでも市場探索を省略せず、公共キーワード資産、業界・商品・顧客候補、GSC Query、ユーザー登録語、適格な検索競合の獲得語を統合して市場母集団を作る。
 3. GSC・CVは判定期間と欠損状態を適用する。
 4. AIO・広告面は地域・device・取得日時を揃える。AIOは週次または鮮度期限到達時の観測を基本とし、短期間の変動を追って反復取得しない。
 5. 全成分を0〜1へ正規化する。
 6. `unknown` を0へ置換しない。利用可能成分だけで暫定計算しconfidenceを下げる。
 7. 順位・表示・クリック減少時は、検索ボリューム変化率とGSC表示回数変化率の同方向性・変化量を比較し、季節性または需要変化の寄与を算出する。
 8. AIO出現率・リスティング出現率が高い、または上昇している期間は自然検索面の縮小寄与を算出し、記事固有の悪化から分離する。
+9. clusterは意味類似だけで確定せず、正規化・類語、検索意図、SERP上位URL重複、上位ページの共通獲得語、自Siteのco-landing、PAA、関連検索、記事typeおよび時系列SERP類似度を合成する。
+10. cluster状態を `stable_cluster / mixed_intent_cluster / volatile_cluster / split_recommended / merge_recommended` に分類する。混合意図または変動中は、単一記事への統合を自動確定しない。
 
 記事への割当は既存のKeyword Map／Assignment Ledgerを正本とし、主担当キーワードグループの代表語をプライマリ、高々1つ、同一SERP／intentクラスタ内の関連語・ロングテール・PAA・言い換えをセカンダリ、複数として扱う。公開後の獲得評価はこの割当集合との一致を判定し、無関係な偶発流入語だけで成功としない。セカンダリ3〜5件程度は一般的な観測目安であり、固定しきい値にはしない。
 
@@ -85,7 +92,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 初期算式:
 
-`base = strategic_need × market_realizability × target_fit × industry_fit × content_feasibility`
+`base = strategic_need × market_realizability × target_fit × industry_fit × content_feasibility × site_attainability`
 
 `dynamic_priority = clamp(base × freshness_adjustment + dependency_bonus - cost_penalty - risk_penalty, 0, 1)`
 
@@ -119,6 +126,12 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 決定前に重複、保護、cooldown、変更予算、SERP変動、stale、effect measurement stateを検査する。
 
+市場状態はcluster単位で次を持つ。`protected`（3位以内等の保護）、`winning`（意図どおり獲得）、`quick_win`（改善余地）、`weak`（検索競合より劣後）、`missing`（重要だが順位なし）、`untapped`（複数の適格競合が獲得し自Site未対応）、`unique`（自Site固有獲得）、`emerging`（新規獲得）、`declining`（低下）、`lost`（消失）、`cannibalized`（担当URL不安定）、`unassigned`（記事未割当）、`index_blocked`（記事あり・順位なし・index問題）、`monitoring`（急変監視）である。閾値は設定versionで管理し、順位帯だけで状態を確定しない。
+
+Content Gapは競合獲得だけで`create_new`にしない。独立した複数の適格競合、自Siteの商品・顧客・ファネル適合、Siteとしての必要性、独自材料、既存記事への吸収可否、カニバリ、市場圧力を順に検査し、新規記事、追記、FAQ、内部link、保留、除外へ振り分ける。
+
+カニバリは複数URLが同一語で順位を持つだけでは確定しない。同一cluster・同一意図、担当URLの交替、click分散、順位不安定、主担当との不一致を合わせて判定し、異なる意図で複数ページが正当に順位を持つ状態を除外する。
+
 ## 8. レコメンド出力  ［REQ-KRL-08］
 
 recommendation itemは次を持つ。
@@ -134,6 +147,13 @@ recommendation itemは次を持つ。
 - formula version
 - stale/expiry条件
 - Ticket/Edit Planへの引き継ぎ値
+- market state、cluster state、代表語、メイン／サブキーワード
+- expected role、article type、関連既存記事、内部link前後関係、実行順序
+- traffic potential range、site attainability内訳、予測credit、不足入力、実行可能状態
+
+cluster代表語は最大検索量だけで決めず、SERP cluster中心性、検索意図の代表性、traffic potential、商品・顧客適合、CV近接、市場圧力、Site信用適合、ユーザー可読性から選ぶ。代表語が変わってもcluster IDと履歴を維持する。
+
+検索競合は事業競合の固定リストに限定しない。clusterごとの上位domainと推定traffic shareから、全Site競合、商品領域競合、情報media競合、特定cluster競合、急成長競合、AIO引用競合を動的に構成する。競合選定理由、対象範囲、観測日時を保存する。
 
 ## 9. 再計算  ［REQ-KRL-09］
 
@@ -194,3 +214,8 @@ Site固有補正は既存割当を直接変更しない範囲で自動適用す�
 - [ ] AC-L1-KRL-15: 業界の優先順とSite実績等から配分比率を算出し、未設定時は非保証の業界推定を行い、順位悪化リスクがあるSite固有補正を承認待ちへ切り替えられる。
 - [ ] AC-L1-KRL-16: ユーザー修正分類を正本・較正データとして使用し、手動／自動の業界優先方式を選択でき、分類変更時は自動予約の未実行項目だけを再検証できる。
 - [ ] AC-L1-KRL-17: 市場価値とは別に記事成立性が評価され、想定読者、Site目的、独自材料、読後目的または既存情報との差分が不足する候補を自動生成へ送らず、追加入力依頼または観測へ振り分けられる。
+- [ ] AC-L1-KRL-18: 既存Siteでも公共市場候補、GSC Query、ユーザー登録語、検索競合語を統合した市場母集団を作り、獲得語だけに限定せず診断できる。
+- [ ] AC-L1-KRL-19: 意味類似だけでなくSERP上位重複、共通獲得語、co-landing、検索意図、記事type、時系列類似度でclusterを構成し、混合・変動・分割・統合候補を区別できる。
+- [ ] AC-L1-KRL-20: clusterが保護、好調、改善余地、競合劣後、重要未獲得、競合未対応差分、自Site固有、新規獲得、低下、消失、カニバリ、未割当、index障害、監視へ分類され、Content Gapと複数URLを無条件で新規記事・カニバリにしない。
+- [ ] AC-L1-KRL-21: traffic potentialが範囲と不確実性で示され、自Site固有難易度が被link、トピック信用、content、意図、記事type、構造、SERP、市場圧力、過去実績へ分解される。
+- [ ] AC-L1-KRL-22: 検索競合がcluster実績から動的分類され、Recommendationが対象cluster、根拠、役割、記事type、既存記事、内部link、順序、credit、不足入力、実行可能状態を一体で返す。
