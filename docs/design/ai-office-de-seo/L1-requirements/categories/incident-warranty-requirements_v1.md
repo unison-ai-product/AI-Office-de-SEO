@@ -38,6 +38,7 @@ Severityは影響範囲、データ機密性、不可逆性、継続時間、顧
 
 - tenant/site、workflow、Provider、外部連携、全体の各粒度でKill Switchを使える。
 - 障害は機能、Provider、キュー、Site等の障害ドメイン内へ封じ込め、依存しない機能を継続する。全体停止は越境、誤公開、課金整合等の全体リスクがある場合に限定する。
+- Feature Object障害はObject key／version、依存Object、影響Site、queue、外部Providerを特定し、Object Kill Switchとcircuit breakerで封じ込める。Object停止がCore全体停止へ波及した場合はSPOF設計不備として扱う。
 - 誤公開・誤課金・越境疑いはfail-closeし、影響経路を停止してから調査する。
 - 停止時は進行中ジョブをcheckpoint保留し、予約公開を止め、未確定クレジットを解放可能にする。
 - 証跡保全と顧客データ最小化を両立し、本文・秘密情報をincident記録へコピーしない。
@@ -82,6 +83,7 @@ Severityは影響範囲、データ機密性、不可逆性、継続時間、顧
 ## 9. 演習  ［REQ-IRG-09］
 
 - Kill Switch、Provider停止、DB復元、誤公開停止、課金調整、テナント復元を定期演習する。
+- Feature Objectの起動失敗、event storm、依存Object停止、Pack Resolver停止、Registry不整合、upgrade／rollback失敗を演習し、Coreと無関係Objectが継続することを確認する。
 - 演習は成功可否、所要時間、手作業、証跡、改善事項を残す。
 - 未演習期間、失敗した復旧手順、期限超過した再発防止を管理画面で警告する。
 

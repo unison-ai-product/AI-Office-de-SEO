@@ -57,6 +57,8 @@ Site当たりの記事、キーワード、推薦、施策、監査、Article Su
 
 初期リリースの内部SLOは月間99.5%を基線とする。ユーザーAPI、ジョブ受付、管理面、課金、公開、AI生成、WordPress連携、計測を機能別に計測し、一部機能の障害をサービス全停止と集計しない。計測、error budget、違反検知、顧客通知経路を販売開始前に実装する。内部SLOと契約上のSLA・service creditは分離し、販売プランごとの保証値は別途版管理する。
 
+販売開始前と主要構成変更時にSPOF台帳を更新し、認証、認可、DB、queue、object storage、cache、Feature Object Registry、Pack Resolver、secret、DNS、edge、外部Provider、運用者権限について、単一故障時の影響、検知、冗長化、再生成、failover、手動代替、許容停止時間を記録する。SPOFを一律に二重化せず、RTO／RPO、費用、復旧可能性に応じて除去・冗長化・迅速復旧を選ぶ。
+
 ### REQ-NFR-07 復旧性
 
 認証、権限、契約、課金台帳、クレジット、公開命令、同意記録等の正本データは、初期内部目標をRPO 1時間、RTO 4時間とする。記事生成、解析、推薦等はcheckpointと冪等再実行で復旧し、正本データと同じ復元方式を強制しない。プロセス・worker・接続等の機械的に回復可能な障害はhealth check、再起動、再試行、failoverで即時の自動復旧を試行する。返金、契約、顧客連絡等の人間・金銭対応は営業日単位の期限を別に定義する。
@@ -67,13 +69,19 @@ Site当たりの記事、キーワード、推薦、施策、監査、Article Su
 
 障害は機能、Provider、キュー、Site等の障害ドメイン内へ封じ込め、単一機能の異常でサービス全体を停止させない。circuit breaker、bulkhead、独立Kill Switch、キュー分離を適用し、依存しない機能を継続する。
 
+Feature Objectごとにtimeout、concurrency、queue、credit／cost、memory、storage、external call、error budget、Kill Switchを分離する。Objectの初期化失敗、例外連鎖、event storm、schema不一致、依存停止時は当該Objectと依存経路だけを停止し、Core起動、ログイン、契約・課金正本、既存データ閲覧、他Objectを継続する。
+
 ### REQ-NFR-09 拡張性・移植性
 
 初期構成を過剰に分散させず、API、worker、DB、cache、queue、object storage、Provider Adapterの境界を保つ。負荷または可用性要求が上がった際に、責務単位で分離・移行でき、単一VPS等の初期配置へ不可逆に密結合しない。
 
+初期実装はモジュラーモノリスとmanaged queueを基本候補とし、Feature Objectごとの契約・所有データ・実行budget・障害境界をコード上で強制する。Object化を物理microservice化と同義にせず、負荷、障害頻度、独立deploy、権限隔離の実測根拠があるObjectだけを後から別process／serviceへ抽出できるようにする。
+
 ### REQ-NFR-10 保守性
 
 API・イベント・DB変更は後方互換期間とロールバックを持ち、設定・Prompt・Provider変更をコードデプロイから分離する。主要な運用操作は管理画面または承認済みCLIで再現可能にし、属人的なDB直接更新へ依存しない。
+
+Feature Objectには契約テスト、依存グラフ検査、install／upgrade／uninstallテスト、障害注入、Coreなし／Objectなし双方の起動試験を要求する。Object数、依存深度、循環、Core変更率、Object別障害件数、upgrade失敗率を保守性指標として計測し、Object化そのものを保守性向上の証拠にしない。
 
 ### REQ-NFR-11 アクセシビリティ
 

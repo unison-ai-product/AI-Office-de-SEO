@@ -69,6 +69,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 拡張アプリの専門Agentは、原則として新しい専用runtimeではなく、既存ExecutorへRole Profile、Workflow、Prompt／Source Pack、Schema、Catalog、Tool Capabilityを束ねる構成とする。App Manifestはkeyと互換versionを宣言し、Ticket→Pack Resolver→Executor側Injectorという既存の問い合わせ経路で解決する。Office上のAgent追加とバックエンドプロセス追加を同義にしない。
 - 基本機能以外は、安定keyとversionを持つFeature Objectとして追加・交換・停止可能な構成を目指す。Coreはtenant／Site、認可、契約・課金、Object Registry、command／event／job、監査、共通UI／Office slotに絞る。Feature ObjectはManifestでCapability、Workflow／Pack、Tool、Schema、所有データ、UI／Office拡張、Permission、Entitlement、課金meter、依存、lifecycleを宣言し、アプリは複数Objectを束ねる販売・導入Packageとする。
 - 料金表には「カスタマイズ」を設け、Entry／Standardは対象外、Premiumは要相談・別見積、Enterpriseは要相談・個別設計／別見積とする。コンサルティングは顧客業務を設定、既存アプリ、Feature Object組合せ、新規Object開発へ落とすための商品とし、月額へ無制限開発を含めない。個別案件もCore forkではなくObject／Packageとして隔離し、要件・費用・納期・保守・version追従を個別契約する。
+- Feature Objectは契約・所有データ・権限・version・実行budget・停止境界を強制できる場合に保守性と拡張性を高める。初期はモジュラーモノリス＋managed queueとし、Object化をmicroservice化と同義にしない。SPOF台帳を持ち、Core基盤は冗長化またはRTO／RPO内の迅速復旧、Object障害はbulkhead／circuit breaker／Object Kill Switchで当該機能へ封じ込める。
 - プライマリキーワードと3〜5件程度の補助キーワードを検索意図・SERPからクラスタ化し、記事へ割り当てる。
 - 獲得キーワードが意図したクラスタで順位を得ることを記事評価の第一条件とし、CV可能な記事はCV取得を次の評価軸とする。
 - 想定外のキーワード獲得は単純な主従入替えにせず、業界・Site実績を再計算してロジック補正へ使う。

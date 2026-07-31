@@ -138,6 +138,8 @@ API、ジョブ、外部連携、AI実行を相関IDで接続し、ログ、メ�
 
 本番基盤はAWSを第一配置先とする。初期構成を過剰なmicroserviceへ分割せず、Web/API、非同期worker、queue、transaction database、object storage、edge delivery、監視の境界を保つ。具体的なcomputeおよびdatabase製品は負荷試験、運用人数、費用からADRで決定する。
 
+初期のFeature Objectはモジュラーモノリス内の論理境界として実装できるが、Object Registry、Resolver、event dispatch、workerのいずれか一つのprocess instanceやローカルmemoryを正本にしない。Web/APIとworkerは複数instanceで再開可能にし、managed DB／queue／object storageの耐障害構成、backup／restore、AZ障害時の動作をADRと演習で確認する。外部Provider単一依存はAdapter、circuit breaker、queue保留、代替routeまたは機能縮退で全体停止へ波及させない。
+
 静的assetとcache可能なread responseはCloudFront等で配信し、動的APIは必要なデータだけを返す。記事本文、生成中間物、画像等の大きいobjectをtransaction databaseへ置かず、期限付きobject storageへ分離する。transaction databaseは契約、権限、状態、台帳、短い派生データ等の正本に限定し、無制限な履歴・本文・生レスポンスを蓄積しない。
 
 非同期jobはAmazon SQS相当のmanaged queueでAPIから分離し、処理種別・優先度・障害domainに応じてqueueを分ける。再試行上限を超えたmessageはdead-letter queueへ隔離し、CloudWatch alarm、原因分類、関連trace、redrive手順を持たせる。
