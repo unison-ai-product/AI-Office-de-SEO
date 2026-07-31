@@ -378,11 +378,11 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - [ ] AC-L1-BUS-01: `REQ-UJ-01〜09` の全ジャーニーが、対応する業務循環と業務要求へ追跡できる。 ｜ 検証: REQ-BUS-01 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-02: 各業務に担当、開始契機、入力、判断、成果物、完了条件、次工程または戻り先がある。 ｜ 検証: REQ-BUS-02 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-03: 月次、日次、施策単位、例外、内部運用のLoopが分離され、相互の受渡しが説明できる。 ｜ 検証: REQ-BUS-03 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-03: 月初に目的・重点領域・施策・予算を持つ計画案を作成し、自動運用では期限確定、手動運用では明示確定できる。 ｜ 検証: REQ-BUS-03 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-04: 各業務の手動操作、Event、Cron候補、WorkflowまたはLoopへの配分が識別できる。 ｜ 検証: REQ-BUS-04 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-05: recommendationから新規記事・リライト・保護・監視・見送りへ業務を開始でき、急変対象は即時推薦されず要監視キューへ分離される。 ｜ 検証: REQ-BUS-05 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-05: 週次上限内の実行予定を自動・手動運用別に選択し、未実行候補を再評価でき、ユーザー割込みには指定を維持した推奨順序を相談できる。 ｜ 検証: REQ-BUS-05 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-06: 月次目的から実行可能量内の方向性配分が作成され、達成保証として扱われない。 ｜ 検証: REQ-BUS-06 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-07: 新規記事の制作・公開・観測結果が推薦と月次計画へ戻る。 ｜ 検証: REQ-BUS-07 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-07: 日次判断を承認期限、停止、今週の予定、新規Recommendation、完了・評価の順で処理し、未処理項目へ理由・期限を持たせられる。 ｜ 検証: REQ-BUS-07 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-08: 公開または更新されたページが、1か月後、3か月後、6か月後の段階評価へ進み、更新時は承認、保護、復元条件を持つ。 ｜ 検証: REQ-BUS-08 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-09: 新規Siteの新規記事15件まで個別承認され、既存記事、外部記事、リライトが件数から除外される。 ｜ 検証: REQ-BUS-09 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-10: 例外時に影響範囲、担当、解除条件、期限、戻り先または終端が記録される。 ｜ 検証: REQ-BUS-10 ｜ 正本: `categories/business-requirements_v1.md`
@@ -555,9 +555,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### screen-operation-requirements_v1
 
-- [ ] AC-L1-SCREEN-01: ログイン後に最優先の推薦・承認・異常を確認できる。 ｜ 検証: REQ-SCREEN-01 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-01: Dashboardで承認期限、停止、今週の予定、新規Recommendation、完了・評価の順に判断項目を確認し、月次計画と週次予定を運用modeに応じて確定できる。 ｜ 検証: REQ-SCREEN-01 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-02: 推薦一覧で理由、変更、費用、リスクを本文取得なしに把握できる。 ｜ 検証: REQ-SCREEN-02 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-03: 採否・保留理由と一括操作の個別検証結果が記録される。 ｜ 検証: REQ-SCREEN-03 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-03: 採否・保留理由と一括操作の個別検証結果を記録でき、ユーザー割込みを維持したまま影響と推奨順序を相談できる。 ｜ 検証: REQ-SCREEN-03 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-04: 長時間ジョブ中も他画面を操作し後から復帰できる。 ｜ 検証: REQ-SCREEN-04 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-05: 読込、空、stale、権限不足、連携切断、エラーを識別できる。 ｜ 検証: REQ-SCREEN-05 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-06: 組織・権限変更前に影響差分を確認できる。 ｜ 検証: REQ-SCREEN-06 ｜ 正本: `categories/screen-operation-requirements_v1.md`

@@ -181,6 +181,16 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 正本: `categories/design-experience-requirements_v1.md`、`categories/screen-operation-requirements_v1.md`、`categories/non-functional-requirements_v1.md`
 
+## 13.3 月次・週次・日次の通常運用
+
+- システムは月初に目的、重点領域、記事・施策配分、予算配分を含む月次計画案を作成する。自動運用では通知期限までに変更がなければ自動確定し、手動運用では権限者の確定を待つ。
+- 週次には上限、credit、依存関係、保護・品質条件に収まる「今週の実行予定」を選択し、自動運用では通知後に実行、手動運用では一括確認する。
+- 未実行Recommendationは単純繰越せず、順位、市場、記事状態、費用、目的、依存関係から維持、順位変更、監視、失効へ再評価する。
+- 推薦外のユーザー指定作業は意図と指定内容を維持する。予算、重複、カニバリ、依存関係、内部リンク機会を再計算し、推奨順序を相談するが強制しない。
+- 通常ビューのDashboardは、公開・更新の承認期限、接続・課金・品質等による停止、期限付きの今週の実行予定、新しいRecommendation、完了・評価結果の順に判断項目を優先する。
+
+正本: `categories/business-requirements_v1.md`、`categories/screen-operation-requirements_v1.md`
+
 ## 14. 課金・アップセル
 
 - プラン内利用上限と、超過分の追加クレジットを持つ。
