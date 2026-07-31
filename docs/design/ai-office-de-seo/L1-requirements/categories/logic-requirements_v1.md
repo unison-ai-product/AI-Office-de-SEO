@@ -55,6 +55,8 @@ Recommendation種別ごとに入力成立条件を判定する。新規記事向
 
 新規記事またはリライトのRecommendation Item採用を起点に、Ticket生成、調査、構成、生成・編集、品質検査、承認判定、WordPress下書き・予約・公開、効果計測をversion付きイベントで接続する。各段階は冪等で、停止・再開・取消・再試行可能とする。
 
+記事生成の完了とCMS送信可能性を別状態として管理する。WordPress下書き送信、既存記事更新、Media登録の直前に、`REQ-INT-05` の認証済みREST接続、対象投稿タイプの書込み権限、必要なMedia権限、Compatibility Matrixを再検証する。不成立時は成果を失敗扱いにせず `connection_required` で保留し、再接続後の送信再開またはHTML／Markdown等の持ち出しを許可する。
+
 新規記事は `Intake Gate → Sandbox Fix → Keyword Intent → SERP Research → Site Strategy → Outline freeze → 任意Outline確認 → Section Brief → Meaning Unit Writing → Quality Gate／限定Repair → WP Draft → Preview／Automation判定 → Cleanup` の順序を強制する。Outline確認設定がOFFなら停止せず、ONならユーザーの見出し修正・確定を待って再開する。
 
 リライトは別Workflowとして `原因分析 → 対象特定 → Edit Plan freeze → 一時Workspace → 限定Patchまたは全文再生成 → Diff → Quality Gate／限定Repair → WP Draft → ユーザー承認 → 反映 → Cleanup` を強制する。リライトはAutomation Policyだけで公開記事へ直接反映しない。OutlineまたはEdit Planにない範囲を生成・変更せず、全文再生成を既定にしないが、高リスク表示と個別承認を伴う実行経路は持つ。

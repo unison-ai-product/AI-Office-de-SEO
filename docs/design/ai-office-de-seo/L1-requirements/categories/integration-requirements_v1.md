@@ -59,6 +59,8 @@ GSCおよびURL Inspectionの利用可能な観測結果から、公開URLのイ
 
 WordPress連携はCore REST APIと軽量トラッキングコードを基礎とし、初期の標準Connection ProfileをThin Plugin併用とする。PluginはTrackerの自動設置、Siteペアリング、version・更新通知、標準RESTで不足するCapabilityとイベント通知だけを補う。Site接続時にREST到達性、Application Password可否、投稿・メディア・Block Type API、Plugin version、トラッキング稼働、独自ブロック・Page Builderを診断する。
 
+WordPressへ記事、リライト、画像を送信する最小条件は、認証済みCore REST APIへ接続でき、対象投稿タイプの下書き作成権限を確認できることである。画像を付与する場合はMedia APIの書込み権限も確認する。REST APIが未接続、読取専用、認証切れ、投稿権限不足、Capability不明の場合は、分析・キーワードRecommendation・記事生成を継続できてもWordPress送信を実行しない。再接続、権限修正、別の接続Profileまたは成果物持ち出しを提示する。
+
 WordPressの公開、更新、予約状態変更、削除、Media変更等の検知はThin Pluginが送る署名付きWebhookを主経路とする。WebhookはイベントID、Site、対象ID、状態、更新日時、content hash、schema versionを持ち、本文全文を含めない。受信側は署名、時刻、replay、冪等性を検証し、重複通知で二重処理しない。
 
 RSS／AtomはPluginを導入できない環境における公開済みコンテンツの新着・更新発見へ利用できる。ただし下書き、予約、削除、権限、Media、独自投稿状態の正本にはしない。WebhookまたはFeedで変化を検知した対象だけをREST取得し、常時の全件Pollingを標準経路にしない。手動同期、再接続時、欠落疑い、定期整合確認ではREST差分同期を実行できる。
@@ -96,6 +98,6 @@ WordPress互換性と出力縮退の正本は本要求とする。Compatibility 
 - [ ] AC-L1-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。
 - [ ] AC-L1-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。
 - [ ] AC-L1-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。
-- [ ] AC-L1-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離し、投稿単位のCompatibility Matrixから安全な出力経路を決定できる。
+- [ ] AC-L1-INT-05: 認証済みCore RESTと投稿権限がある場合だけ記事を送信し、未接続・読取専用・認証切れ・権限不足時は送信を止めたまま分析・生成・持ち出しを継続できる。
 - [ ] AC-L1-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。
 - [ ] AC-L1-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。

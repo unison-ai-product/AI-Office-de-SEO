@@ -500,7 +500,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。 ｜ 検証: REQ-INT-02 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。 ｜ 検証: REQ-INT-03 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。 ｜ 検証: REQ-INT-04 ｜ 正本: `categories/integration-requirements_v1.md`
-- [ ] AC-L1-INT-05: Core REST＋Trackingを最小構成として利用でき、Thin Plugin停止時もRESTで継続可能な機能とdegraded機能を分離し、投稿単位のCompatibility Matrixから安全な出力経路を決定できる。 ｜ 検証: REQ-INT-05 ｜ 正本: `categories/integration-requirements_v1.md`
+- [ ] AC-L1-INT-05: 認証済みCore RESTと投稿権限がある場合だけ記事を送信し、未接続・読取専用・認証切れ・権限不足時は送信を止めたまま分析・生成・持ち出しを継続できる。 ｜ 検証: REQ-INT-05 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-06: CMS非依存Publication ContractとWordPress Adapterが分離され、未検証CMSを対応済みと表示せず、追加Adapterの実環境検証条件が定義されている。 ｜ 検証: REQ-INT-06 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。 ｜ 検証: REQ-INT-07 ｜ 正本: `categories/integration-requirements_v1.md`
 
