@@ -64,7 +64,7 @@ function parseMarkdown(relativePath) {
 
   while (i < lines.length) {
     const line = lines[i];
-    const req = line.match(/^###\s+(REQ-[A-Z0-9-]+)\s+(.+?)\s*$/);
+    const req = line.match(/^#{2,3}\s+(REQ-[A-Z0-9-]+)\s+(.+?)\s*$/);
     const embeddedReq = line.match(/^##\s+(.+?)\s+［(REQ-[A-Z0-9-]+)］\s*$/);
     const heading = line.match(/^##\s+(.+?)\s*$/);
 
