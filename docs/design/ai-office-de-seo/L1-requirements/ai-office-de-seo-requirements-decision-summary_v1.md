@@ -185,6 +185,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - Planは固定4段階にせず、安定IDを持つCatalogとして管理画面から追加・複製・改版・販売終了できるようにする。
 - 初期Plan上限はSite／ユーザーをEntry 1／3、Standard 3／10、Premium 5／30、Enterprise個別とする。
 - 自動投稿はEntryを含む全Planで提供し、最初の新規15記事の承認後に同意・設定を経て解放する。専用バックアップはPremium以上、数値予測はStandard以上で提供し、予測のデータ十分性判定はPlan解放と別に適用する。
+- Entryは基本品質、Standard以上は品質段階を選択可能とし、選択品質に応じてcreditを消費する。WordPress・GSCは全Plan、汎用Webhook・外部APIはPremium以上で提供する。
+- 顧客に見せる履歴はエージェントTask Historyであり、Agent Office演出は実Task・eventから導出する。開発側の監査ログ、trace、stack等は顧客面と分離し、顧客向け監査ログ一括出力は提供しない。
 - 大規模Siteの初回取込は「自動構築期間」として数日へ分散でき、進捗・完了見込み・制限中の機能を表示しながら、成立した機能から段階開放する。
 - 価格は汎用生成AIのtoken原価ではなく、SEO戦略、制作・リライト、WordPress入稿、計測、評価、再推薦までの代行業務価値を基準に設計する。汎用AI、SEO分析ツール、記事制作代行、SEO運用代行との担当範囲を比較可能にする。
 - 月額付与creditは請求期間末、追加購入creditは購入から180日で失効する初期方針とする。追加購入creditは販売開始前に資金決済法上の取扱いを法務・決済確認する。

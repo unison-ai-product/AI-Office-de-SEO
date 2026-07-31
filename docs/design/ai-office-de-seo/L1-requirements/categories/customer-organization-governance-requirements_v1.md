@@ -55,7 +55,9 @@ Role Assignmentごとに「配下Organization Unit・Siteへ継承する／こ�
 - 自動公開、Kill Switch、サイト設定
 - GSC・WordPress等の外部接続
 - クレジット利用、予算変更、追加購入、契約変更
-- 分析、監査ログ、請求情報、データエクスポート
+- 分析、エージェントTask History、請求情報、顧客データエクスポート
+
+顧客Roleが閲覧するTask Historyと、開発側の内部監査ログを分離する。顧客Permissionから内部監査ログ、trace、stack、秘密情報、他tenant・管理操作詳細へ到達できない。
 
 ### REQ-ORG-06 承認フロー
 

@@ -556,7 +556,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-08: UI操作可否とAPI認可の結果が一致する。 ｜ 検証: REQ-SCREEN-08 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-09: 推薦から効果確認まで対象と根拠が維持される。 ｜ 検証: REQ-SCREEN-09 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-10: 大量一覧が全件初期取得を行わない。 ｜ 検証: REQ-SCREEN-10 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-11: Agent Officeビューの表示状態が実ジョブ・イベントと一致する。 ｜ 検証: REQ-SCREEN-11 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-11: Agent Officeビューとユーザー向けTask Historyが実ジョブ・イベントと一致し、内部監査ログ・trace・秘密情報を顧客へ表示しない。 ｜ 検証: REQ-SCREEN-11 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-12: 文体の組合せと個別Site言い回し学習のON/OFFを設定でき、ON時だけサンプル記事10本を使用し、10本未満は暫定状態を確認できる。 ｜ 検証: REQ-SCREEN-12 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-13: 急変対象が通常推薦と分離され、1か月・3か月・6か月評価の状態と既存予定の継続を区別できる。 ｜ 検証: REQ-SCREEN-13 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。 ｜ 検証: REQ-SCREEN-14 ｜ 正本: `categories/screen-operation-requirements_v1.md`
