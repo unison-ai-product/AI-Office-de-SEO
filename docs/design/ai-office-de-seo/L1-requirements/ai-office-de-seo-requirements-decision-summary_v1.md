@@ -196,6 +196,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 専用バックアップ、保持延長、復元支援を上位プランの「安心保証」として提案できる。
 - 安心保証は復元可能性と支援範囲の保証であり、SEO成果保証ではない。
 - 標準サポートは製品内FAQチャットを主導線とし、SEO戦略、人間review、WordPress修正・運用代行は有償支援へ分離する。製品不具合や課金誤りの是正は有償化しない。
+- FAQチャットは全Planへ提供し、Premiumは1営業日以内の初回回答を目標とする優先有人対応、Enterpriseはseverity・時間帯・初動・復旧・報告・補償を個別合意するSLAを提供する。
 
 正本: `categories/billing-accounting-requirements_v1.md`、`categories/cost-requirements_v1.md`、`categories/growth-upsell-requirements_v1.md`
 

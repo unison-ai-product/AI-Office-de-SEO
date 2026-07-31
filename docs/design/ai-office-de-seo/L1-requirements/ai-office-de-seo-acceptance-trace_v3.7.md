@@ -452,7 +452,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-UPSELL-05: 料金、適用日、日割り、増える機能、増えない機能が表示される。 ｜ 検証: REQ-UPSELL-05 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-06: 購入・プラン変更が権限者の明示操作なしに確定しない。 ｜ 検証: REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-07: 同一提案の回数上限とcooldownが機能する。 ｜ 検証: REQ-UPSELL-07 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
-- [ ] AC-L1-UPSELL-08: FAQチャットから根拠付き回答または適切な有人引継ぎへ到達でき、営業連携へ本文・秘密情報が渡らない。 ｜ 検証: REQ-UPSELL-08 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
+- [ ] AC-L1-UPSELL-08: 全PlanのFAQチャットから根拠付き回答または適切な有人引継ぎへ到達でき、Premiumの優先対応とEnterpriseの個別SLAを区別し、営業連携へ本文・秘密情報が渡らない。 ｜ 検証: REQ-UPSELL-08 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-09: 購入率だけでなく継続・利用・粗利・苦情・解約が計測される。 ｜ 検証: REQ-UPSELL-09 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-10: 製品不具合や設定不備を上位契約で解決させない。 ｜ 検証: REQ-UPSELL-01, REQ-UPSELL-02, REQ-UPSELL-03, REQ-UPSELL-04, REQ-UPSELL-05, REQ-UPSELL-06, REQ-UPSELL-07, REQ-UPSELL-08, REQ-UPSELL-09 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
 - [ ] AC-L1-UPSELL-11: 容量接近時にEntry／StandardへPremiumを提示し、Premium／EnterpriseではPlan変更と追加容量を比較して権限者が選択できる。 ｜ 検証: REQ-UPSELL-02, REQ-UPSELL-04, REQ-UPSELL-06 ｜ 正本: `categories/growth-upsell-requirements_v1.md`
