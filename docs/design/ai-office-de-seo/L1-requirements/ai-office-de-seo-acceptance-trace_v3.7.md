@@ -653,7 +653,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-INT-09: Siteごとに許可済みの複数Article読取り経路を共通Snapshotへ正規化し、完全性・鮮度・成功率・負荷・費用からprimary／standbyを選択して、差分対象だけを取得し、障害時にflappingなくfailoverできる。 ｜ 検証: REQ-INT-09 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-LOGIC-12: Site・用途ごとに許可済みArticle読取り経路のprimary／standbyを同じPolicy入力から再現し、差分取得、負荷抑制、連続失敗時のfailover、回復時のflapping抑止、全経路不成立の案内を実行できる。 ｜ 検証: REQ-LOGIC-12 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-13: 公開記事の変更を機械比較でCTA・SEO評価・error・軽微変更へ分類し、必要な評価または診断だけを起動して、単発取得失敗を削除や成果悪化として扱わず、LLMを意味派生が必要な処理だけへ限定できる。 ｜ 検証: REQ-LOGIC-13 ｜ 正本: `categories/logic-requirements_v1.md`
-- [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先だけを用いて新規記事または承認付き軽量施策へ接続できる。 ｜ 検証: REQ-LOGIC-14 ｜ 正本: `categories/logic-requirements_v1.md`
+- [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先を既存QA・Placement・Automation・限定Repair Ticketへ接続し、CTA専用Agent・Writing Ticket・作業Packを増やさず実行できる。 ｜ 検証: REQ-LOGIC-14 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。 ｜ 検証: REQ-MEASURE-12 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。 ｜ 検証: REQ-DATA-14 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`

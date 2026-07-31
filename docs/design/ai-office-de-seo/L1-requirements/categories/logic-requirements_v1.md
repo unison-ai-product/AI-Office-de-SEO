@@ -179,7 +179,7 @@ AIOおよびAI回答面の観測は月次を基本とし、短期間の表示差
 
 入力はSiteの複数CV Goal、月次目的、keyword cluster、検索インテント、ファネル、記事type、記事目的、既存CTA part、link先、計測実績、availabilityである。clusterと記事ごとに優先CVまたはサイト認知への貢献方向を割り当て、CVを獲得しにくいKnow・信頼形成領域もcluster充足、関連遷移、指名・ブランドquery等へ接続する。ユーザーは必要な場合だけ割当を修正する。
 
-CTAの再利用対象はSite上で利用可能なpartとlink先に限定する。既存Siteのボタン文言、訴求傾向、禁止表現等を独立したCTA学習設定として増やさない。新規記事では既決のCTA・内部link方針に従って自動配置し、既存記事への追加・変更は本文リライトと分離した軽量施策または作業Packとして推薦し、承認後に反映する。
+CTAの再利用対象はSite上で利用可能なpartとlink先に限定し、既存の `source.site.cv_points.v1` とCTA Policy Packから解決する。既存Siteのボタン文言、訴求傾向、禁止表現等を独立したCTA学習設定として増やさない。新規記事では `REQ-PACK-17` に従い、QA Ticketが返す `CTAPlacementInstruction` または `WPBlockPlacementInstruction` をOrchestratorのAssembly／Placement工程で適用する。既存記事への追加・変更は本文リライトと分離したCTA改善RecommendationからAutomation Ticketへ接続し、接続文の修正が必要な場合だけ対象箇所のRepair Ticketを発行して、承認後に反映する。CTA専用Agent、専用Writing Ticket、新しい作業Packを作らない。
 
 出力は対象記事、記事目的、検索インテント、優先CV、使用part、link先、配置、推薦理由、月次評価、累積評価、母数、availabilityを返す。CTA実績だけでSEO成果を評価せず、SEO実績だけでCV施策を成功扱いしない。
 
@@ -198,4 +198,4 @@ CTAの再利用対象はSite上で利用可能なpartとlink先に限定する�
 - [ ] AC-L1-LOGIC-11: Provider課金前に入力・固定商品枠・請求reserve・接続・技術上限を判定し、readyまたは再開条件を返せる。
 - [ ] AC-L1-LOGIC-12: Site・用途ごとに許可済みArticle読取り経路のprimary／standbyを同じPolicy入力から再現し、差分取得、負荷抑制、連続失敗時のfailover、回復時のflapping抑止、全経路不成立の案内を実行できる。
 - [ ] AC-L1-LOGIC-13: 公開記事の変更を機械比較でCTA・SEO評価・error・軽微変更へ分類し、必要な評価または診断だけを起動して、単発取得失敗を削除や成果悪化として扱わず、LLMを意味派生が必要な処理だけへ限定できる。
-- [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先だけを用いて新規記事または承認付き軽量施策へ接続できる。
+- [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先を既存QA・Placement・Automation・限定Repair Ticketへ接続し、CTA専用Agent・Writing Ticket・作業Packを増やさず実行できる。
