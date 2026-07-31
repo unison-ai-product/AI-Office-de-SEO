@@ -459,7 +459,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。 ｜ 検証: REQ-DESIGN-06 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。 ｜ 検証: REQ-DESIGN-07 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。 ｜ 検証: REQ-DESIGN-08 ｜ 正本: `categories/design-experience-requirements_v1.md`
-- [ ] AC-L1-DESIGN-09: 通常ビューの簡単操作からContextを維持してOfficeの該当部屋・Agent・詳細へ移動し、推薦条件・Agent指示を変更して再計算結果を通常ビューへ戻せる。 ｜ 検証: REQ-DESIGN-09 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-09: 通常ビューの簡単操作から同じ権限・業務正本のままOfficeの詳細へ移動し、会話による変更案の影響・creditを確認して確定し、再計算結果を両画面へ同期できる。 ｜ 検証: REQ-DESIGN-09 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-10: Officeを標準3D、簡略3D、軽量2Dへ切り替えても、同じTask状態・詳細・会話・操作を利用できる。 ｜ 検証: REQ-DESIGN-10 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-11: Recommendationから制作・計測・評価・学習・次回Recommendationまでを実entityに基づくLoop／Knowledge Graphと一覧の両方で追跡できる。 ｜ 検証: REQ-DESIGN-11 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-12: 初期リリースがdesktop標準として成立し、後続mobile Chatへ通知・確認・説明・修正指示を追加してもdesktop業務の正本を分岐させない。 ｜ 検証: REQ-DESIGN-12 ｜ 正本: `categories/design-experience-requirements_v1.md`
@@ -576,7 +576,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-04: 長時間ジョブ中も他画面を操作し後から復帰できる。 ｜ 検証: REQ-SCREEN-04 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-05: 読込、空、stale、権限不足、連携切断、エラーを識別できる。 ｜ 検証: REQ-SCREEN-05 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-06: 組織・権限変更前に影響差分を確認できる。 ｜ 検証: REQ-SCREEN-06 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-07: 内部管理面で対象環境・顧客・代理操作状態を誤認しない。 ｜ 検証: REQ-SCREEN-07 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-07: 顧客向け通常ビュー／Agent Officeと内部管理面が分離され、内部管理面で対象環境・顧客・代理操作状態を誤認しない。 ｜ 検証: REQ-SCREEN-07 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-08: UI操作可否とAPI認可の結果が一致する。 ｜ 検証: REQ-SCREEN-08 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-09: 推薦から効果確認まで対象と根拠が維持される。 ｜ 検証: REQ-SCREEN-09 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-10: 大量一覧が全件初期取得を行わない。 ｜ 検証: REQ-SCREEN-10 ｜ 正本: `categories/screen-operation-requirements_v1.md`
@@ -587,7 +587,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、保留理由、WordPress反映、再開・追加見積を同一相関IDで確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。 ｜ 検証: REQ-SCREEN-16 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。 ｜ 検証: REQ-SCREEN-17 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-18: 通常ビューの対象からOfficeの担当部屋・Agentへ移動し、Keyword選択条件等の詳細方針を影響確認後に変更して、結果を通常ビューへ戻せる。 ｜ 検証: REQ-SCREEN-18 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-18: 通常ビューの詳細をOfficeで同一権限・業務正本のまま操作でき、Agentの会話指示を影響・費用確認付き変更案として確定し、結果を両画面へ同期できる。 ｜ 検証: REQ-SCREEN-18 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。 ｜ 検証: REQ-SCREEN-19 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 
 ### security-access-requirements_v1
 
