@@ -357,7 +357,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### billing-accounting-requirements_v1
 
-- [ ] AC-L1-BILLING-01: 契約時のPrice Catalog versionから商品、価格、付与量、制限、適用期間を再現できる。 ｜ 検証: REQ-BILLING-01 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-01: 契約時のPrice Catalog versionから商品、価格、付与量、制限、適用期間と、人間代行・汎用AI・SEOツールとの比較範囲および算定根拠を再現できる。 ｜ 検証: REQ-BILLING-01 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-02: 内部契約と外部Subscriptionの状態差を検出し、未検証Webhookで利用権限が直接変更されない。 ｜ 検証: REQ-BILLING-02 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-03: クレジットlotの付与元、期限、消費順、繰越・失効を契約versionどおりに再現できる。 ｜ 検証: REQ-BILLING-03 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-04: 有償ジョブがreserve後に開始し、成功時commit、未使用時releaseされ、再試行で二重commitされない。 ｜ 検証: REQ-BILLING-04 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
