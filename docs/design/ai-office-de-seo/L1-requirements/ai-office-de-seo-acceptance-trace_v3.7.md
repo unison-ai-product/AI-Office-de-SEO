@@ -371,7 +371,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-BILLING-12: 請求ledgerと原価eventを混在させず、共通分析軸から商品・契約・job別粗利を導出できる。 ｜ 検証: REQ-BILLING-12 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-13: 更新支払失敗後14日間の再試行・通知・機能制限と、支払成功時の復旧を二重付与なしに実行できる。 ｜ 検証: REQ-BILLING-13 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-14: 初期OFFの自動チャージについて残高しきい値・購入額・月間上限または無制限を権限者が設定でき、上限到達・決済失敗時に二重購入せず停止できる。 ｜ 検証: REQ-BILLING-14 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
-- [ ] AC-L1-BILLING-15: 最大10社の招待制Trialを管理発行し、一般公開せず、終了時に明示契約なしで有償化しない。 ｜ 検証: REQ-BILLING-15 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-15: 累計10社までの招待制Trialへ1～3カ月、Standard相当、固定creditを設定でき、通常の15記事承認を適用し、一般公開・枠再利用・明示契約なしの有償化を行わない。 ｜ 検証: REQ-BILLING-15 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-16: 月・年契約の期間末解約、自動更新通知、14日・利用履歴なしの返金判定、計画Upgrade、更新時Downgradeを再現できる。 ｜ 検証: REQ-BILLING-16 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 
 ### business-requirements_v1
@@ -547,7 +547,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-PAC-12: いずれの内部Roleでも安全不変条件を解除できない。 ｜ 検証: REQ-PAC-12 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 - [ ] AC-L1-PAC-13: 本番・非本番の権限、秘密情報、設定が分離され、管理操作を環境別に監査できる。 ｜ 検証: REQ-PAC-13 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 - [ ] AC-L1-PAC-14: Planをコード変更なしに追加・複製・改版・販売終了でき、価格・契約・利用枠・機能・品質・バックアップを設定し、既存契約を維持したまま対象と適用日を指定して変更・Rollbackできる。 ｜ 検証: REQ-PAC-14 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
-- [ ] AC-L1-PAC-15: internalマスターテナントと最大10社のTrialをAdminだけが発行・停止でき、通常の品質・境界・監査を迂回できない。 ｜ 検証: REQ-PAC-15 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
+- [ ] AC-L1-PAC-15: internalマスターテナントと累計10社までの1～3カ月TrialをAdminだけが発行・停止でき、終了枠を再利用せず、通常の品質・承認・境界・監査を迂回できない。 ｜ 検証: REQ-PAC-15 ｜ 正本: `categories/platform-administration-control-requirements_v1.md`
 
 ### screen-operation-requirements_v1
 
