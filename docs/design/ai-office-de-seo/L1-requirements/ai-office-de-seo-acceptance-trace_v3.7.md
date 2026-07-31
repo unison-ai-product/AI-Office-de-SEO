@@ -51,7 +51,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-TENANT-01: テナント分離が共有DB上の`tenant_id`/`site_id`によるID型論理分離であり、テナント別物理DB・スキーマ分離ではない。 ｜ 検証: REQ-PRODUCT-10, REQ-SEC-07
 - [ ] AC-TENANT-02: 全データアクセスが単一の強制ポイントを通り、スコープ未指定・越境クエリはdefault-denyでfail-closeする。 ｜ 検証: REQ-SEC-07
 - [ ] AC-TENANT-03: テナント横断のJOIN・集計が既定で禁止され、越境試行が監査ログに残る。明示認可例外は2経路のみ——①k匿名集約パイプライン（専用ロール・到達不能・k匿名出力限定）②同意ベース事例転用（許諾範囲のみ・スナップショット・撤回で停止/削除）——で、いずれも監査される。 ｜ 検証: REQ-SEC-07, REQ-SEC-10, REQ-PRODUCT-13, REQ-PRODUCT-23
-- [ ] AC-TENANT-04: テナント由来データを含むキャッシュ（Layer B/C・GSC/記事/方針系）のキーに`tenant_id`/`site_id`が含まれテナント間で漏洩せず、共有可なのはテナントデータを含まない公共外部観測とLayer Aのみで、その非含有が契約検証（cache prefix hygiene）で保証される。 ｜ 検証: REQ-SEC-07, REQ-SEC-13, REQ-PRODUCT-13
+- [ ] AC-TENANT-04: テナント由来データを含むキャッシュ（Layer B/C・GSC/記事/方針系）のキーに`tenant_id`/`site_id`が含まれテナント間で漏洩せず、共有可なのはテナントデータを含まない公共キーワード資産・公共外部観測とLayer Aのみで、その非含有がprovenance契約とcache prefix hygieneで保証される。 ｜ 検証: REQ-SEC-07, REQ-SEC-13, REQ-PRODUCT-13
 - [ ] AC-TENANT-05: 1テナントに複数ユーザー、1ユーザーが複数テナントに所属でき、Membership・Roleが別テナントへ波及しない。 ｜ 検証: REQ-PRODUCT-01, REQ-SEC-08
 - [ ] AC-TENANT-06: 1ユーザーが複数のGoogle/GSCアカウント・複数WP接続を持て、各Connected AccountとトークンがTenantに属しテナント境界を越えない。 ｜ 検証: REQ-PRODUCT-01, REQ-PRODUCT-05, REQ-SEC-09
 - [ ] AC-TENANT-07: Source Packはsite_id（/tenant_id）スコープで解決し、別サイト・別テナントのデータを引けない。 ｜ 検証: REQ-PACK-06, REQ-SEC-07
@@ -266,10 +266,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## Network Learning
 
-- [ ] AC-NET-01: テナント横断の集約が一方向（テナント→グローバル）・k匿名しきい値・識別子/本文/URL/クエリ文字列除去で行われ、集約結果からテナント・サイト・個別URLを特定できないことが集約パイプラインの契約検証に含まれ、登録同意にデータ利用条項とテナント単位オプトアウトがある。 ｜ 検証: REQ-PRODUCT-13, REQ-PRODUCT-09, REQ-SEC-13
+- [ ] AC-NET-01: 公共キーワード資産は公共外部データとしての取得元・保存再利用条件を持ち顧客対応を含まず、顧客由来のテナント横断集約は一方向（テナント→グローバル）・k匿名しきい値・識別子/本文/URL/生GSCクエリ除去で行われる。両者のprovenanceが分離され、集約結果からテナント・サイト・個別URLを特定できないことが契約検証に含まれ、登録同意にデータ利用条項とテナント単位オプトアウトがある。 ｜ 検証: REQ-PRODUCT-13, REQ-PRODUCT-09, REQ-SEC-13
 - [ ] AC-NET-02: 集約の適用が常に提案として生成され、辞書・タクソノミはCatalog改版（REQ-ADM-10統制）、prior・しきい値は設定レジストリ改版（REQ-ADM-09統制）経由でのみ反映され、自動反映されず、記事内容・サイト戦略・few-shot・Prompt Pack・エージェントプロンプトへのテナント横断学習が行われない。 ｜ 検証: REQ-PRODUCT-13, REQ-ADM-09, REQ-ADM-10
 - [ ] AC-NET-03: 新規サイトがセグメント別prior（セグメント標本不足時はグローバルfallback）から開始し、自サイトデータ蓄積に応じて縮小推定で自サイト実測へ移行し、オプトアウトテナントのデータが集約から除外されつつ共有観測・辞書の受益は継続する。 ｜ 検証: REQ-PRODUCT-13, REQ-KGA-17
-- [ ] AC-NET-04: サンドボックス内ジョブが共有物（グローバルCatalog・共有観測キャッシュ・prior）をホワイトリスト経由・読み取り専用・version freezeで参照し、ジョブから共有物への書き込み・集約起動が構造的に不可能で、ホワイトリスト外参照が境界検証でfail-closeし、共有キャッシュ読み取りが読む側テナントの外部予算を消費しない。 ｜ 検証: REQ-PRODUCT-13, REQ-PACK-06, REQ-SEC-13, REQ-SRC-07
+- [ ] AC-NET-04: サンドボックス内ジョブが共有物（グローバルCatalog・公共キーワード資産・共有観測キャッシュ・prior）をホワイトリスト経由・読み取り専用・version freezeで参照し、ジョブから共有物への書き込み・集約起動が構造的に不可能で、ホワイトリスト外参照が境界検証でfail-closeし、共有資産・キャッシュ読み取りが読む側テナントの外部予算を消費しない。 ｜ 検証: REQ-PRODUCT-13, REQ-PACK-06, REQ-SEC-13, REQ-SRC-07
 
 ## Customization
 

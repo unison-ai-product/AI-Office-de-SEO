@@ -83,7 +83,12 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 
 ## 8. グローバル信号ストア（Network Learning、REQ-PRODUCT-13）
 
-テナントスキーマ外に、集約済み・k匿名の派生物のみを置く: global_dictionary_candidates（言語対・観測テナント数・昇格状態。識別子なし）、segment_priors（intent/デバイス/業界/AIO有無別のCTR基線・計測分布。version付き）、threshold_calibration_proposals。**生データ・URL・クエリ文字列・テナント識別子を持つ列を作らない**ことをスキーマレベルで保証し、集約バッチのみ書き込み可。検証: AC-NET-01/02。TODO(L3): k値・セグメント標本しきい値・集約ジョブ設計。
+テナントスキーマ外を、由来の異なる次の2領域へ分離する。
+
+- `keyword_assets`: 公共外部データとして独立取得でき、保存・再利用条件を満たすキーワード資産。`keywords`（normalized/value/language）、`keyword_locale_metrics`（location/device/provider/freshness）、`keyword_metric_series`（期間集約した検索量・競争性・CPC・市場圧力）、`keyword_edges`（related/synonym/question/entity/category/cluster）、`keyword_provenance`（source/license_or_terms/fetched_at/parser_version）を持てる。キーワード文字列は保持できるが、tenant_id、site_id、URL、顧客別順位・流入・CV、顧客との対応を持つ列は禁止する。
+- `global_signals`: 顧客由来信号の集約済み・k匿名派生物。`global_dictionary_candidates`（言語対・観測テナント数・昇格状態。識別子なし）、`segment_priors`（intent/デバイス/業界/AIO有無別のCTR基線・計測分布。version付き）、`threshold_calibration_proposals`を持つ。生のGSCクエリ文字列、URL、テナント識別子を持つ列を作らない。
+
+両領域ともアプリ・Executorから直接書き込めず、認可された公共データ取得パイプラインまたは集約バッチだけを書込主体とする。公共データと顧客由来データを同一provenanceへ混在させず、読み取りはホワイトリスト化されたversion付きViewを経由する。検証: AC-NET-01/02/04。TODO(L3): パーティション、圧縮、履歴粒度、k値、セグメント標本しきい値、集約ジョブ設計。
 
 ## 9. 受入との接続
 

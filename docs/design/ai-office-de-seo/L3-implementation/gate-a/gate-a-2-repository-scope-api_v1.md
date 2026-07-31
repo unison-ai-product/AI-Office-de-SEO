@@ -47,7 +47,7 @@ SiteDb.repo<T extends SiteTable>(t): ScopedRepo<T>
 ## 4. 例外経路（唯一）とグローバル信号ストア（配置決定）
 
 - ネットワーク集約パイプライン（REQ-PRODUCT-13/SEC-07の唯一例外）: 専用DBロール `aos_aggregator`。アプリ・Executor・APIプロセスから資格情報到達不能（別サービス/別デプロイ）。読み取りは横断可（専用ポリシー付与）、**書き込み先は `global_signals` スキーマのみ**、全実行監査。
-- **決定**: グローバル信号ストアは同一クラスタ内の**別スキーマ `global_signals`**（テナント列なし・生データ/URL/クエリ文字列/識別子の列を作らない。DDL §8）。アプリからはread-onlyビュー（ホワイトリスト, REQ-PACK-06）経由のみ。将来の物理分離はこの境界で切り出せる。
+- **決定**: 共有領域は同一クラスタ内の別スキーマ `keyword_assets` と `global_signals` に分離する（DDL §8）。`keyword_assets` は公共外部データとしてprovenanceと再利用条件を持つキーワード文字列を保持できるが、テナント列・URL・顧客実績・顧客対応は禁止する。`global_signals` は顧客由来のk匿名派生物だけを保持し、生GSCクエリ文字列・URL・識別子の列を作らない。アプリからはread-onlyビュー（ホワイトリスト, REQ-PACK-06）経由のみ。将来の物理分離はこの境界で切り出せる。
 - 共有観測キャッシュ: キースペース `shared_obs:{provider}:{kind}:{locale}:{kw_hash}`。書き込みは取得パイプラインロールのみ、アプリはread-only（AC-NET-04）。
 
 ## 5. 負のテスト（受入に直結・実装と同時に作成）
