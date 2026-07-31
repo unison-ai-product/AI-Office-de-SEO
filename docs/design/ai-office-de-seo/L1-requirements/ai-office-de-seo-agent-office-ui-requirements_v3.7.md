@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO Agent Office UI・2軸要求 v3.7
 
+## 分類別正本への移行
+
+画面操作と状態は `categories/screen-operation-requirements_v1.md`、視覚表現・Agent Office体験は `categories/design-experience-requirements_v1.md`、性能は `categories/non-functional-requirements_v1.md` を現在の正本とする。本書の `REQ-AOUI-*` は画面固有の詳細・資産参照として維持し、同じ判断を再定義しない。
+
 （正本: 旧 agent-office-information-architecture / ui-two-axis と UI Assets Bundle v3.7 を移植）
 
 ## 1. 2つのUIモード  ［REQ-AOUI-01］

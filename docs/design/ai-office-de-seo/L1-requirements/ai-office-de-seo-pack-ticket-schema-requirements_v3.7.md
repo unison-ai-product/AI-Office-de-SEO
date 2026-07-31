@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO Pack / Ticket / Schema要求 v3.7
 
+## 分類別正本への移行
+
+業務Workflowは `categories/business-requirements_v1.md`、判定・状態は `categories/logic-requirements_v1.md`、正本データは `categories/data-requirements_v1.md`、job・schema・version境界は `categories/technical-architecture-requirements_v1.md` を現在の正本とする。本書の `REQ-PACK-*` はPack・Ticket・Schema固有詳細として維持する。
+
 ## 1. 分離原則  ［REQ-PACK-01］
 
 - Ticket = 作業命令

@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO ユーザー行動要件
 
+## 分類別正本への移行
+
+SEO業務Lifecycleと完了条件は `categories/business-requirements_v1.md`、画面操作は `categories/screen-operation-requirements_v1.md`、体験表現は `categories/design-experience-requirements_v1.md` を現在の正本とする。本書の `REQ-UJ-*` は画面間Journeyの詳細として維持し、新機能・判定の正本にはしない。
+
 ユーザー（および開発管理者）が「何を、どの画面列で、どう成し遂げるか」を要件として固定する。画面台帳（AOS-L3-SCREEN-INVENTORY / ADMIN-SCREEN-INVENTORY）が「点」の要求、本書が「線」の要求であり、画面遷移図（AOS-L3-SCREEN-FLOW）は本書から導出する。各ステップは画面ID（S1〜S7 / W1〜W10 / ADM-S1〜S12）と既存要求を参照し、本書は新機能を発明しない。
 
 ## 1. 行動原則  ［REQ-UJ-01］

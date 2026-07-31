@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO キーワード・GSC・記事マップ要求 v3.7
 
+## 分類別正本への移行
+
+動的Recommendationの判定正本は `logic/keyword-dynamic-recommendation-logic-requirements_v1.md` と `categories/logic-requirements_v1.md`、保持は `categories/data-requirements_v1.md`、GSC契約は `categories/integration-requirements_v1.md` を現在の正本とする。本書の `REQ-KGA-*` はキーワード・GSC・記事Mapの詳細要求として維持する。
+
 ## 1. 接続思想  ［REQ-KGA-01］
 
 AI Office de SEOは、登録キーワード、GSCクエリ、記事URLを接続する。

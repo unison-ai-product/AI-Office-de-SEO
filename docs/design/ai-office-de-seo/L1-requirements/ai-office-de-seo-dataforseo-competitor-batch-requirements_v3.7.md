@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO 外部情報源・競合構造・分散バッチ要求 v3.7
 
+## 分類別正本への移行
+
+外部API契約は `categories/integration-requirements_v1.md`、取得値の判断は `categories/logic-requirements_v1.md`、保持は `categories/data-requirements_v1.md`、取得原価は `categories/cost-requirements_v1.md` を現在の正本とする。本書の `REQ-SRC-*` 等はProvider固有・batch固有の詳細として維持する。
+
 ## 1. 外部情報源  ［REQ-SRC-01］
 
 外部情報源はSource Packとして扱う。外部取得結果をそのまま本文生成へ流さず、抽象化してResearch / Outlineへ渡す。

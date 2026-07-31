@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO WordPress・オートメーション・投稿形式要求 v3.7
 
+## 分類別正本への移行
+
+WordPress・CMS契約、Compatibility Matrix、縮退順序は `categories/integration-requirements_v1.md`、出力・自動投稿判定は `categories/logic-requirements_v1.md`、操作表示は `categories/screen-operation-requirements_v1.md`、Adapter実装境界は `categories/technical-architecture-requirements_v1.md` を現在の正本とする。本書の `REQ-WPA-*` はWordPress固有詳細として維持し、互換性・縮退の横断判断は `REQ-INT-05` を優先する。
+
 ## 1. WP連携の位置づけ  ［REQ-WPA-01］
 
 WP連携は、ユーザー向け第一階層では「オートメーション」配下に置く。

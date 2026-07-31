@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO プロダクト要求 v3.7
 
+## 分類別正本への移行
+
+製品横断要求は内容に応じて `categories/business-requirements_v1.md`、`categories/customer-organization-governance-requirements_v1.md`、`categories/security-access-requirements_v1.md`、`categories/data-requirements_v1.md`、`categories/billing-accounting-requirements_v1.md` へ移行する。本書の `REQ-PRODUCT-*` は未分解の製品詳細として有効であり、分類別正本へ移行済みの判断は移行先を優先する。
+
 ## 1. 基本要求  ［REQ-PRODUCT-01］
 
 AI Office de SEOは、マルチテナント、マルチユーザー、マルチアカウント、マルチサイトに対応する。

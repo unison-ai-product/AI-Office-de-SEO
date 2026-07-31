@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO 画面・UI要求 v3.7
 
+## 分類別正本への移行
+
+画面・操作は `categories/screen-operation-requirements_v1.md`、情報理解・文言・アクセシビリティは `categories/design-experience-requirements_v1.md` を現在の正本とする。本書の `REQ-NAV-*` はNavigation固有の詳細として維持し、同じ状態・判定を再定義しない。
+
 ## 1. ユーザー向け第一階層  ［REQ-NAV-01］
 
 ユーザー向けGlobal Sidebarは、以下に制限する。

@@ -56,12 +56,16 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 技術方針と詳細設計を分離する: L1技術要求は全実装が守る制約、L2/L3は具体的な構成・API・テーブル・採用技術を正本にする。
 - 既存v3.7受入条件は `AC-{領域}-{番号}`、分類別L1正本の受入条件は `AC-L1-{領域}-{番号}` を安定IDとする。世代を示さないIDを分類別正本へ新設しない。
 - 受入条件は各分類の要求IDへ接続し、横断一覧を `ai-office-de-seo-acceptance-trace_v3.7.md` に置く。分類別正本のAC追加・変更時は同一変更で横断一覧を更新し、CIで欠落・重複・参照切れを検査する。
+- REQとACは1対1を必須としない。1要求を境界値・正常系・異常系の複数ACで検証する場合は、各ACの `検証` が同じREQを明示し、番号一致だけで対応を推測しない。
 
 ## 4. 詳細ロジック文書
 
 | 対象 | 文書 | 状態 |
 |---|---|---|
 | キーワード動的レコメンド | `logic/keyword-dynamic-recommendation-logic-requirements_v1.md` | 初版 |
+| Article Summary抽出・不足判定 | `logic/article-summary-completeness-logic-requirements_v1.md` | 未起票 |
+| Query Drift・カニバリ・カバー率 | `logic/keyword-portfolio-diagnostics-logic-requirements_v1.md` | 未起票 |
+| 品質ゲート・Repair・Routing | `logic/content-quality-repair-routing-logic-requirements_v1.md` | 未起票 |
 
 ## 5. 横断監査
 

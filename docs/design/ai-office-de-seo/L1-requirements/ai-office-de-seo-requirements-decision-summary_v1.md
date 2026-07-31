@@ -185,6 +185,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 次は要求の欠落ではなく、今後の判断または設計較正が必要な項目である。
 
 1. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
+   - 計測方法: 品質別Preflight見積、実績credit、Provider原価、週次利用率、追加購入率、backup使用量、復元件数を商品・tenant・Site単位で集計する。
+   - 設定箇所: `REQ-BILLING-01` のPrice Catalog、`REQ-BILLING-03` のcredit lot・利用枠、`REQ-COST-04/05` の見積・実績、Plan Configuration。
+   - 確定時期: 価格表公開前に初期値を承認し、β運用の実績較正後、一般販売開始前に販売versionを固定する。
 
 ## 16. 監査上の注意
 

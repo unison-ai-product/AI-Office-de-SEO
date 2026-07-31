@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO エージェントランタイム要求 v3.7
 
+## 分類別正本への移行
+
+SEO業務Workflowは `categories/business-requirements_v1.md`、判定・状態遷移は `categories/logic-requirements_v1.md`、実行原価は `categories/cost-requirements_v1.md`、job・Executor境界は `categories/technical-architecture-requirements_v1.md` を現在の正本とする。本書の `REQ-AGENT-*` はAgent実行詳細として有効であり、分類別正本と重なる横断判断は移行先を優先する。
+
 ## 1. 基本思想  ［REQ-AGENT-01］
 
 新規記事とリライトは、固定プロンプト一発生成ではなく、Research / Outlineを正本とするAgentic Workflowで実行する。

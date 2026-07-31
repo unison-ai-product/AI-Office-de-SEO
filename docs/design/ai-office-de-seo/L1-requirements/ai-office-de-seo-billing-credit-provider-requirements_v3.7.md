@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO 請求・クレジット・AI Provider要求 v3.7
 
+## 分類別正本への移行
+
+商品、契約、credit lot、ledger、Stripe、refundは `categories/billing-accounting-requirements_v1.md`、Provider原価は `categories/cost-requirements_v1.md`、外部Provider契約は `categories/integration-requirements_v1.md` を現在の正本とする。本書の `REQ-BILL-*` は既存詳細と移行未完項目として維持し、金銭整合の横断判断は課金・会計要求を優先する。
+
 ## 1. 課金  ［REQ-BILL-01］
 
 決済はStripeを前提にする。
