@@ -79,6 +79,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-KGA-09: 内部リンクのアンカーが過剰最適化されず、1記事の主アンカーテーマ固定でカニバリを抑制し、internal_link_qa・WPスロットへ接続される。 ｜ 検証: REQ-KGA-09, REQ-PACK-09, REQ-WPA-02
 - [ ] AC-KGA-10: トピックのグルーピングが、網羅・キーワード配分・内部リンク候補の内部管理に用いられ、ランキング機構として主張されず、ピラー/オーソリティ等の業界用語をユーザーUIに出さない。 ｜ 検証: REQ-KGA-10, REQ-KGA-07
 - [ ] AC-KGA-11: GSC取り込みが増分日次・次元スコープ・優先度で設計され、全次元総当たり/全期間一括取得をしない。 ｜ 検証: REQ-KGA-11
+- [ ] AC-KGA-11B: GSC速報値と確定値が分離され、速報値だけで施策評価・学習・月次配分を確定せず、確定値への置換後に再判定される。大規模SiteのBulk Exportは事前集約され、生テーブルを画面から都度走査しない。 ｜ 検証: REQ-KGA-11
 - [ ] AC-KGA-12: 匿名化クエリ（クエリ行合計＜総合計）と上位5万/日の切り捨てを織り込み、欠損を「流入ゼロ」と誤判定せず明示する。 ｜ 検証: REQ-KGA-11, REQ-KGA-05, REQ-KGA-06
 - [ ] AC-KGA-13: 大規模サイト向けにBigQuery Bulk Exportまたはサブプロパティ分割のスケール手段を持ち、クォータ内で夜間バッチ取得する。 ｜ 検証: REQ-KGA-11, REQ-SEC-06
 - [ ] AC-KGA-17: キーワード属性（intent型・ターゲット適合・業界適合・YMYL近接）が辞書・SERP構成・GSC共起から決定論的に付与され（LLM不使用・追加外部取得なし）、ターゲット/リテラシー/業界フィルターとターゲット軸×intentギャップマトリクスが機能し、辞書はCatalogとして版固定・管理画面編集される。 ｜ 検証: REQ-KGA-13, REQ-KGA-08, REQ-NAV-04, REQ-ADM-10
@@ -653,6 +654,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-KRL-14: 実績不足時は複数の業界／業種priorとユーザー指定の横断軸を使用し、Site実績の蓄積に応じてSite固有補正の比重を高められる。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-15: 業界の優先順とSite実績等から配分比率を算出し、未設定時は非保証の業界推定を行い、順位悪化リスクがあるSite固有補正を承認待ちへ切り替えられる。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-16: ユーザー修正分類を正本・較正データとして使用し、手動／自動の業界優先方式を選択でき、分類変更時は自動予約の未実行項目だけを再検証できる。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-17: 市場価値とは別に記事成立性が評価され、想定読者、Site目的、独自材料、読後目的または既存情報との差分が不足する候補を自動生成へ送らず、追加入力依頼または観測へ振り分けられる。 ｜ 検証: REQ-KRL-02, REQ-KRL-06, REQ-KRL-07 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 
 ### Article Summary抽出・完全性
 

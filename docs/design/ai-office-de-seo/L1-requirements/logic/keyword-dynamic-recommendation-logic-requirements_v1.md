@@ -43,7 +43,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### 2.3 補助入力
 
-`target_fit / industry_fit / freshness / cost_estimate / execution_risk / content_dependency / cooldown / summary_coverage / assignment_state / effect_measurement_state`。
+`target_fit / industry_fit / freshness / cost_estimate / execution_risk / content_dependency / content_feasibility / cooldown / summary_coverage / assignment_state / effect_measurement_state`。
+
+`content_feasibility`は、Siteの主目的と想定読者への適合、商品・サービス・一次情報・実務知識等の利用可能な独自材料、読了後に達成させる目的、既存上位との差分、単純要約ではない付加価値を記事として成立させられる度合いとする。材料不足を検索量やLLM生成能力で補ったことにせず、不足項目とユーザーへ依頼する入力を返す。
 
 ## 3. 前処理  ［REQ-KRL-03］
 
@@ -83,7 +85,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 初期算式:
 
-`base = strategic_need × market_realizability × target_fit × industry_fit`
+`base = strategic_need × market_realizability × target_fit × industry_fit × content_feasibility`
 
 `dynamic_priority = clamp(base × freshness_adjustment + dependency_bonus - cost_penalty - risk_penalty, 0, 1)`
 
@@ -107,6 +109,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 | 条件 | 第一候補 |
 |---|---|
 | 未充足かつ既存担当なし | `create_new` |
+| 市場価値はあるが記事成立性が不足 | `request_input` または `observe` |
 | 担当記事あり・不足/意図ずれ/鮮度低下 | `rewrite` |
 | 複数記事が同一意図を競合 | `merge_or_canonicalize` |
 | 内容充足・リンク不足 | `internal_link` |
@@ -190,3 +193,4 @@ Site固有補正は既存割当を直接変更しない範囲で自動適用す�
 - [ ] AC-L1-KRL-14: 実績不足時は複数の業界／業種priorとユーザー指定の横断軸を使用し、Site実績の蓄積に応じてSite固有補正の比重を高められる。
 - [ ] AC-L1-KRL-15: 業界の優先順とSite実績等から配分比率を算出し、未設定時は非保証の業界推定を行い、順位悪化リスクがあるSite固有補正を承認待ちへ切り替えられる。
 - [ ] AC-L1-KRL-16: ユーザー修正分類を正本・較正データとして使用し、手動／自動の業界優先方式を選択でき、分類変更時は自動予約の未実行項目だけを再検証できる。
+- [ ] AC-L1-KRL-17: 市場価値とは別に記事成立性が評価され、想定読者、Site目的、独自材料、読後目的または既存情報との差分が不足する候補を自動生成へ送らず、追加入力依頼または観測へ振り分けられる。
