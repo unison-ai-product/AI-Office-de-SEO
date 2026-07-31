@@ -176,7 +176,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 品質段階は安定した商品コードで管理し、実Provider名・モデル名を商品IDに固定しない。`GPT Luna → GPT tera → Sonnet → Opus` は当初想定した品質順の表示ラベル／routing aliasとして保持できるが、各aliasから実Provider、model、snapshot、調査量、検査、Repair、fallbackへの対応をModel Registryで版管理する。
 - 将来の原価率改善に向け、Kimi、Grok、Qwen系等の外部APIおよび自己管理・ローカルLLMを共通Model Capability Contractへ接続できる技術互換性を維持する。routeは必要能力、品質評価、latency、実効原価から選び、特定ProviderやOpenAI互換APIだけへ中核Workflowを固定しない。
 - 顧客請求はappend-only ledgerを正本とし、credit lot、reserve、commit、release、失効、繰越、refund、manual adjustmentを追跡する。障害要求が返還可否を判断し、課金要求が元取引を参照して返還を記帳する。
-- 個人・小規模利用向けは最低品質・最小creditを含む月額39,800円（税別）をEntry Planの企画基準値とする。一般消費者向け公開画面では税抜価格を主表示できるが、同一領域へ税込43,780円を明瞭に併記し、支払総額を誤認させない。標準記事1件当たり原価は約350円を仮説とし、実装・β実測後に記事枠と販売価格を確定する。
+- 初期価格階段はEntry 39,800円、Standard 98,000円、Prime 198,000円、Enterprise 398,000円〜（月額・税別）とする。Prime以上は問い合わせ・個別提案とし、EntryとStandardはセルフ申込を基本とする。公開画面では各税込総額を同一領域へ明瞭に併記する。
+- Entryは1か月単位、Standard以上は最低6か月契約とする。12か月契約はシステム利用料を10%割引し、追加credit、初期設定、導入支援、コンサル、オプション、従量利用は対象外とする。
 - 価格は汎用生成AIのtoken原価ではなく、SEO戦略、制作・リライト、WordPress入稿、計測、評価、再推薦までの代行業務価値を基準に設計する。汎用AI、SEO分析ツール、記事制作代行、SEO運用代行との担当範囲を比較可能にする。
 - 月額付与creditは請求期間末、追加購入creditは購入から180日で失効する初期方針とする。追加購入creditは販売開始前に資金決済法上の取扱いを法務・決済確認する。
 - Entry Planでは上位機能を完全に隠さず、価値が分かるぼかし・Preview・ロック表示と解放条件を置く。実行可否はサーバー側Entitlementで強制する。
