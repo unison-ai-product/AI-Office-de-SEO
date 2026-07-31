@@ -11,6 +11,14 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO キーワード・GSC・記事マップ要求 v3.7
 
+## 0. 市場とシェアの基本モデル
+
+- Keyword Market: キーワードと同一SERP／intent clusterは、ユーザー需要の市場構造を表す。検索量、意図、ファネル、季節性、地域、AIO・広告面、競争性、traffic potential等は市場側の属性である。
+- Observed Query Share: GSC Queryは、市場で実際に発生し対象Siteが表示・clickを得た需要の観測である。匿名化・切り捨て・未獲得需要があるため、GSC Query集合を市場全体とはみなさない。
+- Article Share: 記事はcluster内のQuery群に対して順位、表示、click、CVを獲得する供給資産である。記事⇔Query⇔Keyword clusterの対応から、獲得、未獲得、分散、重複、保護、低下を評価する。
+- 分離原則: `market_size/value` と `site_share/article_share` を別の値として保持する。市場が大きいことを自Siteが獲得できていることと解釈せず、現在シェアが小さいことだけを失敗とも解釈しない。
+- シェア表現: 自SiteのGSC実測から算出する値は `observed_site_share`、競合順位・推定trafficから補う値は `estimated_search_share` と明記し、推定値を実測値として表示しない。
+
 ## 分類別正本への移行
 
 動的Recommendationの判定正本は `logic/keyword-dynamic-recommendation-logic-requirements_v1.md` と `categories/logic-requirements_v1.md`、保持は `categories/data-requirements_v1.md`、GSC契約は `categories/integration-requirements_v1.md` を現在の正本とする。本書の `REQ-KGA-*` はキーワード・GSC・記事Mapの詳細要求として維持する。

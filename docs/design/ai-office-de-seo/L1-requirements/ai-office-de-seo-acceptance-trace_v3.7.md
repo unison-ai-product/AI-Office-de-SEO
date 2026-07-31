@@ -660,6 +660,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-KRL-20: clusterが保護、好調、改善余地、競合劣後、重要未獲得、競合未対応差分、自Site固有、新規獲得、低下、消失、カニバリ、未割当、index障害、監視へ分類され、Content Gapと複数URLを無条件で新規記事・カニバリにしない。 ｜ 検証: REQ-KRL-07 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-21: traffic potentialが範囲と不確実性で示され、自Site固有難易度が被link、トピック信用、content、意図、記事type、構造、SERP、市場圧力、過去実績へ分解される。 ｜ 検証: REQ-KRL-02, REQ-KRL-06 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-22: 検索競合がcluster実績から動的分類され、Recommendationが対象cluster、根拠、役割、記事type、既存記事、内部link、順序、credit、不足入力、実行可能状態を一体で返す。 ｜ 検証: REQ-KRL-08 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-23: キーワード市場の規模・価値と、Query・記事による自Siteの獲得シェアが別成分で保存され、GSC実測シェアと競合データ由来の推定シェアが区別される。 ｜ 検証: REQ-KRL-01, REQ-KRL-02, REQ-KRL-08 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 
 ### Article Summary抽出・完全性
 

@@ -15,6 +15,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 キーワードの優先順位を検索ボリュームだけで固定せず、市場影響とサイト戦略上の必要性を分離して計算し、新規記事、リライト、統合、内部リンク、保護、観測、見送りを動的にレコメンドする。
 
+キーワード／clusterを需要マーケット、Queryを発生需要の観測、記事を需要シェアを獲得する供給資産として扱う。市場の規模・価値・競争性を計算する層と、記事／Queryの順位・表示・click・CVから自Siteの獲得シェアを計算する層を分離し、最後に施策判断で接続する。
+
 ロジックはLLMの自由判断にしない。観測値、ArticleSummary、Keyword Map、GSC、CV、サイトトポロジー、設定レジストリを入力とする決定論ロジックとする。
 
 ## 2. 入力契約  ［REQ-KRL-02］
@@ -41,7 +43,18 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 | `traffic_need` | 実現可能な検索流入の増加に必要 | 0〜1 |
 | `conversion_need` | CV導線・商用意図・ファネル欠損の解消に必要 | 0〜1 |
 
-### 2.3 補助入力
+### 2.3 獲得シェア
+
+| キー | 定義 | 範囲 |
+|---|---|---|
+| `observed_site_share` | GSCで観測できる対象clusterの表示・clickに対する自Site記事の獲得構成 | 0〜1 / unknown |
+| `article_share_distribution` | 対象clusterの獲得が各記事へどう分配されているか | article別構成比 / unknown |
+| `estimated_search_share` | SERP順位、推定CTR、競合推定trafficから補助推定する検索面シェア | 0〜1 / unknown |
+| `share_trend` | 公開・更新・市場変化を分離した獲得シェアの時系列変化 | -1〜1 / unknown |
+
+GSCの匿名化・上位行切り捨てと未獲得Queryにより、`observed_site_share`は市場全体の完全な占有率ではない。`estimated_search_share`は推定であることを名称、表示、confidenceで区別する。
+
+### 2.4 補助入力
 
 `target_fit / industry_fit / freshness / cost_estimate / execution_risk / content_dependency / content_feasibility / site_attainability / traffic_potential_range / competitor_cohort / market_state / cooldown / summary_coverage / assignment_state / effect_measurement_state`。
 
@@ -219,3 +232,4 @@ Site固有補正は既存割当を直接変更しない範囲で自動適用す�
 - [ ] AC-L1-KRL-20: clusterが保護、好調、改善余地、競合劣後、重要未獲得、競合未対応差分、自Site固有、新規獲得、低下、消失、カニバリ、未割当、index障害、監視へ分類され、Content Gapと複数URLを無条件で新規記事・カニバリにしない。
 - [ ] AC-L1-KRL-21: traffic potentialが範囲と不確実性で示され、自Site固有難易度が被link、トピック信用、content、意図、記事type、構造、SERP、市場圧力、過去実績へ分解される。
 - [ ] AC-L1-KRL-22: 検索競合がcluster実績から動的分類され、Recommendationが対象cluster、根拠、役割、記事type、既存記事、内部link、順序、credit、不足入力、実行可能状態を一体で返す。
+- [ ] AC-L1-KRL-23: キーワード市場の規模・価値と、Query・記事による自Siteの獲得シェアが別成分で保存され、GSC実測シェアと競合データ由来の推定シェアが区別される。
