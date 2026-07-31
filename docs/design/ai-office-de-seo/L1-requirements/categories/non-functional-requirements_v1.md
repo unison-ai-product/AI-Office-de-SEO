@@ -91,6 +91,22 @@ API・イベント・DB変更は後方互換期間とロールバックを持ち
 
 本番配置はAWSを前提とし、AWS Well-Architected Frameworkの運用、信頼性、性能効率、コスト最適化を定期確認する。観測はCloudWatchを中心にmetrics、logs、tracesを統合し、OpenTelemetry互換のinstrumentationを採用する。静的配信とcache可能な読取はCloudFront等のedge cacheを利用し、API・画面originへの負荷とlatencyを抑える。非同期処理はqueueとdead-letter queueで隔離し、滞留、再試行、失敗理由、redriveを観測可能にする。
 
+### REQ-NFR-15 データ量・処理量Capacity
+
+プランと実行基盤の容量は記事生成本数だけで表さず、少なくとも次の独立したCapacity Dimensionを持つ。
+
+- 管理規模: Site数、公開・管理記事数、キーワード・Query数、ユーザー数
+- 保存量: Article Summary、施策・順位・CV履歴、監査、画像、バックアップ、索引、object storage
+- 取込量: GSC行数、WordPress同期件数、外部検索・市場データ、計測event
+- 計算量: 差分解析、推薦再計算、集計、embedding、AI job、画像job
+- 瞬間負荷: 同時job、queue投入率、API request、DB走査行数、外部Provider rate
+
+各Dimensionは使用量、soft limit、hard limit、期間、集計単位、超過時動作をversion付き設定として持つ。単一の不透明な総合点だけへ集約せず、DB、worker、storage、network、Providerのどこが制約かを判別可能にする。追加creditはAI実行可能量を増やしても、同時実行、DB走査、外部rate等の安全上限を解除しない。
+
+soft limitでは予測到達日と削減・Plan変更候補を通知する。hard limitでは既存データを削除せず、新規取込・低優先再計算・生成jobを対象Dimensionごとに遅延または保留する。ロールアップ、期限削除、archive、増枠、Plan変更後に安全に再開できるようにする。
+
+負荷試験は基準Site、上限近傍Site、急増Site、複数tenant同時実行を含み、特定tenantの大量データまたは再計算が他tenantの対話API、公開、課金、権限操作を劣化させないことを確認する。初期上限値は実装・β測定で決定し、CPU、memory、DB latency・IO、queue滞留、storage増加、egress、Provider rate、原価から較正する。
+
 ## 受入条件
 
 - [ ] AC-L1-NFR-01: 推薦再計算中でも画面シェルと既存データを操作できる。
@@ -107,3 +123,4 @@ API・イベント・DB変更は後方互換期間とロールバックを持ち
 - [ ] AC-L1-NFR-12: 性能予算の重大回帰がリリースゲートで検出される。
 - [ ] AC-L1-NFR-13: 相関IDから対象顧客・Site・記事・ジョブ・stage・外部依存の原因候補へ到達でき、MTTD/MTTA/MTTI/MTTRを計測できる。
 - [ ] AC-L1-NFR-14: AWS上でmetrics、logs、traces、queue滞留、DLQ、edge cache hit率をdashboardとalertから確認できる。
+- [ ] AC-L1-NFR-15: 管理規模・保存量・取込量・計算量・瞬間負荷をDimension別に計測・制限し、上限近傍tenantの処理中も他tenantの対話・公開・課金経路を維持できる。

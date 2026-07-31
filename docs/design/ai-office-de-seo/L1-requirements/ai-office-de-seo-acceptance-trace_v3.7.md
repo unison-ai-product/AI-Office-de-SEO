@@ -524,6 +524,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-NFR-12: 性能予算の重大回帰がリリースゲートで検出される。 ｜ 検証: REQ-NFR-12 ｜ 正本: `categories/non-functional-requirements_v1.md`
 - [ ] AC-L1-NFR-13: 相関IDから対象顧客・Site・記事・ジョブ・stage・外部依存の原因候補へ到達でき、MTTD/MTTA/MTTI/MTTRを計測できる。 ｜ 検証: REQ-NFR-13 ｜ 正本: `categories/non-functional-requirements_v1.md`
 - [ ] AC-L1-NFR-14: AWS上でmetrics、logs、traces、queue滞留、DLQ、edge cache hit率をdashboardとalertから確認できる。 ｜ 検証: REQ-NFR-14 ｜ 正本: `categories/non-functional-requirements_v1.md`
+- [ ] AC-L1-NFR-15: 管理規模・保存量・取込量・計算量・瞬間負荷をDimension別に計測・制限し、上限近傍tenantの処理中も他tenantの対話・公開・課金経路を維持できる。 ｜ 検証: REQ-NFR-15 ｜ 正本: `categories/non-functional-requirements_v1.md`
 
 ### platform-administration-control-requirements_v1
 

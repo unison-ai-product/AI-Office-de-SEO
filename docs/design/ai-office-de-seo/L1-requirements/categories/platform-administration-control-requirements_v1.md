@@ -90,7 +90,7 @@ Kill Switch、read-onlyモード、機能別停止、キュー保留、公開停
 
 ### REQ-PAC-14 Plan Configuration
 
-プラン名、価格参照、契約期間、年契割引、申込経路、Site数、ユーザー数、月間・週次credit、品質段階、利用可能機能、自動投稿、バックアップ容量・保持期間、予測、監査、外部連携、サポート、追加購入可否を、コード変更なしにversion付きPlan Configurationとして変更できなければならない。
+プラン名、価格参照、契約期間、年契割引、申込経路、Site数、ユーザー数、月間・週次credit、品質段階、利用可能機能、自動投稿、バックアップ容量・保持期間、予測、監査、外部連携、サポート、追加購入可否、および `REQ-NFR-15` のCapacity Dimension別soft/hard limitを、コード変更なしにversion付きPlan Configurationとして変更できなければならない。
 
 変更は適用対象を新規契約、更新契約、指定契約、Customer Organization、Siteから選び、適用開始日と終了日を持つ。既存契約へ遡及適用せず、契約version、Price Catalog、Entitlement Snapshotを保持する。個別overrideは理由、承認者、期限を必須とし、標準Planへ戻る条件を持たせる。
 
