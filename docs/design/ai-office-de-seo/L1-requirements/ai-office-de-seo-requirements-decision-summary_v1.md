@@ -169,6 +169,17 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - cookie、全click自動取得、常時heartbeat、全DOM監視、heatmap、session replay、フォーム内容取得は初期対象外とする。
 - 高度計測は人員と運用余力を確保したリリース後のversion upで追加する。
 
+## 13.2 デザイン・Agent Office体験
+
+- 通常ビューを初回ログインと日常業務の標準画面とし、Recommendationの採否、承認、設定等の「選ぶ・決める」を行う。
+- Agent Officeは実行中Task、詳細情報、進捗、Loop、Knowledgeを確認し、「複数のAgentを働かせている」実感を与える体験面とする。
+- 既存モックのフロア、部屋、エレベーター、役割別Agent、ライブフィードを基線とし、ゲーム内のオフィスを訪れてNPCが自律的に働いているような立体表現と、Agentへ話しかける操作へ発展させる。
+- 3D表現は業務状態の正本にせず、標準3D、簡略3D、軽量2Dへ端末性能・通信・設定に応じて縮退しても同じ情報と操作を維持する。
+- Task、Recommendation、Keyword cluster、記事、計測、評価、学習、再推薦の関係を、内部ログではなく実entityに基づくLoop／Knowledge Graphとして表現する。
+- 初期リリースはdesktop標準とし、mobileでの全業務完結は対象外とする。後続versionで通知、チェック、簡易説明、修正指示を中心とするAgent Office Chatを提供する。
+
+正本: `categories/design-experience-requirements_v1.md`、`categories/screen-operation-requirements_v1.md`、`categories/non-functional-requirements_v1.md`
+
 ## 14. 課金・アップセル
 
 - プラン内利用上限と、超過分の追加クレジットを持つ。

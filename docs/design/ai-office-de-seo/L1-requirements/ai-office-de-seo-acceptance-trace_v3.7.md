@@ -446,6 +446,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。 ｜ 検証: REQ-DESIGN-06 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。 ｜ 検証: REQ-DESIGN-07 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。 ｜ 検証: REQ-DESIGN-08 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-09: 通常ビューで選択・承認を行い、Contextを維持してOfficeの該当Agent・Task・詳細を確認し、元の判断位置へ復帰できる。 ｜ 検証: REQ-DESIGN-09 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-10: Officeを標準3D、簡略3D、軽量2Dへ切り替えても、同じTask状態・詳細・会話・操作を利用できる。 ｜ 検証: REQ-DESIGN-10 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-11: Recommendationから制作・計測・評価・学習・次回Recommendationまでを実entityに基づくLoop／Knowledge Graphと一覧の両方で追跡できる。 ｜ 検証: REQ-DESIGN-11 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-12: 初期リリースがdesktop標準として成立し、後続mobile Chatへ通知・確認・説明・修正指示を追加してもdesktop業務の正本を分岐させない。 ｜ 検証: REQ-DESIGN-12 ｜ 正本: `categories/design-experience-requirements_v1.md`
 
 ### growth-upsell-requirements_v1
 
