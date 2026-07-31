@@ -21,11 +21,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - `Customer Organization`: 契約主体が管理するユーザー側組織。個人契約でも本人をOwnerとする組織を1つ持つ。
 - `Organization Unit`: 事業部、部門、チーム、ブランド等の組織ノード。
 - `Membership`: UserとCustomer Organizationの所属関係。
-- `Base Role Assignment`: 基本権限、Resource Scope、有効期間を組み合わせた権限付与。
-- `Permission Tag Assignment`: 業務能力を表す権限タグ、Resource Scope、有効期間を組み合わせた追加権限付与。
-- `Resource Scope`: 組織、配下組織、サイト、記事、機能等の操作対象範囲。
+- `Base Permission`: Owner、Admin、Memberの3種類から選ぶ基本権限。
+- `Operation Tag`: キーワード操作、ブランド操作、生成操作等の業務単位で変更能力を付与するタグ。
 
-基本構造は `Contract Account → Customer Organization Tree → Membership → Base Role Assignment + Permission Tag Assignment → Resource Scope → Permission` とする。契約関係、データ所有者、基本権限、業務能力を同一概念にまとめない。
+基本構造は `Contract Account → Customer Organization Tree → Membership（基本権限 + 業務タグ）` とする。アクセス対象は所属しているCustomer Organization、Organization Unit、Siteから決まり、権限タグごとに別のScope、継承、有効期間を設定しない。
 
 ## 3. 要求
 
@@ -35,7 +34,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### REQ-ORG-02 複数所属
 
-1人のUserは複数のCustomer Organization、Organization UnitおよびSiteへ所属でき、所属先ごとに異なるBase Role AssignmentとPermission Tag Assignmentを持たなければならない。主所属、兼務、外部委託、期間限定所属を区別する。
+1人のUserは複数のCustomer Organization、Organization UnitおよびSiteへ所属でき、所属先ごとに基本権限と業務タグを持てる。主所属、兼務、外部委託、期間限定所属はMembershipの状態として区別する。
 
 ### REQ-ORG-03 権限モデル
 
@@ -45,30 +44,28 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - `Owner`: 契約主体の最終管理者。契約、請求、Owner移譲、組織、Site、権限を管理できる。
 - `Admin`: 組織、Site、Membership、設定を管理できるが、Owner固有操作は実行できない。
-- `Member`: 付与されたScope内を閲覧できる。業務状態を変更する能力は権限タグで追加する。
+- `Member`: 所属先の情報を閲覧できる。業務状態を変更する能力は業務タグで追加する。
 
-Viewer、SEO Manager、Strategist、Editor、Approver、Analyst、Billing担当等を基本権限として増やさない。閲覧だけの利用者は権限タグを持たないMemberとして表現する。変更能力は、`keyword_strategy`、`recommendation_execute`、`content_create`、`content_rewrite`、`content_edit`、`quality_check`、`publish_approve`、`automation_manage`、`connection_manage`、`budget_use`、`billing_manage`、`analytics_view`、`data_export` 等の版管理された権限タグとして付与する。
+Viewer、SEO Manager、Strategist、Editor、Approver、Analyst、Billing担当等を基本権限として増やさない。閲覧だけの利用者は業務タグを持たないMemberとして表現する。変更能力は次の業務タグとして付与する。
 
-各Assignmentは基本権限または権限タグ、Resource Scope、有効開始・終了日時、付与者、理由を持つ。権限タグは単一Permissionまたは相互に関連する最小のPermission bundleへ解決し、名称だけで判定しない。顧客が独自タグを作成できる場合も、既存Permissionの組合せに限定し、新しいsystem Permissionを生成できない。
+- `キーワード操作`: キーワード調査、cluster、優先度、推薦方針の変更
+- `ブランド操作`: ブランド、商品・サービス、顧客、文体、装飾、画像Pattern等のSite表現設定
+- `生成操作`: 新規記事、リライト、画像等の生成・再生成
+- `公開操作`: WordPress下書き送信、承認、予約・公開、自動運用
+- `計測操作`: GSC、CV、計測設定、評価条件の変更
+- `接続操作`: WordPress、GSC、Webhook等の外部接続管理
+- `予算・課金操作`: 利用上限、追加credit、請求、契約変更
+- `組織管理操作`: Membership、基本権限、業務タグ、組織・Site所属の変更
 
-### REQ-ORG-04 権限継承と競合
+各タグは版管理されたPermission bundleへ解決するが、画面上は細かなPermissionを個別設定させない。タグの付与先はMembershipであり、そのMembershipがアクセスできる組織・Site全体へ適用する。タグごとのScope、継承、有効期間、競合規則、顧客独自タグ作成は初期要求に含めない。
 
-Base Role AssignmentおよびPermission Tag Assignmentごとに「配下Organization Unit・Siteへ継承する／このノードだけ」をユーザーが選択できなければならない。継承を既定で強制しない。個別付与、明示拒否、複数Assignmentが競合する場合の評価順を決定論として定義し、画面表示とAPI認可で同一の判定結果を使用する。基本権限、権限タグまたは上位所属を理由にテナント境界、安全不変条件、契約境界を越えてはならない。
+### REQ-ORG-04 所属境界
+
+ユーザーが操作できる範囲はMembershipで所属しているCustomer Organization、Organization Unit、Siteから決定する。基本権限と業務タグは所属範囲内だけで有効とし、別顧客、未所属Site、内部管理面へ継承しない。複数Membershipがある場合は、現在選択している組織・SiteのMembershipだけを認可へ使用する。
 
 ### REQ-ORG-05 業務操作権限
 
-少なくとも次の業務能力を権限タグとして個別に付与・取消できる。
-
-- キーワード戦略および目標の閲覧・編集
-- レコメンドの採用、却下、保留、バッチ採用
-- 記事作成・リライトの起動、編集、品質確認
-- WordPress下書き送信、予約投稿、公開承認
-- 自動公開、Kill Switch、サイト設定
-- GSC・WordPress等の外部接続
-- クレジット利用、予算変更、追加購入、契約変更
-- 分析、エージェントTask History、請求情報、顧客データエクスポート
-
-基本権限だけで、公開、課金変更、外部接続、データ出力、自動運用等の強い操作を暗黙許可しない。Owner固有操作を除く業務能力は権限タグとScopeから判定する。顧客が閲覧するTask Historyと、開発側の内部監査ログを分離する。顧客Permissionから内部監査ログ、trace、stack、秘密情報、他tenant・管理操作詳細へ到達できない。
+業務状態を変更する操作は、REQ-ORG-03の業務タグで制御する。Memberはタグなしでは閲覧だけとし、Adminは組織・Siteの管理、Ownerは契約主体の最終管理を基本権限として持つ。公開、課金、接続等はAdminまたはOwnerであることだけを理由に許可せず、対応する業務タグも確認する。顧客が閲覧するTask Historyと開発側の内部監査ログを分離し、顧客権限から内部監査ログ、trace、stack、秘密情報、他tenant・管理操作詳細へ到達できない。
 
 ### REQ-ORG-06 承認フロー
 
@@ -96,7 +93,7 @@ Contract Accountは法人または個人を契約主体として識別し、請�
 
 ### REQ-ORG-12 監査と棚卸し
 
-所属、基本権限、権限タグ、承認、代理操作、予算配賦の変更について、実行者、承認者、対象範囲、変更前後、有効期間、理由を監査記録へ残す。Customer OrganizationのOwnerは定期的な権限棚卸しを実施でき、期限切れ・未使用・過剰権限の候補を確認できる。
+所属、基本権限、業務タグ、承認、代理操作、予算配賦の変更について、実行者、承認者、対象、変更前後、理由を監査記録へ残す。Customer OrganizationのOwnerは権限棚卸しを実施でき、未使用・過剰な業務タグの候補を確認できる。
 
 ## 4. 接続要求
 
@@ -108,10 +105,10 @@ Contract Accountは法人または個人を契約主体として識別し、請�
 ## 5. 受入条件
 
 - [ ] AC-L1-ORG-01: 法人・個人のどちらも必須の契約組織を持ち、その配下に自由名称・自由階層の組織ノードとSiteを構成できる。
-- [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとに異なる基本権限、権限タグ、Scope、有効期間を持てる。
+- [ ] AC-L1-ORG-02: 同一ユーザーが所属先ごとにOwner／Admin／Memberの基本権限と業務タグを持てる。
 - [ ] AC-L1-ORG-03: UI非表示だけでなくAPI側で同一Permission判定が強制される。
-- [ ] AC-L1-ORG-04: 基本権限・権限タグごとに継承有無を選択でき、明示拒否・競合時の結果が再現可能である。
-- [ ] AC-L1-ORG-05: SEO担当・承認者等を基本権限へ増やさず、記事実行、公開、接続、課金、データ出力を権限タグで個別に制御できる。
+- [ ] AC-L1-ORG-04: 現在選択した組織・SiteのMembershipだけからアクセス範囲が決まり、別顧客・未所属Site・内部管理面へ権限が広がらない。
+- [ ] AC-L1-ORG-05: キーワード、ブランド、生成、公開、計測、接続、予算・課金、組織管理の業務タグで変更操作を制御できる。
 - [ ] AC-L1-ORG-06: 多段階承認、差し戻し、期限、代理承認が監査される。
 - [ ] AC-L1-ORG-07: 部門・Site予算の超過が実行前に停止または承認待ちになる。
 - [ ] AC-L1-ORG-08: 個人契約が本人Ownerの初期組織から法人契約と同じ機能を利用できる。
