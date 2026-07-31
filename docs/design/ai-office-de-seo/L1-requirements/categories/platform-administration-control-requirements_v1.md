@@ -96,6 +96,8 @@ Planは固定4行として実装せず、安定した `plan_key`、表示名、�
 
 変更は適用対象を新規契約、更新契約、指定契約、Customer Organization、Siteから選び、適用開始日と終了日を持つ。既存契約へ遡及適用せず、契約version、Price Catalog、Entitlement Snapshotを保持する。個別overrideは理由、承認者、期限を必須とし、標準Planへ戻る条件を持たせる。
 
+将来の内部アプリストアでは、拡張アプリをCatalog entityとしてdraft、検証、限定公開、一般公開、停止、販売終了、後継指定できる。app versionごとに対応するCore version、必要Capability、権限、外部接続、料金、対象Plan、地域、依存app、migration、rollback、Kill Switchを保持する。初期は自社開発アプリだけを対象とし、第三者出品、売上分配、公開SDK市場は別判断とする。
+
 公開前に差分、対象契約数、売上・粗利、利用可能機能、保存データ、実行中jobへの影響をPreviewし、Validate、承認、予約適用、Rollbackを行う。tenant分離、台帳不変性、サーバー側認可等の安全不変条件はPlan設定で解除できない。
 
 ### REQ-PAC-15 マスターテナント・Trial管理

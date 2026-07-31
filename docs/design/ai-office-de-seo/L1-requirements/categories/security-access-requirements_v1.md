@@ -70,6 +70,8 @@ OAuth token、Application Password、API key、Webhook secret、決済識別子�
 
 AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSandboxContext内で呼び出す。toolごとにread/write、resource種別、最大件数、本文一時取得、外部送信先をallowlist化し、Promptや生成物による権限拡張を許可しない。
 
+将来の拡張アプリも同じ境界に従い、Manifestで要求Permission、対象Site、外部送信先、取得データ、write operationを宣言する。インストール権限者は許可内容と費用を確認し、必要最小Scopeだけを付与する。アプリの購入、インストール、権限付与を同一操作として暗黙確定せず、権限追加・version更新でScopeが増える場合は再同意を要求する。
+
 ### REQ-ACCESS-11 監査・なりすまし表示
 
 認証、拒否、Role変更、秘密アクセス、step-up、代理アクセス、公開、課金、Kill Switch、設定変更をappend-only監査eventへ記録する。代理操作中はacting principalとcustomer contextを画面・API・監査で分離し、顧客本人の操作として記録しない。監査eventにも本文・秘密原文を含めない。
