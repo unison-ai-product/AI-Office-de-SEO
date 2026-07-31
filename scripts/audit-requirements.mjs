@@ -28,7 +28,7 @@ for (const file of allDocuments) {
   const text = fs.readFileSync(file, "utf8");
   const patterns = [
     /^#{2,6}\s+(REQ-[A-Z0-9-]+(?:\.\d+)?)\b/gm,
-    /^#{2,6}.*［(REQ-[A-Z0-9-]+(?:\.\d+)?)］\s*$/gm,
+    /^#{2,6}[^\r\n]*［(REQ-[A-Z0-9-]+(?:\.\d+)?)］[ \t]*$/gm,
   ];
   for (const pattern of patterns) {
     for (const match of text.matchAll(pattern)) {
@@ -65,7 +65,7 @@ const traceAcceptance = new Map();
 const coveredRequirements = new Set();
 const errors = [];
 const tracePattern =
-  /^- \[ \] (AC-L1-[A-Z0-9-]+): (.*?) ｜ 検証: (.*?) ｜ 正本: `([^`]+)`$/gm;
+  /^- \[ \] (AC-L1-[A-Z0-9-]+): ([^\r\n]*?) ｜ 検証: ([^\r\n]*?) ｜ 正本: `([^`\r\n]+)`$/gm;
 
 for (const match of traceText.matchAll(tracePattern)) {
   const [, id, text, rawRefs, canonicalPath] = match;
@@ -83,7 +83,7 @@ for (const match of traceText.matchAll(tracePattern)) {
 }
 
 for (const match of traceText.matchAll(
-  /^- \[ \] (AC-(?!L1-)[A-Z0-9-]+): .*? ｜ 検証: ([^｜\r\n]+)$/gm,
+  /^- \[ \] (AC-(?!L1-)[A-Z0-9-]+): [^\r\n]*? ｜ 検証: ([^｜\r\n]+)$/gm,
 )) {
   const [, id, rawRefs] = match;
   if (traceAcceptance.has(id)) fail(errors, `duplicate trace AC: ${id}`);
