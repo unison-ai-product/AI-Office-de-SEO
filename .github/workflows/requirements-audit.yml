@@ -2,11 +2,18 @@ name: Requirements Audit
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/**"
+      - "scripts/audit-requirements.mjs"
+      - ".github/workflows/requirements-audit.yml"
   pull_request:
     branches:
       - main
     paths:
-      - "docs/design/ai-office-de-seo/**"
+      - "docs/**"
       - "scripts/audit-requirements.mjs"
       - ".github/workflows/requirements-audit.yml"
 

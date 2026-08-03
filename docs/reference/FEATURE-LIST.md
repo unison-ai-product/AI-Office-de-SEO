@@ -1,6 +1,6 @@
 # AI Office de SEO 現行機能一覧
 
-この一覧は、分類別L1要求、詳細ロジック、Decision Summary、L2／L3契約から導出した製品機能の索引である。REQと受入条件の全数・coverageは本書へ重複転記せず、`ai-office-de-seo-acceptance-trace_v3.7.md`と`npm run audit:requirements`を正本とする。現在は443 REQを監査対象としている。
+この一覧は、分類別L1要求、詳細ロジック、Decision Summary、L2／L3契約から導出した製品機能の索引である。REQと受入条件の全数・coverageは本書へ重複転記せず、`ai-office-de-seo-acceptance-trace_v3.7.md`と`npm run audit:requirements`を正本とする。現在は445 REQを監査対象としている。
 
 ## 1. SEO業務Lifecycle
 
@@ -116,4 +116,3 @@
 - 初期機能として表示せず、対応済みsurfaceと構想を区別する。
 
 正本: Crawler／AI Visibility Logic、Open Items Register。
-
