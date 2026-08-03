@@ -84,6 +84,8 @@
 
 ## 6. 画面プロトを磨くために必要な再構成
 
+実プロトコード上の旧価格、旧Role、Office監視専用導線、Lifecycle未追随を含む画面別改修項目は`ai-office-de-seo-prototype-modernization-register_2026-08-03.md`を正本とする。
+
 ### 通常ビュー
 
 1. Dashboard: 判断待ち、月次計画、今週予定、Recommendation、完了・評価、利用量を優先順で表示。
