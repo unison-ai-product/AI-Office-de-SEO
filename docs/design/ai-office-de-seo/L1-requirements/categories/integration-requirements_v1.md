@@ -122,6 +122,14 @@ primaryの一時失敗だけで即時切替を反復せず、error分類、連�
 
 公開HTMLを通常取得できないSiteに対するHeadless Browser等の描画取得は、実測した負荷・成功率・費用から採用可否を判断する後続経路とし、初期の常用経路へ含めない。Wayback Machine等の外部Archiveは古い状態または欠落を含み得るため現在状態の正本・通常fallbackにせず、supportまたは復旧調査で必要な場合だけ補助資料として扱う。
 
+### REQ-INT-10 CMS Delivery
+
+Presentation Assembly完了後の生成成果とCMS送信処理を分離し、`schema.cms.delivery.v1`で成果保持、write Capability再診断、下書き／Media作成、外部反映確認、再送、持ち出しを追跡する。DeliveryはRecommendation、Intake、Workflow、Presentation Snapshot、Post Envelope、Connection Profile version、認可判断、idempotency key、correlationを保持し、生成完了をCMS送信成功として扱わない。
+
+状態は`prepared / connection_required / permission_required / delivering / draft_created / verification_pending / verified / failed_retryable / failed_terminal / carried_out / cancelled`とする。接続・権限不足または一時障害時は完成成果をTTL付き一時領域へ保持し、同じDelivery IDとidempotency keyで再開する。再接続や再試行を記事の再生成、追加credit消費または別下書き作成へ変換しない。
+
+CMS APIが成功を返しただけでは`verified`にせず、外部post参照、編集／Preview URL、反映hash、必要なMedia参照を確認する。検証不能は`verification_pending`または`failed_retryable`として再確認する。HTML／Markdown等の持ち出しは`carried_out`として履歴を維持するが、CMS下書き作成、公開または更新成功へ数えない。リライト／記事置換の`verified`後は別のPublication Decisionとユーザー承認へ進める。
+
 ## 受入条件
 
 - [ ] AC-L1-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。
@@ -133,3 +141,4 @@ primaryの一時失敗だけで即時切替を反復せず、error分類、連�
 - [ ] AC-L1-INT-07: 許可画像を安全に取得してGPT Image 2の生成・編集へ接続でき、画像工程の失敗を本文Workflowから分離できる。
 - [ ] AC-L1-INT-08: SEO／AIクローラーを共通契約で用途別に観測し、初期の外形診断と後続の検証済みserver／edge log実測を混同せず、client-side Trackerなしでも取得状態を判定できる。
 - [ ] AC-L1-INT-09: Siteごとに許可済みの複数Article読取り経路を共通Snapshotへ正規化し、完全性・鮮度・成功率・負荷・費用からprimary／standbyを選択して、差分対象だけを取得し、障害時にflappingなくfailoverできる。
+- [ ] AC-L1-INT-10: 生成完了とCMS Delivery成功を分離し、接続・権限・一時障害後も同一Deliveryとidempotency keyで再開して、再生成、二重credit、二重下書きを起こさず、外部反映確認後だけverifiedにできる。

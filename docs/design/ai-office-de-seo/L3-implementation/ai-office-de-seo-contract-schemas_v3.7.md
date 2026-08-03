@@ -431,7 +431,7 @@ Presentation Assembly完了後の成果保持、CMS write再診断、下書き�
 - 持ち出しは`carried_out`として履歴とRecommendation／Job相関を維持する。持ち出したことをCMS公開・更新成功として扱わない。
 - リライト／記事置換は`verified`後も`schema.publication.decision.v1`のユーザー承認を必須とする。新規記事は15記事条件とAutomation Policyへ従う。
 
-根拠: `REQ-LOGIC-03/08/09/10`、`REQ-INT-01/05/06/09`、`REQ-SCREEN-15/16`、`REQ-WPA-04/09/12`、画面遷移図§2。
+根拠: `REQ-INT-10`、`REQ-LOGIC-03/08/09/10`、`REQ-INT-01/05/06/09`、`REQ-SCREEN-15/16`、`REQ-WPA-04/09/12`、画面遷移図§2。
 
 ## 0.0.9 公開判定・承認Contract
 

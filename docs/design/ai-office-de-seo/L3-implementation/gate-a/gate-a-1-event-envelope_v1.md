@@ -141,7 +141,13 @@ updated_at: 2026-08-03
 | cms.read_route_selected | connection_profile_id, adapter_key, role, reason, policy_version | O,A | REQ-INT-09 |
 | cms.read_route_failed_over | connection_profile_id, from_adapter, to_adapter, error_class, cooldown_until | W,N,O,A | REQ-INT-09 |
 | cms.read_connection_required | connection_profile_id, failed_routes[], required_user_actions[] | W,N,O | REQ-INT-09 |
+| cms.delivery_prepared | cms_delivery_id, operation, presentation_snapshot_ref, post_envelope_ref, content_hash, connection_profile_version, idempotency_key, correlation_id | W,O | REQ-INT-10 |
+| cms.delivery_held | cms_delivery_id, state(connection_required/permission_required), reason_codes[], required_user_actions[], resume_from, retry_after? | W,N,O | REQ-INT-10 |
+| cms.delivery_resumed | cms_delivery_id, prior_state, resume_from, attempt_count, idempotency_key | W,O,A | REQ-INT-10 |
+| cms.delivery_failed | cms_delivery_id, failure_class, retryable, attempt_count, last_error_ref | W,N,O | REQ-INT-10 |
 | cms.write_verification_completed | publication_or_patch_ref, post_ref, status, resulting_hash?, verified_at | W,O,A | REQ-WPA-09/12 |
+| cms.delivery_verified | cms_delivery_id, external_post_refs[], resulting_hash, media_refs[], verified_at, evidence_ref | W,O,A | REQ-INT-10 |
+| cms.delivery_carried_out | cms_delivery_id, format, artifact_ref, expires_at, publication_success(false) | W,O,A | REQ-INT-10 |
 | cms.capacity_threshold_reached | connection_profile_id, dimension, usage, limit, forecast_at | W,N,O | REQ-BILLING-03 |
 | office.proposal_drafted | proposal_id, version, persona_key, intent_kind, target_ref, operation | W,O | REQ-AOUI-01/04 |
 | office.proposal_estimated | proposal_id, version, impact_ref, estimate_ref, availability | W,O | REQ-AOUI-01/04 |
@@ -199,7 +205,7 @@ updated_at: 2026-08-03
 | source.competitor_structure_extracted | keyword | O | REQ-SRC-03 |
 | source.fetch_throttled | provider, deferred_to | N(繰延), O | REQ-SRC-07 |
 | publish.envelope_sealed | post_refs | W,O | REQ-WPA-09 |
-| cms.draft_created | cms_job_ref, cms_adapter_key, external_post_refs[], edit_url?, preview_url?, resulting_hash, correlation_id | W,O | REQ-INT-05/06, REQ-WPA-04, REQ-SCREEN-15 |
+| cms.draft_created | cms_delivery_id, cms_adapter_key, external_post_refs[], edit_url?, preview_url?, resulting_hash, correlation_id | W,O | REQ-INT-05/06/10, REQ-WPA-04, REQ-SCREEN-15 |
 | publish.decision_recorded | publication_decision_id, operation, decision, reasons[], correlation_id | W,O,A | REQ-LOGIC-04/05 |
 | publish.scheduled | schedule_at | W,O | REQ-WPA-04 |
 | publish.approval_requested | requester, schedule_at? | N,O | REQ-WPA-04 |
