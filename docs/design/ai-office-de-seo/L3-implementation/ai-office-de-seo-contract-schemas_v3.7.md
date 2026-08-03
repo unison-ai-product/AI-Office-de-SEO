@@ -402,6 +402,37 @@ schema.image.generation_job.v1 {
 
 根拠: `REQ-BILLING-01〜16`、`REQ-NFR-15`、課金・Capacity画面接続マップ v1。
 
+## 0.0.8.1 CMS Delivery Contract
+
+Presentation Assembly完了後の成果保持、CMS write再診断、下書き作成、反映確認、再送または持ち出しを`schema.cms.delivery.v1`へ固定する。記事生成の完了とCMS送信成功を同じ状態にしない。
+
+```text
+{
+  cms_delivery_id, version, tenant_id, site_id,
+  workflow_ref, intake_ref?, recommendation_ref?, correlation_id,
+  operation(new_draft|rewrite_draft|article_replacement_draft|lightweight_patch|media_upload),
+  presentation_snapshot_ref, post_envelope_ref?, content_hash,
+  connection_profile_ref, connection_profile_version,
+  write_route_ref?, write_capability_ref?, authorization_decision_ref?,
+  idempotency_key,
+  state(prepared|connection_required|permission_required|delivering|draft_created|
+    verification_pending|verified|failed_retryable|failed_terminal|carried_out|cancelled),
+  hold{reason_codes[], required_user_actions[], resume_from?, retry_after?}?,
+  cms_result{external_post_refs[], edit_url?, preview_url?, media_refs[], resulting_hash?}?,
+  verification{state, checked_at?, evidence_ref?, error_class?}?,
+  carryout{format(html|markdown|json), artifact_ref, expires_at}?,
+  attempt_count, last_error_ref?, created_at, updated_at, completed_at?
+}
+```
+
+- `prepared`到達時点で生成成果は完成しており、接続・権限不足を生成失敗へ変換しない。
+- `connection_required / permission_required`ではPresentation SnapshotとPostEnvelopeをTTL付き一時領域へ保持し、再接続後に同じ`idempotency_key`で`resume_from`から再開する。再生成や二重creditを要求しない。
+- 下書き作成APIの成功だけで`verified`にせず、外部post参照、反映hash、必要なMedia参照を確認する。検証待ち・cache反映待ちと失敗を分ける。
+- 持ち出しは`carried_out`として履歴とRecommendation／Job相関を維持する。持ち出したことをCMS公開・更新成功として扱わない。
+- リライト／記事置換は`verified`後も`schema.publication.decision.v1`のユーザー承認を必須とする。新規記事は15記事条件とAutomation Policyへ従う。
+
+根拠: `REQ-LOGIC-03/08/09/10`、`REQ-INT-01/05/06/09`、`REQ-SCREEN-15/16`、`REQ-WPA-04/09/12`、画面遷移図§2。
+
 ## 0.0.9 公開判定・承認Contract
 
 CMS下書き以降の判定を`schema.publication.decision.v1`とする。

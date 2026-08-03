@@ -87,6 +87,7 @@ Agent Office会話は本文全文を業務正本へ保存せず、`office_conver
 根拠: REQ-WPA-02/04/08/09、REQ-AOUI-05、REQ-SEC-11。検証: AC-WPA-08, AC-AUTO-01/02, AC-AOUI-03。
 
 - `post_envelope_snapshots`は暗号化一時objectの`content_ref`、hash、schema、CMS capability snapshot、slot assignment、TTLだけを保持し、最終HTML／block全文をDBへ保存しない。CMS応答後は外部投稿ID、編集／Preview URL、Media参照、validation、反映確認だけを`publication_jobs`へ残す。
+- `cms_delivery_jobs`は`schema.cms.delivery.v1`に従い、Recommendation／Intake／Workflow／Presentation／PostEnvelope参照、operation、Connection Profile version、write route／Capability、Authorization Decision、idempotency key、delivery state、hold理由、再開点、attempt、CMS結果、verification、carryout artifact metadata、correlationを保持する。本文・HTML・block payloadは一時object参照だけとし、`connection_required`からの再開で別Job・別creditを作らない。既存`publication_jobs`は公開判定・予約・公開／更新結果を担い、Delivery Jobと1対1または1対多の明示参照で接続する。
 
 ## 6. Billing & Credit（CreditAccount 集約）
 

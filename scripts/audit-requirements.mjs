@@ -849,6 +849,16 @@ for (const requiredPhrase of [
     fail(errors, `contract schemas: Article Read Snapshot contract missing: ${requiredPhrase}`);
   }
 }
+for (const requiredPhrase of [
+  "schema.cms.delivery.v1",
+  "state(prepared|connection_required|permission_required|delivering|draft_created|",
+  "記事生成の完了とCMS送信成功を同じ状態にしない",
+  "持ち出したことをCMS公開・更新成功として扱わない",
+]) {
+  if (!contractSchemas.includes(requiredPhrase)) {
+    fail(errors, `contract schemas: CMS Delivery contract missing: ${requiredPhrase}`);
+  }
+}
 const layerPlanChecks = [
   ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],
