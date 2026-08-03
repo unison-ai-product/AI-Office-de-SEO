@@ -11,6 +11,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO キーワード・GSC・記事マップ要求 v3.7
 
+> **権限移行注記（2026-08-03）**: 本書に残る`Owner / Admin / Editor / Viewer`は旧Role表現である。Keyword・Site戦略変更は`キーワード・サイト戦略`、分析設定変更は`サイト分析`、記事施策実行は`記事制作`の業務権限へ解決し、Site Assignmentと共通認可契約で判定する。
+
 ## 0. 市場とシェアの基本モデル
 
 - Keyword Market: キーワードと同一SERP／intent clusterは、ユーザー需要の市場構造を表す。検索量、意図、ファネル、季節性、地域、AIO・広告面、競争性、traffic potential等は市場側の属性である。

@@ -54,7 +54,7 @@
 1. **Recommendation Intakeの下流契約欠落** — L1では採用後引継ぎを要求するが、L2集約、L3 schema、DDL、eventがなかった。本監査で骨格を追加。実JSON SchemaとContract Testは残る。
 2. **L3画面プロトが現行業務Lifecycleを表していない** — S3起点の生成、旧7画面、Office監視専用の実装が中心。新規／既存Siteの導入、戦略／診断Report、月次計画、Recommendation Intake、15記事解放、段階評価を一本の画面遷移として再設計する必要がある。
 3. **旧要求と現行要求が同じ文書群に有効形で併存** — Claude優先、一律承認、旧Role、旧価格、Office監視専用等。移行注記がある文書とない文書が混在し、L2/L3が旧IDを参照する。
-4. **認可モデルの画面・Agent・Automationへの伝播が未証明** — 現行の業務権限と、旧Editor等、Agent service principal、Automation Policy、Office会話変更、CMS write権限の対応表と負テストが一枚で追えない。
+4. **認可モデルの画面・Agent・Automationへの伝播** — 操作対応表、L2集約、L3契約・DDL、プロト受入`PT-AUTH-01〜06`を2026-08-03に追加した。実装と負テストによる証明は未完了。
 5. **プロト受入条件が旧画面の完成度を検証している** — 現行Lifecycleに必要な画面がないまま、旧モックの導線・監視面の完成を受入可能にしている。Prototype Acceptanceを現行Journey単位へ改訂する必要がある。
 
 ### Important

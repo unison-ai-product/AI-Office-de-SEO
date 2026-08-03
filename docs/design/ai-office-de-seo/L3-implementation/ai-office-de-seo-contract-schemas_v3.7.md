@@ -42,6 +42,36 @@ L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメイン�
 
 根拠: `REQ-KRL-08/09`、`REQ-DATA-06/07`、`REQ-LOGIC-03`、`REQ-SCREEN-09/15/18`、Agent要求マップ。
 
+## 0.1 Authorization Decision Contract
+
+すべての実行面で使用する認可入力・出力を`schema.authorization.decision.v1`として固定する。
+
+```text
+input {
+  principal{type, id, authentication_strength},
+  action,
+  resource{type, id, tenant_id, site_id?},
+  context{
+    active_organization_id, membership_id?,
+    base_role?, business_permissions[], site_assignment_mode?,
+    delegated_policy_ref?, plan_entitlement_ref?,
+    budget_ref?, connection_scope_ref?, job_id?, policy_version
+  }
+}
+output {
+  decision(allow/deny/step_up_required/approval_required),
+  applied_permissions[], scope, reason_codes[],
+  policy_version, expires_at?, audit_ref?
+}
+```
+
+- actionは少なくとも`read / create / update / delete / execute / approve / write_draft / schedule / publish / connect / purchase / export / impersonate`を区別する。
+- 顧客基本権限、業務Permission bundle、内部Roleを同じassignment namespaceへ格納しない。
+- Recommendation採用時の判定結果はIntakeへ参照できるが、後続副作用の権限をfreezeする証明には使わない。job起動、Agent tool、CMS write、公開時に現在policyで再判定する。
+- UI／Officeはreason codeを平易な表示へ変換するだけで、allow／denyを計算しない。
+
+根拠: `REQ-ORG-03〜07`、`REQ-ACCESS-14〜18`、認可・業務操作接続マトリクス。
+
 ## 1. schema.ticket.*（Ticket入力）
 
 正本フィールド（REQ-PACK-01 / REQ-PACK-11.7）: `{ workflowKey, intakeRef, promptPackKeys[], sourceNeedKeys[], schemaKeys[], returnTo, userPrompt, content_role_map }`。Ticketは本文やRecommendationの複製を内包せず、freeze済み`schema.intake.recommendation.v1`を`intakeRef`で参照する。

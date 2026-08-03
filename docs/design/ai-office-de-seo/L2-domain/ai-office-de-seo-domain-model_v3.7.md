@@ -23,7 +23,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 
 | BC | 責務 | 主な集約 | 根拠REQ |
 |---|---|---|---|
-| Tenancy & Access | テナント・サイト・権限・サンドボックス境界・アカウントライフサイクル・マスターテナント | Tenant, Site(SiteSandboxContext) | REQ-PRODUCT-02/08/10/23, REQ-SEC-07/08/15/16 |
+| Tenancy & Access | 契約者・顧客組織・Membership・Site付与・基本権限・業務権限・認可判断・サンドボックス境界・アカウントライフサイクル・マスターテナント | ContractAccount, CustomerOrganization, Membership, Site(SiteSandboxContext), AuthorizationDecision | REQ-ORG-01〜12, REQ-ACCESS-01〜18 |
 | Content Index | URL正本・記事メタ（サマリー契約・意味索引）・キーワード/記事マップ・属性・アサイン台帳・起点候補・サイトトポロジー・導出事実/施策台帳 | UrlMaster, ArticleSummary, KeywordMap(AssignmentLedger), SiteTopology, DerivedFacts(InterventionLedger) | REQ-PRODUCT-03/04/19/20, REQ-KGA-01〜04/07/12/13/14/18/19 |
 | Search Performance | GSC実績・被覆・ドリフト・カニバリ・リライト候補・マッチカスケード・ロングテール昇格・市場圧力・動的キーワード戦略・ウォッチ/変動監視・インデックス状況・月次プランニング・Recommendation | GscDataMart, CoverageAssessment, RewriteCandidate, QueryMatch, KeywordMarketPressure, KeywordStrategyProfile, Watchlist, MonthlyPlan, Recommendation | REQ-KGA-05/06/08/11/15/16/17/20/21/23, REQ-PRODUCT-05/17/24, REQ-KRL-01〜10, REQ-DATA-06 |
 | External Intelligence | SERP/競合/Fanoutの取得・キャッシュ・バッチ・静穏窓スケジューリング | SourcePack, CompetitorStructure, FetchBatch | REQ-SRC-01〜10 |
@@ -96,6 +96,21 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 ### 4.7 Site / SiteSandboxContext（Tenancy）
 - ルート: Site。
 - 不変条件: 全データ・キャッシュ・キュー・ログが `tenant_id`/`site_id` 境界を持ち越境不可（REQ-SEC-07/11）。
+
+### 4.8 ContractAccount / CustomerOrganization / Membership（Tenancy & Access）
+
+- `ContractAccount`: 法人または個人の契約主体。複数の契約者Membershipと代表契約者1名を持つ。
+- `CustomerOrganization`: 自由階層のOrganization UnitとSiteを所有する顧客組織。代理店横断tenantを作らない。
+- `Membership`: UserとCustomer Organizationの関係。基本権限`contract_holder / site_owner / user`、業務権限bundle、Site Assignment、状態を持つ。
+- Site Assignmentは空を「全Site」、1件以上を「指定Siteのみ」と解釈する。全件削除による全Site化は確認・監査対象とする。
+- 旧`Owner / Admin / Editor / Viewer`を保存・判定の正本にしない。移行情報を保持する場合も、現在の基本権限・業務Permissionへ解決してから認可する。
+
+### 4.9 AuthorizationDecision（Tenancy & Access）
+
+- 値: Principal、Action、Resource、Context、Decision、AppliedPermission、Scope、ReasonCode、PolicyVersion、ExpiresAt。
+- 判定順: environment／tenant → resource ownership → principal種別 → Membership／代理権限 → 基本権限・業務Permission → 認証強度・承認 → Plan／予算／接続等の業務条件。
+- 通常ビュー、Office、API、worker、Agent tool、Automation、外部Adapter、内部管理面は同じ判定契約を使用する。
+- 不変条件: client申告Role、画面表示、Office入室、Feature Flag、Plan購入だけでは前段Scopeを拡張しない／入力欠落と未解決競合はdefault-deny／副作用直前に再判定する。
 
 ## 5. 主要ドメインイベント
 

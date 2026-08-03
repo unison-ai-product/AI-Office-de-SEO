@@ -59,6 +59,18 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 価格、契約、credit、Plan機能は`REQ-BILLING-01〜16`とversion付きPlan Configuration、認可は`REQ-ORG-03〜07`・`REQ-ACCESS-14〜16`を参照する。
 
+### 0.3 権限画面・操作表示
+
+- S7のメンバー管理は、基本権限`契約者 / サイトオーナー / ユーザー`、業務権限`目標管理 / キーワード・サイト戦略 / 記事制作 / サイト分析`、Site Assignmentだけを表示する。
+- `Viewer`は表示しない。業務権限なしのユーザーを「閲覧のみ」と説明する。
+- 契約者・サイトオーナーでも、対応する業務権限がなければSEO業務変更ボタンを有効化しない。
+- Agentへの質問は可視範囲内で許可し、変更会話は対応業務権限を要求する。Office入室やAgent選択で権限を広げない。
+- Automation設定は契約者／サイトオーナーだけが行い、許可operation、Site、予算、同意version、期限、停止条件を確認する。設定者本人のRoleを永久委任しない。
+- 操作不能理由は`権限不足 / step-up必要 / 承認必要 / Plan不足 / 予算不足 / 接続不足 / データ不足 / 処理中 / 障害`を分け、`schema.authorization.decision.v1.reason_codes`から表示する。
+- 顧客面に内部Admin／Manager／Operator、低水準Permission、内部監査logを表示しない。
+
+操作別の正本は`ai-office-de-seo-authorization-operation-matrix_v1.md`とする。
+
 ## 1. 通常ビュー（Standard SaaS）第一階層7画面
 
 | # | 画面 | 主要コンポーネント（REQ-NAV-04の責務） | 主データ（モック契約） | プロト優先度 |

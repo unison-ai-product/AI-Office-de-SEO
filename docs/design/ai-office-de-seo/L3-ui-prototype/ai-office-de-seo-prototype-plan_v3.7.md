@@ -66,6 +66,12 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。
 - [ ] PT-LC-08: Planロック、データ不足、接続不足、権限不足、処理中、障害を別状態として表示し、同じ灰色ロックへ潰さない。
 - [ ] PT-LC-09: 旧価格、旧credit条件、Claude優先、旧Role、一律承認、Office監視専用の文言・fixtureが現行画面に存在しない。
+- [ ] PT-AUTH-01: S7で3基本権限、4業務権限、Site Assignmentだけを設定でき、業務権限なしのユーザーが閲覧専用として成立する。旧Viewerや低水準Permissionを顧客へ表示しない。
+- [ ] PT-AUTH-02: 契約者／サイトオーナーでも対応業務権限なしでは目標、Keyword戦略、記事、分析設定を変更できず、API fixtureでも同じreason codeで拒否される。
+- [ ] PT-AUTH-03: 同じ操作を通常ビュー、Office、API、worker、Agent tool、Automationから実行し、`schema.authorization.decision.v1`の同一policy versionで同じ判定になる。
+- [ ] PT-AUTH-04: Agentへの質問はread範囲で回答し、変更会話は操作別Proposalへ分解して、権限不足項目だけを理由付きで拒否できる。
+- [ ] PT-AUTH-05: Automation設定者の退会、業務権限取消、Site移管、委任期限切れ、接続Scope変更、Kill Switch後にCMS副作用が停止して確認待ちへ遷移する。
+- [ ] PT-AUTH-06: 内部Admin／Manager／Operatorが顧客面と別session・別namespaceで動き、Manager代理操作のacting principalと顧客Contextを区別し、Operatorが顧客変更・本文・秘密へ到達できない。
 
 - [ ] PT-A: 通常/Agent Officeで同一の詳細コンポーネント・モックAPI・状態が使われている（コード上、詳細の二重実装がない）。｜ REQ-AOUI-01（AC-AOUI-01/04）
 - [ ] PT-B: 第一階層はREQ-NAV-01の7項目・正式ラベルで、内部用語が現れない。｜ REQ-NAV-01（AC-PRODUCT-02/03）

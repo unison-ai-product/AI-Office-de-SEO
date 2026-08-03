@@ -81,6 +81,10 @@ Agent関連要求は分類別正本だけからゼロベースで追加しない
 
 分類別文書へAgent関連の業務入力・判断を追加する場合も、実行方式は既存REQ-IDを参照する。既存構造で表現できない場合だけ、影響する旧要求と受入条件を同一変更で改版する。
 
+## 4.2 認可・業務操作体系
+
+顧客基本権限、業務権限、Site Assignment、Agent、Automation、CMS副作用、内部Roleの操作別接続は`ai-office-de-seo-authorization-operation-matrix_v1.md`を索引とする。権限変更時は、顧客画面だけでなくAPI、worker、Agent tool、Automation Policy、外部Adapter、管理面の同一操作を同時に確認する。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

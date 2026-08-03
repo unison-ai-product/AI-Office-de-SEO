@@ -23,10 +23,16 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 
 ## 1. Tenancy & Access（Site / SiteSandboxContext 集約）
 
-対象: tenants / memberships / users / connected_accounts / sites / roles。
-根拠: REQ-PRODUCT-01/02/05/08、REQ-SEC-08/09。検証: AC-TENANT-05/06, AC-SEC-02/04。
+対象: contract_accounts / customer_organizations / organization_units / users / memberships / membership_business_permissions / membership_site_assignments / permission_bundle_versions / authorization_policy_versions / authorization_decision_audit / internal_role_assignments / delegated_access_grants / connected_accounts / sites。
+根拠: REQ-ORG-01〜12、REQ-ACCESS-01〜18。検証: AC-L1-ORG-01〜13, AC-L1-ACCESS-01〜18。
 
-- TODO(L3): 各テーブルの列・型・一意制約（例: connected_accounts は tenant 単位で外部アカウントを保持し、テナント間共有を構造的に不可能にする一意性）。
+- `memberships`: organization_id、user_id、base_role(`contract_holder/site_owner/user`)、status、primary_membership等を持つ。`Viewer`を保存値にせず、業務Permissionなしの`user`で表現する。
+- `membership_business_permissions`: 初期は`goal_management / keyword_site_strategy / content_production / site_analysis`だけをversion付きbundle参照で付与する。低水準Permissionを顧客設定値として直接保存しない。
+- `membership_site_assignments`: 0件を全Site、1件以上を指定Siteだけと解釈するため、全件削除操作は影響確認eventと監査を必須とする。
+- `internal_role_assignments`は顧客Membershipと別namespace・別付与経路を持つ。Managerの顧客代理権限は`delegated_access_grants`へ対象、operation、期限、付与者を保存する。
+- `authorization_decision_audit`は全readを無制限保存せず、拒否、step-up、approval、重要副作用、代理・break-glass、policy差分を有界に記録する。append-only監査eventとの参照を持つ。
+
+- TODO(L3): 各テーブルの列・型・一意制約、代表契約者1名制約、最後の契約者取消防止、Site Assignment空集合の意味、Permission bundle migration、権限変更時session失効を確定する。
 - TODO(L3): OAuthトークンの暗号化列（KMS参照）と `secret_refs` 分離（REQ-SEC-09）。
 
 ## 2. Content Index（UrlMaster / ArticleSummary / KeywordMap 集約）

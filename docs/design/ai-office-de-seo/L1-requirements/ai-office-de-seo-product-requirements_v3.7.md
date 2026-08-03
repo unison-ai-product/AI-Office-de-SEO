@@ -11,6 +11,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO プロダクト要求 v3.7
 
+> **権限移行注記（2026-08-03）**: 本書に残る`Owner / Admin / Editor / Viewer`は旧Role体系の詳細記録であり、現行の顧客認可正本ではない。現行は`契約者 / サイトオーナー / ユーザー`＋4業務権限＋Site Assignmentを使用し、操作別対応は`ai-office-de-seo-authorization-operation-matrix_v1.md`を参照する。旧Role名だけで認可してはならない。
+
 ## 分類別正本への移行
 
 製品横断要求は内容に応じて `categories/business-requirements_v1.md`、`categories/customer-organization-governance-requirements_v1.md`、`categories/security-access-requirements_v1.md`、`categories/data-requirements_v1.md`、`categories/billing-accounting-requirements_v1.md` へ移行する。本書の `REQ-PRODUCT-*` は未分解の製品詳細として有効であり、分類別正本へ移行済みの判断は移行先を優先する。

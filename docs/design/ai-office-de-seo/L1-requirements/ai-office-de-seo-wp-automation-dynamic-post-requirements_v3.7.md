@@ -11,6 +11,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO WordPress・オートメーション・投稿形式要求 v3.7
 
+> **権限移行注記（2026-08-03）**: 本書に残る`Owner / Admin / Editor / Viewer`判定は旧表現である。CMS下書き、予約、公開、更新は`記事制作`業務権限、Site Assignment、CMS connection Scope、Automation Policy、現在policyを副作用直前に再判定する。操作別正本は`ai-office-de-seo-authorization-operation-matrix_v1.md`とする。
+
 ## 分類別正本への移行
 
 WordPress・CMS契約、Compatibility Matrix、縮退順序は `categories/integration-requirements_v1.md`、出力・自動投稿判定は `categories/logic-requirements_v1.md`、操作表示は `categories/screen-operation-requirements_v1.md`、Adapter実装境界は `categories/technical-architecture-requirements_v1.md` を現在の正本とする。本書の `REQ-WPA-*` はWordPress固有詳細として維持し、互換性・縮退の横断判断は `REQ-INT-05` を優先する。

@@ -11,6 +11,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO セキュリティ・観測・検証要求 v3.7
 
+> **権限移行注記（2026-08-03）**: 本書の旧Role表現は監査用に残す。顧客基本権限・業務権限・Site Assignmentは`REQ-ORG-03〜05`、共通認可契約は`REQ-ACCESS-14〜18`、操作別対応は`ai-office-de-seo-authorization-operation-matrix_v1.md`を現行正本とする。
+
 ## 分類別正本への移行
 
 認証・認可・tenant分離・秘密管理は `categories/security-access-requirements_v1.md`、性能・可用性は `categories/non-functional-requirements_v1.md`、平常時の観測・runbookは `categories/measurement-operations-requirements_v1.md`、実装境界は `categories/technical-architecture-requirements_v1.md` を現在の正本とする。本書の `REQ-SEC-*` 等は既存詳細・移行未完項目として維持する。
