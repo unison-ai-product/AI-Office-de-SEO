@@ -315,6 +315,7 @@ assertIncludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
   "lifecycle_stage: pre_l3_ui_validation",
   "画面検証の結果を制約する凍結仕様ではない",
   "画面検証結果をL1/L2へ反映した後にL3実装設計",
+  "ai-office-de-seo-recommendation-ui-validation_v1.md",
 ]);
 assertExcludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
   "requires:\n    - PLAN-L3-01-ai-office-de-seo-implementation-design",
@@ -350,6 +351,20 @@ assertIncludes("docs/reference/ai-office-de-seo-prototype-modernization-register
   "SF-UI-03",
   "SF-UI-04",
   "validated`とL1/L2反映なしにL3確定へ送らない",
+  "AOS-PRE-L3-RECOMMENDATION-UI-VALIDATION",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-recommendation-ui-validation_v1.md", [
+  "lifecycle_stage: pre_l3_ui_validation",
+  "本書はL3実装詳細ではない",
+  "採用は施策を実行候補として確定する行為であり、実行開始そのものではない",
+  "accepted / accepted_with_edit",
+  "Decisionとfreeze済みIntakeを同時成立",
+  "条件が揃い、現在の運用設定で実行可能なら、不要な再確認Modalを挟まず",
+  "Officeは監視専用ではない",
+  "決定論的な選択操作ではLLM呼出しが0回",
+  "REC-UI-01 ready paid",
+  "REC-UI-12 context roundtrip",
+  "validated → reflected_to_l1_l2 → ready_for_l3",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
   "PT-UX-01",

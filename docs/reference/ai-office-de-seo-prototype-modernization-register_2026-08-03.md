@@ -60,8 +60,8 @@
 
 | Finding | 画面検証する問い | 固定しないもの | 還流先 |
 |---|---|---|---|
-| SF-UI-01 | 通常ビューのRecommendation採用後、どこまで自動で進み、どの不足時だけユーザーを止めると迷わないか | Modal数、step数、CTA配置 | REQ-SCREEN-02/03、Recommendation／Admission境界 |
-| SF-UI-02 | Officeで「少し触る」際、Keyword優先度、対象外、目的、配分、記事条件、Task順序のどこまでをinline選択にし、どこから型付きProposal確認にするか | object別adjustable field、Panel構成 | REQ-DESIGN-09、REQ-SCREEN-18、Office Proposal |
+| SF-UI-01 | 通常ビューのRecommendation採用後、どこまで自動で進み、どの不足時だけユーザーを止めると迷わないか。`AOS-PRE-L3-RECOMMENDATION-UI-VALIDATION`の一操作型と条件付きSheet型、REC-UI-01〜12を比較する | Modal数、step数、CTA配置。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-02/03、Recommendation／Admission境界 |
+| SF-UI-02 | Officeで「少し触る」際、どこまでをinline選択にし、どこから型付きProposalまたはManual Intakeにするか。調整候補はfixtureの`adjustable_fields`として検証し、先に固定しない | object別adjustable field、Panel構成。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-DESIGN-09、REQ-SCREEN-18、Office Proposal |
 | SF-UI-03 | 通常→Office→通常の往復で、Site、Recommendation、Cluster、記事、Task、一覧位置のどこまで保持すれば連続作業として理解できるか | URL／state実装、breadcrumb形 | REQ-DESIGN-09、REQ-SCREEN-18 |
 | SF-UI-04 | Officeの専門情報を、初心者が少し覗く段階と玄人が深く操作する段階へどう段階開示するか | 3D配置、カード密度、初期展開 | REQ-DESIGN-09、REQ-AOUI-01/04 |
 
