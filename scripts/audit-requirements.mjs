@@ -316,6 +316,7 @@ assertIncludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
   "画面検証の結果を制約する凍結仕様ではない",
   "画面検証結果をL1/L2へ反映した後にL3実装設計",
   "ai-office-de-seo-recommendation-ui-validation_v1.md",
+  "ai-office-de-seo-standard-office-ui-validation_v1.md",
 ]);
 assertExcludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
   "requires:\n    - PLAN-L3-01-ai-office-de-seo-implementation-design",
@@ -352,6 +353,7 @@ assertIncludes("docs/reference/ai-office-de-seo-prototype-modernization-register
   "SF-UI-04",
   "validated`とL1/L2反映なしにL3確定へ送らない",
   "AOS-PRE-L3-RECOMMENDATION-UI-VALIDATION",
+  "AOS-PRE-L3-STANDARD-OFFICE-UI-VALIDATION",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-recommendation-ui-validation_v1.md", [
   "lifecycle_stage: pre_l3_ui_validation",
@@ -365,6 +367,25 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-re
   "REC-UI-01 ready paid",
   "REC-UI-12 context roundtrip",
   "validated → reflected_to_l1_l2 → ready_for_l3",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md", [
+  "Recommendation Decisionを正本",
+  "Decision、Intake、採用率の正本にしない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-standard-office-ui-validation_v1.md", [
+  "lifecycle_stage: pre_l3_ui_validation",
+  "通常ビューは、SEOに詳しくない利用者がRecommendationに沿って主要業務を少ない操作で完了する正規入口",
+  "Office独自の業務正本、認可、変更Command、成果計算を作らない",
+  "Officeを成果分析から排除せず",
+  "対象直結型（第一検証案）",
+  "Officeハブ経由型（比較案）",
+  "すぐ確認",
+  "詳しく見る",
+  "相談・高度操作",
+  "定型操作はLLM呼出し0回",
+  "VIEW-UI-01 Recommendation往復",
+  "VIEW-UI-14 Graph欠損",
+  "ブラウザ操作前は`open`",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
   "PT-UX-01",

@@ -62,8 +62,8 @@
 |---|---|---|---|
 | SF-UI-01 | 通常ビューのRecommendation採用後、どこまで自動で進み、どの不足時だけユーザーを止めると迷わないか。`AOS-PRE-L3-RECOMMENDATION-UI-VALIDATION`の一操作型と条件付きSheet型、REC-UI-01〜12を比較する | Modal数、step数、CTA配置。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-02/03、Recommendation／Admission境界 |
 | SF-UI-02 | Officeで「少し触る」際、どこまでをinline選択にし、どこから型付きProposalまたはManual Intakeにするか。調整候補はfixtureの`adjustable_fields`として検証し、先に固定しない | object別adjustable field、Panel構成。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-DESIGN-09、REQ-SCREEN-18、Office Proposal |
-| SF-UI-03 | 通常→Office→通常の往復で、Site、Recommendation、Cluster、記事、Task、一覧位置のどこまで保持すれば連続作業として理解できるか | URL／state実装、breadcrumb形 | REQ-DESIGN-09、REQ-SCREEN-18 |
-| SF-UI-04 | Officeの専門情報を、初心者が少し覗く段階と玄人が深く操作する段階へどう段階開示するか | 3D配置、カード密度、初期展開 | REQ-DESIGN-09、REQ-AOUI-01/04 |
+| SF-UI-03 | 通常→Office→通常でSite、対象、version、filter、sort、一覧位置、Office内作業位置のどこまで保持すれば連続作業として理解できるか。`AOS-PRE-L3-STANDARD-OFFICE-UI-VALIDATION`の直結型／ハブ経由型とVIEW-UI-01〜14を比較する | URL／state実装、breadcrumb形。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-DESIGN-09、REQ-SCREEN-18 |
+| SF-UI-04 | Officeの専門情報を`すぐ確認 / 詳しく見る / 相談・高度操作`へ段階開示し、標準3D／簡略3D／2Dでも同じ業務を完了できるか | 3D配置、カード密度、段階名、初期展開。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-DESIGN-09、REQ-AOUI-01/04/06 |
 
 視覚検証ではdesktop標準viewport、狭幅、reduced motion、2D縮退を確認し、通常ビューの優先判断が埋もれないこと、Officeの詳細操作が演出に隠れないこと、往復時に対象を見失わないことを記録する。ブラウザ未接続のソース監査だけでこれらを`resolved`にしない。
 

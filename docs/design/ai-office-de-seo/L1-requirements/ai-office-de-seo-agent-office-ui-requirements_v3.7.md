@@ -68,7 +68,7 @@ Agent Officeが実状態を反映するため、ユーザー向けペルソナ�
 
 - おすすめ軸: 優先順位付き候補から、根拠・変更範囲・費用・リスクを確認して採用/編集/保留/却下/予約する。
 - 探索軸: ユーザーがURL/キーワードを指定して調査・手動起動できる。おすすめにない対象も扱えるが、起動前に既存ArticleSummaryとの重複・保護・競合を検査する。
-- 共通状態: おすすめの採用/却下/編集/予約結果は `recommendation_feedback`、探索状態は `saved_views` / `user_exploration_sessions` として最小限保存する（`REQ-SEC`）。セッション単位の詳細行動ログ・クリックログ・遷移ログは保存しない。
+- 共通状態: おすすめの採用／条件付き採用／保留／除外はversion付きRecommendation Decisionを正本とし、`accepted / accepted_with_edit`ではfreeze済みIntakeと原子的に成立させる。`recommendation_feedback`は既読・click・UI改善等の分析補助に限り、Decision、Intake、採用率の正本にしない。探索状態は`saved_views / user_exploration_sessions`として必要最小限保存し、セッション単位の詳細行動ログ・クリック列・遷移列を恒久保存しない。
 
 ## 6. Console Mode / 全画面ワークベンチ  ［REQ-AOUI-06］
 
