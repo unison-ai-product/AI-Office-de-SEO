@@ -73,6 +73,8 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 画面利用可否は`ai-office-de-seo-ui-availability-state-map_v1.md`へ従う。障害をPlanロック、権限不足をcredit不足、接続不足をデータ不足として表示しない。複数理由は保持し、最初に解消可能な理由を主表示する。一覧、詳細、Modal、Office設備、会話Proposalで同じAvailability Decisionを使う。
 
+アイキャッチ設定はSite既定Patternと記事overrideを分け、生成前にcanvas、背景、被写体、文字、ロゴ、余白、安全領域、固定／可変slot、variation toleranceを編集する。Pattern編集とwireframe previewは無料で、実画像のテスト生成前にcreditを表示する。出力sizeはCMS Connection Profileのfeatured media要件だけを表示する。生成、採否、最適化、Media登録、featured割当を別状態で追跡し、ユーザー再生成と障害再開を区別する。本文中画像等の後続機能は初期画面へ出さない。
+
 ### 0.4 Keyword Market・Site Share表示
 
 - S2はClusterを基本行とし、`Market / 自社Share / 記事配分 / 戦略 / Recommendation`を同じ対象Contextで横断できるようにする。

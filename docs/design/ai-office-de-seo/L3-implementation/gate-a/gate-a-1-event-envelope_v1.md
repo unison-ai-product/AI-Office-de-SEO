@@ -124,6 +124,14 @@ updated_at: 2026-07-05
 | office.proposal_cancelled | proposal_id, cancelled_by, reason | W,O,A | REQ-AOUI-01 |
 | office.proposal_superseded | proposal_id, version, current_base_version, replacement_ref? | W,O | REQ-AOUI-01 |
 | ui.availability_changed | resource_ref, operation?, before_state, after_state, primary_reason, reason_codes[] | W,N,O | REQ-SCREEN-01/03/15 |
+| image.pattern_versioned | pattern_id, version, site_id, variation_mode, is_default, supersedes_ref? | W,O,A | REQ-LOGIC-10, REQ-DATA-12 |
+| image.generation_estimated | image_job_id, pattern_ref, cms_size_ref, quality, estimate_ref | W,O | REQ-LOGIC-10, REQ-COST-10 |
+| image.generation_started | image_job_id, pattern_ref, model_route_ref, correlation_id | W,O | REQ-INT-07 |
+| image.generation_completed | image_job_id, output_refs[], technical_result, advisory_count, usage_ref | W,N,O | REQ-LOGIC-10 |
+| image.output_selected | image_job_id, output_ref, selected_by | W,O,A | REQ-LOGIC-10 |
+| image.media_registered | image_job_id, cms_media_id, url_ref, derived_sizes[] | W,O,A | REQ-WPA-09 |
+| image.featured_assigned | image_job_id, article_ref, cms_media_id, verified_at | W,O,A | REQ-WPA-09 |
+| image.generation_failed | image_job_id, stage, error_class, retryable, resume_same_job | W,N,O | REQ-INT-07 |
 | patch.candidate_proposed | patch_action_id, type, target_article_ref, target_part_ref, recommendation_ref? | W,O | REQ-WPA-12/13, REQ-KGA-09 |
 | patch.batch_approved | approval_batch_ref, patch_action_refs[], approved_by | W,O,A | REQ-WPA-12, REQ-PRODUCT-08 |
 | patch.action_scheduled | patch_action_id, cms_job_ref, scheduled_at | W,O | REQ-WPA-12 |

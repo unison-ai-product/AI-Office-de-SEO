@@ -121,6 +121,12 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 - 状態: `diagnosing / ready / degraded / action_required / unavailable`。個別Capabilityは`full / degraded / update_required / unsupported / unknown`。
 - 不変条件: ユーザーに内部経路選択を要求しない／readとwriteを別認可にする／変更発見と本文取得を分離する／初回全件後は差分同期／一時失敗でflappingしない／書込み応答だけで反映済みにしない／公開表示・CMS保存値・変更event・Revisionを用途別正本として混合しない。
 
+### 4.5.2 FeaturedImagePattern / ImageGenerationJob（Generation & Publishing）
+
+- FeaturedImagePatternはSite scoped、version付きで、領域、slot、固定／可変、variation tolerance、ロゴ余白、CMS size policy、状態を持つ。Image Style Profileと別集約・別versionにする。
+- ImageGenerationJobはPattern／Profile／記事slot／CMS size／quality／Model Registry route／予算をfreezeし、output、検査、advisory、採否、最適化、Media登録、featured割当を追跡する。
+- 不変条件: Pattern編集でProviderを呼ばない／同一入力の二重生成を防ぐ／ユーザー再生成だけ新規課金／障害再開は再課金しない／CMS size以外を初期生成しない／Media登録を本文送信から分離／advisoryだけで自動投稿を停止しない／ロゴ品質不成立時は強制合成しない。
+
 ### 4.6 CreditAccount（Billing）
 - ルート: CreditAccount（append-only Ledgerを内包）。
 - 不変条件: 台帳はappend-only・残高を直接書換えない／reserve→commit/release／`stripe_event_id`+`idempotency_key`で二重付与防止（REQ-BILL-07）／activeのみ月次付与（REQ-BILL-08）。

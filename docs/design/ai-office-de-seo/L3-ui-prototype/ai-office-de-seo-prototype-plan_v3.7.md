@@ -102,6 +102,14 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-STATE-04: out-of-scopeのSite／記事／Taskは存在を漏らさず、Office検索・会話からも参照できない。
 - [ ] PT-STATE-05: Blocked、Degraded、Preview、Partial、Pending、Readyの各状態が架空の実績値を生成せず、利用可能範囲、coverage、進捗、解消導線を表示する。
 - [ ] PT-STATE-06: 数値予測でEntryのPlan lockとStandard以上のデータ不足を分離し、予測可能対象と不足対象を同じSite内で区別できる。
+- [ ] PT-IMAGE-01: Site既定Patternと記事overrideを分け、背景、被写体、文字、ロゴ、余白、安全領域、layer、固定／可変slotを生成前に編集できる。
+- [ ] PT-IMAGE-02: fixed／controlled／creativeで、固定要素、変化可能属性、許容範囲が表示され、生成RequestとQAへ同じvariation設定が渡る。
+- [ ] PT-IMAGE-03: ロゴ余白・最小size・aspect・contrastを検査し、合成Capability不足時はロゴなしへ縮退して粗い合成を強制しない。
+- [ ] PT-IMAGE-04: Pattern編集、undo／redo、wireframe previewではImage Job・creditが発生せず、GPT Image 2テスト生成直前に見積を表示する。
+- [ ] PT-IMAGE-05: CMS Capabilityが要求するfeatured media／thumbnail sizeだけを選択でき、本文中画像・SNS・広告sizeを初期対象として表示しない。
+- [ ] PT-IMAGE-06: 生成→採否→最適化→Media登録→featured割当を追跡し、Media失敗で本文成果を失わず再送できる。
+- [ ] PT-IMAGE-07: 同一入力の二重送信を防ぎ、ユーザー再生成は新credit、サービス障害再開は同一Job・追加課金なしになる。
+- [ ] PT-IMAGE-08: 技術的不成立／設定不一致のblockedと、構図・トーン等のadvisoryを分け、自動投稿をadvisoryだけで止めない。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。

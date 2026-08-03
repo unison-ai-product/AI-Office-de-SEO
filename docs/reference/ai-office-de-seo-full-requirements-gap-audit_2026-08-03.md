@@ -69,7 +69,7 @@
 13. WordPress Capability MatrixはCMS接続Profileと画面Capability表示、`PT-CMS-01/05/06`へ接続し、read／write／Media／Editor／Preview／Revision／反映確認を分離した。CMS共通Publication JSON SchemaとCMS別Contract Testは未完了。
 14. Office会話変更案は`schema.office.proposal.v1`、DDL、draft／estimate／confirm／dispatch／apply／cancel／supersede event、`PT-OFFICE-02〜07`へ、影響差分、credit／Capacity、認可、取消／rollback、通常ビュー同期を追加した。実装とDomain Command別Adapterは未完了。
 15. 基本12＋technical_seo personaはAgent Office UI §4へ、担当業務、正本・Service、Proposal、Executor／Tool、Permission、設備の完全表を追加し、`PT-OFFICE-01`へ接続した。config fixtureと全persona操作試験は未完了。
-16. 画像Pattern Editorはアイキャッチ基盤として決定しているが、Pattern version、variation tolerance、ロゴ余白、CMS size、生成結果、cache、再生成creditのL3 schemaが未確定。
+16. アイキャッチPatternは接続マップ、L2集約、L3 Pattern／Image Job schema、DDL、event、画面規則、`PT-IMAGE-01〜08`へ、version、variation、ロゴ、CMS size、cache、生成結果、Media、再生成creditを追加した。Editor実装、画像回帰評価、Provider／CMS Contract Testは未完了。
 17. 画面利用可否はUI Availability State Map、L3 Decision schema／event、画面共通規則、`PT-STATE-01〜06`へ、Scope、停止、障害、権限、Capability、Plan、接続、データ、credit、承認、処理中の優先と複合reasonを追加した。共通resolver実装と全画面fixture試験は未完了。
 18. 通知はevent型を持つが、誰へ出すかを固定担当者概念へ寄せず、権限・購読設定・通知Center・必須通知から解決する規則のプロト反映が不足。
 19. L3のAWS配置・観測・Runbook・自動復旧・bulkhead・circuit breakerは要求に対して骨格段階。

@@ -99,6 +99,8 @@ CMSの変更発見、記事読取り、投稿・更新、Media、Editor、Previe
 
 権限、Plan、接続、データ、credit、承認、処理中、障害等の画面利用可否と表示優先順位は`ai-office-de-seo-ui-availability-state-map_v1.md`を正本とする。各画面で独自のロック理由や優先順を作らない。
 
+初期リリースのアイキャッチPattern、Style Profile、variation、ロゴ、生成Job、CMS Media登録、再生成creditの接続は`ai-office-de-seo-featured-image-pattern-connection-map_v1.md`を正本とする。本文中画像等の後続機能を初期範囲へ混入させない。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

@@ -187,6 +187,42 @@ Office会話を質問と状態変更へ分け、変更案を`schema.office.propo
 
 根拠: `REQ-SCREEN-01/03/15/18`、`REQ-ACCESS-14〜16`、UI Availability State Map。
 
+## 0.0.6 Featured Image Pattern・Job Contract
+
+Patternを`schema.image.featured_pattern.v1`、生成を`schema.image.generation_job.v1`とする。
+
+```text
+schema.image.featured_pattern.v1 {
+  pattern_id, version, tenant_id, site_id, name, status, is_default,
+  style_profile_ref,
+  canvas{aspect, cms_size_refs[], background, safe_area},
+  regions[]{region_id, kind, bounds, layer, visible, fixed, constraints},
+  slots[]{slot_id, source_kind, region_id, transform_policy},
+  palette, forbidden_elements[], fixed_elements[], variable_elements[],
+  variation{mode, allowed_attributes[], ranges},
+  logo{asset_ref?, region_id?, outer_margin?, min_size?, preserve_aspect, contrast_rule, composition_capability_ref?},
+  reference_image_refs[], created_by, created_at, supersedes_ref?
+}
+
+schema.image.generation_job.v1 {
+  image_job_id, idempotency_key, pattern_ref, style_profile_ref,
+  article_ref, article_slots, cms_size_ref, quality,
+  model_route_ref, prompt_version, reference_hashes[],
+  estimate_ref, credit_reservation_ref,
+  state, outputs[]{output_ref, content_hash, technical_checks[], advisories[], selected},
+  media_registration{state, cms_media_id?, url_ref?, derived_sizes[], error?},
+  usage, actual_cost_ref, correlation_id, created_at
+}
+```
+
+- variation modeは`fixed / controlled / creative`。
+- Patternのversion作成とwireframe previewはImage Jobを発行しない。
+- stateは`estimated / generating / generated / selected / rejected / optimized / media_registering / media_registered / featured_assigned / blocked / failed`。
+- `blocked`は技術的不成立またはPattern設定不一致、主観差はadvisoryとする。
+- ユーザー再生成は新しいimage_job_idとreserve、障害再開は既存jobのcheckpointを使用する。
+
+根拠: `REQ-LOGIC-10`、`REQ-DATA-12`、`REQ-INT-07`、Featured Image Pattern接続マップ。
+
 ## 0.1 Authorization Decision Contract
 
 すべての実行面で使用する認可入力・出力を`schema.authorization.decision.v1`として固定する。
