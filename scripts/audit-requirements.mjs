@@ -788,6 +788,9 @@ if (/\| D-03 \|[^\r\n]+\| open \|/.test(l3Decision)) {
 if (!/\| D-03 \|[^\r\n]+contract decided[^\r\n]+LB-05/.test(l3Decision)) {
   fail(errors, "L3 decision D-03: contract decision and remaining LB-05 evidence are not separated");
 }
+if (!/\| D-28 \|[^\r\n]+DD-14[^\r\n]+画面実装着手前[^\r\n]+open/.test(l3Decision)) {
+  fail(errors, "L3 decision D-28: accessibility design gap is not classified before screen implementation");
+}
 const layerPlanChecks = [
   ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],

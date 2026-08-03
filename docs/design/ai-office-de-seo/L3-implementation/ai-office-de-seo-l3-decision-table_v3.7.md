@@ -44,7 +44,7 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | D-25 | ゴールデン評価セットの初期構築（代表キーワード×記事タイプの固定タスク群・人手評価サンプルの運用形） | GateC | REQ-ADM-10, REQ-DUR-02 | PO＋TL（品質） | DU-10完了まで（3計測と同時） | open |
 | D-26 | 技法principles実文・検品レンズ構成・手書きfew-shot例示本文の執筆と登録（ADM-S8経由。例示はValidateゲート合格が登録条件・ゴールデン評価と素材重複禁止） | GateC | REQ-PACK-19/20, REQ-ADM-10 | PO（執筆=帝王様）＋TL（品質） | 該当article_typeの本番生成開放前 | open |
 | D-27 | セグメント初期定義（リテラシー/心理/シチュエーション/デモグラ）・転生プロンプト実文・AI定型表現辞書の初期構築（セグメント別手書き例示の執筆計画を含む） | GateC | REQ-PACK-21, REQ-PACK-09 | PO（執筆=帝王様）＋TL（品質） | human_voiceゲート較正開始前 | open |
-| D-28 | アクセシビリティ準拠レベルの正式確定（WCAG AA目安→確定水準）と自動検証ツール選定（コントラスト・ラベル・キーボード） | GateC | REQ-NAV-08 | TL（フロントエンド） | プロト受入（PT-Z）前 | open |
+| D-28 | アクセシビリティ準拠レベルの正式確定（WCAG AA目安→確定水準）、対象画面・例外、手動／自動検証方式の選定（キーボード、focus、コントラスト、ラベル、error関連付け、reduced motion） | GateB / DD-14 | REQ-NAV-08, REQ-NFR-11 | TL（フロントエンド） | 画面実装着手前 | open（最低品質項目は要求済み。正式conformanceと検証契約が未決） |
 | D-29 | **Google OAuth検証・API規約適合**——GSC読み取り（sensitiveスコープ）のOAuthアプリ審査（審査リードタイム長・最優先着手）、Search Console/URL Inspection APIの利用規約適合、YouTube Data API利用時のコンプライアンス＋Limited Use要件、年次再確認の運用 | Launch | REQ-SEC-09, REQ-KGA-11/18/21 | PO＋TL（外部連携） | 商用登録開放前（着手はβ前） | open |
 | D-30 | WordPressプラグインの配布経路確定——wp.org公開（審査・GPL互換ライセンス整理）or 自前配布＋署名付き更新チャネル（`REQ-WPA-07`）。選択に応じた審査/更新運用 | Launch | REQ-WPA-01/07 | TL（WP） | β提供前 | open |
 | D-31 | 顧客向けSLA/稼働率の公約方針（保証の有無・水準・未達時の扱い）と公開ステータスページの運用（in-appステータス案内`REQ-PRODUCT-22`との接続） | Launch | REQ-ADM-07, REQ-DUR-08/10 | PO＋TL（インフラ） | 商用登録開放前 | open |

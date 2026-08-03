@@ -44,6 +44,7 @@
 | DD-11 | near-duplicate、意味的一致、coherence、AI定型表現等の品質判定algorithm | Quality Gate | 日本語golden setのprecision／recall、latency、原価比較 |
 | DD-12 | YMYL分類器、対象taxonomy、誤分類時の扱い | Quality Gate／公開確認 | 法務・品質reviewと日本語評価set |
 | DD-13 | hard／advisory再分類とfew-shot・QA共通較正手順 | Pack／QA | 独立した正例・反例、回帰試験、人手評価手順 |
+| DD-14 | Accessibilityの正式準拠水準、対象画面・例外、手動／自動検証方式 | 通常ビュー／Agent Office／管理画面 | WCAG対応表、keyboard・focus・contrast・label・reduced motionの受入試験、採用tool ADR |
 
 ## 5. Operational calibration
 
@@ -121,7 +122,7 @@ L3 Decision Tableの項目を次の分類へ必ず接続する。本表にない
 | D-25 | DD-11／DD-13 | Golden evaluation set |
 | D-26 | DD-11／DD-13 | 技法principles、検品lens、few-shot本文 |
 | D-27 | DD-11／DD-13 | segment、human voice、AI定型表現辞書 |
-| D-28 | launch_blocker | Accessibility目標水準と自動・手動検証方式 |
+| D-28 | DD-14 | 最低品質項目は要求済み。正式準拠水準、対象範囲、自動・手動検証方式が画面実装前の未決事項 |
 | D-29 | launch_blocker | Google OAuth審査・API規約適合 |
 | D-30 | LB-06 | WordPress Plugin配布・更新経路 |
 | D-31 | launch_blocker | 公開SLA／非保証方針とStatus Page運用 |
