@@ -461,16 +461,21 @@ output {
 
 正本フィールド（REQ-PACK-01 / REQ-PACK-11.7）: `{ workflowKey, intakeRef, promptPackKeys[], sourceNeedKeys[], schemaKeys[], returnTo, userPrompt, content_role_map }`。Ticketは本文やRecommendationの複製を内包せず、freeze済み`schema.intake.recommendation.v1`を`intakeRef`で参照する。
 
-- 対象: `schema.ticket.writing.v1` / `schema.ticket.repair.v1` / `schema.ticket.automation.v1` / QA用。
-- TODO(L3): 各ステージ別の追加フィールド（Writing: 対象MeaningUnitPlan参照、Repair: QA issue参照とpatch target、Automation: slot assignment参照）。全stageで`correlation_id`からRecommendation→Intake→Ticket→Snapshot→Publication→評価を追跡できること。
-- TODO(L3): `content_role_map` の型（requirement / reference の割当先、REQ-AGENT-07）。
+- 共通エンベロープ: `{ ticket_id, correlation_id, tenant_id, site_id, job_id, stage, workflowKey, workflow_version, intakeRef, promptPackKeys[], sourceNeedKeys[], schemaKeys[], returnTo, userPrompt?, content_role_map[], issued_at, idempotency_key }`。`userPrompt`は任意の動的suffixであり、固定Pack・境界・品質条件を上書きしない。
+- `schema.ticket.writing.v1`: 共通＋`{ outline_contract_ref, outline_node_id, meaning_unit_plan_ref, adjacent_context{previous_summary?, next_brief?}, terminology_lock_ref }`。
+- `schema.ticket.qa.v1`: 共通＋`{ assembled_snapshot_ref, gate_keys[], review_lens_keys[], required_evidence_refs[] }`。
+- `schema.ticket.repair.v1`: 共通＋`{ base_snapshot_ref, qa_issue_refs[], patch_targets[{unit_id, allowed_operations[], max_change}], preserve_refs[], repair_attempt }`。patch target外を変更しない。
+- `schema.ticket.automation.v1`: 共通＋`{ action(draft/schedule/publish_event/update_patch), post_envelope_ref?, slot_assignment_ref?, publication_decision_ref?, schedule_at? }`。
+- `content_role_map[]`: `{ content_ref, role(requirement/reference), destination(system_constraint/source_context/user_suffix), source_key?, precedence, immutable }`。外部取得物は`reference/source_context`、固定制約は`requirement/system_constraint/immutable=true`とし、同一contentを両roleへ割り当てない。
+- 全stageで`correlation_id`をRecommendation→Intake→Ticket→Snapshot→Publication→評価まで維持する。
 
 ## 2. schema.snapshot.*（Snapshot出力）
 
 - `schema.snapshot.research_brief.v1` / `schema.snapshot.outline_contract.v1`（MeaningUnitPlan・headingStructurePackKeyを含む、REQ-PACK-18）。
 - `schema.snapshot.writing.v1`: `{ url_hash, sections[{h2_role, meaning_units[], content_ref}], self_check, meta }`（content_refは一時領域参照。本文を恒久テーブルへ入れない）。
-- `schema.snapshot.qa.v1`（REQ-PACK-11.7で確定済みの正本）: gates[{gate_key, kind, verdict, score, evidence}] / metrics{keyword_density, flesch_reading_ease, passive_ratio, competitor_term_coverage, original_element_count, near_duplicate_similarity, citation_ratio, title_body_match, inter_unit_redundancy, term_consistency, ai_phrase_density} / ymyl / hard_gate_block / anonymization_note / truncation_note / notes。
-- TODO(L3): 未達理由付きSnapshot（停止ガード到達・ハード失敗、REQ-AGENT-01）の共通エンベロープ。
+- `schema.snapshot.qa.v1`（REQ-PACK-11.7の正本）: gates[{gate_key, kind, verdict, score, evidence_refs[]}] / metrics{keyword_density, readability[{metric_key,value,advisory}], competitor_term_coverage, original_element_count, near_duplicate_similarity, citation_ratio, title_body_match, inter_unit_redundancy, term_consistency, ai_phrase_density} / ymyl / hard_gate_block / anonymization_note / truncation_note / notes。日本語可読性指標の選定前は`readability[].advisory=true`とする。
+- Snapshot共通エンベロープ: `{ snapshot_id, correlation_id, tenant_id, site_id, job_id, ticket_id, schema_key, schema_version, state(complete/unmet), created_at, self_check, meta{tokens, credits, model_route_ref?}, content_refs[] }`。
+- `state=unmet`では`unmet{ reason_code, guard_type(budget/timeout/repair_limit/hard_gate/connection/permission/kill_switch/input_missing), failed_checks[], retryable, resume_from?, required_action?, estimate_ref? }`を必須とする。未達を空の成功Snapshotとして返さない。
 
 検証: AC-PACK-01/03/10, AC-AGENT-11。
 
@@ -478,8 +483,10 @@ output {
 
 REQ-PACK-07の「主なJSON項目」列をJSON Schemaへ確定する。内部は `SiteSandboxContext` スコープ、外部は予算・TTL配下（検証: AC-PACK-05/07, AC-TENANT-07）。
 
-- TODO(L3): 各キーの必須/任意、欠損表現（GSC匿名化・切り捨て注記、AIO availability理由。捏造補完しない: REQ-WPA-10 / REQ-SRC-09）。
-- TODO(L3): v3.7.1で追補した `source.keyword.intent_cluster.v1` / `source.keyword.synonym_related.v1` の確定。
+- 全Source Extract共通: `{ source_key, schema_version, tenant_id?, site_id?, scope_ref, observed_at, freshness{fresh_until,state}, availability{state(available/partial/unavailable/stale), reason_code?, retry_after?}, provenance_refs[], truncation_note?, anonymization_note?, payload }`。内部Sourceは`tenant_id/site_id`必須、公共外部Sourceは顧客識別子を持たない。欠損値を0・空文字・推測値で補完しない。
+- GSC系は匿名化・行上限・期間・dimension欠落を`anonymization_note/truncation_note/availability`へ記録する。AIO・AI回答面はProvider未対応、未観測、取得失敗、対象面なしを別`reason_code`で返す。
+- `source.keyword.intent_cluster.v1`: payload=`{ clusters[{ cluster_id, representative, intent{primary,secondary[]}, funnel_stage?, members[{keyword_ref,role,confidence}], evidence_refs[], calculation_version }] }`。membersを空にしない。
+- `source.keyword.synonym_related.v1`: payload=`{ entries[{ keyword_ref, synonyms[{keyword_ref?,text,confidence,source}], related[{keyword_ref?,text,relation,confidence,source}], locale, version }] }`。自然な言い換えと関連概念を区別し、同義と未確認の語をsynonymへ昇格しない。
 
 ### 3.1 Keyword Market・Share Source
 
@@ -514,8 +521,12 @@ REQ-PACK-07の「主なJSON項目」列をJSON Schemaへ確定する。内部は
 ## 4. Workflow / Pack 型（REQ-PACK-11 の型確定）
 
 - workflow型: `{ workflow_key, flow_pack_keys[], stages[{stage, phase_bindings, transitions[{to, transition_bindings}], loop{converge, stop_guards[]}}], permissions[], bindings_ref }`。
-- TODO(L3): `new_article_workflow` の13状態（実務工程9＋強制ゲート4、REQ-AGENT-09）を本型の具体インスタンスとして記述し、Layer A格納形式を確定。
-- TODO(L3): article_type / heading_flow / purpose_element / quality_gate / prompt.* の各型のJSON Schema化（REQ-PACK-11.1〜11.5）。few-shotエントリの `{role(positive/negative), gate_tags[], example_ref}`（REQ-PACK-12）。
+- `new_article_workflow.v1`の状態順は`intake_gate → sandbox_seal → keyword_intent → serp_research → site_strategy → outline_architect → section_brief → draft_writer → self_evolution → quality_gate → cms_draft → preview_approval → cleanup`とする。`intake_gate / sandbox_seal / quality_gate / preview_approval`を強制gateとし、各stateは`on_enter bindings`、成功遷移、保留遷移、失敗遷移、checkpoint、stop_guardsを持つ。Layer Aにはこのinstance全体をcanonical JSON＋hash＋versionで格納する。
+- `catalog.article_type.v1`: `{ key, version, required_purpose_elements[], optional_purpose_elements[], allowed_heading_flows[], intent_constraints[], gate_keys[] }`。
+- `catalog.heading_flow.v1`: `{ key, version, nodes[{role, min, max, allowed_purpose_elements[]}], transition_rules[] }`。
+- `catalog.purpose_element.v1`: `{ key, version, purpose, required_inputs[], output_shape, evidence_rules[], placement_rules[] }`。
+- `catalog.quality_gate.v1`: `{ gate_key, version, kind(hard/advisory/modifier), signals[], threshold_refs[], evidence_rules[], repair_routes[] }`。
+- `prompt.pack.v1`: `{ key, version, scope(global/site/workflow/stage/transition), structure_ref, constraint_refs[], few_shots[{role(positive/negative),gate_tags[],example_ref}], token_budget, content_hash }`。本文例は上限付き参照とし、Pack改版後も旧versionを再現できる。
 
 検証: AC-PACK-09/10/11, AC-AGENT-05。
 
@@ -525,8 +536,19 @@ L2 §5 のイベント（GenerationJobStarted / OutlineContractFrozen / QualityG
 
 - 共通: `{ event_id, event_type, occurred_at, tenant_id, site_id?, job_id?, actor, payload, schema_version }`。
 - 用途: Observability購読（REQ-SEC-13）、Agent Officeの活動可視化（REQ-AOUI-04。キャラ状態＝待機/作業/完了/エラーはこのイベントから導出）、監査。
-- TODO(L3): イベント別payload。画面プロト（PLAN-L3-02）のモックイベントは本エンベロープに準拠させ、本番接続時に差し替え可能にする。
+- payload Catalogは少なくとも次を固定する。`site.build_*={build_run_id,stage,stage_state,released_capabilities[],progress}`、`keyword.report_*={report_id,report_type,source_version,status}`、`plan.monthly_*={plan_id,period,version,status}`、`plan.weekly_execution_selected={selection_id,week,selected_item_refs[],deferred_item_refs[]}`、`recommendation.*={recommendation_id,version,state,reason_codes[]}`、`job/stage/ticket/snapshot.*={workflow_key,stage,ticket_id?,snapshot_id?,state,reason_code?}`、`quality.gate_*={snapshot_id,gate_key,verdict,hard_gate_block}`、`publish.decision_recorded={decision_id,operation,decision,reason_codes[],consent_ref?}`、`publish.*={external_post_id?,operation,state}`、`evaluation.intervention_*={evaluation_id,checkpoint_month,scope_ref,state,outcome?}`、`billing.credit_*={ledger_entry_id,lot_id?,amount,unit,state}`、`connection.*={connection_id,capability,state,reason_code?}`。payloadに本文、secret、Provider生responseを含めない。画面モックも同じevent typeとpayload versionを使用する。
 
 ## 6. 契約検証（REQ-SEC-13）との対応
 
-Ticket Schema / PackDispatch / Source Extract completeness / Output Snapshot schema / QA result / RepairInstruction / forbidden output detection / hallucinated source detection / token budget / cache prefix hygiene / sandbox boundary / Dynamic Post Schema compliance の各検証を、本書のスキーマIDに対応づける。TODO(L3): 検証ルール→スキーマの対応表。検証: AC-SEC-12。
+| 検証 | 対象契約 | 失敗時 |
+|---|---|---|
+| Ticket Schema / content role | `schema.ticket.*.v1` | `blocked/schema_invalid` |
+| PackDispatch / cache prefix | `prompt.pack.v1`、workflow binding | `blocked/pack_unavailable` |
+| Source completeness / sandbox | Source Extract共通Envelope、各`source.*` | `blocked`または`partial`。捏造補完禁止 |
+| Output Snapshot | `schema.snapshot.*.v1`共通Envelope | `unmet/schema_invalid` |
+| QA / forbidden output / hallucinated source | `schema.snapshot.qa.v1` | hardまたはadvisory判定を保持 |
+| RepairInstruction | `schema.ticket.repair.v1` | target外変更を拒否 |
+| token／credit budget | Ticket meta、Preflight／reserve参照 | 費用発生前に保留 |
+| Dynamic Post Schema | `schema.ticket.automation.v1`、PostEnvelope、CMS Capability | CMS副作用前に拒否 |
+
+検証: AC-SEC-12。

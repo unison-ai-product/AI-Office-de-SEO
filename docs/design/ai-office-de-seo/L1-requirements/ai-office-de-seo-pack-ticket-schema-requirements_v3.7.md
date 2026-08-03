@@ -314,7 +314,7 @@ Workflowの各ステージが、どのPrompt Pack / Source Pack / Schemaを使�
     url_hash,
     gates[ { gate_key, kind, verdict(pass/fail/warn), score, evidence } ],
     metrics{
-      keyword_density, flesch_reading_ease, passive_ratio,
+      keyword_density, readability[{metric_key,value,advisory}],
       competitor_term_coverage, original_element_count,
       near_duplicate_similarity, citation_ratio, title_body_match,
       inter_unit_redundancy, term_consistency, ai_phrase_density
