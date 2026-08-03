@@ -60,8 +60,8 @@
 ### Important
 
 6. Keyword Market Poolの所有、公共／Site ID、Public Cluster／Site Projection、Market／Share、更新、業界補正、Site補正、ユーザー修正学習の接続マップ、L2集約、L3 Source／DDL／event、プロト受入を2026-08-03に追加した。公共Sourceの購入原価・更新SLO・実装試験は未完了。
-7. Recommendation TypeのCatalogが未確定。新規、リライト、CTA Patch、内部link Patch、観測、技術エスカレーション、Automation変更等を、何でも記事生成へ流さない契約が必要。
-8. MonthlyPlan、Recommendation、手動指定Taskの競合・優先・supersede規則が複数文書へ散在。
+7. Recommendation TypeはAction Routing Map、L2集約、L3 Intake／DDL／event、`PT-REC-01〜04`へ正規Catalogとaliasを追加した。各Workflow、Patch、ユーザー対応の実装・契約試験は未完了。
+8. MonthlyPlan、Recommendation、手動指定Taskは、ユーザー指定維持、自動予定再検証、依存順序相談、version／supersede規則をAction Routing Mapと`PT-REC-05/06`へ集約した。実装・同時更新試験は未完了。
 9. 新規Site戦略Reportと既存Site診断Reportの画面情報設計が不足。既存Siteも市場Keyword母集団に対する自社shareを基線にする必要がある。
 10. CTA/CVはパーツ・リンク先・検索intent・記事目的へ接続済みだが、記事目的別の直接CV／認知貢献評価と画面表示が未完成。
 11. 内部linkは提案・Patch方針があるが、link candidateの状態、承認batch、公開結果、失敗、再評価の契約が不足。

@@ -61,6 +61,12 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-LC-02: 既存Siteで「Site設定→CMS/GSC/Keyword upload→統合分析→市場Keyword母集団に対する自社Share→診断Report→月次計画→Recommendation」へ到達できる。
 - [ ] PT-LC-03: Recommendation採用時に`recommendation_id+version`、`intake_ref`、`correlation_id`が発行され、目的、Cluster、intent、記事目的、CTA、内部link、品質、予算、保護、availabilityがS3／S4／Officeへ再入力なしで渡る。
 - [ ] PT-LC-04: Recommendation typeごとに新規、リライト、CTA Patch、内部link Patch、観測、技術エスカレーション、Automation変更へ分岐し、すべてを記事生成へ流さない。
+- [ ] PT-REC-01: 判定側の`create_new / merge_or_canonicalize / internal_link / do_nothing / index_diagnostic`が正規Actionへ変換され、画面、Intake、event、履歴で同じtypeを使用する。
+- [ ] PT-REC-02: `request_input / observe / protect / no_action`の採用または確定で記事生成Jobが作成されず、不足入力、再開条件、保護理由または再評価日が表示される。
+- [ ] PT-REC-03: CTA Patchと内部link Patchが全文記事生成とは別Taskとして、対象part、差分、承認、CMS結果、評価起点まで追跡できる。
+- [ ] PT-REC-04: structure changeとindex診断はユーザー対応として表示され、canonical、redirect、Site設定を自動変更した表示にならない。
+- [ ] PT-REC-05: ユーザー指定Taskと自動予定が衝突した場合、ユーザーTaskを維持して影響・依存・推奨順序を示し、自動予定だけを要確認へ戻せる。
+- [ ] PT-REC-06: 月次計画または分類変更後も実行済み施策のversionと履歴を維持し、未実行Recommendationだけが再計算・supersedeされる。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。

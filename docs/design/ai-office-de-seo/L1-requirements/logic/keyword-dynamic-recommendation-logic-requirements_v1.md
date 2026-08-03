@@ -128,16 +128,16 @@ GSCの匿名化・上位行切り捨てと未獲得Queryにより、`observed_si
 
 | 条件 | 第一候補 |
 |---|---|
-| 未充足かつ既存担当なし | `create_new` |
+| 未充足かつ既存担当なし | `new_article`（旧名`create_new`） |
 | 市場価値はあるが記事成立性が不足 | `request_input` または `observe` |
 | 担当記事あり・不足/意図ずれ/鮮度低下 | `rewrite` |
-| 複数記事が同一意図を競合 | `merge_or_canonicalize` |
-| 内容充足・リンク不足 | `internal_link` |
+| 複数記事が同一意図を競合 | `structure_change_proposal`（判定別名`merge_or_canonicalize`） |
+| 内容充足・リンク不足 | `internal_link_patch` |
 | 好調・変更リスク高 | `protect` |
 | データ不足・変動中・効果測定待ち | `observe` |
-| 充足済み・価値低・追加不要 | `do_nothing` |
+| 充足済み・価値低・追加不要 | `no_action`（旧名`do_nothing`） |
 
-決定前に重複、保護、cooldown、変更予算、SERP変動、stale、effect measurement stateを検査する。
+決定前に重複、保護、cooldown、変更予算、SERP変動、stale、effect measurement stateを検査する。正規Action名、alias、実行経路および終端は`ai-office-de-seo-recommendation-action-routing-map_v1.md`を正本とする。
 
 市場状態はcluster単位で次を持つ。`protected`（3位以内等の保護）、`winning`（意図どおり獲得）、`quick_win`（改善余地）、`weak`（検索競合より劣後）、`missing`（重要だが順位なし）、`untapped`（複数の適格競合が獲得し自Site未対応）、`unique`（自Site固有獲得）、`emerging`（新規獲得）、`declining`（低下）、`lost`（消失）、`cannibalized`（担当URL不安定）、`unassigned`（記事未割当）、`index_blocked`（記事あり・順位なし・index問題）、`monitoring`（急変監視）である。閾値は設定versionで管理し、順位帯だけで状態を確定しない。
 
@@ -188,7 +188,7 @@ cluster代表語は最大検索量だけで決めず、SERP cluster中心性、�
 
 公開ページの効果評価では、観測変化から季節性・需要変化寄与とAIO・リスティング市場圧力寄与を控除し、残差だけを記事固有変化として扱う。入力不足または寄与分離のconfidence不足時は記事固有の成功・悪化を確定しない。
 
-プライマリ＋セカンダリの割当集合に順位が付かない場合は `rewrite` へ直接送らず、`index_diagnostic` を第一候補とする。診断はnoindex、canonical、robots、公開状態、サイトマップ、クロール等の観測結果とユーザーが確認すべき内容を返す。本システムはサイト構築・サイト全体設定の管理を責務としないため自動修復せず、ユーザーエスカレーションで終端する。将来対応は別versionの要求・Permissionとして扱う。CVなしは単独で異常または失敗に分類せず、十分なクリック母数がある場合だけCVR評価へ進める。
+プライマリ＋セカンダリの割当集合に順位が付かない場合は `rewrite` へ直接送らず、`technical_escalation`（subtype=`index_diagnostic`）を第一候補とする。診断はnoindex、canonical、robots、公開状態、サイトマップ、クロール等の観測結果とユーザーが確認すべき内容を返す。本システムはサイト構築・サイト全体設定の管理を責務としないため自動修復せず、ユーザーエスカレーションで終端する。将来対応は別versionの要求・Permissionとして扱う。CVなしは単独で異常または失敗に分類せず、十分なクリック母数がある場合だけCVR評価へ進める。
 
 セカンダリが継続的に強い実績を持つ場合はプライマリとの単純入れ替えを行わない。Siteに設定または推定された複数の2階層「業界／業種」と、対象顧客、共通課題、商品・サービス、地域、ファネル、補足記述からなる横断軸を入力として、同一SERP、intent、co-landing、順位、表示、クリック、CV実績を再集計し、クラスタ境界、代表語、プライマリ／セカンダリ重みを再計算する。
 

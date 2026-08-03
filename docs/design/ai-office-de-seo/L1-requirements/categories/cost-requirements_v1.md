@@ -88,7 +88,7 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 - `cost_confidence`: 入力規模、cache、外部取得、過去実績から算出する見積信頼度。
 - `cost_efficiency`: 期待する戦略価値をexpected costで割った比較指標。金銭成果を保証するROIとして表示しない。
 - 高コスト候補は自動却下せず、戦略必要性、依存関係、将来価値と併記する。
-- `do_nothing`、既存記事の部分修正、内部リンク、軽量リライトを、新規記事生成と同じ候補集合で比較する。
+- `no_action`（旧名`do_nothing`）、既存記事の部分修正、内部リンクPatch、軽量リライトを、新規記事生成と同じ候補集合で比較する。
 
 キーワード動的レコメンドの `cost_penalty` は本要求のexpected costとconfidenceを使用する。
 

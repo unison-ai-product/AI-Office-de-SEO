@@ -387,7 +387,7 @@ ID型論理分離は、単純な列追加ではなく、越境防止の補償的
 記事制作とリライトは、レコメンドから開始する運用を基本とする。ユーザーは「何を作るか・何を直すか」を毎回ゼロから探索するのではなく、システムがArticleSummary、Keyword Map、GSC、競合構造、サイトトポロジー、施策台帳から作った候補を確認し、採用、編集、保留、却下、予約する。
 
 - 主導線: ダッシュボードとコンテンツ作成画面の既定入口は、優先順位付きのrecommendation queueとする。自由なキーワード指定、URL指定、手動起動は補助導線として残す。
-- 推薦判定: 各候補は `create_new` / `rewrite` / `merge_or_canonicalize` / `internal_link` / `cta_update` / `refresh` / `protect` / `observe` / `do_nothing` のいずれかを持つ。記事本数を増やすことだけを正解とせず、統合、保護、監視、見送りを正式な結果として扱う。
+- 推薦判定: 各候補はAction Routing Mapの正規typeを持つ。旧判定名`create_new / merge_or_canonicalize / internal_link / cta_update / do_nothing`は、それぞれ`new_article / structure_change_proposal / internal_link_patch / cta_patch / no_action`へ正規化し、`refresh`は`rewrite`のsubtypeとする。記事本数を増やすことだけを正解とせず、統合提案、保護、監視、見送りを正式な結果として扱う。
 - 新規記事: 未充足の検索意図・問い・トピック、既存記事との重複、サイト内での役割、期待価値、作成順序を提示する。既存ArticleSummaryで十分に満たされている場合は新規生成を推奨しない。
 - リライト: GSC Query Drift、順位・CTR、ArticleSummaryの不足・鮮度・意図ずれ、競合差分、施策履歴から、対象範囲と修正理由を提示する。本文全体を無条件に再生成せず、変更範囲を最小化する。
 - 実行契約: recommendation itemを採用すると、対象、目的、根拠、期待改善、変更範囲、品質条件、予算を引き継いだTicketまたはEdit Planを生成する。ユーザーが同じ情報を再入力しない。

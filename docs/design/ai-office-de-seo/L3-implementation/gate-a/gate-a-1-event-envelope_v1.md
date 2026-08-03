@@ -88,11 +88,15 @@ updated_at: 2026-07-05
 | site.cluster_dependency_staled | site_cluster_id, public_cluster_ref, reason | O | REQ-KRL-09 |
 | site.market_share_calculated | site_cluster_id, snapshot_id, period, observed_availability, estimated_availability | W,O | REQ-KRL-02/09 |
 | site.keyword_classification_corrected | target_ref, correction_kind, before_version, after_version | W,O,A | REQ-DATA-11, REQ-KRL-09 |
-| recommendation.proposed | recommendation_id, version, type, target_ref, availability | W,O | REQ-KRL-08, REQ-DATA-06 |
+| recommendation.proposed | recommendation_id, version, type, subtype?, target_ref, origin, availability | W,O | REQ-KRL-08, REQ-DATA-06 |
 | recommendation.accepted | recommendation_id, version, intake_ref, correlation_id | W,O,A | REQ-LOGIC-03, REQ-SCREEN-09 |
 | recommendation.held | recommendation_id, version, reason, release_condition | W,N,O | REQ-KRL-07/09 |
 | recommendation.expired | recommendation_id, version, cause | W,O | REQ-KRL-09 |
 | recommendation.dispatched | recommendation_id, intake_ref, workflow_key, job_id, correlation_id | W,O | REQ-LOGIC-03, REQ-AGENT-09 |
+| recommendation.user_action_requested | recommendation_id, intake_ref, action_kind, reason_refs[], release_condition | W,N,O | REQ-KRL-07/08 |
+| recommendation.no_action_recorded | recommendation_id, type(protect/observe/no_action), next_evaluation_at? | W,O | REQ-KRL-07/09 |
+| recommendation.superseded | recommendation_id, version, superseded_by_ref, cause, origin | W,O | REQ-KRL-09 |
+| task.conflict_detected | manual_task_ref, automatic_action_ref, target_ref, conflict_kind, suggested_order[] | W,N,O | REQ-KRL-09, REQ-LOGIC-03 |
 | recommendation.evaluation_started | recommendation_id, intervention_ref, evaluation_window | W,O | REQ-LOGIC-06, REQ-DATA-07 |
 | recommendation.learned | recommendation_id, result_class, site_calibration_version, global_candidate_ref? | W,O,A | REQ-KRL-10, REQ-DATA-10 |
 | plan.monthly_closed | period, target_delta, factors[] | N,O | REQ-PRODUCT-17 |

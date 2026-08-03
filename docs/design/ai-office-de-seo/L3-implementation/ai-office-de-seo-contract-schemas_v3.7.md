@@ -21,7 +21,7 @@ L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメイン�
 {
   recommendation_id, recommendation_version,
   tenant_id, site_id, requested_by,
-  recommendation_type, target_ref,
+  recommendation_type, recommendation_subtype?, target_ref,
   objective_ref, keyword_cluster_ref,
   search_intent, article_purpose,
   reason_evidence_refs[],
@@ -33,12 +33,14 @@ L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメイン�
 }
 ```
 
-- `recommendation_type`: `new_article / rewrite / cta_patch / internal_link_patch / observe / technical_escalation / automation_change`。Coreが実行できない施策は、実行Workflowへ偽装せずユーザー対応Taskへ変換する。
+- `recommendation_type`: `new_article / rewrite / cta_patch / internal_link_patch / request_input / observe / protect / no_action / structure_change_proposal / technical_escalation / automation_change`。判定側aliasとroutingは`ai-office-de-seo-recommendation-action-routing-map_v1.md`へ従う。Coreが実行できない施策は、実行Workflowへ偽装せずユーザー対応Taskへ変換する。
+- `recommendation_subtype`: `refresh / index_diagnostic / merge / canonical_candidate`等の細分を保持する。Workflow名や画面表示名をtypeへ混入させない。
 - `target_ref`: Keyword Cluster、記事、Site、CTA/CV Goal等の型付き参照を持つ。
 - `reason_evidence_refs[]`: 表示した推薦理由と実行入力が同じ根拠を指すための参照である。
 - `availability`: 入力Sourceの存在・鮮度・欠損理由を保持し、欠損値をLLMで補完しない。
 - 採用時にversionをfreezeする。実行前Preflightで権限、予算、接続、重複、カニバリ、保護、鮮度を再判定し、変化があれば元Recommendationを改変せず`held / superseded`へ遷移させる。
 - ユーザー手動起動も同Schemaへ正規化して由来を保持し、同じPreflightへ通す。
+- ユーザー指定Taskは維持し、衝突時は依存・影響・推奨順序を提示する。自動予定だけを`needs_review / held / superseded`へ戻せる。月次計画変更は実行済み施策を変更しない。
 
 根拠: `REQ-KRL-08/09`、`REQ-DATA-06/07`、`REQ-LOGIC-03`、`REQ-SCREEN-09/15/18`、Agent要求マップ。
 

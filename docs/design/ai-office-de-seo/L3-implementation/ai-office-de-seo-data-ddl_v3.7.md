@@ -46,7 +46,7 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 
 - ArticleSummaryの配列・短文は件数/文字数上限をConfigで持つ。検索頻度の高いintent、tier、freshness、quality、content_hashは索引可能な小さい列とし、可変インベントリは上限つきJSONへ分離する。巨大JSON、本文断片、全世代コピーを作らない。
 - 推薦生成はarticle_summaries、Keyword Map、GSC read model、intervention_ledgerを入力とし、recommendation_itemsへ使用summary field、根拠ref、confidence、freshness、反証条件を保存する。推薦一覧の生成時にWP本文を再取得しない。
-- `recommendation_items`は`recommendation_id + version`を安定keyとし、type、target_ref、objective_ref、keyword_cluster_ref、search_intent、article_purpose、reason_evidence_refs、cta_policy_ref、internal_link_plan_ref、quality_tier、budget_estimate、protection_policy、availability、dependencies、score_components、status、expires_at、supersedes_refを保持する。採用時は`recommendation_intakes`へ`schema.intake.recommendation.v1`準拠のfreeze済み入力とcorrelation_idを保存し、`generation_jobs.intake_ref`から参照する。画面表示値からIntakeを再構築しない。
+- `recommendation_items`は`recommendation_id + version`を安定keyとし、正規type、subtype、target_ref、objective_ref、keyword_cluster_ref、search_intent、article_purpose、reason_evidence_refs、cta_policy_ref、internal_link_plan_ref、quality_tier、budget_estimate、protection_policy、availability、dependencies、score_components、status、expires_at、supersedes_ref、origin（monthly_plan/user_manual/automation）を保持する。typeはAction Routing MapのCatalogへ制約し、判定alias、Workflow名、画面名を保存しない。採用時は`recommendation_intakes`へ`schema.intake.recommendation.v1`準拠のfreeze済み入力とcorrelation_idを保存し、各workflow/patch/user taskから参照する。画面表示値からIntakeを再構築しない。ユーザー指定Taskとの衝突では自動予定側をneeds_reviewへ戻し、手動Taskを暗黙取消ししない。
 
 ## 3. Search Performance（GscDataMart / CoverageAssessment / RewriteCandidate 集約）
 

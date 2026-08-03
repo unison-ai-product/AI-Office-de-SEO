@@ -89,6 +89,8 @@ Agent関連要求は分類別正本だけからゼロベースで追加しない
 
 公共Keyword資産、公共Market Cluster、Site Keyword Universe、Site Cluster、Observed／Estimated／Article Share、Recommendation、補正学習の接続は`ai-office-de-seo-keyword-market-share-connection-map_v1.md`を索引とする。公共データと顧客固有データのID、store、provenance、再計算を混在させない。
 
+Recommendation Actionの正規名、判定側alias、Agentic Workflow／軽量Patch／監視／ユーザー対応へのrouting、月次計画・手動Task・自動予定の競合規則は`ai-office-de-seo-recommendation-action-routing-map_v1.md`を正本とする。個別ロジック、画面または実装層で別Catalogを作らない。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

@@ -87,9 +87,9 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 ### 4.3.1 Recommendation（Search Performance）
 
 - ルート: Recommendation。候補抽出時点から採用、実行、評価、再推薦まで同じ`recommendation_id`とversionで追跡する。
-- 値: RecommendationType、TargetRef、ObjectiveRef、KeywordClusterRef、SearchIntent、ArticlePurpose、ReasonEvidence、CtaPolicyRef、InternalLinkPlanRef、QualityTier、BudgetEstimate、ProtectionPolicy、Availability、Dependencies、ScoreComponents、Status。
+- 値: RecommendationType、RecommendationSubtype、TargetRef、ObjectiveRef、KeywordClusterRef、SearchIntent、ArticlePurpose、ReasonEvidence、CtaPolicyRef、InternalLinkPlanRef、QualityTier、BudgetEstimate、ProtectionPolicy、Availability、Dependencies、ScoreComponents、Status。Typeは`new_article / rewrite / cta_patch / internal_link_patch / request_input / observe / protect / no_action / structure_change_proposal / technical_escalation / automation_change`を正規Catalogとする。
 - 状態: `candidate → proposed → accepted / held / excluded / expired → dispatched → executing → completed → evaluating → learned / superseded`。市場急変時は`watching`へ分岐し、通常推薦から隔離する。
-- 不変条件: 採用後はIntake Contractをfreezeし、Agent Workflowへ再入力なしで渡す／未実行Recommendationだけが目的・市場・分類変更による再計算対象／実行済みは履歴として保持／根拠、入力availability、予測credit、依存関係、保護条件を欠くものは実行可能にしない／手動起動もRecommendation由来と同じPreflight・重複・カニバリ・権限・予算判定へ通す。
+- 不変条件: 採用後はIntake Contractをfreezeし、Agent Workflowへ再入力なしで渡す／未実行Recommendationだけが目的・市場・分類変更による再計算対象／実行済みは履歴として保持／根拠、入力availability、予測credit、依存関係、保護条件を欠くものは実行可能にしない／手動起動もRecommendation由来と同じPreflight・重複・カニバリ・権限・予算判定へ通す／ユーザー指定Taskは維持し、衝突時は相談と依存順序を提示する／自動予定だけを再検証でheld、needs_review、supersededへ遷移させる／観測、保護、no action、ユーザーエスカレーションにAgent Jobを偽造しない。
 
 ### 4.4 RewriteJob / ArticleWorkspace（Rewrite）
 - ルート: RewriteJob（ArticleWorkspaceを内包）。
