@@ -350,6 +350,26 @@ for (const markdownFile of markdownFiles(path.join(repoRoot, "docs"))) {
     fail(errors, `manifest: unclassified Markdown artifact ${relativePath}`);
   }
 }
+for (const markdownFile of markdownFiles(path.join(repoRoot, "docs"))) {
+  const content = fs.readFileSync(markdownFile, "utf8");
+  for (const match of content.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
+    const rawTarget = match[1].trim().replace(/^<|>$/g, "");
+    if (!rawTarget || /^(?:https?:|mailto:|#)/.test(rawTarget)) continue;
+    const withoutAnchor = rawTarget.split("#")[0];
+    if (!/[\\/]|\.[a-z0-9]{1,8}$/i.test(withoutAnchor)) continue;
+    let decodedTarget;
+    try {
+      decodedTarget = decodeURIComponent(withoutAnchor);
+    } catch {
+      fail(errors, `${path.relative(repoRoot, markdownFile)}: invalid encoded link ${rawTarget}`);
+      continue;
+    }
+    const resolvedTarget = path.resolve(path.dirname(markdownFile), decodedTarget);
+    if (!fs.existsSync(resolvedTarget)) {
+      fail(errors, `${path.relative(repoRoot, markdownFile)}: broken local link ${rawTarget}`);
+    }
+  }
+}
 for (const relativePath of manifest.gate_a_paths ?? []) {
   if (!relativePath.endsWith(".md")) continue;
   const content = fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
