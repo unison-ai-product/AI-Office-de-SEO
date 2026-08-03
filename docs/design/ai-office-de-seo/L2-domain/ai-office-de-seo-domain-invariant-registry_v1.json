@@ -21,6 +21,27 @@
           "forbidden_patterns": ["顧客(?:User|利用者).{0,50}内部(?:Admin|管理者).{0,30}(同じSession|同一Session|切り替え)"],
           "bad_fixtures": ["顧客利用者は内部管理者へ同じSessionで切り替える。"],
           "good_fixtures": ["顧客面と内部管理面はSession、Route、APIを分離する。"]
+        },
+        {
+          "invariant_id": "INV-ACCESS-002",
+          "statement": "顧客認可は契約者・サイトオーナー・ユーザーの3基本権限、目標管理・Keyword／Site戦略・記事制作・Site分析の4業務権限、Site Assignmentで判定する。Viewerや執筆者／検収者を別Roleにしない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/customer-organization-governance-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-authorization-operation-matrix_v1.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md"
+          ],
+          "forbidden_patterns": [
+            "(?:Owner|Admin|Editor|Viewer).{0,40}(?:顧客認可の正本|基本権限として保存|顧客Roleとして使用)",
+            "(?:記事執筆|記事検収).{0,20}(?:別Role|別権限)"
+          ],
+          "bad_fixtures": [
+            "Owner/Admin/Editor/Viewerを顧客認可の正本とする。",
+            "記事執筆と記事検収を別Roleにする。"
+          ],
+          "good_fixtures": [
+            "顧客の基本権限は契約者・サイトオーナー・ユーザーとし、業務権限とSite Assignmentを別評価する。",
+            "記事制作と検収は同じ記事制作Permissionを使う。"
+          ]
         }
       ]
     },
@@ -150,6 +171,28 @@
           "forbidden_patterns": ["リライト.{0,40}(?:承認なし|無承認).{0,30}(?:公開|更新|反映)"],
           "bad_fixtures": ["リライトを承認なしでCMSへ更新する。"],
           "good_fixtures": ["リライトはCMS下書きへ送り、ユーザー承認後に更新する。"]
+        },
+        {
+          "invariant_id": "INV-CMS-002",
+          "statement": "最初の15件は本システム経由の新規記事だけを数え完成記事承認を必須とする。リライト／記事置換は件数に含めず常に個別承認、hard gate例外は同一権限者の二段階確認と版付き同意を要する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-wp-automation-dynamic-post-requirements_v3.7.md"
+          ],
+          "forbidden_patterns": [
+            "15記事.{0,40}(?:リライト|既存記事).{0,20}(?:含める|算入する|数える)",
+            "hard gate.{0,40}(?:確認なし|一段階確認).{0,30}(?:公開|例外公開)"
+          ],
+          "bad_fixtures": [
+            "15記事にはリライトも含める。",
+            "hard gateは一段階確認で例外公開できる。"
+          ],
+          "good_fixtures": [
+            "15件は本システム経由で承認・公開した新規記事だけを数える。",
+            "hard gate例外は同一権限者の二段階確認と版付き同意を必要とする。"
+          ]
         }
       ]
     },
@@ -285,6 +328,28 @@
           "forbidden_patterns": ["(?:100位以内|100位).{0,40}(順位獲得|成果獲得|顧客成果)(として|へ表示|に算入)"],
           "bad_fixtures": ["100位以内に入ったため順位獲得として顧客成果へ表示する。"],
           "good_fixtures": ["100位以内は内部進捗signalに限定する。"]
+        },
+        {
+          "invariant_id": "INV-OUTCOME-002",
+          "statement": "公開または実質的更新を起点に1か月・3か月・6か月で評価し、公開後は新規記事という分類ではなく公開ページとして評価する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-rewrite-runtime-requirements_v3.7.md"
+          ],
+          "forbidden_patterns": [
+            "(?:一次評価|二次評価|長期評価).{0,20}(?:2か月|4か月|12か月)",
+            "公開後.{0,30}新規記事として.{0,20}評価"
+          ],
+          "bad_fixtures": [
+            "一次評価は2か月、二次評価は4か月、長期評価は12か月とする。",
+            "公開後も新規記事として評価する。"
+          ],
+          "good_fixtures": [
+            "公開・更新から1か月後に一次、3か月後に二次、6か月後に長期評価する。",
+            "公開後は公開ページとして評価する。"
+          ]
         }
       ]
     },

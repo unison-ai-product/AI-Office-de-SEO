@@ -82,8 +82,8 @@ Adapterは外部の状態名を内部Aggregateへ直接持ち込まず、ACLでP
 
 認可の正本はCustomer Account & Accessとし、各Commandの実行前に `contract_account_id`、`customer_organization_id`、`site_id`、基本権限、業務権限を評価する。顧客面と内部管理面はSession、Route、API、監査を分離する。
 
-- 基本権限: 契約者、管理者、利用者。
-- 業務権限: 目標管理、Keyword／Site戦略、記事制作・検収、Site分析。
+- 基本権限: 契約者、サイトオーナー、ユーザー。
+- 業務権限: 目標管理、Keyword／Site戦略、記事制作、Site分析。記事制作には生成、修正、検収、承認を含め、人間の執筆者と検収者を別Roleにしない。
 - Site範囲: 明示付与がある場合は付与Siteのみ、付与がなければ所属組織配下の全Site。
 - 予算、契約、Credit購入: 契約者または管理者だけが変更する。
 - 上位権限者は下位利用者へ業務権限を付与できる。
