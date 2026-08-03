@@ -151,6 +151,7 @@ Prompt Cacheは費用・latency最適化であり、状態・知識の正本で�
 - OfficeでAgentへ話した内容は、質問回答、設定変更案、既存Task修正案、追加Ticket候補へ構造化し、影響と費用を確認してから確定する。
 - Officeは監視専用に限定しない。通常ビューが簡単操作を担い、Officeは同じ業務正本を使って詳細探索、条件・方針変更、Agent指示、Task構成変更を行う。
 - Pack、Ticket、Schema、Executor、primary／standby等の内部用語を顧客の第一階層へ出さない。
+- personaごとの担当業務、正本、Proposal、Executor／Tool、Permission、設備の正本は`ai-office-de-seo-agent-office-ui-requirements_v3.7.md` §4の完全対応表とする。persona名だけの対応表や、キャラクターとExecutorの1対1表を別途作らない。
 
 正本: `REQ-AOUI-01〜07`、`categories/design-experience-requirements_v1.md`、`categories/screen-operation-requirements_v1.md`。
 

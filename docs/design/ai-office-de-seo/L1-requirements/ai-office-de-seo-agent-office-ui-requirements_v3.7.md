@@ -42,17 +42,23 @@ Agent Officeは部門（部屋）とエージェント（キャラ）で構成�
 
 Agent Officeが実状態と業務能力を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、利用可能Tool、担当業務へ対応づける。ペルソナは独立runtimeそのものではないが、説明、探索、会話、変更案、Task化、実行監視を担うユーザー窓口である。
 
-- keyword_researcher → Keyword Intent 工程 / Planning Executor
-- analyst / traffic_reporter → SERP-TTPS Research・GSC分析 / 一般システム（機械判定, `REQ-KGA-08`）
-- planner → Site Strategy・Outline Architect / Planning Executor
-- content_writer → Section Brief・Draft Writer / Writing Executor
-- link_architect → 内部リンク（`REQ-KGA-09`）
-- qa_checker → Quality Gate / QA Executor
-- publish_manager → WP Draft / Automation Executor
-- automation_operator → Automation・予約 / Automation Executor
-- knowledge_trainer → 学習ナレッジ管理
-- security_admin / support_agent → セキュリティ・ヘルプ（`REQ-SEC` / 提供方針）
-- technical_seo → WP Capability・投稿形式チェック・内部リンク/クロール可能性の技術面（`REQ-WPA-08`, `REQ-KGA-09`）/ 一般システム（機械判定, `REQ-KGA-08`）＋QA Executor
+| persona | 主な業務 | 読む正本・Service | 会話から作れるもの | Executor／Tool接続 | 変更時の業務Permission | Office設備・詳細面 |
+|---|---|---|---|---|---|---|
+| `planner` | Site目的、月次方針、記事配分、制作順、記事構成 | MonthlyPlan、Keyword Report、Recommendation、Intake、Research Brief | 方針・配分変更Proposal、実行順変更、Outline変更案 | Planning Executor、Plan／Recommendation service | 目標管理。記事構成は記事制作、Keyword配分はキーワード・サイト戦略も必要 | 戦略ボード、月次計画卓、Outline table |
+| `keyword_researcher` | 市場探索、Cluster、主＋補助Keyword、intent、除外、方向性 | Keyword Asset Pool、Market／Share、SERP、GSC Query、分類・補正 | Cluster状態、重み、除外、追加調査、Recommendation方向のProposal | 決定論Keyword service、Planning Executor、Source Need | キーワード・サイト戦略 | Market wall、Cluster map、Keyword terminal |
+| `analyst` | 市場・Site・記事の横断診断、要因仮説 | Report、Market／Share、記事／Query、AIO・広告・季節性、Intervention | 診断条件、比較軸、評価解釈、追加分析Task | 集計service、Planning／QA Executor | 閲覧は全Member。条件変更・評価確定はサイト分析 | 分析卓、比較matrix、evidence panel |
+| `traffic_reporter` | 順位、表示、click、CV、認知貢献、月次／累積説明 | GSC、Tracker、CV、Evaluation、Watch Queue | 期間・segment変更、観測継続、次施策候補 | 集計service、Recommendation service | サイト分析 | Traffic wall、funnel board、trend console |
+| `content_writer` | Meaning Unit制作、ユーザー修正反映、限定再生成 | Intake、Outline Contract、Section Brief、Site rule、Source Pack | 本文限定変更案、追加要望、再生成Task | Writing／Repair Executor | 記事制作 | Draft desk、Meaning Unit board、diff editor |
+| `link_architect` | 新規／更新記事の内部link、既存記事Patch候補 | Article Summary、Keyword Cluster、link graph、Patch Action | link候補採否、接続文Repair、Batch／順序変更案 | QA／Repair／Automation Executor、Patch service | 記事制作。戦略条件変更はキーワード・サイト戦略も必要 | Link graph table、candidate queue |
+| `qa_checker` | Quality Gate、根拠、構造、文体、CTA／link整合 | Draft Snapshot、QA Snapshot、Gate Catalog、hard gate状態 | 差し戻し、限定Repair、二段階確認案 | QA／Repair Executor | 記事制作 | QA console、evidence desk、gate board |
+| `publish_manager` | CMS下書き、Preview、承認、予約、公開結果 | Publication Job、CMS Connection Profile、Approval、Output Vault | 送信・再送・予約・承認・公開Proposal | Automation Executor、CMS write Tool | 記事制作＋Site付与。自動運用設定は契約者／サイトオーナー条件も必要 | Publishing desk、calendar、CMS status |
+| `automation_operator` | 自動予定、実行順、停止・再開、変更予算 | Automation Policy、schedule、queue、budget、Kill Switch | Policy／予定／停止・再開Proposal | Orchestrator、Automation Executor | 個別Taskは記事制作。Policy変更は契約者／サイトオーナー＋対象Permission | Operations board、queue rail、kill switch |
+| `knowledge_trainer` | Site補正、成功学習、文体・装飾・方針のversion | Derived Facts、Intervention、Site rule、Pack version、correction | 採用・無効化・再学習・適用先変更Proposal | Pack Compiler／Validate、管理承認済みPublish | キーワード・サイト戦略。記事表現だけは記事制作 | Knowledge graph、version shelf、training table |
+| `security_admin` | 顧客向け接続・認証・権限・同意の案内 | Authorization Decision、Membership、Connection Profile、同意状態 | 再認証、権限・Site付与、同意更新Proposal | Authorization／Connection command | 質問は可視範囲内。変更は契約者／サイトオーナー等の操作別条件 | Access console、connection health。内部監査logは出さない |
+| `support_agent` | FAQ、障害切分け、自己解決、問い合わせ | user-visible診断code、FAQ、Task、Connection Health、status | 解決手順、再実行案、Support Ticket | FAQ Chat、Support service | 質問は可視範囲内。状態変更は対象操作のPermissionへ委譲 | Help desk、diagnostic panel |
+| `technical_seo` | crawl、index、CMS Capability、link・表示速度等の診断 | Crawler観測、GSC index、CMS Profile、link graph、CWV | 技術対応Task、記事側施策Recommendation、再診断案 | 決定論診断、QA Executor、Support escalation | 閲覧・診断条件はサイト分析。CMS設定は契約者／サイトオーナー条件。Site構造は提案のみ | Technical lab、crawler console、capability matrix |
+
+設備は画面上の業務入口であり、設備をクリックしただけで権限やTool scopeを増やさない。1 personaが複数Service／Executorへ接続してよく、1 Executorを複数personaが異なる文脈から利用してよい。personaとExecutorを1対1に固定しない。
 
 エージェント活動可視化は、状態機械（`REQ-AGENT-09`）の現工程・遷移を反映する。キャラは待機/作業/完了/エラーの4ステート差分を持つ（初期は基本形、本番制作で追加）。
 

@@ -114,6 +114,15 @@ updated_at: 2026-07-05
 | cms.read_connection_required | connection_profile_id, failed_routes[], required_user_actions[] | W,N,O | REQ-INT-09 |
 | cms.write_verification_completed | publication_or_patch_ref, post_ref, status, resulting_hash?, verified_at | W,O,A | REQ-WPA-09/12 |
 | cms.capacity_threshold_reached | connection_profile_id, dimension, usage, limit, forecast_at | W,N,O | REQ-BILLING-03 |
+| office.proposal_drafted | proposal_id, version, persona_key, intent_kind, target_ref, operation | W,O | REQ-AOUI-01/04 |
+| office.proposal_estimated | proposal_id, version, impact_ref, estimate_ref, availability | W,O | REQ-AOUI-01/04 |
+| office.proposal_input_required | proposal_id, missing_inputs[], release_condition | W,N,O | REQ-AOUI-04 |
+| office.proposal_confirmed | proposal_id, version, confirmed_by, authorization_decision_ref | W,O,A | REQ-AOUI-01/04 |
+| office.proposal_dispatched | proposal_id, command_ref, correlation_id | W,O,A | REQ-AGENT-06/09 |
+| office.proposal_applied | proposal_id, command_ref, result_ref, changed_refs[] | W,N,O,A | REQ-AOUI-01 |
+| office.proposal_failed | proposal_id, command_ref?, error_class, retryable | W,N,O | REQ-AOUI-01 |
+| office.proposal_cancelled | proposal_id, cancelled_by, reason | W,O,A | REQ-AOUI-01 |
+| office.proposal_superseded | proposal_id, version, current_base_version, replacement_ref? | W,O | REQ-AOUI-01 |
 | patch.candidate_proposed | patch_action_id, type, target_article_ref, target_part_ref, recommendation_ref? | W,O | REQ-WPA-12/13, REQ-KGA-09 |
 | patch.batch_approved | approval_batch_ref, patch_action_refs[], approved_by | W,O,A | REQ-WPA-12, REQ-PRODUCT-08 |
 | patch.action_scheduled | patch_action_id, cms_job_ref, scheduled_at | W,O | REQ-WPA-12 |

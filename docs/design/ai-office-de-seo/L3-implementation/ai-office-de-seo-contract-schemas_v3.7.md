@@ -132,6 +132,37 @@ Siteごとの接続結果を`schema.cms.connection_profile.v1`へ固定する。
 
 根拠: `REQ-INT-05/06/09`、`REQ-WPA-01〜14`、CMS接続・取得・投稿経路マップ。
 
+## 0.0.4 Agent Office Conversation・Proposal Contract
+
+Office会話を質問と状態変更へ分け、変更案を`schema.office.proposal.v1`へ正規化する。
+
+```text
+{
+  proposal_id, version, tenant_id, site_id, conversation_ref,
+  persona_key, room_key, source_view_ref,
+  intent_kind, target_ref, operation,
+  base_state_ref, base_version,
+  requested_change, normalized_patch,
+  evidence_refs[], assumptions[], missing_inputs[],
+  impact{affected_refs[], plan_delta?, schedule_delta?, recommendation_delta?, risk_notes[]},
+  estimate{credit, monetary?, capacity?, calculation_version, availability},
+  authorization{action, decision_ref?, required_permission, step_up_required},
+  reversibility{kind, rollback_ref?, cancel_until?},
+  status, confirmed_by?, confirmed_at?, command_ref?, result_ref?,
+  correlation_id, created_at, expires_at
+}
+```
+
+- `intent_kind`: `question / exploration / change_proposal / new_task_proposal / task_revision_proposal`。質問・探索はProposal確定を要求せず、状態変更Commandを発行しない。
+- `status`: `draft / input_required / estimated / awaiting_confirmation / confirmed / dispatched / applied / failed / cancelled / superseded / expired`。
+- `base_version`不一致時は古い差分を適用せず、再計算して`superseded`または再確認へ戻す。
+- `normalized_patch`は対象Domainの既存Command Schemaへ変換可能な型付き差分であり、自由会話文をそのままDB、CMS、Policyへ送らない。
+- 影響、credit、Capacityまたは権限を確定できない場合、`availability`と不足入力を表示して確定不可とする。
+- 確定時と副作用直前に`schema.authorization.decision.v1`を使用する。persona、部屋、Office入室は認可根拠にならない。
+- 通常ビューとOfficeは同じCommand Result eventを購読し、別々の業務状態を保存しない。
+
+根拠: `REQ-AOUI-01/04/07`、`REQ-AGENT-06/09`、`REQ-SCREEN-15`、Agent要求マップ。
+
 ## 0.1 Authorization Decision Contract
 
 すべての実行面で使用する認可入力・出力を`schema.authorization.decision.v1`として固定する。

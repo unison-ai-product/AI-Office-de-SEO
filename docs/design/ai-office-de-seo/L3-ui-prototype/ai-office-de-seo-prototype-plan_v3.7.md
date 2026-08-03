@@ -89,6 +89,13 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-MIG-03: 顧客認可にOwner／Admin／Editor／Viewerを正本として使用せず、契約者／サイトオーナー／ユーザー、業務Permission、Site付与から判定する。
 - [ ] PT-MIG-04: Officeを監視専用にせず、通常ビューの詳細操作、Agent会話Proposal、影響・credit確認、共通Command、双方向同期を操作できる。
 - [ ] PT-MIG-05: 旧モックfixtureを読み込んでも、現行Schemaへのmigrationまたは拒否が行われ、旧値がPlan、権限、承認、Office状態へ昇格しない。
+- [ ] PT-OFFICE-01: 基本12＋technical_seoの全personaが、担当業務、正本、作成可能Proposal、Executor／Tool、Permission、設備へmappingされ、空のキャラクターまたは専用runtimeにならない。
+- [ ] PT-OFFICE-02: 質問・探索では状態変更Commandを発行せず、変更指示だけが型付きProposalへ変換される。
+- [ ] PT-OFFICE-03: Proposalが対象、base version、差分、根拠、不足入力、影響、credit／Capacity、権限、取消／復元可否を表示し、不明項目をLLM推測で埋めない。
+- [ ] PT-OFFICE-04: Proposal確定時と副作用直前に同じ認可契約を使い、persona／部屋／Office入室でPermissionが拡張されない。
+- [ ] PT-OFFICE-05: base version競合時に古いProposalを適用せず、supersededまたは再確認へ遷移する。
+- [ ] PT-OFFICE-06: Officeの変更結果が通常ビューへ、通常ビューの採否・承認・設定結果がOffice設備・Agent・Knowledge Graphへ同じeventから反映される。
+- [ ] PT-OFFICE-07: Proposalを適用前に取消でき、適用後は対象Domainが提供するrollback／復元だけを表示し、存在しないrollbackを約束しない。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。

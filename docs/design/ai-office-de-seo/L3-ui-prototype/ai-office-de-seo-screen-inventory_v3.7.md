@@ -150,6 +150,8 @@ CTA／内部link軽量Patchでは、候補一覧、対象記事とpart、記事�
 
 ペルソナ⇄工程マッピングは REQ-AOUI-04（基本12＋拡張1: technical_seo）。部屋・フロア・ペルソナ構成はconfig駆動でプロトにも反映する（REQ-AOUI-07）: プロトのオフィスレイアウトはハードコードせずJSON configから描画する。
 
+現行マッピングはpersona名と工程名だけでなく、担当業務、読む正本、作成可能なProposal、Executor／Tool、変更Permission、設備を持つ。Office会話は`質問・探索`と`変更案・Task案`を画面上で区別する。変更案は対象、現在version、変更前後、根拠、影響対象、予定／推薦差分、予測credit／Capacity、権限、取消／復元可否を表示して確定する。確定後は共通Commandの結果を通常ビューとOfficeへ同時反映し、失敗、競合、supersededを成功表示しない。
+
 ## 4. プロト範囲外（作らない）
 
 - 開発管理者コンソールの画面台帳は AOS-L3-ADMIN-SCREEN-INVENTORY（別紙）に分離し、プロトではPT-6（管理面トラック）で扱う。本書のユーザー向けP0〜P2より後段。

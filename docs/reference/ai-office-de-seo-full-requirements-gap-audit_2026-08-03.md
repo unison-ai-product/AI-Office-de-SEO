@@ -67,8 +67,8 @@
 11. 内部linkはcandidate lifecycle、承認Batch、候補単位の部分失敗、CMS反映確認、再評価を軽量Patch接続マップと`PT-PATCH-02〜05`へ追加した。実装・CMS別Contract Testは未完了。
 12. CMS読取り経路はCMS接続Routing Map、L2 CmsConnectionProfile、L3 Profile schema／DDL／event、`PT-CMS-01〜05`へ、Site別選択結果、health、切替履歴、Capacity／Planを追加した。Adapter実装とfailover試験は未完了。
 13. WordPress Capability MatrixはCMS接続Profileと画面Capability表示、`PT-CMS-01/05/06`へ接続し、read／write／Media／Editor／Preview／Revision／反映確認を分離した。CMS共通Publication JSON SchemaとCMS別Contract Testは未完了。
-14. Officeの会話変更案はL1にあるが、Proposal schema、影響差分、credit見積、取消／rollback、通常ビュー同期eventがL3未定義。
-15. Agent personaと「担当業務・利用Service・Tool・Workflow・Permission・Office設備」の完全Mappingがない。
+14. Office会話変更案は`schema.office.proposal.v1`、DDL、draft／estimate／confirm／dispatch／apply／cancel／supersede event、`PT-OFFICE-02〜07`へ、影響差分、credit／Capacity、認可、取消／rollback、通常ビュー同期を追加した。実装とDomain Command別Adapterは未完了。
+15. 基本12＋technical_seo personaはAgent Office UI §4へ、担当業務、正本・Service、Proposal、Executor／Tool、Permission、設備の完全表を追加し、`PT-OFFICE-01`へ接続した。config fixtureと全persona操作試験は未完了。
 16. 画像Pattern Editorはアイキャッチ基盤として決定しているが、Pattern version、variation tolerance、ロゴ余白、CMS size、生成結果、cache、再生成creditのL3 schemaが未確定。
 17. 画面のプランロック、データ不足、接続不足、権限不足、処理中、障害の状態優先順位が統一されていない。
 18. 通知はevent型を持つが、誰へ出すかを固定担当者概念へ寄せず、権限・購読設定・通知Center・必須通知から解決する規則のプロト反映が不足。
