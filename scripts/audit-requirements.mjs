@@ -801,6 +801,11 @@ for (const requiredPhrase of ["Article Read Snapshot", "GSCまたはKeyword実�
     fail(errors, `domain model: rewrite retrieval invariant missing: ${requiredPhrase}`);
   }
 }
+for (const requiredPhrase of ["CmsDeliveryJob", "生成完了とCMS送信成功を同じ状態にしない", "持ち出しを公開成功としない"]) {
+  if (!domainModel.includes(requiredPhrase)) {
+    fail(errors, `domain model: CMS Delivery invariant missing: ${requiredPhrase}`);
+  }
+}
 const eventCatalogPath = path.join(
   repoRoot,
   "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md",

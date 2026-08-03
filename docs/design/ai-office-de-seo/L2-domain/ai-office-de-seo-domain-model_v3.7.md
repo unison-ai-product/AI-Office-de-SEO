@@ -32,7 +32,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 | Generation | Workflow状態機械・Ticket・Pack注入・執筆・QA/Repair・中断/再開・全体整合パス・実行冪等性・執筆技法レイヤ | GenerationJob, Ticket, PackCatalog, OutlineContract | REQ-AGENT-01〜11, REQ-PACK-01〜21 |
 | Quality | 品質ゲート・計測・few-shot・合否・コヒーレンス検査・ゴールデン評価・検品レンズ・AIらしさ検査・転生検証 | QualityGateEvaluation, GateRegistry, ReaderSegment | REQ-PACK-09/10/12/20/21, REQ-AGENT-08/11, REQ-ADM-10 |
 | Rewrite | Article-as-Code・パッチ・原因分析・好調保護/波及・フラッシュリライト(TDH) | RewriteJob(ArticleWorkspace) | REQ-RWR-01〜09 |
-| Publishing & Automation | CMS能力・Dynamic Post Schema・下書き・公開判定・15記事解放・承認・予約・CV・エンゲージメント計測・部分パッチ・CVポイント台帳 | CmsConnectionProfile, PublicationJob(PostEnvelope), PublicationDecision, AutomationPolicy, CvPointLedger | REQ-WPA-01〜14, REQ-LOGIC-04/05 |
+| Publishing & Automation | CMS能力・Dynamic Post Schema・成果保持／下書きDelivery・公開判定・15記事解放・承認・予約・CV・エンゲージメント計測・部分パッチ・CVポイント台帳 | CmsConnectionProfile, CmsDeliveryJob, PublicationJob(PostEnvelope), PublicationDecision, AutomationPolicy, CvPointLedger | REQ-WPA-01〜14, REQ-LOGIC-03〜05, REQ-INT-05/06 |
 | Billing & Credit | プラン・購読・クレジット台帳・見積・実行レーン(Batch) | CreditAccount(Ledger), Subscription | REQ-BILL-01〜08/11, REQ-SEC-04/12 |
 | Provider | プロバイダ登録・アダプタ・ルーティング | ProviderProfile, RoutingPolicy | REQ-BILL-04/09, REQ-AGENT-04 |
 | Config & Governance | 設定レジストリ・Flag・安全不変条件・資源/変更ガバナンス・ネットワーク学習の適用統制 | ConfigRegistry, FeatureFlag | REQ-ADM-09, REQ-BILL-10, REQ-DUR-04, REQ-PRODUCT-13/18 |
@@ -128,9 +128,10 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - 状態: `candidate → proposed → accepted/rejected/held/expired → approved → scheduled → applying → applied/failed/conflict → measuring → evaluated`。
 - 不変条件: 全文リライトへ偽装しない／CTA専用Agent・専用Writing Ticketを必須にしない／Batchの一部失敗を全件成功へ丸めない／CMS反映確認前にappliedとしない／内部link削除は追加と別確認／CTA変更はSEO評価周期をリセットしない／ユーザー編集競合時は古い位置へ適用しない。
 
-### 4.5 PublicationJob / PostEnvelope（Publishing）
-- ルート: PublicationJob（PostEnvelopeを内包）。
-- 不変条件: QA・権限・予算・接続・Automation Policyを副作用直前に再判定する／最初の新規15記事およびリライト・記事置換は所定の承認を要求する／解放済み新規記事はAutomation Policyの範囲で自動公開できる／hard gate例外は判定を残した二段階確認・版付き同意による手動公開だけを許可する／CMS能力にないslot/blockはfail-close（REQ-WPA-08）／最終HTML全文は恒久保存しない（REQ-WPA-09）。
+### 4.5 CmsDeliveryJob / PublicationJob / PostEnvelope（Publishing）
+- ルート: CmsDeliveryJobとPublicationJob。PostEnvelopeはDelivery入力としてversion・hash・TTL付き参照で内包する。
+- CmsDeliveryJobはPresentation Assembly完了後の成果保持、write再診断、下書き作成、反映確認、再送、持ち出しを追跡する。状態は`prepared / connection_required / permission_required / delivering / draft_created / verification_pending / verified / failed_retryable / failed_terminal / carried_out / cancelled`とし、生成完了とCMS送信成功を同じ状態にしない。
+- 不変条件: QA・権限・予算・接続・Automation Policyを副作用直前に再判定する／接続不足でも成果を失敗・再生成扱いにせず同一idempotency keyで再開する／持ち出しを公開成功としない／最初の新規15記事およびリライト・記事置換は所定の承認を要求する／解放済み新規記事はAutomation Policyの範囲で自動公開できる／hard gate例外は判定を残した二段階確認・版付き同意による手動公開だけを許可する／CMS能力にないslot/blockはfail-close（REQ-WPA-08）／最終HTML全文は恒久保存しない（REQ-WPA-09）。
 
 `PublicationDecision`はPublicationJobの副作用前判定を独立して記録する。15件count、Automation同意、リライト承認、hard gate二段階確認、現在の認可・予算・接続を入力にし、ready／blocked／approved／publishedを追跡する。15件countは公開成功eventから導出し、管理画面やClientから任意加算しない。
 
