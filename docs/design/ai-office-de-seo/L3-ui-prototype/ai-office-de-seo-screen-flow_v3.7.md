@@ -52,7 +52,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-  A[Site設定・CMS接続] --> B[業界/業種・商品・顧客・地域・横断軸]
+  A[Site設定・対象Site接続・URL確認] --> B[業界/業種・商品・顧客・地域・横断軸]
   B --> C[big keyword候補]
   C --> D{方向性確認}
   D -->|除外/追加| C
@@ -66,12 +66,19 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  A[Site設定] --> B[CMS/GSC接続またはKeyword upload]
-  B --> C[GSC・upload・記事・市場Keyword統合]
-  C --> D[Cluster分析・記事対応・Market/Share計算]
-  D --> E[Keyword・Site診断Report]
-  E --> F[月次計画・Recommendation]
+  A[Site設定・対象URL確認] --> B[GSC接続またはKeyword upload]
+  B --> C{記事取得経路}
+  C -->|CMS read接続あり| D[GSC・upload・CMS記事・市場Keyword統合]
+  C -->|CMS read未接続| E[GSC・upload・公開取得可能記事・市場Keyword統合]
+  C -->|記事取得不能| F[Keyword中心の部分診断\nリライトは接続待ち]
+  D --> G[Cluster分析・記事対応・Market/Share計算]
+  E --> G
+  F --> G
+  G --> H[Keyword・Site診断Report]
+  H --> I[月次計画・Recommendation]
 ```
+
+Site登録時には対象Siteとの接続、URL、Site Contextを確定するが、分析開始とCMS書込Capabilityを同一Gateにしない。新規記事またはリライトをCMSへ送信する時点では、REST API等の検証済みwrite Capabilityを必須とする。既存Siteのリライト推薦は記事本文・見出し・公開状態を取得できる経路が成立した範囲だけで開放し、GSCまたはKeyword入力だけで本文更新を推測実行しない。
 
 ### 0.3 Recommendationから評価まで
 
@@ -229,13 +236,12 @@ flowchart LR
 flowchart TD
   A[W9 登録・必要同意] --> B[S7 契約主体・顧客組織・Site作成]
   B --> C[S7 Site設定<br/>新規/既存・業界/業種・商品・顧客・地域・横断軸]
-  C --> D[S7 CMS REST API接続<br/>Capability診断]
-  D -->|失敗/不足| D2[再認証・権限確認・Plugin更新<br/>分析継続/送信保留] --> D
+  C --> D[S7 対象Site接続・URL確認<br/>利用可能Source診断]
   D --> E[S6 文体・ブランド・装飾設定<br/>言い回し学習は任意]
   E --> F{Site種別}
   F -->|新規| G[S2 big keyword方向確認<br/>市場探索]
-  F -->|既存| H[S7 GSC接続またはKeyword upload]
-  H --> I[S2 GSC/upload/CMS記事統合]
+  F -->|既存| H[S7 GSC接続またはKeyword upload<br/>記事取得経路を診断]
+  H --> I[S2 GSC/upload/取得可能記事統合]
   G --> J[S2 Cluster分析]
   I --> J
   J --> K{Report種別}
@@ -245,6 +251,8 @@ flowchart TD
   M --> N
   N --> END[導入完了<br/>Recommendationの採否判断へ]
 ```
+
+CMS REST API等のwrite接続は、導入時に設定できるがKeyword分析の直列必須工程にはしない。接続失敗時も成立済みSourceで分析・Reportを進め、CMS送信を伴うRecommendationだけ`connection_required`で保留する。新規記事送信、リライト送信、Media登録、公開・更新へ進む前には、対象operationごとのwrite Capabilityを再診断する。
 
 最初の新規15記事の承認と自動運用解放は導入完了条件ではなく、UJ-05の公開Loopを通じて累積する運用上の解放条件である。既存記事、外部作成記事、リライトを数えず、本システム経由で人が承認して公開成功した新規記事だけを数える。15件到達後も自動的にONへせず、権限者が責任範囲、予算、品質、停止条件と同意書を確定した場合だけ新規記事の個別承認省略を解放する。
 
@@ -303,7 +311,7 @@ flowchart TD
 | 遷移 | 開始条件 | 変更操作に必要な権限 | 成功時 | 不成立・失敗時と復帰先 | 要求正本 |
 |---|---|---|---|---|---|
 | 登録・同意 → 顧客組織／Site作成 | 有効な顧客Session、必須同意 | 初回契約者。既存組織へのSite追加は契約者または対象範囲のサイトオーナー | Site設定へ | 同意不足、Plan上限、権限不足を同画面に表示し、入力を保持 | REQ-UJ-02 / REQ-ORG-01〜04 / REQ-ACCESS-08 |
-| Site設定 → CMS接続診断 | Site基本情報、対象URL | 契約者またはサイトオーナー | 新規／既存の入力分岐へ | 認証、REST Capability、投稿・Media Scopeの不足を分離表示。分析設定は保持し、再認証後に同じSiteへ戻す | REQ-BUS-02 / REQ-INT-01・05 / REQ-SCREEN-01 |
+| Site設定 → Source診断 | Site基本情報、対象URL | 契約者またはサイトオーナー | 新規／既存の入力分岐へ | GSC、Keyword入力、CMS read/write、公開取得をCapability別に表示する。write不足だけで分析を止めず、CMS送信を伴う遷移で再接続先と復帰先を示す | REQ-BUS-02 / REQ-INT-01・05 / REQ-SCREEN-01 |
 | 新規Site → big keyword方向確認 | Site接続、業界／業種等の探索入力。未設定分類は推定可 | 候補閲覧は全員、追加・除外・方向確定はキーワード・サイト戦略 | 市場探索・Cluster分析へ | 候補不足時は探索条件と追加入力へ戻す。空Recommendationへ進めない | REQ-BUS-02・03 / REQ-SCREEN-01 / REQ-KRL-01 |
 | 既存Site → Keyword統合 | GSCまたはKeyword upload。記事対応・リライトにはCMS記事取得も必要 | 接続設定は契約者またはサイトオーナー、Keyword追加・分類修正はキーワード・サイト戦略 | Market／Share・Cluster分析へ | Source別availabilityを表示し、利用できるSourceだけで部分処理。リライト不成立でも新規施策を止めない | REQ-BUS-02〜04 / REQ-DATA-06 / REQ-SCREEN-05 |
 | 分析 → 戦略／診断Report | 分析対象Keywordが1 Cluster以上成立 | 閲覧は全員、分析条件・評価設定変更はサイト分析、Cluster優先度等の変更はキーワード・サイト戦略 | 領域単位でReportを開放 | 未完了領域は処理中／不足／staleを表示し、完了領域の閲覧を妨げない | REQ-BUS-04・05 / REQ-SCREEN-04・05 |

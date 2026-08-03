@@ -184,7 +184,7 @@ OfficeDetailPage {
   liveOverride?: (state) => patch  // 動的値の合成（st_credit/cc_rewrite/tk_localの cur 分岐パターン）
 }
 ```
-- 1ページ=1キーワード/1記事/1監視対象・スクロール禁止（office-detail-page-granularity）。
+- Office詳細は1つの主対象（Keyword、記事、Task、Report等）とContextを維持する。旧モックの「1ページ=1対象・scroll禁止」は視覚baselineであって製品不変条件ではない。情報量がviewportを超える場合は、意味のあるsection、tab、panel、virtualized listまたは通常のscrollを使い、縮小や切捨てで根拠・操作・accessibilityを失わない。
 
 ## 3.2 型E（ステータス盤）内部パーツ
 

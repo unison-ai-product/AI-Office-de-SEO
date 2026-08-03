@@ -252,6 +252,12 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-re
   "ai-office-de-seo-open-items-register_2026-08-03.md",
   "ここにないことを「確定済み」の根拠にしない",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-business-requirements_v1.md", [
+  "CMS下書き・投稿",
+  "初期提供・主検証CMSはWordPress",
+  "現在のopen／resolved状態ではない",
+  "Open Items Register",
+]);
 assertIncludes("docs/reference/ai-office-de-seo-content-consistency-audit_2026-07-09.md", [
   "履歴スナップショット",
 ]);
@@ -301,6 +307,10 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-us
   "既存Site経路: GSCを接続するかKeyword",
   "認証済みREST APIと対象投稿typeの下書き作成権限",
   "再入力させずIntakeへ渡す",
+  "Keyword／clusterを需要Market",
+  "Articleを獲得Share",
+  "確定Reportを当月目的",
+  "未実行Recommendationは週次／月次に単純繰越せず",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md", [
   "Site運用責任者（コンサル同席",
@@ -308,9 +318,34 @@ assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-us
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
   "導入完了<br/>Recommendationの採否判断へ",
   "最初の新規15記事の承認と自動運用解放は導入完了条件ではなく",
+  "分析開始とCMS書込Capabilityを同一Gateにしない",
+  "CMS REST API等のwrite接続は、導入時に設定できるがKeyword分析の直列必須工程にはしない",
+  "CMS送信を伴うRecommendationだけ`connection_required`で保留する",
+  "通常ビュー ⇄ Office",
+  "顧客面 → 内部管理面",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
+  "S7 CMS REST API接続<br/>Capability診断",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
+  "日常判断の簡単操作面",
+  "詳細探索・対話・詳細運用面",
+  "監視専用でも独立業務システムでもなく",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
+  "全操作・意思決定はこちら",
+  "実行状況の確認基盤（見守る・深堀り）",
+  "スクロール絶対禁止",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md", [
+  "旧モックの「1ページ=1対象・scroll禁止」は視覚baseline",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md", [
+  "1ページ=1キーワード/1記事/1監視対象・スクロール禁止",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-acceptance-trace_v3.7.md", [
   "同意→接続→サンプル学習→戦略入力→マップ→初回生成→承認公開",
+  "フィルタ→ギャップ→補充→候補採否→生成起動/一括投入",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md", [
   "React/HTML/CSSコンポーネントで描画する",
@@ -333,6 +368,18 @@ assertExcludes("docs/reference/FEATURE-LIST.md", [
   "Claude優先ルーティング",
   "オンボーディング=コンサル・ヘルプ=専用サイト",
   "VPS→クラウド",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-requirements_v3.7.md", [
+  "CMS連携（初期Adapter: WordPress）",
+  "接続中CMSの保存値を編集・更新の外部正本、公開表示をSEO評価の正本",
+  "アプリ内FAQチャット／問い合わせを開くサポート導線",
+  "version付きSupport Knowledge／FAQ Catalog",
+  "外部ヘルプサイトの公開を一次応答の成立条件にしない",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-requirements_v3.7.md", [
+  "WordPressはコンテンツの正本である",
+  "サポート窓口（ヘルプサイト",
+  "ヘルプサイト・FAQ",
 ]);
 
 const l3DecisionText = fs.readFileSync(

@@ -249,7 +249,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-UJ-01: 行動原則（主要行動は第一階層から2遷移以内・通知から対処2遷移以内・行き止まり禁止＝次アクション提示・文脈引き継ぎ・非同期・破壊操作の確認/未保存保護/権限外は原則非表示）が全画面・全ジャーニーに適用される。 ｜ 検証: REQ-UJ-01, REQ-NAV-02, REQ-PRODUCT-11
 - [ ] AC-UJ-02: 初期導入が、新規Siteの「Site設定・CMS接続→Big Keyword方向確認→分析・分類→Keyword戦略Report→Recommendation」と、既存Siteの「Site設定→GSCまたはKeyword登録→統合・分析・分類→Keyword診断Report→Recommendation」に分岐して到達できる。セルフ導入を標準とし、条件未達は空Recommendationを出さず不足入力へ戻し、記事送信時は認証済みCMS REST APIと下書き権限を再確認する。 ｜ 検証: REQ-UJ-02, REQ-BUS-02, REQ-SCREEN-01, REQ-INT-01/05
 - [ ] AC-UJ-03: 日常運用（S1/W7起点→承認・保留対応・おすすめ採否・アラート対処）が完結し、未対応ゼロの終端に到達できる。 ｜ 検証: REQ-UJ-03, REQ-AGENT-10
-- [ ] AC-UJ-04: キーワード戦略（フィルタ→ギャップ→補充→候補採否→生成起動/一括投入）が完結し、採用分がS3へプリセット引き継ぎされる。 ｜ 検証: REQ-UJ-04, REQ-NAV-04, REQ-BILL-11
+- [ ] AC-UJ-04: キーワード戦略がMarket／Share分離→cluster分析→戦略／診断Report→月次目的・実行枠への施策配分→Recommendation Queue→採用Intakeの順に完結し、単一Keywordや生成本数だけへ縮退しない。分類修正は未実行候補だけを再計算し、採用情報は再入力なしでS3／Workflowへ引き継がれる。 ｜ 検証: REQ-UJ-04, REQ-BUS-04/05, REQ-KRL-01〜10, REQ-NAV-04, REQ-BILL-11
 - [ ] AC-UJ-05: 生成〜公開（起点→レーン→Preflight→進捗→構成/QA→保留対応→承認→公開→通知→追跡）が遷移図どおり到達可能で、hard gate保留と予算超過の分岐が終端を持つ。 ｜ 検証: REQ-UJ-05, REQ-AGENT-08, REQ-SEC-12
 - [ ] AC-UJ-06: リライト（候補→原因→起動→差分→承認→1か月後の一次評価→3か月後の二次評価→6か月後の長期評価）が完結し、内部リンク候補の採否を含む。 ｜ 検証: REQ-UJ-06, REQ-RWR-04, REQ-KGA-09
 - [ ] AC-UJ-07: 例外・緊急（再認可・Kill Switch作動/解除・支払い失敗復旧・解約オフボーディング・保留期限超過）がそれぞれ定義済み終端に到達する。 ｜ 検証: REQ-UJ-07, REQ-DUR-04, REQ-SEC-10
