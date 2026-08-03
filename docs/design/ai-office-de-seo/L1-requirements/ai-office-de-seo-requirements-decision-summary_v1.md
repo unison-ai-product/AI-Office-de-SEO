@@ -62,6 +62,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 6. キーワード・Recommendation
 
+- RecommendationはAgent WorkflowのIntake Contractとする。採用時に、目的、対象Keyword Cluster、検索インテント、記事目的、推薦理由、CTA、内部リンク、品質、予算、保護条件、実行可能状態を引き継ぎ、ユーザーへ再入力させない。
+- 新規記事、リライト、Automationは主要なAgentic Workflowであるが、Agent関与の全範囲ではない。決定論的な収集・計算・差分検知も、Dashboard、Keyword、Content、Automation、検索流入分析、Knowledge、設定・Support、技術SEOの各面でAgentが説明、探索、変更提案、Task化、進行確認へ接続する。
 - 市場影響としてAIO、リスティング、ドメイン信用性、検索需要、表示回数、季節性を扱う。
 - SEO／AIの取得性・表示性評価は、技術・サービス仕様が未確定なため初期提供を約束せず、リリース後の更新追従構想として保持する。将来実装時も `取得可能→実crawl→検索候補／回答取得→順位／引用／言及→referral→CV` を分離し、crawlを表示・成果の証拠にしない。DataForSEO、各社Webmasterデータ、直接観測、server／edge logは交換可能な候補とし、日本市場の対応、規約、原価、再現性を再調査して採否・頻度・対象surfaceを決める（`REQ-CAV-*`, `REQ-INT-08`, `REQ-MEASURE-12`）。
 - 将来は製品内アプリストアを設け、AI可視性、Crawlerログ、hosting／CMS／分析連携等をSite単位の有償拡張アプリとして追加できる構想を持つ。初期は自社開発アプリだけを想定し、第三者市場は別判断とする。購入、インストール、権限同意を分離し、月額・買切り・従量・導入支援をCatalog化する。標準契約機能を後からアプリへ移して二重課金しない。
@@ -186,6 +188,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - 通常ビューを初回ログインと日常業務の標準画面とし、Recommendationの採否、承認、設定等の「選ぶ・決める」を行う。
 - Agent Officeは実行中Task、詳細情報、進捗、Loop、Knowledgeを確認するだけでなく、通常ビューでは複雑になる条件探索、推薦方針、Agent指示、Workflow構成を変更する詳細運用面とする。業務事実は通常ビューと共有するが、部屋、会話、探索、詳細設定等のOffice固有状態を持つ。
+- Officeの役割別Agentは、既存Executorの状態を表示するだけの装飾ではなく、担当業務の説明、探索、会話、変更案、Task化、監視を継続的に受け持つユーザー接点とする。各Agentを独立Runtimeに固定せず、業務責任、Executor、決定論的Service、Tool、Workflow/Ticketを対応付ける。
 - 既存モックのフロア、部屋、エレベーター、役割別Agent、ライブフィードを基線とし、ゲーム内のオフィスを訪れてNPCが自律的に働いているような立体表現と、Agentへ話しかけて動き方を変更する操作へ発展させる。
 - 通常ビューで推薦Keywordを簡単に採否できる一方、Officeでは一覧・cluster・根拠を確認し、選択条件、重み、除外、推薦方向を調整できるようにする。ゲームのショップや装備構成に近い発見性を持たせるが、表示内容と結果はSEO業務用語で説明する。
 - 3D表現は業務状態の正本にせず、標準3D、簡略3D、軽量2Dへ端末性能・通信・設定に応じて縮退しても同じ情報と操作を維持する。

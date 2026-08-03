@@ -24,9 +24,9 @@ Agent Officeと内部Executor／Workflowの境界は `ai-office-de-seo-agent-req
 同じ情報・詳細画面・データAPI・状態管理を共有し、問い合わせ方式だけを変える2モードを持つ。
 
 - Standard SaaS: サイドメニュー → タブ/一覧 → 詳細。白基調・業務効率重視。
-- Agent Office: オフィス表示 → エージェント/部屋を選択 → 「何を見ますか？」の選択メニュー → 同じ詳細を1画面表示。暗色オフィス背景＋透過パーツ。
+- Agent Office: オフィス表示 → エージェント／部屋を選択 → 会話・設備・詳細Panelから、同じ業務正本の詳細探索、条件・方針変更、Task構成変更、実行監視を行う。暗色オフィス背景＋透過パーツ。
 
-Agent Officeは代替UIではなく体験レイヤーであり、詳細コンポーネント・取得API・状態は共通化する。
+Agent Officeは通常ビューの単純な複製でも監視専用画面でもない。通常ビューは簡単操作、Agent Officeは詳細運用を担う。詳細コンポーネント、command、取得API、権限、業務状態は共通化し、Office独自の部屋、会話、探索、設備、表示状態を持つ。
 
 ## 2. 第一階層7画面  ［REQ-AOUI-02］
 
@@ -40,7 +40,7 @@ Agent Officeは部門（部屋）とエージェント（キャラ）で構成�
 
 ## 4. ペルソナ⇄内部エージェント/工程マッピング  ［REQ-AOUI-04］
 
-Agent Officeが実状態を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を内部の Executor（`REQ-AGENT-01`）と工程（`REQ-AGENT-09`）へ対応づける。ペルソナは見せ方であり内部実行単位そのものではない。
+Agent Officeが実状態と業務能力を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、利用可能Tool、担当業務へ対応づける。ペルソナは独立runtimeそのものではないが、説明、探索、会話、変更案、Task化、実行監視を担うユーザー窓口である。
 
 - keyword_researcher → Keyword Intent 工程 / Planning Executor
 - analyst / traffic_reporter → SERP-TTPS Research・GSC分析 / 一般システム（機械判定, `REQ-KGA-08`）

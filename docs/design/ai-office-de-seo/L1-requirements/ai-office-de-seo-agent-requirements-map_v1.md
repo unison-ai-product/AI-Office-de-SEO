@@ -40,6 +40,18 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 
 ## 3. 実行モデル
 
+### 3.0 Agent関与とAgentic Workflowを分ける
+
+製品機能へのAgent関与を、記事生成用Agentic Workflowの本数だけで数えない。Agentは次の3層で全業務領域へ関与する。
+
+| 層 | 役割 | 例 |
+|---|---|---|
+| Agent Interaction | 会話、説明、探索、詳細操作、変更案、Task化 | キーワード選定理由の説明、月次方針の調整、分析結果の深掘り |
+| Agent Advisory | 決定論的な集計・診断を読み、意味付け、仮説、Recommendation、追加確認を提示 | 順位低下要因、CV導線、サイト認知への貢献、改善順序 |
+| Agentic Execution | Workflow、Ticket、Pack、Executorで成果を生成・検査・配置する | 新規記事、リライト、QA、Repair、CMS Automation |
+
+基礎データの取得、集計、差分検知、スコア計算、権限、課金、状態遷移は決定論的に実行しても、ユーザーが結果を理解し、条件を変え、次のTaskへ接続する場面ではAgent Interaction／Advisoryを使用できる。「機械処理である」ことを「Agentが関与しない画面・業務」と読み替えない。
+
 ### 3.1 Executor
 
 実行役は次の少数Executorへ固定する。SEO機能、Officeのキャラクタ、商品Packごとに専用Executorを増やさない。
@@ -83,7 +95,22 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 
 Packは顧客向けの「作業メニュー」や任意の小機能名ではない。業務施策を追加するだけで新しいPackを作らず、既存Workflow／Ticket／Catalog／Source Needの組合せで表現する。
 
-## 5. 代表業務の既存接続
+## 5. 機能全体とAgent関与
+
+| 製品領域 | 機械処理・正本 | Agent Interaction／Advisory | Agentic Execution |
+|---|---|---|---|
+| Dashboard／月次計画 | KPI集計、期限、予算、Recommendation Queue | planner／analystが重点領域、配分、乖離、次の判断を説明し変更案を作る | 確定後のTask群を既存Workflowへdispatch |
+| Keyword管理 | 市場pool、GSC、SERP、cluster、順位、AIO、分類、score | keyword_researcher／analystが根拠を説明し、条件・重み・除外・方向性の変更案を作る | Research／Planning Ticket、採用RecommendationのIntake |
+| Content制作 | Article Summary、重複・保護・Preflight | planner／writer／QA／link architectが構成、進捗、問題、修正案を対話 | new article／rewrite／QA／Repair／Placement |
+| Automation | schedule、権限、接続、予算、Kill Switch | automation_operator／publish_managerが予定、停止理由、影響を説明し変更案を作る | Automation Ticket、CMS command |
+| 検索流入分析 | GSC・Tracker・順位・CV・市場差分の集計 | analyst／traffic_reporterが要因仮説、目的別評価、次施策を提示 | 採用施策をRecommendation／既存Workflowへ接続 |
+| Knowledge | Derived Facts、成功施策、Site補正、Pack version | knowledge_trainerが根拠、適用先、矛盾、再学習候補を説明し修正案を作る | Pack Compiler／Validate／管理承認済みPublish |
+| Setting／Support | 接続状態、契約、権限、通知、診断code | security_admin／support_agentが必要設定、影響、復旧方法を案内 | 承認済み設定command、support escalation |
+| Technical SEO | crawl／index／link graph／CWV等の機械診断 | technical_seoが影響、優先度、サイト側対応、記事側施策を説明 | 記事側施策だけ既存Recommendation／Workflowへ接続 |
+
+RecommendationはAgentへの任意追加情報ではなく、Agent Interaction／Advisory／ExecutionをつなぐIntake Contractである。採用時に対象、目的、keyword cluster、検索インテント、記事目的、根拠、CTA、内部link、品質、予算、保護、availabilityを再入力なしで引き継ぐ。
+
+### 5.1 代表実行の既存接続
 
 | 業務 | 既存接続 | 新設してはいけないもの |
 |---|---|---|
@@ -99,8 +126,9 @@ Packは顧客向けの「作業メニュー」や任意の小機能名ではな�
 ## 6. LLMを使う境界
 
 - LLMによる生成・意味判断はExecutor内へ限定する。
-- Recommendation抽出、順位集計、カバー率、カニバリ、Query Drift、差分検知、容量判定、通知、料金判定は機械処理を正本とする。
-- 機械処理だけで作れないResearch、Outline、Meaning Unit生成、意味変化、主張・根拠、QAの一部だけをAgentic Workflowへ渡す。
+- Recommendation候補抽出、順位集計、カバー率、カニバリ、Query Drift、差分検知、容量判定、通知、料金判定は機械処理を正本とする。
+- 機械結果の説明、横断的な意味付け、仮説、対話による条件変更案、Task化はAgent Interaction／Advisoryで扱える。Recommendationの最終的な理由文や施策構成も、機械的根拠を失わない範囲でAgentが組み立てられる。
+- Research、Outline、Meaning Unit生成、意味変化、主張・根拠、QAの一部はAgentic Workflowで扱う。
 - Agentを使う理由が「画面で働いて見せたい」「機能名を分けたい」だけの場合、runtimeを増やさない。Officeのペルソナを既存Executor／工程へmappingする。
 
 正本: `REQ-AGENT-01`、`REQ-AOUI-04`、`REQ-KGA-08`。
@@ -119,8 +147,9 @@ Prompt Cacheは費用・latency最適化であり、状態・知識の正本で�
 ## 8. Agent Officeとの分離
 
 - 通常ビューとAgent Officeは同じ業務状態・APIを使用する。
-- Officeのペルソナは見せ方であり、内部Executorや独立プロセスではない。
+- Officeのペルソナは独立runtimeではないが、単なる状態アイコンでもない。担当領域の説明、探索、会話、変更案、Task化、実行監視を担う継続的なユーザー窓口として、既存Executor、決定論サービス、Workflow、Toolへmappingする。
 - OfficeでAgentへ話した内容は、質問回答、設定変更案、既存Task修正案、追加Ticket候補へ構造化し、影響と費用を確認してから確定する。
+- Officeは監視専用に限定しない。通常ビューが簡単操作を担い、Officeは同じ業務正本を使って詳細探索、条件・方針変更、Agent指示、Task構成変更を行う。
 - Pack、Ticket、Schema、Executor、primary／standby等の内部用語を顧客の第一階層へ出さない。
 
 正本: `REQ-AOUI-01〜07`、`categories/design-experience-requirements_v1.md`、`categories/screen-operation-requirements_v1.md`。
