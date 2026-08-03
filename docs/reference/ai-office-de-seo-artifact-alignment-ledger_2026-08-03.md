@@ -33,6 +33,7 @@
 | 計画書 | `docs/plans/PLAN-L0-01`〜`PLAN-L3-02` | current | 各層の成果物とDoD。プロト更新は全要求・L2/L3・画面遷移の整合後 |
 | review／audit資料 | `docs/reference/*review*`、`*audit*`、verification log | baseline | 当時の指摘と解消証拠。現在値の正本にはしない |
 | open items | `ai-office-de-seo-open-items-register_2026-08-03.md` | current | true_open候補、後続機能、実測待ちを区別する作業台帳 |
+| 機能一覧 | `docs/reference/FEATURE-LIST.md` | current | 443 REQの全数転記ではなく、現行Lifecycleと機能境界を利用者向けに要約する。全数coverageはacceptance traceを参照 |
 | prototype modernization register | `ai-office-de-seo-prototype-modernization-register_2026-08-03.md` | prototype_follow_up | 現行要求との差分。要求監査が終わるまでプロト本体を変更しない |
 | `prototype/` | DC HTML、support.js、config、Design、CLAUDE、asset refs | prototype_follow_up | 現行製品仕様の証拠に使わない。移行baselineとして保持 |
 | 画像asset | `docs/reference/assets/**`、screen reference画像 | baseline | 視覚参照。画面責務・Agent数・業務仕様を決める正本ではない |

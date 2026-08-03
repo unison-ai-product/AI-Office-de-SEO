@@ -1,158 +1,119 @@
-﻿# AI Office de SEO 機能一覧（v3.7・要求書から導出・全REQ網羅）
+# AI Office de SEO 現行機能一覧
 
-各機能は L1 要求（REQ-*）に基づく。**参照は完全ID表記**とし、全135 REQを最低1回参照する（機械照合可能。監査: 定義REQ集合との差分ゼロを維持すること）。
+この一覧は、分類別L1要求、詳細ロジック、Decision Summary、L2／L3契約から導出した製品機能の索引である。REQと受入条件の全数・coverageは本書へ重複転記せず、`ai-office-de-seo-acceptance-trace_v3.7.md`と`npm run audit:requirements`を正本とする。現在は443 REQを監査対象としている。
 
-## A. 基盤・テナント・接続
-- テナント階層（Tenant/Membership/Site/Role・マルチアカウント）(REQ-PRODUCT-01)
-- マルチテナント分離（ID型論理分離・共有DB・単一強制ポイント）(REQ-PRODUCT-10, REQ-SEC-07)
-- サイト単位サンドボックス（ジョブはtenant/site/job固定）(REQ-PRODUCT-02, REQ-SEC-11)
-- URLマスターキー（canonical管理・照会はURL/管理はID・重複はアラート）(REQ-PRODUCT-03)
-- 記事本文非保持（WP正本・一時本文TTL）(REQ-PRODUCT-04, REQ-SEC-11)
-- Googleログイン＋GSC接続（Data Mart蓄積）(REQ-PRODUCT-05)
-- WordPress連携（取得/公開/トラッキング・プラグイン=データ交換ソケット・ZIP配布/署名更新）(REQ-PRODUCT-06, REQ-WPA-01, REQ-WPA-07)
-- セキュリティ基本要求（境界・fail-close・シークレット暗号化・Webhook署名・サーバー側認可）(REQ-SEC-01)
-- Role権限マトリクス／認証・認可／シークレット・トークン管理 (REQ-PRODUCT-08, REQ-SEC-08, REQ-SEC-09)
-- 通知・アラート基盤（イベントカタログ・in-app正本・受信者解決・頻度制御・オプトイン設定）(REQ-PRODUCT-11)
-- ユーザー要望とレギュレーション（User Order・影響度制御）(REQ-PRODUCT-07)
-- ユーザーカスタマイズ階梯（レギュレーション/要望/戦略入力=ターゲット軸・主張軸。構造カスタムはコンサル→ADM経由）(REQ-PRODUCT-12)
-- ネットワーク学習（共有観測キャッシュ・k匿名辞書集合知・セグメントprior・成果較正。承認付き適用・オプトアウト）(REQ-PRODUCT-13)
-- 提供方針（オンボーディング=コンサル・ヘルプ=専用サイト・登録時同意）(REQ-PRODUCT-09)
-- 分析データエクスポート（CSV・境界/Role/本文非保持の維持）(REQ-PRODUCT-14)
-- グローバル検索（テナント内横断・列挙制・Role可視性）(REQ-PRODUCT-15)
-- 運営お知らせ配信・公開ステータスページ (REQ-PRODUCT-16)
-- 月次プランニング（目標・配分・予測レンジ・実績乖離）(REQ-PRODUCT-17)
-- 自動運用の資源・変更ガバナンス（増分計算・監視階層化・変更予算/クールダウン/振動検知）(REQ-PRODUCT-18)
-- 調査知識の小型蓄積（導出事実ストア・施策台帳・ロールアップ・facts Pack供給）(REQ-PRODUCT-19)
-- 記事サマリー契約と軽量意味索引（本文非保持のまま取得省略・ベクトルは補助限定）(REQ-PRODUCT-20)
-- メール配信基盤（送達性=SPF/DKIM/DMARC・バウンス自動停止・in-app正本維持）(REQ-PRODUCT-21)
-- サポート運用（AIファーストQA・権限内参照・エスカレーション/SLA・ナレッジ還流・deflection計測）(REQ-PRODUCT-22)
-- マスターテナント（開発者アカウント配下・ドッグフーディング=同一経路・内部課金・master先行Flag・prior偏り制御）(REQ-PRODUCT-23)
-- 実績→SEOループ（k匿名ベンチマーク公表＋オプトイン事例許諾・showcase転用=第二の明示認可例外・撤回削除）(REQ-PRODUCT-23)
+## 1. SEO業務Lifecycle
 
-## B. キーワード・GSC・分析
-- キーワード接続思想（keyword⇔GSCクエリ⇔記事URL）(REQ-KGA-01)
-- キーワード正規化・自動マップ生成・分類（必須/推奨/オリジナル）(REQ-KGA-02, REQ-KGA-03, REQ-KGA-04)
-- Keyword Map Graph・契約強化・トピック網羅グルーピング (REQ-KGA-12, REQ-KGA-10)
-- カバー率／Query Drift分類／カニバリ機械判定 (REQ-KGA-05, REQ-KGA-06, REQ-KGA-07)
-- 内部リンクロジック（Google公式ベース・オーファン禁止・機械候補選定）(REQ-KGA-09)
-- GSC取り込み・フィルター設計（行数上限/匿名化/増分/次元スコープ/Bulk Export）(REQ-KGA-11)
-- データ保持・集約・判定ウィンドウ（日次正本・LLM判定はエージェント内限定）(REQ-KGA-08)
-- 決定論的キーワード属性・ターゲット/業界軸フィルター・ギャップマトリクス (REQ-KGA-13)
-- キーワード⇔記事アサイン台帳・Intake Gateプレチェック (REQ-KGA-14)
-- GSCクエリ⇔キーワードの決定論マッチングカスケード（co-landing・辞書自己改善・クリック加重KPI）(REQ-KGA-15)
-- ロングテール集約昇格（クラスタ集計・セクション/FAQ候補還流）(REQ-KGA-16)
-- キーワード価値スコア（AIO×CTR残差の自サイト較正）(REQ-KGA-17)
-- トピック起点の多元化（keyword/ニューストレンド/動画需要）とSERP面適応・鮮度×レーン整合 (REQ-KGA-18)
-- サイトトポロジー戦略（幹→枝→葉・カテゴリ×タグ網目・生成順序・リンク再調整ループ）(REQ-KGA-19)
-- ウォッチリスト・急変検知・SERP/アルゴ変動ガード・季節リフレッシュ (REQ-KGA-20)
-- インデックス状況・技術ヘルス監視 (REQ-KGA-21)
-- ローカルSEO（地域検索最適化）: Local Pack/地図/オーガニック順位の分離観測（地域軸）・ローカルインテント検出・地域ページ生成（薄いページ回避ゲート）・LocalBusiness構造化データ/NAP一貫性チェック・ローカル競合/レビュー信号の戦略入力 (REQ-KGA-22) *2026-07 追加*
+- Site設定、CMS接続、業界／業種・商品・顧客・地域・横断軸・CV・文体の設定。
+- 新規Site: Site接続→業界Big Keyword探索→方向性確認→分析・分類→Keyword戦略Report→月次計画→Recommendation。
+- 既存Site: Site設定→GSC／Keyword入力とCMS記事取込→分析・分類→Keyword診断Report→月次計画→Recommendation。
+- 月次で重点領域・記事／施策・予算の傾向配分を作り、週次で上限、credit、依存、保護、品質に収まる実行予定を選ぶ。
+- Recommendation採用時に、目的、Keyword Cluster、検索intent、記事目的、CTA、内部link、品質、予算、根拠をIntakeへfreezeし、再入力させない。
+- 公開または実質的更新を起点に1・3・6か月評価を行い、SEO、CV、認知、市場外因を分離して次のRecommendationへ戻す。
 
-## C. 外部情報・競合・バッチ
-- 外部情報源のSource Pack化（本文非保持・抽象化）(REQ-SRC-01)
-- Query Fanout（停止条件・Google公開ロジック準拠のfacet分解）(REQ-SRC-02, REQ-SRC-09)
-- 競合上位5記事の抽象構造・Crawler Compliance (REQ-SRC-03, REQ-SRC-04)
-- 夜間バッチ・事前計算／分散実行単位・Batch Priority・DataForSEO Cache (REQ-SRC-05, REQ-SRC-08)
-- 営業時間スケジューリングと負荷平準化（静穏窓・オフセット分散・同時上限）(REQ-SRC-10)
-- 外部APIコスト管理・取得のグローバル分散/フェアシェア (REQ-SRC-06, REQ-SRC-07)
+正本: `REQ-BUS-01〜13`、`REQ-SCREEN-01〜20`、`REQ-KRL-*`、Screen Flow。
 
-## D. コンテンツ生成エージェント
-- 少数Executor＋Orchestrator（Snapshot returnTo・失敗は保留既定）(REQ-AGENT-01)
-- ステージ設計（Research&Outline→意味ユニット執筆→QA→Repair）(REQ-AGENT-02)
-- 状態機械13状態＝9工程＋4ゲート（強制ゲート/fail-close）(REQ-AGENT-09)
-- ジョブ中断・再開（checkpoint＝ステージ境界・完了分再課金なし・再ウォーム費明示）(REQ-AGENT-10)
-- 全体整合パス（用語ロック・隣接文脈ブリーフ・Cohesion QA=coherence_flow・限定Repair）(REQ-AGENT-11)
-- Workflow定義（列挙・版固定・ループ収束/停止ガード・権限スコープ）(REQ-AGENT-06)
-- Prompt Cache Layer A/B/C/D（工程別注入・4ブレイクポイント対応）(REQ-AGENT-03)
-- Packキーインジェクター（system prompt強制注入・固定/自由分離・外部はデータ扱い）(REQ-AGENT-07)
-- データ取得はSource Pack経由（直テーブル禁止）(REQ-AGENT-05, REQ-PACK-06)
-- Claude優先ルーティング (REQ-AGENT-04)
-- 品質評価基準（Google公式：E-E-A-T/Needs Met/YMYL/Lowest回避）(REQ-AGENT-08)
+## 2. Keyword Market・Site Share
 
-## E. Pack / Ticket / Schema / 品質
-- 分離原則（Ticket=キーのみ・Workflow/Pack/Catalog/Schema/Snapshot）(REQ-PACK-01)
-- Pack分類・Ticket分類 (REQ-PACK-02, REQ-PACK-03)
-- Key命名規則・版固定（ジョブ再現性）(REQ-PACK-04)
-- テーブルJSON契約 (REQ-PACK-05)
-- Source Packカタログ (REQ-PACK-07)
-- Workflow×Packステージ別バインディング／スコープ階層（フロー/フェーズ/遷移）／ステージ階層（方針/実装）(REQ-PACK-08, REQ-PACK-14, REQ-PACK-13)
-- Quality Gateカタログ＋計測指標・初期しきい値 (REQ-PACK-09, REQ-PACK-10)
-- Pack Typeカタログと型定義（意味ユニット39種等）(REQ-PACK-11)
-- few-shot構築（生成と検査の単一整合）(REQ-PACK-12)
-- Pack Resolver/Dispatch・Pack Compiler/User Knowledge (REQ-PACK-15, REQ-PACK-16)
-- CTA=QA/Placement／Meaning Unit Registry・Outline Contract (REQ-PACK-17, REQ-PACK-18)
-- Writing Method Catalog（技法6種・横断修飾レイヤ・手書きfew-shot登録規律・構成フレームはheading_flow拡張）(REQ-PACK-19)
-- Review Lens Catalog（校正校閲推敲＋Web/SEO/論文/マーケの7レンズ＝ゲートの束ね・argument_structureゲート）(REQ-PACK-20)
-- Reader Segment・Persona Simulation（セグメント転生検証＝advisory・Validate/ゴールデン評価補助・属性は検証限定）(REQ-PACK-21)
+- 公共Keyword資産poolを長期保有し、地域、device、検索量、季節性、競争性、CPC、SERP feature、AIO／広告面、provenanceを共有資産化する。
+- SiteごとにGSC Query、登録Keyword、Site抽出語、商品・顧客seed、適格な競合観測を統合し、公共MarketからSite Universeを投影する。
+- main＋sub KeywordをCluster単位で扱い、intent、funnel、業界／業種、商品、顧客、地域、既存記事、獲得状況、AIO／広告影響を分類する。
+- Marketは市場規模・需要・競争・SERP面、Shareは獲得Query・順位・click・記事分布・CVとして分離する。
+- カニバリ、Query Drift、未獲得、未配置、順位ありclickなし、流入ありCV接続なし、3位以内保護、index障害を診断する。
+- 急変時は即時施策推薦せず要監視へ送り、週次観測と1・3・6か月評価で判断する。AIO／AI回答面は初期確約せず、提供時は月次観測を基本とする。
 
-## F. リライト
-- rewrite_patch既定・Article-as-Code（workspace tool server・限定operation）(REQ-RWR-01, REQ-RWR-02, REQ-RWR-03)
-- 差分プレビュー／品質ゲートfail-close (REQ-RWR-04, REQ-RWR-05)
-- リライト原因分析（機械判定）・コスト/クレジット (REQ-RWR-06, REQ-RWR-07)
-- 好調記事の保護・波及リンク強化・リライトブリーフ (REQ-RWR-08)
-- フラッシュリライト（TDH・CTR残差選定・AIO切り分け・同順位帯効果測定）(REQ-RWR-09)
+正本: `REQ-KRL-01〜11`、`REQ-KGA-*`、Keyword Market／Share Map。
 
-## G. WP出力・自動化
-- Dynamic Post Schema・封入フロー・Schema fallback (REQ-WPA-02, REQ-WPA-09, REQ-WPA-03)
-- WP Capability Snapshot (REQ-WPA-08)
-- 投稿予約・承認／CV計測（相関ベース補助）(REQ-WPA-04, REQ-WPA-05)
-- 代表記事10本未満の暫定プロファイル (REQ-WPA-06)
-- Keyword Map Pack結合 (REQ-WPA-10)
-- エンゲージメント計測（滞在・スクロール。任意有効化・相関補助）(REQ-WPA-11)
-- 既存記事への部分パッチ適用（リビジョン・競合検知・分散適用・キャッシュ環境差）(REQ-WPA-12)
-- CVポイント台帳と管理CRO（カタログ・割当・差し替え提案・健全性検知）(REQ-WPA-13)
-- 成果物の一時保持 Output Vault（全成果物を暗号化14日保持・コピー/ダウンロード可搬・WP送信失敗時は自動/手動再送＋停止/再開・期限で完全削除＝本文非保持の唯一の例外）(REQ-WPA-14) *2026-07 追加*
+## 3. Recommendation・計画
 
-## H. 課金・クレジット・プロバイダ
-- サブスク課金（Stripe責務分担）／append-onlyクレジット台帳 (REQ-BILL-01, REQ-BILL-07)
-- クレジット予約/確定/解放（事前見積連動）(REQ-BILL-02)
-- 品質グレード別消費／原価前提・キャッシュ下限保護 (REQ-BILL-03, REQ-BILL-06)
-- サブスク状態とアクセス制御（active時のみ付与・繰越/期限）(REQ-BILL-08)
-- AI Provider拡張の位置づけ／Registry・Adapter・Routing（Claude優先・Canary）(REQ-BILL-04, REQ-BILL-09)
-- 開発管理者向けProvider/コスト管理画面 (REQ-BILL-05)
-- 価格・原価の設定化（ハードコード禁止）(REQ-BILL-10)
-- 実行レーン（今すぐ/おまかせ）とLLM Batch活用 (REQ-BILL-11)
+- 目的はSiteごとの単純選択とし、達成保証値ではなく記事／施策の傾向配分へ変換する。
+- 新規記事、リライト、CTA、内部link、保護、監視、技術対応、ユーザーTaskを正規Action Catalogで扱う。
+- 推薦理由、期待する役割、記事type、関連既存記事、link前後関係、実行順、予測credit、不足入力、実行可能状態を表示する。
+- ユーザー指定Taskを優先し、依存関係や先行施策が有利な場合は取消ではなく相談として提示する。
+- 未実行Recommendationは週次／月次で維持、順位変更、監視、失効へ再評価し、古い推薦を残し続けない。
 
-## I. セキュリティ・観測・運用・管理
-- データ境界とテーブル契約・保存禁止・一時本文 (REQ-SEC-11)
-- 決定論的Preflight・事前シミュレーション (REQ-SEC-12, REQ-SEC-04)
-- Observability・契約検証・Token/Cache Tracker (REQ-SEC-02, REQ-SEC-03, REQ-SEC-13)
-- 受入検証観点・性能要求（事前計算配信・レイテンシ目標）(REQ-SEC-05, REQ-SEC-06)
-- 監査ログ・テナントオフボーディング (REQ-SEC-10)
-- 認証拡張点（SSO/2FA後付け・テナントポリシー強制）(REQ-SEC-14)
-- インバウンド保護（レート制限・認証防御・TLS/HSTS・管理面追加防御）(REQ-SEC-15)
-- アカウントライフサイクル（招待トークン・オーナー回復・全端末ログアウト・step-up再認証）(REQ-SEC-16)
-- 開発管理者コンソール（位置づけ/課金原価/プロバイダ/コスト観測/運用監査）(REQ-ADM-01, REQ-ADM-02, REQ-ADM-03, REQ-ADM-04, REQ-ADM-05)
-- 認可・なりすまし・break-glass／可観測性・SLO・インシデント／データ保護・保持・DR (REQ-ADM-06, REQ-ADM-07, REQ-ADM-08)
-- 設定レジストリ・安全不変条件 (REQ-ADM-09)
-- Pack・プロンプト・ゲート管理画面（コード変更なしの調整・版統制）(REQ-ADM-10)
-- 表示ラベルレジストリ（内部キー→日本語ラベル併記・fail-visible・単一ソース）(REQ-ADM-11)
+正本: `REQ-LOGIC-01〜12`、Recommendation Action Routing Map。
 
-## J. UI / UX
-- 通常SaaSビュー（グローバルUI要素含む）／Agent Officeビュー（体験レイヤー）(REQ-NAV-02, REQ-NAV-03, REQ-AOUI-01)
-- 第一階層7画面と各画面責務・内部用語非表示 (REQ-NAV-01, REQ-NAV-04, REQ-AOUI-02)
-- Agent Office部門・キャラ・ペルソナ⇄工程マッピング (REQ-AOUI-03, REQ-AOUI-04)
-- 画面の2軸（探索/おすすめ）／全画面ワークベンチ (REQ-AOUI-05, REQ-AOUI-06)
-- 部門・フロア・ペルソナのconfig駆動拡張 (REQ-AOUI-07)
-- UI素材方針（テキスト非画像化）(REQ-NAV-05)
-- レスポンシブ方針（閲覧系モバイル対応・Officeはデスクトップ最適）(REQ-NAV-06)
-- 国際化方針（文言外部化・ロケール分離・初期ja）(REQ-NAV-07)
-- アクセシビリティ品質床（キーボード到達・フォーカス可視・WCAG AA目安・reduced-motion・通常ビュー完結）(REQ-NAV-08)
-- UIテキストレジストリ（版差し替え・2層フォールバック・型付きアクセサ生成＝関数⇄日本語・日本語リテラルlint・逆引き・再同意は対象外で別統制）(REQ-NAV-09)
+## 4. 記事制作・リライト・軽量施策
 
-## K. 開発プロセス・リリース制御
-- 開発ユニットと本質先行の実装順序・禁止事項 (REQ-DUR-01, REQ-DUR-02, REQ-DUR-03, REQ-DUR-05)
-- Feature Flag / Kill Switch (REQ-DUR-04)
-- キャパシティモデルとインフラ段階構成（密度健全域・段階移行・1社原価配賦）(REQ-DUR-06)
-- 実行基盤の実装規約（環境分離・graceful drainデプロイ・後方互換DDL・キュー段階・S3互換・UTC規約）(REQ-DUR-07)
-- バックアップ・リカバリ目標（RPO/RTO・PITR・隔離保管・テナント単位復元・演習）(REQ-DUR-08)
-- コンテナ化と移管性（不変イメージ・同一イメージでVPS→クラウド・状態外部化・中立プロトコル）(REQ-DUR-09)
-- 自動復旧・自動保守（self-healing・checkpoint無人再開・証明書/ログ/DB保守・フラッピング停止）(REQ-DUR-10)
+- Research Brief、Outline Contract、Section Brief、Meaning Unit生成、Assembly、QA、限定Repair、装飾、CMS下書きをversion付きWorkflowで実行する。
+- Outline確認はSite設定で任意に停止でき、見出し構成をユーザーが修正できる。本文のユーザー修正は保護して再QAする。
+- 文末は「です・ます調／だ・である調」、文章表現は文語体／口語体を組み合わせる。Site言い回し学習は任意ONで、ON時だけ標準10記事を利用し、3か月ごとに見直し通知する。
+- リライトは原因、Edit Plan、変更対象、保持対象、差分、保護順位、復元可否を示し、CMS下書き後にユーザーが更新を承認する。全文再生成も許可するが同じリスク・差分・承認を要求する。
+- CTA／内部link等の軽量Patchは全文リライトと分離し、新規記事には関連既存linkを入れ、既存記事へのlink追加は提案・承認後に行う。link削除は注意対象とする。
+- WP Revisionを第一復元経路、Premium以上の専用backupを安心保証として提供し、双方がない場合も復元不能への同意で続行できる。
 
-## L. ユーザー行動要件（ジャーニー）
-- 行動原則（到達2遷移以内・行き止まり禁止・文脈引き継ぎ・非同期・安全操作）(REQ-UJ-01)
-- 初期導入／日常運用ループ (REQ-UJ-02, REQ-UJ-03)
-- キーワード戦略／生成〜公開／リライト運用 (REQ-UJ-04, REQ-UJ-05, REQ-UJ-06)
-- 例外・緊急／開発管理者の運用 (REQ-UJ-07, REQ-UJ-08)
-- 月次プランニング・ジャーニー (REQ-UJ-09)
+正本: `REQ-AGENT-*`、`REQ-PACK-*`、`REQ-RWR-*`、`REQ-WPA-*`、Lightweight Patch Map。
+
+## 5. CMS・計測・外部連携
+
+- CoreはCMS非依存Publication Contractを使用し、初期検証AdapterをWordPressとする。他CMSは実環境Contract Testなしに対応済みと表示しない。
+- WordPressはCore REST APIを基本に、Thin Pluginの署名Webhookで公開・更新・削除・Media等の変更を通知する。RSS、sitemap、更新日時、crawler等をfallbackへ使い、顧客に内部経路を選ばせない。
+- read、write、Media、Editor、Preview、Revision、Tracking、Capacityを別Capabilityとして診断する。最低でも書込可能なREST接続がなければCMS送信を保留する。
+- 初期画像生成はアイキャッチに限定し、Featured Image Pattern、variation許容度、logo safe area、CMS対応sizeを設定する。画像はMediaへ先に登録し、Media ID／URLを記事へ設定する。
+- 初期Trackerは本文・form値・個人識別eventを送らず、page表示／遷移と指定CV到達を軽量計測する。月次と累積でCTA／CVを評価する。
+
+正本: `REQ-INT-*`、`REQ-MEASURE-*`、CMS Routing Map、Featured Image Pattern Map。
+
+## 6. 公開・Automation
+
+- 新規記事は本システム経由で人が承認し公開成功した15件まで承認必須とし、既存記事・外部記事・リライトを数えない。
+- 15件到達後、権限者が版付き同意書へ同意し、対象、予算、停止条件等を設定すると新規記事の自動投稿を解放できる。Entryを含む全Planで利用可能とする。
+- リライト・記事置換は自動運用の解放と分け、CMS下書きとユーザー承認を必須とする。
+- hard gate判定は消さず、同一権限者による二段階確認と版付き同意で例外手動公開を許可する。公開の最終判断と責任はユーザーへ帰属する。
+- 予算、接続、認可、Kill Switch、stale根拠等は副作用直前に再判定する。
+
+正本: `REQ-LOGIC-04/05`、Publication Decision Contract、Authorization Matrix。
+
+## 7. 顧客組織・認可・内部運営
+
+- 基本権限は`契約者／サイトオーナー／ユーザー`。業務権限は`目標管理／キーワード・サイト戦略／記事制作／サイト分析`。顧客向けViewerや人間の執筆者／検収者を別Roleにしない。
+- Siteは付与式で、Site Assignmentが0件なら全Site、1件以上なら指定Siteだけへ適用する。契約者は複数可で代表契約者を1名持つ。
+- 顧客組織は自由階層で、法人・個人の両方を扱う。代理店横断tenant、OEM、white labelは初期対象外とする。
+- 内部はPlatform Admin／Manager／Operatorを顧客Membershipと分離する。Managerの顧客操作はAdminが対象・operation・期限を指定し、Operatorは内部log確認に限定する。
+- API、worker、Automation、Agent tool、通常ビュー、Officeは同じAuthorization Decisionを使用する。
+
+正本: `REQ-ORG-*`、`REQ-ACCESS-*`、`REQ-PAC-*`、Authorization Matrix。
+
+## 8. 通常ビュー・Agent Office・Support
+
+- 通常ビューは推薦、確認、承認、日常判断を簡単に行う標準画面とする。
+- Agent Officeは監視専用ではなく、同じ業務正本を詳細に探索し、Keyword選定条件、推薦方針、配分、Task構成、実行順、停止・再開等の変更Proposalを作れる詳細操作面とする。
+- Office personaは業務窓口であり、persona数だけLLM instanceや独立runtimeを作らない。質問は回答、変更指示は型付きProposal→影響・credit・権限確認→共通Commandへ変換する。
+- 初期はdesktopを標準とし、mobile Office Chatは後続。3D表現は性能・accessibilityに応じ段階縮退する。
+- アプリ内FAQチャットを全Planへ提供し、画面Contextと接続診断から回答する。解決不能時は問い合わせへつなぎ、Premiumの優先有人対応とEnterpriseの個別SLAを分ける。
+
+正本: `REQ-SCREEN-*`、`REQ-DESIGN-*`、`REQ-AOUI-*`、`REQ-UPSELL-08`。
+
+## 9. 課金・Plan・Capacity
+
+- 初期価格はEntry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜（月額換算・税別、税込額併記）。
+- Entry／Standardは月契約または年契約、Premiumはセルフ年契約、Enterpriseは問い合わせ年契約。年契約はシステム利用料を10%割引する。
+- Planは管理設定から追加・複製・改版・販売終了でき、既存契約は契約時Catalog versionを維持する。
+- 利用量はquality別creditとCapacity Dimensionで制御する。月額付与creditは請求期間末、追加購入creditは最大180日で失効する。
+- 自動チャージは初期OFF。ユーザーが有限／無制限の月間上限と自動購入を明示設定した場合だけ実行する。
+- Entryは1 Site／3 user、Standardは3／10、Premiumは5／30、Enterpriseは個別を初期値とする。Premium以下は容量超過時にPremium以上を案内し、Premium以上は容量optionを購入できる。
+- 高品質生成はStandard以上、専用リライトbackupはPremium以上、数値予測はStandard以上かつ直近28日1,000 click等のdata条件成立時に解放する。
+
+正本: `REQ-BILLING-01〜16`、`REQ-COST-*`、Billing Capacity UI Map。
+
+## 10. 技術・データ・非機能
+
+- AWS配置を前提にWeb／API、worker、PostgreSQL、object storage、queue、監視を疎結合化し、機能単位のbulkhead、DLQ、冪等性、checkpoint再開を持つ。
+- 本文、HTML、block、prompt、secret、Provider raw responseを恒久DBへ保存せず、Article Summary、hash、履歴、順位、Keyword、CV等の有界データを保持する。
+- 顧客データはtenant／Site境界、Repository強制点、RLS、暗号化、step-up、監査、break-glassで保護する。顧客面と内部管理面を分離する。
+- 主要画面は一般的Web指標とP95を監視し、重い処理は非同期化して通常ビュー／Officeで進行を体験化する。
+- 初期内部目標はRPO 1時間／RTO 4時間。全体障害より機能単位の縮退を優先し、復元演習で達成性を検証する。
+- LLMはProvider AdapterとModel Registryで分離し、特定modelを業務ロジックへ固定しない。OpenAI／Anthropicに加え、将来のKimi、Grok、Qwen、local model等へrouting可能な互換性を維持する。
+- Core SEO機能は標準で成立し、追加Context、Connector、分析、Office Scene等をFeature Object／App Packageとして接続できる。Object停止時にCore全体を落とさない。
+
+正本: `REQ-DATA-*`、`REQ-TECH-*`、`REQ-NFR-*`、`REQ-ACCESS-*`、AWS Operations Map。
+
+## 11. 将来・段階リリース
+
+- AI表示性／AI fetch・crawler可視性はGoogle、Microsoft系、ChatGPT、Perplexity、Gemini、Claude、Grok等を候補とするが、技術・提供条件が未確定なため構想・更新追従として扱う。
+- server／edge log Connector、WordPress以外のCMS Adapter、本文画像、WP内専用編集、mobile Office Chat、高度3D／音声／着せ替え、第三者App Storeは段階リリースとする。
+- 初期機能として表示せず、対応済みsurfaceと構想を区別する。
+
+正本: Crawler／AI Visibility Logic、Open Items Register。
 

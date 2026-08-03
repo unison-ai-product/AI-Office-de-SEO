@@ -183,6 +183,18 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "pack.writing_method.modifier_max | 2",
   "pack.sim.article_qa.enabled | false",
 ]);
+assertIncludes("docs/reference/FEATURE-LIST.md", [
+  "現在は443 REQを監査対象",
+  "Site接続→業界Big Keyword探索",
+  "Agent Officeは監視専用ではなく",
+  "Entry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜",
+]);
+assertExcludes("docs/reference/FEATURE-LIST.md", [
+  "全135 REQ",
+  "Claude優先ルーティング",
+  "オンボーディング=コンサル・ヘルプ=専用サイト",
+  "VPS→クラウド",
+]);
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 for (const field of ["canonical_paths", "l3_preparation_paths", "gate_a_paths", "prototype_paths"]) {
