@@ -215,36 +215,34 @@ Siteごとの接続結果を`schema.cms.connection_profile.v1`へ固定する。
 
 根拠: `REQ-DATA-15`、`REQ-PRODUCT-04/20`、`REQ-BUS-02`、`REQ-LOGIC-02/12/13`、`REQ-INT-09`、`REQ-RWR-01〜06`。
 
-## 0.0.4 Agent Office Conversation・Proposal Contract
+## 0.0.4 Agent Office Interaction・Proposal Contract
 
-Office会話を質問と状態変更へ分け、変更案を`schema.office.proposal.v1`へ正規化する。
+Office操作は、LLMを使わない選択式Actionと、自由文を型付き変更案へ正規化するProposalに分ける。どちらも同じ`schema.office.interaction.v1`を使い、確認済み変更だけを所有BCの共通Commandへ渡す。
 
 ```text
 {
-  proposal_id, version, tenant_id, site_id, conversation_ref,
-  persona_key, room_key, source_view_ref,
-  intent_kind, target_ref, operation,
-  base_state_ref, base_version,
-  requested_change, normalized_patch,
-  evidence_refs[], assumptions[], missing_inputs[],
-  impact{affected_refs[], plan_delta?, schedule_delta?, recommendation_delta?, risk_notes[]},
-  estimate{credit, monetary?, capacity?, calculation_version, availability},
-  authorization{action, decision_ref?, required_permission, step_up_required},
-  reversibility{kind, rollback_ref?, cancel_until?},
-  status, confirmed_by?, confirmed_at?, command_ref?, result_ref?,
-  correlation_id, created_at, expires_at
+  interaction_id, tenant_id, site_id, user_id,
+  persona_key, room_key, task_ref, workflow_ref,
+  stage, status, waiting_reason?, progress?, credit_used?,
+  result_summary?, analysis_refs[], evidence_refs[],
+  input_kind, action_key?, free_text?, llm_used, llm_reason?,
+  proposal?{proposal_id, version, target_ref, operation, base_version,
+    normalized_patch, impact, estimate, required_permission,
+    reversibility, status, confirmed_by?, command_ref?, result_ref?},
+  normal_view_target{screen_key, resource_ref, tab_key?, filter?},
+  authorization_decision_ref, source_event_version,
+  correlation_id, observed_at, expires_at
 }
 ```
 
-- `intent_kind`: `question / exploration / change_proposal / new_task_proposal / task_revision_proposal`。質問・探索はProposal確定を要求せず、状態変更Commandを発行しない。
-- `status`: `draft / input_required / estimated / awaiting_confirmation / confirmed / dispatched / applied / failed / cancelled / superseded / expired`。
-- `base_version`不一致時は古い差分を適用せず、再計算して`superseded`または再確認へ戻す。
-- `normalized_patch`は対象Domainの既存Command Schemaへ変換可能な型付き差分であり、自由会話文をそのままDB、CMS、Policyへ送らない。
-- 影響、credit、Capacityまたは権限を確定できない場合、`availability`と不足入力を表示して確定不可とする。
-- 確定時と副作用直前に`schema.authorization.decision.v1`を使用する。persona、部屋、Office入室は認可根拠にならない。
-- 通常ビューとOfficeは同じCommand Result eventを購読し、別々の業務状態を保存しない。
+- `stage`、`status`、`waiting_reason`、`progress`、`credit_used`、成果値は各正本event／Projectionから取得し、Officeで別計算しない。
+- `input_kind=choice`は選択式ポップアップから`action_key`を決定論Serviceへ渡し、LLMを呼ばない。
+- `input_kind=free_text`でも、既知のActionへ決定論的に解決できる場合はLLMを呼ばない。曖昧な意図解釈、非定型の意味説明、自由文からの構造化が必要な場合だけ`llm_used=true`と理由を記録する。
+- Proposalは影響、Credit／Capacity、認可、取消・復元可否を確認できない限り確定不可とする。自由文をDB、CMS、Billing、Policyへ直接送らない。
+- 詳細分析は共通Projectionを使い、条件変更はProposalへ分離する。
+- Persona、部屋、Office入室は認可根拠にならない。
 
-根拠: `REQ-AOUI-01/04/07`、`REQ-AGENT-06/09`、`REQ-SCREEN-15`、Agent要求マップ。
+根拠: `REQ-AOUI-01/04/07`、`REQ-SCREEN-18`、Agent要求マップ。
 
 ### `schema.office.session_summary.v1`
 
@@ -252,15 +250,15 @@ Office会話を質問と状態変更へ分け、変更案を`schema.office.propo
 {
   session_summary_id, tenant_id, site_id, persona_id, user_id,
   task_ref?, conversation_started_at, conversation_ended_at,
-  summary, unresolved_questions[], confirmed_command_refs[],
-  proposal_refs[], source_message_count, retention_class,
+  summary, unresolved_questions[], confirmed_command_refs[], proposal_refs[],
+  source_message_count, retention_class,
   expires_at?, user_visible, deleted_at?, schema_version
 }
 ```
 
 - Officeペルソナとの一般会話は、生messageをSite永久記憶へ一律昇格せず、終了時の短いSession Summaryを次回文脈に使用する。
-- `persona_id`を必須とし、plannerとの方針相談、content_writerへの記事指示、support_agentの問い合わせを同じ「Agent会話」として混在させない。
-- Summaryは業務正本ではない。設定変更は`confirmed_command_refs`、記事指示はTask/User Order、SupportはSupport Ticket、Executor成果はSnapshotを参照する。
+- `persona_id`を必須とし、plannerとの戦略相談、content_writerへの記事指示、support_agentの問い合わせを同じ「Agent会話」として混在させない。
+- Summaryは業務正本ではない。確定変更は`confirmed_command_refs`、記事指示はTask/User Order、SupportはSupport Ticket、Executor成果はSnapshotを参照する。
 - Summaryから設定、権限、公開状態、学習Factを暗黙更新しない。ユーザーは閲覧・削除でき、保持期間はretention policyで解決する。
 
 根拠: Agent Requirements Map §3.0／§7.1、`REQ-DATA-08/10`、`REQ-ACCESS-17`。

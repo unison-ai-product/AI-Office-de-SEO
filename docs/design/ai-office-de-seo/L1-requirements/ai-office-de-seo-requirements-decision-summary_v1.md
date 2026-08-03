@@ -189,7 +189,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## 13.2 デザイン・Agent Office体験
 
 - 通常ビューを初回ログインと日常業務の標準画面とし、Recommendationの採否、承認、設定等の「選ぶ・決める」を行う。
-- Agent Officeは実行中Task、担当Agent、工程、待機、完了、失敗、成果要約を見守る監視面とする。成果のSite／Cluster／記事drill down、条件探索、推薦方針、承認、設定変更は通常ビューを正本とし、OfficeはContext付きlinkで接続する。
+- Agent Officeは実行中Task、担当Agent、工程、待機、完了、失敗を見守りながら、成果のSite／Cluster／記事詳細、根拠、条件、推薦方針、設定、Taskを玄人向けに分析・操作する面とする。定型指示は選択式ポップアップと決定論Service、自由文は必要時だけLLMを使う。変更は型付きProposal、影響・Credit・認可確認を経て共通Commandへ渡す。通常ビューは同じ成果の要約と簡単操作を担う。
 - Officeの役割別Agentは、既存Executor・決定論Service・Workflowの実状態を業務用語へ翻訳する監視上のユーザー接点とする。各Agentを独立Runtimeに固定せず、現在Task、工程、待機理由、完了成果、通常ビューの次確認先を説明する。
 - 既存モックのフロア、部屋、エレベーター、役割別Agent、ライブフィードを基線とし、ゲーム内のオフィスを訪れてNPCが自律的に働いているような立体表現と、Agentへ話しかけて動き方を変更する操作へ発展させる。
 - 通常ビューで推薦Keywordを簡単に採否できる一方、Officeでは一覧・cluster・根拠を確認し、選択条件、重み、除外、推薦方向を調整できるようにする。ゲームのショップや装備構成に近い発見性を持たせるが、表示内容と結果はSEO業務用語で説明する。

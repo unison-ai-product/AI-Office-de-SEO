@@ -85,8 +85,8 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | State Machine / 工程 | Workflowの遷移図。13状態（実務工程9＋強制ゲート4、Intake→…→Cleanup）を強制 | REQ-AGENT-09 |
 | Semantic Executor | WorkflowからTicketを受け、LLMを利用して意味判断・生成・意味検査を行う内部実行責務（Planning/Writing/QA/Repair）。Officeペルソナや常駐する人格と同義にしない | REQ-AGENT-01 |
 | Action Executor | Ticket／Commandを受け、許可Toolによる外部副作用を実行する責務。Automation Executorは原則として決定論で動作し、LLMへ公開判断を委ねない | REQ-AGENT-01/06 |
-| Officeペルソナ | Agent Officeでユーザーが話しかける担当窓口。Service、Proposal、Executor、Toolへ接続するが独立runtimeとは限らない | REQ-AOUI-03/04 |
-| Office Conversation Runtime | 全Officeペルソナが共有し、persona別Role ProfileとPermissionを解決して、回答・型付きProposal・Ticket候補を生成する会話実行基盤。業務正本を直接更新しない | Agent Requirements Map §3.0/§6 |
+| Officeペルソナ | Agent Officeでユーザーが話しかける詳細運用上の担当窓口。Task状態を説明し、変更指示を型付きProposalへ変換するが、独立runtimeや業務正本を持たない | REQ-AOUI-03/04 |
+| Office Conversation Runtime | 全Officeペルソナが共有し、persona別Role Profile、Permission、Task Projection、Proposal Schemaを解決して回答・変更案・Ticket候補を返す会話実行基盤。確定操作は所有BCの共通Commandへ渡す | Agent Requirements Map §3.0/§6 |
 | Orchestrator | Workflow工程、Ticket、Snapshot、停止・再開を調停する内部制御。Officeのplannerとは別物 | REQ-AGENT-01/06 |
 | Session Summary | Officeペルソナとの1会話セッションを圧縮した文脈復元用要約。業務設定・知識・実行状態の正本ではない | Agent Requirements Map §7.1 |
 | Ticket | 作業命令。本文を内包せずキー（workflow/prompt/source/schema）のみ発行 | REQ-PACK-01 / REQ-PACK-03 |
@@ -235,4 +235,4 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | クエリ・マッチ品質（旧S5タブ名） | クエリ分析 | 2026-07-08にキーワード管理へ移設。キーワード=これから狙う語／クエリ=実際に来た検索語、の2起点を1画面に集約 |
 | 記事×キーワード（旧S2タブ名）＝アサイン台帳 | ページ一覧 | 2026-07-08にサイトページ管理へ移設。UI見出しは「ページ一覧（サマリー×キーワード割当）」 |
 | 通常ビュー（Standard/SaaS View） | 日常判断の簡単操作面 | Recommendationの採否、承認、基本設定、費用確認等を少ない操作で行う正規入口。Officeと同じ業務正本・権限・Command／Eventを使い、Officeで確定した変更も即時反映する |
-| Agent Officeビュー（Office View） | Agent・Task・工程の実行監視面 | Agentが働く仮想Office体験として、実Taskの進行、待機、判断待ち、完了、失敗、消費credit、成果要約を表示する。Personaとの会話はTask状態・工程・待機理由・成果要約の説明を返す。成果分析、Keyword／記事のdrill down、設定、承認、Recommendation変更は通常ビューを正本とし、Officeは対象Contextを維持したlinkで接続する。業務正本、認可、Command、成果計算をOfficeへ複製しない |
+| Agent Officeビュー（Office View） | 玄人向け詳細分析・運用・Agent操作面 | Agentが働く仮想Office体験としてTaskの進行を監視し、成果、Keyword、Recommendation、記事、根拠、設定を詳細分析できる。選択式または自由文会話から変更案を型付きProposalとして作り、影響・Credit・権限確認後に共通Domain Commandへ接続する。業務正本、認可、Command、成果計算をOfficeへ複製しない |

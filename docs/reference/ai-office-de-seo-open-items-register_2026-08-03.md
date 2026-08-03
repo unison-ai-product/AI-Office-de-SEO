@@ -44,7 +44,7 @@
 | DD-04 | 日本語正規化・形態素解析engineと辞書version | Query matching／Cluster | 精度・速度・保守比較ADR |
 | DD-05 | AWS compute、DB、queue、cache、Multi-AZ、隔離backup先 | 本番基盤 | 負荷・人数・費用・障害試験ADR |
 | DD-06 | Site／Feature Object／Providerのqueue partitionとbulkhead | 非同期基盤 | 障害注入・capacity test |
-| DD-07 | resolved | Officeは実行監視面とし、変更操作は通常ビューへContext遷移するためOffice固有Domain Command adapterを持たない |
+| DD-07 | resolved | Officeは玄人向け詳細分析・運用面とし、型付きProposalを所有BCの共通Domain Commandへ渡す。Office固有Domain Command adapterは持たない |
 | DD-08 | Featured Image Pattern Editorと画像回帰検査 | 画像生成 | UI操作・Provider・CMS Media試験 |
 | DD-09 | GSC日次実績、Keyword Market Pool、global signalsのpartition・圧縮・rollup・BigQuery併用境界 | Data Mart／共有資産 | 想定件数を使った負荷・費用・復元比較ADR |
 | DD-10 | 通知の保持期間、既読archive、Support会話TTL | 通知／Support | 法務・support運用・保存費用を使ったRetention Policy |
@@ -89,7 +89,7 @@
 | key | 旧資産 | 現行規則 | 解消契機 |
 |---|---|---|---|
 | MD-01 | `REQ-BILL-*`と旧価格／credit条件 | `REQ-BILLING-*`とPrice Catalogが正本 | 課金詳細改版時 |
-| MD-02 | Office成果Explorer・詳細操作面の2026-07〜08記録 | Officeは実行監視面。成果分析・変更は通常ビュー | Office実プロト再構成時 |
+| MD-02 | Officeを監視専用とした2026-07〜08記録 | 通常ビューは簡単操作、Officeは玄人向け詳細分析・運用 | Office実プロト再構成時 |
 | MD-03 | Owner／Admin／Editor／Viewer旧顧客Role | 契約者／サイトオーナー／ユーザー＋業務権限＋Site付与 | 認可実装時 |
 | MD-04 | WP固有語と複製されたCompatibility記述 | CMS Connection Routing Map／Adapterが正本 | CMS実装slice時 |
 | MD-05 | REQ見出しの旧埋込式 | 新規は見出し式、監査scriptは両形式 | 該当文書改版時 |

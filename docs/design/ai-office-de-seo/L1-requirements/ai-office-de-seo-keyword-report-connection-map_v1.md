@@ -56,7 +56,7 @@ Reportは分析結果の静的な説明資料ではなく、Keyword Market／Sit
 
 ## 4. 操作と再計算
 
-通常ビューで求める操作はCluster単位の`優先 / 通常 / 保留 / 除外`と、複数業界時の`手動優先 / 自動配分`である。大量の個別Keyword承認を必須にしない。個別Keyword、根拠、Source、式は詳細またはOfficeで確認・修正できる。
+通常ビューで求める操作はCluster単位の`優先 / 通常 / 保留 / 除外`と、複数業界時の`手動優先 / 自動配分`である。大量の個別Keyword承認を必須にしない。Officeでは個別Keyword、根拠、Source、式、Report、成果を玄人向けに詳細分析し、分類・優先度・除外の変更案を型付きProposalとして作成できる。両Viewは同じReport／成果Projectionを使う。
 
 修正後は実行済み施策と当時のReport versionを維持し、未実行Recommendationと次回月次配分だけを再計算する。ユーザー確定分類を自動推定で上書きせず、修正差分をSite補正と匿名全体補正候補へ分けて還流する。
 
@@ -73,4 +73,3 @@ Reportは`draft / partially_available / ready / user_adjusted / superseded`を�
 ## 6. 根拠
 
 `REQ-BUS-02/04/05/06`、`REQ-SCREEN-02/09/18`、`REQ-KRL-01〜10`、Keyword Market・Site Share接続マップ、Recommendation Action Routing Map。
-

@@ -78,8 +78,8 @@
 ## 8. 通常ビュー・Agent Office・Support
 
 - 通常ビューは推薦、確認、承認、日常判断を簡単に行う標準画面とする。
-- Agent Officeは実Task・Agent・工程の監視面とし、成果要約から通常ビューのSite／Cluster／記事詳細へ移動する。Keyword選定、推薦方針、配分、承認、設定変更、成果分析は通常ビューを正本とする。
-- Office personaは業務窓口であり、persona数だけLLM instanceや独立runtimeを作らない。質問は回答、変更指示は型付きProposal→影響・credit・権限確認→共通Commandへ変換する。
+- Agent Officeは実Task・Agent・工程を見ながら、Keyword、Recommendation、記事、成果、設定、Taskを玄人向けに詳細分析・操作する。通常ビューはRecommendation中心の要約と簡単操作を担う。
+- Office personaは詳細運用上の業務窓口であり、persona数だけLLM instanceや独立runtimeを作らない。定型指示は選択式ポップアップと決定論Service、自由文は必要時だけLLMを使い、変更を型付きProposal→影響・Credit・権限確認→所有BCの共通Commandへ変換する。
 - 初期はdesktopを標準とし、mobile Office Chatは後続。3D表現は性能・accessibilityに応じ段階縮退する。
 - アプリ内FAQチャットを全Planへ提供し、画面Contextと接続診断から回答する。解決不能時は問い合わせへつなぎ、Premiumの優先有人対応とEnterpriseの個別SLAを分ける。
 

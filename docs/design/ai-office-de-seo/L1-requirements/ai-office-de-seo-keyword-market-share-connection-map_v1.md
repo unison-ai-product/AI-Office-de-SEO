@@ -113,7 +113,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - Clusterを基本単位、個別Keywordを詳細単位にする。
 - 新規戦略Reportと既存診断Reportを分けるが、両方ともMarket Keyword母集団を基線にする。
 - source provenance、availability、Observed／Estimated、公共／Site固有、ユーザー確定／推定を視覚的に区別する。
-- OfficeではMarket、Share、Cluster、記事割当、補正version、Recommendation根拠を横断し、条件変更はProposalとして扱う。
+- OfficeではMarket、Share、Cluster、記事割当、補正version、Recommendation根拠、顧客成果の時系列を玄人向けに横断分析し、条件変更・割当修正を型付きProposalとして作成できる。通常ビューは同じReport／成果Projectionの要約を表示し、確定変更は共通Commandへ渡す。
 
 ## 11. 検証
 

@@ -298,13 +298,13 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/billing-
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
   "初回ログインと日常業務の正規入口は通常ビュー",
-  "Agent Officeは名称どおり",
-  "見守る監視面",
-  "成果drill downは通常ビュー内",
+  "玄人向けの詳細分析",
+  "選択式ポップアップと決定論Service",
+  "必要な場合だけLLMを呼ぶ",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
-  "Officeの詳細操作",
-  "Officeで変更した設定・指示・方針",
+  "Office独自の業務正本",
+  "定型操作でもLLMを毎回呼ぶ",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/non-functional-requirements_v1.md", [
   "本番配置はAWSを前提",
@@ -314,12 +314,12 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-o
   "Entryの自動投稿はロック対象にせず",
   "Entryの数値予測は上位機能Preview",
   "開発管理画面または開発者Consoleとして扱わない",
-  "Agent Office実行監視",
-  "成果分析、Site／Cluster／記事drill downを完了する業務操作面",
+  "Agent Office専門分析・詳細運用",
+  "選択式ポップアップを先に表示",
+  "玄人向けに詳細分析・操作できる",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md", [
-  "Agent Office詳細運用",
-  "Office側の詳細操作",
+  "自由文をそのままDomain Commandへ渡す",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
   "schema.site.build_progress.v1",
@@ -340,8 +340,8 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "新規記事の自動公開設定",
   "新規記事15件まで解放進捗",
   "同一権限者の二段階確認＋版付き同意",
-  "Agent Officeはエージェントの実行状況を見守る監視面",
-  "成果詳細PanelはSite＝S1、Cluster＝S2、記事＝S5への要約link",
+  "Agent Officeはエージェントの実行状況を見ながら成果、Keyword、記事、根拠、条件、設定、Taskを玄人向けに詳細分析・操作する面",
+  "定型操作は選択式、自由文は必要時だけLLM",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
   "公開前承認「必須・変更不可」→既定OFFの任意設定",
@@ -376,14 +376,14 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
 assertIncludes("docs/reference/FEATURE-LIST.md", [
   "現在は447 REQを監査対象",
   "Site接続→業界Big Keyword探索",
-  "Agent Officeは実Task・Agent・工程の監視面",
+  "Agent Officeは実Task・Agent・工程を見ながら、Keyword、Recommendation、記事、成果、設定、Taskを玄人向けに詳細分析・操作する",
   "Entry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-requirements-decision-summary_v1.md", [
   "未確定事項の全件台帳ではない",
   "ai-office-de-seo-open-items-register_2026-08-03.md",
   "ここにないことを「確定済み」の根拠にしない",
-  "Agent Officeは実行中Task、担当Agent、工程、待機、完了、失敗、成果要約を見守る監視面",
+  "Agent Officeは実行中Task、担当Agent、工程、待機、完了、失敗を見守りながら、成果のSite／Cluster／記事詳細",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-business-requirements_v1.md", [
   "CMS下書き・投稿",
@@ -416,14 +416,14 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-ag
   "キャラクターとExecutorの1対1表を別途作らない",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md", [
-  "エージェントの実行状況を見守る監視面",
-  "通常WorkbenchへのContext付きlink",
+  "玄人向け運用面",
+  "定型操作は選択式ポップアップから決定論Service",
   "初期構成（確定）: 部屋7",
   "製品要求はReact等の特定フレームワークへ固定せず",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md", [
-  "Agent Officeは通常ビューの単純な複製でも監視専用画面でもない",
-  "Agent Officeは詳細運用を担う",
+  "Personaごとの専用LLMを必須",
+  "Office独自の業務正本",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
   "これはLLM Agentの個体数、model数、常駐process数またはOfficeペルソナ数を表す一覧ではない",
@@ -437,16 +437,16 @@ assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-ag
   "React/HTML/CSS で描画する",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md", [
-  "成果分析、設定、承認、変更は通常ビューを正本",
+  "成果、根拠、条件、配分、設定、Taskを玄人向けに詳細分析・操作する",
   "製品要求はReact等の特定フレームワークへ固定せず",
   "初期リリースはdesktop標準",
   "後続versionではAgent Office Chatをmobileの主導線",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md", [
-  "Site全体 | S1 サマリー",
-  "Keyword Cluster | S2",
-  "記事 | S5",
-  "Office内に成果分析drill downを作らない",
+  "Site全体・簡単表示 | S1 サマリー",
+  "Keyword Cluster・標準表示 | S2",
+  "記事・標準表示 | S5",
+  "Office詳細分析",
   "圏内到達",
   "上位化",
   "トップ確保",
@@ -507,7 +507,7 @@ assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
   "日常判断の簡単操作面",
-  "Agent・Task・工程の実行監視面",
+  "玄人向け詳細分析・運用・Agent操作面",
   "業務正本、認可、Command、成果計算をOfficeへ複製しない",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [

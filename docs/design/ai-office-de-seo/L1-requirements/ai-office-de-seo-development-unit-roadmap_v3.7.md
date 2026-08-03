@@ -123,7 +123,7 @@ manual運用の実績後に、制限付き自動化を追加する。
 - 本質A データ整備: URLマスター・本文非保持境界、GSC Data Mart、Keyword Map、競合Top5・Article Map、カバー率、Query Drift。エージェントが判断に使う一次データを、サイト境界内で正しく整える。
 - 本質B エージェントの仕組み: Pack / Ticket / Schema / Router、Research / Outline固定ワークフロー、Meaning Unit生成・QA・Repairループ、エージェント観測（Token / Cache / QA fail / Schema validationの構造化ログ）、事前見積・予算ガード。
 
-CMS出力、課金、通常ビュー、FAQチャットは商用利用の成立条件であり、単なる非本質として最後へ追いやらない。Agent Officeは通常ビューと同じTask・Agent・工程eventへ接続する実行監視面として、通常ビューの業務契約確定後に実装する。Autopilotは最初の新規15記事、同意、権限、予算、接続、公開判定が成立した後に解放する。
+CMS出力、課金、通常ビュー、FAQチャットは商用利用の成立条件であり、単なる非本質として最後へ追いやらない。Agent Officeは通常ビューと同じProjection・Commandへ接続する玄人向け詳細分析・運用面として、通常ビューの業務契約確定後に実装する。Autopilotは最初の新規15記事、同意、権限、予算、接続、公開判定が成立した後に解放する。
 
 初期構築対象に含める横断業務:
 
@@ -139,7 +139,7 @@ CMS出力、課金、通常ビュー、FAQチャットは商用利用の成立�
 - フェーズ2 エージェント中核【本質B】: DU-07 Pack / Ticket / Schema / Router（まずMock Executor）→ エージェント観測と事前見積（DU-08のうちToken / Cache / Observability・事前シミュレーション）→ DU-09 Research / Outline固定ワークフロー。
 - フェーズ3 生成の実証【本質Bの縦切り】: DU-10 新規記事の最小縦切り → DU-11 リライトの最小縦切り（Rewrite Recommendation → Article Read Snapshot確認 → Cause Analysis → Edit Plan → Repair／記事置換 → QA → CMS Draft → 承認）。ここまでで本質A・Bが実データで一気通貫する。
 - フェーズ4 出力・通常操作・支援: CMS Publication ContractとWordPress Adapter（投稿形式チェック・Media・下書き・Preview／Revision能力）＋DU-12 投稿予約・承認→通常ビューの月次計画・週次予定・Recommendation・承認・評価→FAQチャット／接続診断。
-- フェーズ5 商用化・監視体験・自動化: DU-13 Stripe / Credit（台帳・追加購入・自動チャージ・Plan／Capacity）→DU-14 分散バッチ事前計算→DU-15 Agent Office実行監視面→DU-16 Autopilot→DU-17 Production Hardening。
+- フェーズ5 商用化・専門運用体験・自動化: DU-13 Stripe / Credit（台帳・追加購入・自動チャージ・Plan／Capacity）→DU-14 分散バッチ事前計算→DU-15 Agent Office詳細分析・運用面→DU-16 Autopilot→DU-17 Production Hardening。
 
 補足: DU-03「WordPress連携」は、取り込み側（フェーズ1）と出力側（フェーズ4）に分けて実装する。DU-08「Token / Credit / Observability」は、観測・事前見積（フェーズ2）とクレジット台帳・課金（フェーズ5）に分けて実装する。
 

@@ -147,7 +147,7 @@ flowchart LR
 
 ### 1.1 通常ビューとAgent Officeの往復・監視フロー（2026-08-03現行要求）
 
-通常ビューとOfficeは別システムではない。通常ビューは分析、判断、設定、承認、変更を行う業務面、Officeは同じTask・Agent・工程eventを用いて実行状況を見守る監視面である。成果のSite／Cluster／記事drill downは通常ビュー内で行い、Officeは成果要約とContext付きlinkだけを持つ。
+通常ビューとOfficeは別システムではない。通常ビューはRecommendation中心の要約と簡単操作、Officeは同じProjection・認可・Domain Commandを用いる玄人向け詳細分析・運用面である。Officeは成果、Keyword、記事、根拠、条件、設定、Taskを横断し、選択式操作または型付きProposalから共通Commandへ接続する。
 
 ```mermaid
 flowchart LR

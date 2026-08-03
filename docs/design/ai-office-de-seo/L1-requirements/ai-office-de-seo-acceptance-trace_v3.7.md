@@ -460,9 +460,9 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。 ｜ 検証: REQ-DESIGN-06 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。 ｜ 検証: REQ-DESIGN-07 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。 ｜ 検証: REQ-DESIGN-08 ｜ 正本: `categories/design-experience-requirements_v1.md`
-- [ ] AC-L1-DESIGN-09: 通常ビューから同じTask ContextでOfficeの実行監視へ移動し、Officeから成果分析・設定・承認の通常画面へ復帰でき、通常ビューの結果をOfficeへ同期できる。 ｜ 検証: REQ-DESIGN-09 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-09: 通常ビューのRecommendation中心の簡単操作から同じContextでOfficeの玄人向け詳細分析・運用へ移動でき、両Viewが同じProjection・認可・Domain Commandを共有し、Officeの定型操作でLLMを必須にしない。 ｜ 検証: REQ-DESIGN-09 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-10: Officeを標準3D、簡略3D、軽量2Dへ切り替えても、同じTask状態・詳細・会話・操作を利用できる。 ｜ 検証: REQ-DESIGN-10 ｜ 正本: `categories/design-experience-requirements_v1.md`
-- [ ] AC-L1-DESIGN-11: Officeでは実entityに基づくTask実行Loopを監視し、計測・評価・学習の詳細GraphはContext付きlinkから通常ビューで追跡できる。 ｜ 検証: REQ-DESIGN-11 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-11: Officeでは実entityに基づくTask実行Loopと計測・評価・学習の詳細Graphを玄人向けに横断分析でき、選択式操作と型付きProposalから共通Commandへ接続できる。 ｜ 検証: REQ-DESIGN-11 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-12: 初期リリースがdesktop標準として成立し、後続mobile Chatへ通知・確認・説明・修正指示を追加してもdesktop業務の正本を分岐させない。 ｜ 検証: REQ-DESIGN-12 ｜ 正本: `categories/design-experience-requirements_v1.md`
 
 ### growth-upsell-requirements_v1
@@ -588,7 +588,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、CMS Deliveryの保留・再開・外部反映確認、追加見積を同一相関IDで確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。 ｜ 検証: REQ-SCREEN-16 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。 ｜ 検証: REQ-SCREEN-17 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-18: Agent Officeで実Task・Agent・工程・待機・完了・失敗と成果要約を監視でき、成果分析・設定変更・承認はContext付きlinkから通常ビューへ移動し、通常ビューの結果がOfficeへ同期される。 ｜ 検証: REQ-SCREEN-18 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-18: 通常ビューでRecommendation中心の要約・簡単操作を行え、Agent Officeで同じProjectionを使う玄人向け詳細分析・設定・Task操作を行え、選択式操作は決定論Service、自由文は必要時だけLLMを使い、確認済み共通Commandの結果が両Viewへ同期される。 ｜ 検証: REQ-SCREEN-18 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。 ｜ 検証: REQ-SCREEN-19 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 
 ### security-access-requirements_v1
@@ -657,7 +657,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先を既存QA・Placement・Automation・限定Repair Ticketへ接続し、CTA専用Agent・Writing Ticket・作業Packを増やさず実行できる。 ｜ 検証: REQ-LOGIC-14 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。 ｜ 検証: REQ-MEASURE-12 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-MEASURE-13: CMS反映後の評価対象登録をLoop完了として月次distinct Siteを算出し、4段階Activation、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。 ｜ 検証: REQ-MEASURE-13 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
-- [ ] AC-L1-MEASURE-14: 顧客成果をS1／S2／S5の3階層でdrill downし、AI Office実績と外部変更、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現でき、Agent OfficeはTask監視と通常ビューへの要約linkに限定される。 ｜ 検証: REQ-MEASURE-14 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示でき、AI Office実績と外部変更、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。 ｜ 検証: REQ-MEASURE-14 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。 ｜ 検証: REQ-DATA-14 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。 ｜ 検証: REQ-DATA-15 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`

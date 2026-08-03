@@ -13,8 +13,8 @@
 | PROTO-01 | `PLAN_DEFS`が68,000／128,000／198,000／298,000円、プライム | 現行価格・名称・契約周期・税込併記と衝突 | Price Catalog fixture＋Plan Configuration fixtureから39,800／98,000／198,000／398,000円〜を表示。税別主表示＋税込併記 | Billing Capacity UI Map、PT-MIG／BILLUI |
 | PROTO-02 | invoice fixtureが旧Standard 128,000円 | 旧価格を履歴ではなく現行請求として表示 | Subscriptionが参照したCatalog versionから請求fixtureを作る | `schema.billing.overview.v1` |
 | PROTO-03 | member Roleがオーナー／管理者／編集者／閲覧者を循環 | 現行の契約者／サイトオーナー／ユーザー＋4業務権限＋Site付与と衝突 | 基本3区分、業務権限、Site付与を別controlにし、閲覧のみは業務権限なしで表現 | Authorization Operation Matrix、PT-AUTH |
-| PROTO-04 | Office説明が「選ぶ・決めるは通常ビュー」「実行状況の確認」 | Officeを監視専用にしており現行の詳細操作面と衝突 | 各Agentの質問、探索、Proposal、影響・credit、確定、Task化を実装。通常ビューへの退避だけをCTAにしない | Agent Requirements Map、Office Proposal Contract |
-| PROTO-05 | Office詳細の多数CTAが通常ビューへ強制遷移 | Office独自の詳細操作が成立しない | 同一ContextでOffice内drawer／consoleを開き、共通Commandへdispatch。権限不足時だけ依頼導線 | PT-OFFICE-02〜07 |
+| PROTO-04 | Office説明が「選ぶ・決めるは通常ビュー」「実行状況の確認」 | Officeを監視専用にしており現行の玄人向け詳細分析・運用と衝突 | 成果詳細、根拠探索、選択式操作、型付きProposal、共通Command接続を実装する | Agent Requirements Map、REQ-SCREEN-18 |
+| PROTO-05 | Office詳細の多数CTAが通常ビューへ遷移 | Office内で完結すべき詳細分析・調整を外へ逃がしている | 同一ContextでOffice内Workbenchを開き、共通Projection／Commandへ接続する | PT-OFFICE-02〜07 |
 | PROTO-06 | Content起点が手動Keyword選択中心 | Site導入→Report→月次計画→Recommendation→IntakeのLifecycleが見えない | Recommendation Queueを既定入口にし、採用時にfreeze済みIntakeを表示／引継ぐ | Action Routing Map、PT-REC |
 | PROTO-07 | 新規／既存Site導入、戦略Report／診断Reportが画面として未成立 | GSCや市場母集団なしで推薦が出るように見える | 新規／既存の導入step、source availability、自動構築、Report、段階開放を追加 | Keyword Report Map、PT-REPORT／MARKET |
 | PROTO-08 | 一律の承認fixture中心 | 新規15記事、解放後自動投稿、リライト承認、hard gate二段階確認の差が出ない | lifecycle別fixtureと承認条件、同意、残数、解放状態を表示 | PT-LC-05/06 |
@@ -46,11 +46,10 @@
 1. fixture正本化: Price、Plan、Entitlement、Authorization、Site、Report、Recommendation、Intake。
 2. 共通resolver: Availability、Recipient、Authorization、CMS Capability。
 3. 通常ビューLifecycle: 導入、Report、月次計画、Recommendation、実行、評価。
-4. Office操作: persona capability、会話Proposal、影響・credit、共通Command、双方向同期。
+4. Office監視: persona別Task説明、工程、待機理由、成果要約、通常ビューへのContext遷移、通常ビュー結果の同期。
 5. Billing／Capacity、Notification、CMS、Image等の横断画面。
 6. Knowledge Graphと3D演出の強化。
 
 ## 6. 受入方法
 
 見た目の目視だけで完了判定しない。`PT-LC / MIG / AUTH / MARKET / REPORT / REC / PATCH / CMS / OFFICE / STATE / NOTIFY / BILLUI / AWS / IMAGE`のfixtureを操作し、通常ビューとOfficeが同じ業務entity、Command、Event、状態を使用することを確認する。
-

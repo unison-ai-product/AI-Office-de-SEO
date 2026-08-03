@@ -26,7 +26,7 @@ Agent Officeと内部Executor／Workflowの境界は `ai-office-de-seo-agent-req
 - Standard SaaS: サイドメニュー → タブ/一覧 → 詳細。白基調・業務効率重視。
 - Agent Office: オフィス表示 → エージェント／部屋を選択 → 会話・設備・Task Panelから、実行中Task、工程、待機、完了、失敗、成果要約を監視する。暗色オフィス背景＋透過パーツ。
 
-Agent Officeは通常ビューの成果分析を複製せず、エージェントの実行状況を見守る監視面とする。通常ビューは分析、判断、設定、承認、変更を担う。Officeは独自の部屋、会話、設備、Task監視表現を持つが、成果分析・設定変更・承認が必要な場合は同じContextを通常ビューへ引き継ぐ。
+通常ビューは簡単な判断、採否、承認、基本設定、成果要約を担う。Agent Officeはエージェントの実行状況を見守りながら、詳細分析、根拠探索、条件・方針変更、Task変更、Agent指示を行う玄人向け運用面とする。定型操作は選択式ポップアップから決定論Serviceへ接続し、自由文は必要な場合だけLLMで型付きProposalへ変換する。両Viewは同じProjectionと共通Commandを使う。
 
 ## 2. 第一階層7画面  ［REQ-AOUI-02］
 
@@ -40,23 +40,23 @@ Agent Officeは部門（部屋）とエージェント（キャラ）で構成�
 
 ## 4. ペルソナ⇄内部エージェント/工程マッピング  ［REQ-AOUI-04］
 
-Agent Officeが実状態を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、担当業務へ対応づける。ペルソナは独立runtimeそのものではなく、現在Task、工程、待機理由、完了成果、次の確認先を説明する監視上の窓口である。ペルソナ数だけ専用LLM、常駐processまたは独立記憶を作らない。下表の「会話から作れるもの」と「変更時の業務Permission」は、Officeで直接変更する契約ではなく、通常ビューへContext付きで遷移する先の能力・認可を示す。
+Agent Officeが実状態を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、担当業務へ対応づける。ペルソナは独立runtimeそのものではなく、現在Task、工程、待機理由、完了成果、次の確認先を説明する監視上の窓口である。ペルソナ数だけ専用LLM、常駐processまたは独立記憶を作らない。
 
-| persona | 主な業務 | 読む正本・Service | 会話から作れるもの | Executor／Tool接続 | 変更時の業務Permission | Office設備・詳細面 |
+| persona | 監視対象 | 読むProjection | Officeで説明する内容 | Officeで作れる型付きProposal | 通常ビューの成果／一覧 | Office設備 |
 |---|---|---|---|---|---|---|
-| `planner` | Site目的、月次方針、記事配分、制作順、記事構成 | MonthlyPlan、Keyword Report、Recommendation、Intake、Research Brief | 方針・配分変更Proposal、実行順変更、Outline変更案 | Planning Executor、Plan／Recommendation service | 目標管理。記事構成は記事制作、Keyword配分はキーワード・サイト戦略も必要 | 戦略ボード、月次計画卓、Outline table |
-| `keyword_researcher` | 市場探索、Cluster、主＋補助Keyword、intent、除外、方向性 | Keyword Asset Pool、Market／Share、SERP、GSC Query、分類・補正 | Cluster状態、重み、除外、追加調査、Recommendation方向のProposal | 決定論Keyword service、Planning Executor、Source Need | キーワード・サイト戦略 | Market wall、Cluster map、Keyword terminal |
-| `analyst` | 市場・Site・記事の横断診断、要因仮説 | Report、Market／Share、記事／Query、AIO・広告・季節性、Intervention | 診断条件、比較軸、評価解釈、追加分析Task | 集計service、Planning／QA Executor | 閲覧は全Member。条件変更・評価確定はサイト分析 | 分析卓、比較matrix、evidence panel |
-| `traffic_reporter` | 順位、表示、click、CV、認知貢献、月次／累積説明 | GSC、Tracker、CV、Evaluation、Watch Queue | 期間・segment変更、観測継続、次施策候補 | 集計service、Recommendation service | サイト分析 | Traffic wall、funnel board、trend console |
-| `content_writer` | Meaning Unit制作、ユーザー修正反映、限定再生成 | Intake、Outline Contract、Section Brief、Site rule、Source Pack | 本文限定変更案、追加要望、再生成Task | Writing／Repair Executor | 記事制作 | Draft desk、Meaning Unit board、diff editor |
-| `link_architect` | 新規／更新記事の内部link、既存記事Patch候補 | Article Summary、Keyword Cluster、link graph、Patch Action | link候補採否、接続文Repair、Batch／順序変更案 | QA／Repair／Automation Executor、Patch service | 記事制作。戦略条件変更はキーワード・サイト戦略も必要 | Link graph table、candidate queue |
-| `qa_checker` | Quality Gate、根拠、構造、文体、CTA／link整合 | Draft Snapshot、QA Snapshot、Gate Catalog、hard gate状態 | 差し戻し、限定Repair、二段階確認案 | QA／Repair Executor | 記事制作 | QA console、evidence desk、gate board |
-| `publish_manager` | CMS下書き、Preview、承認、予約、公開結果 | Publication Job、CMS Connection Profile、Approval、Output Vault | 送信・再送・予約・承認・公開Proposal | Automation Executor、CMS write Tool | 記事制作＋Site付与。自動運用設定は契約者／サイトオーナー条件も必要 | Publishing desk、calendar、CMS status |
-| `automation_operator` | 自動予定、実行順、停止・再開、変更予算 | Automation Policy、schedule、queue、budget、Kill Switch | Policy／予定／停止・再開Proposal | Orchestrator、Automation Executor | 個別Taskは記事制作。Policy変更は契約者／サイトオーナー＋対象Permission | Operations board、queue rail、kill switch |
-| `knowledge_trainer` | Site補正、成功学習、文体・装飾・方針のversion | Derived Facts、Intervention、Site rule、Pack version、correction | 採用・無効化・再学習・適用先変更Proposal | Pack Compiler／Validate、管理承認済みPublish | キーワード・サイト戦略。記事表現だけは記事制作 | Knowledge graph、version shelf、training table |
-| `security_admin` | 顧客向け接続・認証・権限・同意の案内 | Authorization Decision、Membership、Connection Profile、同意状態 | 再認証、権限・Site付与、同意更新Proposal | Authorization／Connection command | 質問は可視範囲内。変更は契約者／サイトオーナー等の操作別条件 | Access console、connection health。内部監査logは出さない |
-| `support_agent` | FAQ、障害切分け、自己解決、問い合わせ | user-visible診断code、FAQ、Task、Connection Health、status | 解決手順、再実行案、Support Ticket | FAQ Chat、Support service | 質問は可視範囲内。状態変更は対象操作のPermissionへ委譲 | Help desk、diagnostic panel |
-| `technical_seo` | crawl、index、CMS Capability、link・表示速度等の診断 | Crawler観測、GSC index、CMS Profile、link graph、CWV | 技術対応Task、記事側施策Recommendation、再診断案 | 決定論診断、QA Executor、Support escalation | 閲覧・診断条件はサイト分析。CMS設定は契約者／サイトオーナー条件。Site構造は提案のみ | Technical lab、crawler console、capability matrix |
+| `planner` | 月次計画、Recommendation、制作順 | MonthlyPlan、Recommendation、Production Task | 計画確定状態、今週の実行順、待機理由 | 目的・配分・実行順・Outline変更 | S1月次計画、S3 Recommendation、S4 Outline | 戦略ボード、月次計画卓 |
+| `keyword_researcher` | 市場探索、Cluster分析 | Keyword Portfolio、Market／Share Task | 収集・分類の進捗、対象Cluster、取得待ち | Cluster分類・重み・除外・追加調査 | S2 Keyword・戦略・診断 | Market wall、Cluster map |
+| `analyst` | 診断・評価Task | Report、Intervention Evaluation | 分析範囲、工程、評価準備中の理由、成果要約 | 診断条件・比較軸・追加分析Task | S1／S2／S5成果詳細 | 分析卓、比較matrix |
+| `traffic_reporter` | GSC・CV・市場観測 | Observation Task、Watch Queue | 観測期間、取得状態、異常・欠損、成果要約 | 観測期間・segment・監視継続 | S1／S2／S5成果詳細 | Traffic wall、funnel board |
+| `content_writer` | 新規記事・リライト制作 | ContentProductionJob、Outline、Writing Snapshot | 執筆工程、現在のMeaning Unit、停止・再開理由 | 本文限定変更・追加要望・再生成Task | S4記事制作・Outline | Draft desk、Meaning Unit board |
+| `link_architect` | 内部Link計算・Patch候補 | Link Analysis Task、Patch Candidate | 候補計算の進捗、対象記事、依存Task | Link候補採否・接続文Repair・順序変更 | S5内部Link候補 | Link graph table、candidate queue |
+| `qa_checker` | Quality Gate・Repair | QA Snapshot、Gate Result、Repair Task | Gate結果、指摘理由、Repair進捗、判断待ち | 差し戻し・限定Repair・二段階確認 | S4 QA・差分・承認 | QA console、evidence desk |
+| `publish_manager` | CMS下書き・反映確認 | CmsDelivery、Approval、Output Vault | 送信、再送待ち、承認待ち、反映結果 | 送信・再送・予約・承認・公開 | S4承認・公開、S6 CMS接続 | Publishing desk、CMS status |
+| `automation_operator` | 自動予定・実行Queue | Automation Task、schedule、Kill Switch | 実行順、停止理由、再開条件、Credit消費 | Policy・予定・停止・再開 | S3週次予定、S4自動運用設定 | Operations board、queue rail |
+| `knowledge_trainer` | Site補正・学習更新 | Learning Task、Pack version、correction | 再学習時期、適用version、承認待ち | 採用・無効化・再学習・適用先変更 | S2補正、S6文体・装飾設定 | Knowledge graph、version shelf |
+| `security_admin` | 接続・認証・権限診断 | Authorization Decision、Connection Health | 認証切れ、権限不足、必要なユーザー操作 | 再認証・権限・Site付与・同意更新 | S6接続・権限・同意 | Access console、connection health |
+| `support_agent` | FAQ・障害切分け | user-visible診断code、Support Ticket、status | 原因区分、解決手順、問い合わせ状態 | 再実行案・Support Ticket | W10 Support、該当設定画面 | Help desk、diagnostic panel |
+| `technical_seo` | crawl・index・CMS Capability診断 | Crawler Observation、GSC index、CMS Profile | 診断工程、取得不能理由、影響範囲 | 技術対応Task・記事施策・再診断 | S2技術診断、S6 CMS接続 | Technical lab、crawler console |
 
 設備は画面上の業務入口であり、設備をクリックしただけで権限やTool scopeを増やさない。1 personaが複数Service／Executorへ接続してよく、1 Executorを複数personaが異なる文脈から利用してよい。personaとExecutorを1対1に固定しない。
 
@@ -72,7 +72,7 @@ Agent Officeが実状態を反映するため、ユーザー向けペルソナ�
 
 ## 6. Console Mode / 全画面ワークベンチ  ［REQ-AOUI-06］
 
-詳細作業は通常ビューの全画面ワークベンチ（1画面分）で行う。Agent OfficeのTask Panelは要約と監視状態、通常WorkbenchへのContext付きlinkを持ち、成果分析componentを複製しない。Console Mode（開発管理者向け）は別要求（`REQ-ADM`）とする。
+通常ビューは簡単な成果要約と標準drill downを提供する。Agent OfficeのTask Panel／Workbenchは進捗、成果詳細、根拠、比較、依存、条件、実行順、停止・再開と型付きProposalを扱う。成果値は通常ビューと同じProjectionから取得し、Officeで別計算しない。Console Mode（開発管理者向け）は別要求（`REQ-ADM`）とする。
 
 ## 7. 部門・フロア・ペルソナの拡張性  ［REQ-AOUI-07］
 

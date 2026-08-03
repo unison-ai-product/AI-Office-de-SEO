@@ -88,7 +88,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-MIG-01: 顧客画面に旧価格68,000／128,000／298,000円、Prime表記、Credit Pack S/M/L/XL、繰越150%、追加credit 3か月を現行値として表示しない。
 - [ ] PT-MIG-02: 顧客画面とfixtureが現行のEntry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜、税込併記、月／年契約条件、追加credit180日をPrice Catalogから表示する。
 - [ ] PT-MIG-03: 顧客認可にOwner／Admin／Editor／Viewerを正本として使用せず、契約者／サイトオーナー／ユーザー、業務Permission、Site付与から判定する。
-- [ ] PT-MIG-04: Officeを監視専用にせず、通常ビューの詳細操作、Agent会話Proposal、影響・credit確認、共通Command、双方向同期を操作できる。
+- [ ] PT-MIG-04: 通常ビューをRecommendation中心の簡単操作、Officeを玄人向け詳細分析・運用へ統一する。OfficeでAgent、Task、工程、成果、根拠、条件を表示し、選択式操作と型付きProposalから共通Commandへ接続できる。
 - [ ] PT-MIG-05: 旧モックfixtureを読み込んでも、現行Schemaへのmigrationまたは拒否が行われ、旧値がPlan、権限、承認、Office状態へ昇格しない。
 - [ ] PT-OFFICE-01: 基本12＋technical_seoの全personaが、担当業務、正本、Service、会話能力、作成可能Proposal、Executor／Tool、Permission、設備へconfigからmappingされ、全能力が空のキャラクターまたは専用runtimeにならない。分析・ナレッジ・設定・サポート等、記事生成stageを持たないpersonaも実Serviceへ到達できる。
 - [ ] PT-OFFICE-02: 質問・探索では状態変更Commandを発行せず、変更指示だけが型付きProposalへ変換される。
@@ -136,7 +136,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-BILLUI-08: Upgradeの差額と適用時刻、Downgrade／解約の次回更新適用、超過Site・Capacity・backup・予約Jobへの影響を確定前に表示する。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
-- [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。
+- [ ] PT-LC-07: 通常ビューの各主要TaskからOfficeへContext付きで移動し、Officeで詳細分析、選択式操作、変更Proposalを行え、確認済み共通Commandの結果が両Viewへ反映される。
 - [ ] PT-LC-08: Planロック、データ不足、接続不足、権限不足、処理中、障害を別状態として表示し、同じ灰色ロックへ潰さない。
 - [ ] PT-LC-09: 旧価格、旧credit条件、Claude優先、旧Role、一律承認、Office監視専用の文言・fixtureが現行画面に存在しない。
 - [ ] PT-AUTH-01: S7で3基本権限、4業務権限、Site Assignmentだけを設定でき、業務権限なしのユーザーが閲覧専用として成立する。旧Viewerや低水準Permissionを顧客へ表示しない。

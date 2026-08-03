@@ -47,7 +47,7 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 | 用語 | 指すもの | 例 | 指さないもの |
 |---|---|---|---|
 | Officeペルソナ | ユーザーがOfficeで話しかける担当窓口 | planner、keyword_researcher、content_writer | 独立process、LLM model |
-| Office Conversation Runtime | 選択中のペルソナ、Site、画面文脈、Permissionを受け、質問回答または型付きProposal／Ticket候補へ変換する共通会話実行基盤 | plannerへの月次方針相談、qa_checkerへの指摘理由確認 | ペルソナごとの常駐LLM、業務正本 |
+| Office Conversation Runtime | 選択中のペルソナ、Site、画面文脈、Permissionを受け、質問回答または型付きProposal／Ticket候補へ変換する共通会話実行基盤 | plannerへの月次方針相談、qa_checkerへの指摘理由確認 | ペルソナごとの常駐LLM、業務正本、Office専用Command |
 | Semantic Executor | WorkflowからTicketを受けて意味判断・生成・意味検査を行う内部実行役 | Planning、Writing、QA、Repair Executor | Officeのキャラクター、常駐する人格 |
 | Orchestrator | Workflowの工程・Ticket・停止・再開を制御する実行調停 | new article workflowの進行 | ユーザー向けプランナー |
 | Action Executor | Ticket／Commandを受け、許可Toolによる外部副作用を実行する内部実行役 | Automation Executor | LLMによる公開判断、Officeの自律人格 |
@@ -63,7 +63,7 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 
 | 層 | 役割 | 例 |
 |---|---|---|
-| Office Persona Interaction | OfficeペルソナによるTask状態、工程、待機理由、成果要約、通常ビューの次確認先の説明 | 執筆工程の説明、公開待機理由、完了成果の要約、S1／S2／S5への案内 |
+| Office Persona Interaction | OfficeペルソナによるTask説明、専門分析、選択式操作、型付きProposal作成 | 執筆工程の説明、Keyword根拠分析、実行順変更案、再生成Task案 |
 | Advisory Reasoning | 指定されたOfficeペルソナまたはPlanning／QA Executorが決定論的な集計・診断を読み、意味付け、仮説、Recommendation、追加確認を提示 | 順位低下要因、CV導線、サイト認知への貢献、改善順序 |
 | Agentic Execution | Workflow、Ticket、Pack、Executorで成果を生成・検査・配置する | 新規記事、リライト、QA、Repair、CMS Automation |
 
@@ -180,9 +180,9 @@ Prompt Cacheは費用・latency最適化であり、状態・知識の正本で�
 ## 8. Agent Officeとの分離
 
 - 通常ビューとAgent Officeは同じ業務状態・APIを使用する。
-- Officeのペルソナは独立runtimeではないが、単なる状態アイコンでもない。担当領域の説明、探索、会話、変更案、Task化、実行監視を担う継続的なユーザー窓口として、既存Executor、決定論サービス、Workflow、Toolへmappingする。
-- OfficeでAgentへ話した内容は、質問回答、設定変更案、既存Task修正案、追加Ticket候補へ構造化し、影響と費用を確認してから確定する。
-- Officeは監視専用に限定しない。通常ビューが簡単操作を担い、Officeは同じ業務正本を使って詳細探索、条件・方針変更、Agent指示、Task構成変更を行う。
+- Officeのペルソナは独立runtimeではないが、単なる状態アイコンでもない。担当領域の説明、探索、会話、変更案、Task化、実行監視を担う詳細運用上のユーザー窓口として、既存Executor、決定論Service、Workflow、Toolへmappingする。
+- OfficeでAgentへ話した内容は、質問回答、設定変更案、既存Task修正案、追加Ticket候補へ構造化する。変更案は影響、Credit、認可、取消可否を表示し、ユーザー確定後だけ所有BCの共通Commandへ渡す。
+- Officeでは成果、Keyword、記事、Recommendation、根拠の詳細分析、条件・方針変更、Agent指示、Task構成変更を行える。通常ビューはRecommendation中心の要約、通常の一覧、簡単な採否・承認を担う。両Viewは同じ業務正本、Projection、Command／Eventを使う。
 - Pack、Ticket、Schema、Executor、primary／standby等の内部用語を顧客の第一階層へ出さない。
 - personaごとの担当業務、正本、Proposal、Executor／Tool、Permission、設備の正本は`ai-office-de-seo-agent-office-ui-requirements_v3.7.md` §4の完全対応表とする。persona名だけの対応表や、キャラクターとExecutorの1対1表を別途作らない。
 

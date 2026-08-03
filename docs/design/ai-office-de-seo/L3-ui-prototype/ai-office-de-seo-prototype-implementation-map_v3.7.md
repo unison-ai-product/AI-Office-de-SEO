@@ -25,11 +25,11 @@ DCプロト `prototype/AI Office de SEO.dc.html`（単一ファイル・約8,900
 | Workflow分岐 | 新規／リライト中心 | CTA Patch、内部link Patch、観測、技術エスカレーション、Automation変更を型付き分岐 |
 | 公開条件 | 旧full_auto／承認表現 | 15記事、解放後自動投稿、リライト承認、hard gate例外を別状態化 |
 | 評価Loop | S1/S5の実績表示 | 公開／更新event→1/3/6か月→SEO／CTA-CV／認知→学習→再推薦を相関表示 |
-| Office | 監視・詳細中心 | 会話、Proposal、影響・credit、条件／Task変更、共通Command/Eventへの接続 |
+| Office | 監視中心の旧fixture | 玄人向け成果・Keyword・記事・根拠分析、選択式Action、型付きProposal、共通Domain Command接続 |
 | 設定・課金 | 旧価格・旧credit fixture | version付きPlan Configurationと現行Billing要求から生成 |
 | 権限 | `memberRoles`と旧Role | 基本区分＋業務Permission＋Site付与＋Automation委任へ置換 |
 | CMS接続 | Google／WordPress接続boolと手動再試行 | `fixture.cms.connection_profile.v1`からread、write、Media、Editor、Preview、Revision、Tracker、Capacityを別表示。内部route選択はUIへ出さず、必要なユーザー操作だけを表示 |
-| 旧fixture migration | 旧価格・credit・Role・Office監視専用のstate／文言 | 現行Price Catalog、Plan Configuration、Authorization、Office Proposalへ変換できるものだけ移行し、変換不能値は拒否またはdemo historyへ隔離 |
+| 旧fixture migration | 旧価格・credit・Role・Office監視専用のstate／文言 | 現行Price Catalog、Plan Configuration、Authorization、Office詳細分析・運用へ変換できるものだけ移行し、変換不能値は拒否またはdemo historyへ隔離 |
 
 既存のカード、Modal、Tab、Office scene、Agent asset、通知、Task進捗、詳細Panelは再利用可能である。旧fixtureと旧mutation handlerを本番Store/API設計の種として無条件に採用しない。
 

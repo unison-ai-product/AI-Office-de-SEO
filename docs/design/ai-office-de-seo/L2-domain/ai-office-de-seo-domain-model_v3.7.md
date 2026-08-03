@@ -37,7 +37,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 | Customer Outcome | CustomerOutcomeSnapshot | MEASUREの顧客計測・成果要求 | 顧客Siteの成果、施策評価、市場影響、運営指標との分離 |
 | Commercial Entitlement | SubscriptionAccount | BILL, BILLING, COST, UPSELL | Plan、契約、Credit、原価、利用権、追加購入、アップセル |
 | Platform Control & Reliability | PlatformControlPolicy | PAC, ADM, IRG, SEC, NFR, DUR, TECH, MEASUREの運用要求, PRODUCTの運営詳細 | 運営管理、障害、保証、セキュリティ、可用性、技術基盤 |
-| Agent Execution Experience | AgentTaskProjection | SCREEN, DESIGN, AOUI, NAV, PRODUCTの通知・検索・出力詳細 | 通常ビューの業務操作とOfficeの実行監視を同じ業務状態から投影 |
+| Agent Execution Experience | AgentTaskProjection | SCREEN, DESIGN, AOUI, NAV, PRODUCTの通知・検索・出力詳細 | 通常ビューの簡単操作と成果分析、Officeの詳細運用・Agent操作を同じ業務状態から投影 |
 
 Conversion MeasurementとPublication Attributionは独立した要求所有コンテキストではなく、CMS PublicationからCustomer Outcomeへ渡す明示的な下位モデルである。これにより、CVの保存制約とAI Office経由／外部変更の帰属規則を局所的な不変条件として検証する。
 
@@ -81,7 +81,7 @@ Site設定・接続
 | CustomerOutcomeSnapshot | RecordObservation, EvaluateIntervention | OutcomeObserved, InterventionEvaluated |
 | SubscriptionAccount | ReserveCredit, CommitCredit, ChangePlan | CreditReserved, CreditCommitted, EntitlementChanged |
 
-UIはCommandを発行しEventからProjectionを更新する。UIが順位段階、市場影響、公開成否、Credit残高、権限を独自計算してはならない。Agent Officeは `AgentTaskProjection` を監視表示するだけで、成果分析、設定、承認またはRecommendation変更のCommandを所有しない。
+UIはCommandを発行しEventからProjectionを更新する。UIが順位段階、市場影響、公開成否、Credit残高、権限を独自計算してはならない。Agent Officeは `AgentTaskProjection` と各成果Projectionを起点に玄人向け詳細分析を行い、選択式Actionまたは自由文会話を型付きProposalへ変換し、影響・Credit・認可の確認後に所有BCの共通Commandを利用できる。Office独自の業務正本・認可・Command・成果計算は作らない。
 
 ## 2. 内部能力コンポーネント（要求所有境界の内部分解）
 
@@ -120,7 +120,7 @@ UIはCommandを発行しEventからProjectionを更新する。UIが順位段階
 - 全BC → Observability & Audit: **ドメインイベント購読**（消費・契約検証・監査を横断収集、REQ-SEC-13）。
 - Experience(UI) → 全BC: **Conformist**。業務entity・権限・Command/Eventは通常ビューとOfficeで共通化する。一方、Officeの部屋、会話、探索、設備、表示位置等の体験状態は独自に保持できるが、業務正本・認可・実行状態を複製しない（REQ-AOUI-01、REQ-SCREEN-18）。
 
-Office Conversation RuntimeはExperienceのApplication Serviceとして置く。選択中のPersona Role Profile、Site Context、表示中Resource、認可済みServiceとProposal Schemaを解決し、回答・Proposal・Ticket候補を返す。PersonaごとのAggregate、専用LLMまたは独立した業務データストアを作らず、確定操作は所有BCのCommandへ渡す。
+Office Conversation RuntimeはExperienceのApplication Serviceとして置く。選択中のPersona Role Profile、Site Context、表示中Resource、認可済みServiceとProposal Schemaを解決し、回答・型付きProposal・Ticket候補を返す。PersonaごとのAggregate、専用LLMまたは独立した業務データストアを作らず、確定操作は影響・Credit・認可確認後に所有BCの共通Commandへ渡す。
 
 補足: Workflow状態機械（REQ-AGENT-09）は Generation 内の **Process Manager / Saga** であり、工程間遷移とゲートを調停する。
 

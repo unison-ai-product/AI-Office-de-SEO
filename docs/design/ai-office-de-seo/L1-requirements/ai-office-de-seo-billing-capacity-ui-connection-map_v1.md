@@ -32,7 +32,7 @@ Provider/model名を商品保証として表示せず、品質段階と消費cre
 - 契約、購入、Plan変更、解約、自動チャージ、月間課金上限は契約者または明示された課金権限だけが変更できる。
 - 利用者は許可範囲の残高、利用量、Capacityを閲覧できるが、購入CTAは権限不足理由と権限者への依頼導線へ変える。
 - 無制限、有効化、上限引上げは影響額、停止方法、取消不能となる時点を示し、step-up認証と再確認を要求する。
-- Officeからの変更も同じBilling Commandと認可を使い、Agent会話から直接決済しない。
+- OfficeはCredit消費とTask停止理由を表示し、購入・Plan変更・自動入金・上限変更の型付きProposalを作成できる。影響額・権限・step-up確認後に通常ビューと同じBilling Commandへ渡し、Agent会話から確認なしに直接決済しない。
 
 ## 4. 自動チャージ状態
 
@@ -60,4 +60,3 @@ Capacityは記事、Keyword／Query、保存領域、画像、backup、当月取
 ## 7. 画面状態
 
 通常、読込中、集計中、空、errorに加え、`past_due`、Capacity soft/hard、credit不足、auto-charge limit/payment failureを別状態として表示する。障害、権限不足、Plan不足、データ不足を同じUpgradeロックへ潰さない。
-

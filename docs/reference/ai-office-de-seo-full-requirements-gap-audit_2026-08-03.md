@@ -25,7 +25,7 @@
 | 業務起点 | 画面からkeyword/news/videoを選び生成 | Site導入→市場／既存診断→月次計画→Recommendation→採否→実行→評価→再推薦 | 画面遷移とイベントをLifecycle起点へ組み替える |
 | Recommendation | 一覧・スコア・生成起動の入力 | Agent Interaction／Advisory／ExecutionをつなぐIntake Contract | L2集約、L3 schema、DDL、event、UI相関を追加 |
 | Agent | 記事生成工程中心 | 製品全域で説明、探索、変更案、Task化、実行を担当 | Dashboard、Keyword、分析、Knowledge、Support、技術SEOまで接続 |
-| Office | 監視専用・決定操作なし | 通常ビューの詳細操作面。会話・条件・方針・Task変更が可能 | 旧モックを履歴化し、Office詳細操作を再設計 |
+| Office | 玄人向け詳細分析・運用面 | 通常ビューはRecommendation中心の簡単操作 | Officeの固定fixtureを実Projection／Commandへ接続し、選択式操作と型付きProposalを実装 |
 | 公開 | 原則承認必須／旧full_auto表現 | 新規15記事承認後に自動投稿解放。リライトは下書き＋承認。hard gateは二段階確認＋同意で手動公開可 | L2不変条件、画面、event、承認状態を更新 |
 | Provider | Claude優先 | 品質段階とCapability・原価・latency・healthによる交換可能Routing | Claude優先の旧本文・AC・用語を移行注記化 |
 | 権限 | Owner/Admin/Editor/Viewer等の旧Role中心 | 契約者／管理者／利用者の基本区分＋目標管理、キーワード・サイト戦略、記事制作・検収、サイト分析等の業務権限 | 旧Role名を認可正本として残さずPermissionへ写像 |
@@ -55,7 +55,7 @@
 
 1. **Recommendation Intakeの下流契約欠落** — L1では採用後引継ぎを要求するが、L2集約、L3 schema、DDL、eventがなかった。本監査で骨格を追加。実JSON SchemaとContract Testは残る。
 2. **L3画面プロトと現行業務Lifecycleの差** — 現行Lifecycle、導入、Report、Intake、Patch、評価の画面要求と受入条件は追加したが、実モックはなおS3起点・旧fixture中心である。要求上の再設計は進んだが、モック実装と操作試験は未完了。
-3. **旧要求と現行要求の併存** — Screen Inventoryの現行S7をPrice Catalog／Plan Configuration／現行権限へ差し替え、Office監視専用と2026-07実装追記をsupersededと明示し、`PT-MIG-01〜05`を追加した。旧要求文書群全体の移行台帳と旧fixture migrationは未完了。
+3. **旧要求と現行要求の併存** — Screen Inventoryの現行S7をPrice Catalog／Plan Configuration／現行権限へ差し替え、Office詳細操作と2026-07実装追記をsupersededと明示し、`PT-MIG-01〜05`を追加した。旧fixture migrationは未完了。
 4. **認可モデルの画面・Agent・Automationへの伝播** — 操作対応表、L2集約、L3契約・DDL、プロト受入`PT-AUTH-01〜06`を2026-08-03に追加した。実装と負テストによる証明は未完了。
 5. **プロト受入条件の現行化** — `PT-LC / AUTH / MARKET / REC / PATCH / REPORT / CMS / MIG`を追加し、旧画面の完成度だけで受入不可とした。fixture、実操作、状態遷移の自動試験は未実装。
 
@@ -69,8 +69,8 @@
 11. 内部linkはcandidate lifecycle、承認Batch、候補単位の部分失敗、CMS反映確認、再評価を軽量Patch接続マップと`PT-PATCH-02〜05`へ追加した。実装・CMS別Contract Testは未完了。
 12. CMS読取り経路はCMS接続Routing Map、L2 CmsConnectionProfile、L3 Profile schema／DDL／event、`PT-CMS-01〜05`へ、Site別選択結果、health、切替履歴、Capacity／Planを追加した。Adapter実装とfailover試験は未完了。
 13. WordPress Capability MatrixはCMS接続Profileと画面Capability表示、`PT-CMS-01/05/06`へ接続し、read／write／Media／Editor／Preview／Revision／反映確認を分離した。CMS共通Publication JSON SchemaとCMS別Contract Testは未完了。
-14. Office会話変更案は`schema.office.proposal.v1`、DDL、draft／estimate／confirm／dispatch／apply／cancel／supersede event、`PT-OFFICE-02〜07`へ、影響差分、credit／Capacity、認可、取消／rollback、通常ビュー同期を追加した。実装とDomain Command別Adapterは未完了。
-15. 基本12＋technical_seo personaはAgent Office UI §4へ、担当業務、正本・Service、Proposal、Executor／Tool、Permission、設備の完全表を追加した。旧Office configが工程表示用`executors/stages`だけで一部personaを空にしていたため、Gate A-3 v1.4と初期configへService、会話能力、Proposal型を追加し、`PT-OFFICE-01`を強化した。残件は全personaの会話・Proposal・Task化を実プロトで操作試験すること。
+14. Office操作は`schema.office.interaction.v1`へ統一し、LLMを使わない選択式Action、必要時だけLLMを使う自由文、型付きProposal、影響・Credit・認可確認、共通Command接続を定義した。
+15. 基本12＋technical_seo personaは担当Task、読むProjection、説明可能な状態、通常ビュー遷移先を持つ。残件は全personaのTask説明とContext遷移を実プロトで操作試験すること。
 16. アイキャッチPatternは接続マップ、L2集約、L3 Pattern／Image Job schema、DDL、event、画面規則、`PT-IMAGE-01〜08`へ、version、variation、ロゴ、CMS size、cache、生成結果、Media、再生成creditを追加した。Editor実装、画像回帰評価、Provider／CMS Contract Testは未完了。
 17. 画面利用可否はUI Availability State Map、L3 Decision schema／event、画面共通規則、`PT-STATE-01〜06`へ、Scope、停止、障害、権限、Capability、Plan、接続、データ、credit、承認、処理中の優先と複合reasonを追加した。共通resolver実装と全画面fixture試験は未完了。
 18. 通知受信者は固定担当者を必須にせず、権限・Site付与・購読設定・必須通知からServer側で解決する正本、Schema、DDL、Event、画面要求、PTまで接続済み。残件は実プロトのRecipient Resolver、設定画面、popup、fallback fixture実装。
@@ -86,7 +86,7 @@
 
 ## 6. 画面プロトを磨くために必要な再構成
 
-実プロトコード上の旧価格、旧Role、Office監視専用導線、Lifecycle未追随を含む画面別改修項目は`ai-office-de-seo-prototype-modernization-register_2026-08-03.md`を正本とする。
+実プロトコード上の旧価格、旧Role、Office詳細操作導線、Lifecycle未追随を含む画面別改修項目は`ai-office-de-seo-prototype-modernization-register_2026-08-03.md`を正本とする。
 
 ### 通常ビュー
 

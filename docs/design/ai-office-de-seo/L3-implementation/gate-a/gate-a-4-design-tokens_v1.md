@@ -12,7 +12,7 @@ updated_at: 2026-07-05
 
 Design.md §6のブリーフ（ダークネイビー＋ネオンブルー/パープル、2テーマ、猫型ロボット、テキストは常にHTML/CSS）を実装するトークン。`design-tokens.css`（同梱）が現行baseline。要求・画面監査後にセマンティックトークン名を版固定し、実値の微調整はminorとして扱う。
 
-現行要求では通常ビューを簡単操作面、Officeを詳細操作・対話・Knowledge Graph面とし、両者は同じ業務正本とCommand／Eventを使う（`REQ-DESIGN-01・09〜11`、`REQ-SCREEN-18・19`）。本書は色・文字・状態表現のbaselineであり、旧モックの部屋数、Agent数、Office監視専用という責務を固定しない。
+現行要求では通常ビューをRecommendation中心の簡単操作面、Officeを玄人向け詳細分析・運用・Agent操作面とし、両者は同じProjection、認可、Domain Commandを使う（`REQ-DESIGN-01・09〜11`、`REQ-SCREEN-18・19`）。本書は色・文字・状態表現のbaselineであり、旧モックの部屋数やAgent数を固定しない。
 
 - パレット（Office=dark）: 基調 `ink-900 #0A1224` / 面 `ink-800 #111B31` / 浮面 `ink-700 #18243E`。プライマリ=ネオンブルー `neon-blue #4DA3FF`、アクセント=パープル `neon-purple #9B7BFF`。AI定番の「クリーム+テラコッタ」「黒+アシッドグリーン」は不採用（ブリーフ優先）。
 - 状態色（キャラ4状態＝state_*アセットと同義）: idle `#8A97AD` / working `#4DA3FF`（pulse可） / done `#3ED598` / error `#FF6B6B` / hold(保留系) `#F5B93E`。W5/W7/バッジで同一マッピングを使う。

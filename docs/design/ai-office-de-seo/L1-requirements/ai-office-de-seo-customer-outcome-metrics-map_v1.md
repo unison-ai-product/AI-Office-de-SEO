@@ -14,10 +14,10 @@ updated_at: 2026-08-03
 
 | 階層 | 正本画面 | 主な表示 | drill down |
 |---|---|---|---|
-| Site全体 | S1 サマリー | 検索流入・表示・CV、AI Office公開／更新数、順位段階の分布、成果分類、月次／累積 | Cluster成果を絞り込んだS2へ |
-| Keyword Cluster | S2 戦略・診断Report／Cluster詳細／順位・要監視 | 主＋補助Keyword、検索intent、獲得Query、7日平均順位、流入、cluster充足、市場圧力、関連記事 | 記事成果を絞り込んだS5へ |
-| 記事 | S5 流入・CV／施策評価 | 公開・更新source、獲得Keyword、順位段階、click・impression、直前ページCV、1・3・6カ月評価、外部変更 | 同記事の履歴・Recommendation・S3成果へ |
-| Office監視 | A0〜A8 | Agent、Task、工程、待機・実行・完了・失敗、対象成果の短い要約 | 「成果を通常ビューで確認」からS1／S2／S5へ。Office内に成果分析drill downを作らない |
+| Site全体・簡単表示 | S1 サマリー | 検索流入・表示・CV、AI Office公開／更新数、順位段階の分布、成果分類、月次／累積 | Cluster成果を絞り込んだS2へ |
+| Keyword Cluster・標準表示 | S2 戦略・診断Report／Cluster詳細／順位・要監視 | 主＋補助Keyword、検索intent、獲得Query、7日平均順位、流入、cluster充足、市場圧力、関連記事 | 記事成果を絞り込んだS5へ |
+| 記事・標準表示 | S5 流入・CV／施策評価 | 公開・更新source、獲得Keyword、順位段階、click・impression、直前ページCV、1・3・6カ月評価、外部変更 | 同記事の履歴・Recommendation・S3成果へ |
+| Office詳細分析 | A0〜A8の専門Workbench／Knowledge Graph | Site・Cluster・記事成果、根拠、比較軸、市場影響、Task、Recommendation、変更履歴を横断表示 | 条件・期間・比較軸を探索し、変更案を型付きProposal化。成果値はS1／S2／S5と同じProjectionを使用 |
 
 ## 2. 公開・更新実績
 

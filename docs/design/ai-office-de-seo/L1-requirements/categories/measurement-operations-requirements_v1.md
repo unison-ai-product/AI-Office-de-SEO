@@ -104,7 +104,7 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 指標は視点を明示して分離する。運営側指標は、運用Loop完了Site数をNorth Starとし、Recommendation採用率、継続稼働率、アップセルevent、契約churnを併記する。MRR、契約数、契約churnは営業・価格・外部要因の影響を受ける経営指標であり、North Starへ使用しない。経営指標の正本は `BR-KPI-001`〜`BR-KPI-008` とする。
 
-顧客側の成果指標は、顧客Siteの検索流入、獲得keywordと順位、公開・更新数、CV、cluster充足等、SEO代行の結果として顧客へ示す値であり、運営側指標へ混合しない。指標ごとの評価対象、基準期間、市場影響、availability、成果非保証、通常ビューの表示契約は `REQ-MEASURE-14` を正本とする。Agent Officeは成果分析面にせず、実行中Taskと完了成果の要約・通常ビューへのlinkだけを表示する。
+顧客側の成果指標は、顧客Siteの検索流入、獲得keywordと順位、公開・更新数、CV、cluster充足等、SEO代行の結果として顧客へ示す値であり、運営側指標へ混合しない。指標ごとの評価対象、基準期間、市場影響、availability、成果非保証、通常ビューとOfficeの表示契約は `REQ-MEASURE-14` を正本とする。通常ビューは要約と簡単なdrill down、Agent Officeは同じ成果Projectionを使う玄人向け詳細分析を提供する。
 
 運用Loopは `分析・Recommendation → 採用 → 記事公開または更新のCMS反映 → 評価対象登録` で構成する。Loop完了点は、CMSが公開・更新の反映成功を返し、その施策について評価基準値、評価起点、1カ月・3カ月・6カ月の評価予定が登録された時点とする。GSCデータ取得開始だけ、Recommendation採用だけ、CMS下書き作成だけ、評価画面の閲覧だけではLoop完了にしない。月内に1回以上Loopを完了したdistinct SiteをNorth Starへ1 Siteとして数え、同一Siteの複数完了件数は診断指標へ分離する。
 
@@ -116,7 +116,7 @@ Activationは顧客が初回価値を受け取った時点として、`Site設�
 
 ### REQ-MEASURE-14 顧客成果指標
 
-顧客成果はSite全体、Keyword Cluster、記事の3階層で保持し、すべて通常ビュー内でdrill downできるようにする。Site全体はS1サマリー、ClusterはS2戦略・診断ReportおよびCluster詳細、記事はS5流入・CVおよび施策評価を正本画面とする。Agent OfficeのA0〜A8はTask・Agent・工程の監視面とし、実行中Taskに関係する成果要約とS1／S2／S5へのlinkだけを表示して、独自の成果分析・Cluster／記事drill downを持たない。詳細な画面割当ては `ai-office-de-seo-customer-outcome-metrics-map_v1.md` を正本とする。
+顧客成果はSite全体、Keyword Cluster、記事の3階層で保持する。通常ビューのS1／S2／S5はRecommendation主導の要約と簡単なdrill downを提供する。Agent OfficeのA0〜A8は同じ成果Projectionを、Task、Agent、Recommendation、根拠、市場影響、変更履歴と横断する玄人向け詳細分析として表示する。Officeで成果値を別計算せず、条件変更は型付きProposalと共通Commandを使用する。詳細な画面割当ては `ai-office-de-seo-customer-outcome-metrics-map_v1.md` を正本とする。
 
 公開・更新実績はAI OfficeのPublication CommandとCMS反映結果が同一correlationへ接続したものを主実績とする。Thin Plugin署名付きWebhook等で検知したCMS直接変更は `external_change` として分離し、AI Office実績数へ含めない。ただし、対象期間の順位、流入、CVをAI Office施策の成果として判定するときは交絡要因へ必ず含め、外部変更後の改善をAI Office単独成果と表示しない。
 
@@ -141,4 +141,4 @@ CVは `REQ-WPA-05`、`REQ-INT-01/03` を優先し、自前JavaScript Trackerの�
 - [ ] AC-L1-MEASURE-11: support事例を相関IDと解決versionへ接続し、要求・runbook・テストへ還流できる。
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。
 - [ ] AC-L1-MEASURE-13: CMS反映後の評価対象登録をLoop完了として月次distinct Siteを算出し、4段階Activation、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。
-- [ ] AC-L1-MEASURE-14: 顧客成果をS1／S2／S5の3階層でdrill downし、AI Office実績と外部変更、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現でき、Agent OfficeはTask監視と通常ビューへの要約linkに限定される。
+- [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示でき、AI Office実績と外部変更、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。

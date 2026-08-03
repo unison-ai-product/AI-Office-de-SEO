@@ -177,17 +177,17 @@ soft limitでは削減・archive、処理延期、Plan変更、購入可能な�
 
 初回取込が分割実行されるSiteは「自動構築期間」として、進捗、現在工程、取得済み範囲、利用可能な機能、一部制限中の機能と理由、概算完了時期、失敗・再試行状態を表示する。全構築完了まで画面全体を利用不能にせず、成立した機能から段階的に開放する。
 
-### REQ-SCREEN-18 Agent Office実行監視
+### REQ-SCREEN-18 Agent Office専門分析・詳細運用
 
-通常ビューはRecommendationの採否、承認、設定、成果分析、Site／Cluster／記事drill downを完了する業務操作面とする。各Taskから「Officeで進行を見る」を選ぶと、対象Contextを維持して担当フロア、部屋、AgentまたはTask監視Panelへ移動する。
+通常ビューはRecommendationの採否、承認、基本設定、成果分析、Site／Cluster／記事drill downを少ない操作で完了する簡単操作面とする。各Taskから「Officeで詳しく操作」を選ぶと、対象Contextを維持して担当フロア、部屋、AgentまたはTask詳細Panelへ移動する。
 
-Agent Officeでは、担当Agent、実行中Task、工程、待機、判断待ち、完了、失敗、再開、消費credit、直近成果要約を実eventから表示する。Agent、エレベーター、部屋、設備はTaskと工程を見守る入口であり、Keyword一覧、Cluster分析、記事成果分析、設定編集、Recommendation方針変更の正本画面にしない。詳細な判断・変更・成果分析が必要な場合は、対象Contextを維持して通常ビューのS1〜S7または共通Workbenchへ遷移する。Office専用の業務正本、分析結果、権限、変更commandを作らない。
+Agent Officeでは、担当Agent、実行中Task、工程、待機、判断待ち、完了、失敗、再開、消費Creditを実eventから表示する。Agent、エレベーター、部屋、設備からKeyword、Cluster、記事、Recommendation、成果、設定、Taskを玄人向けに詳細分析・操作できる。定型指示は選択式ポップアップと決定論Service、自由文は必要な場合だけLLMで型付きProposalへ変換する。影響・Credit・認可確認後に共通Commandへ渡し、結果を両Viewへ同期する。Office専用の業務正本、権限、変更Command、成果計算を作らない。
 
 将来の拡張アプリをSiteへインストールした場合、App Manifestに従って通常ビューのNavigation／WidgetとAgent Officeのフロア／部屋／設備／Agentを同時に追加する。Office表現は同じapp command、Permission、Entitlement、job、eventを利用し、部屋を経由すると権限や料金を迂回できる別経路を作らない。アンインストール時は入口と稼働演出を除去し、保持・export対象データ、未完了job、再導入条件を確認させる。
 
 画面拡張はFeature Objectが宣言したNavigation、Dashboard Widget、Detail Panel、Setting Section、Recommendation Action、Office Scene等の許可slotへだけ配置する。任意DOM挿入やCore画面置換を許可せず、同じslotで競合するObjectは優先度、ユーザー配置、表示上限で決定する。Objectを停止しても標準画面の主要操作と既存データ閲覧を壊さない。
 
-OfficeでAgentへ話しかけた場合は、現在Task、工程、待機理由、完了成果の要約、次に通常ビューで確認すべき内容を返す。分析条件・設定・予定・実行内容を変える会話はOffice内で確定せず、対象Contextを引き継いだ通常ビューの変更画面へ案内する。通常ビューでの採否、承認、停止、再開は同じeventとしてOfficeのAgent、設備、Task Historyへ反映する。Office内のゲーム的な表現だけを根拠に重要な変更や成果判定を行わない。
+OfficeでAgentへ話しかけた場合は、選択式ポップアップを先に表示し、Task説明、詳細分析、条件調整、Task変更等の定型操作を決定論Serviceで処理する。自由文の意図解釈または意味説明が必要な場合だけLLMを呼び、変更は型付きProposalとして影響・Credit・認可確認後に共通Commandへ渡す。通常ビューとOfficeの結果は同じeventから同期する。ゲーム的な表現だけを根拠に重要な変更や成果判定を行わない。
 
 ### REQ-SCREEN-19 業務通知・完了表示
 
@@ -222,6 +222,6 @@ Task完了、ユーザー確認待ち、承認期限、停止、失敗、再開�
 - [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、CMS Deliveryの保留・再開・外部反映確認、追加見積を同一相関IDで確認できる。
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。
-- [ ] AC-L1-SCREEN-18: Agent Officeで実Task・Agent・工程・待機・完了・失敗と成果要約を監視でき、成果分析・設定変更・承認はContext付きlinkから通常ビューへ移動し、通常ビューの結果がOfficeへ同期される。
+- [ ] AC-L1-SCREEN-18: 通常ビューでRecommendation中心の要約・簡単操作を行え、Agent Officeで同じProjectionを使う玄人向け詳細分析・設定・Task操作を行え、選択式操作は決定論Service、自由文は必要時だけLLMを使い、確認済み共通Commandの結果が両Viewへ同期される。
 - [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。

@@ -47,7 +47,7 @@ L1の要求分類は監査と文書管理の分類であり、業務データの
 | S5 Siteページ管理 | SiteContentIndex、PublicationFact、記事成果 | 内部Link提案採用、リライト起動、CTA Patch採用 | CMSの公開表示とAI Office経由実績を混同しない |
 | S6 Site設定・執筆ルール | ContractAccount、Site設定、Style／Decoration Policy | Site設定、業務権限、執筆・装飾設定変更 | 開発者用接続経路や内部閾値を顧客設定にしない |
 | S7 契約・利用量 | SubscriptionAccount、Credit Ledger、Capacity | Plan変更、自動入金、上限変更、Credit購入 | 残高、税、Stripe状態をUI計算しない |
-| A0〜A8 Agent Office | AgentTaskProjection、成果要約Link | 通常ビューへのContext付き遷移 | 成果分析、設定、承認、Recommendation変更の正本を持たない |
+| A0〜A8 Agent Office | AgentTaskProjection、Conversation、Proposal、成果要約Link | 所有BCの共通Command。影響・Credit・認可確認を必須とする | 独自の業務正本・認可・Commandを持たず、顧客成果分析をOffice内で完結しない |
 | W系Workbench | 対象Aggregateの詳細Projection | 対象BCの型付きCommand | Workbench独自の状態機械を作らない |
 | 開発者Console | PlatformControlPolicy、監査・障害Projection | 管理面Command | 顧客面Roleまたは顧客Sessionから到達させない |
 

@@ -211,7 +211,7 @@
       "invariants": [
         {
           "invariant_id": "INV-OFFICE-001",
-          "statement": "Agent Officeは実Task・Agent・工程の監視面であり、成果分析・設定・承認・変更は通常ビューを正本とする。",
+          "statement": "通常ビューは簡単操作・要約、Agent Officeは玄人向けの詳細分析・詳細運用・Agent操作面とする。両Viewは同じProjection・認可・Domain Commandを使い、Office独自の業務正本を持たない。定型会話は選択式と決定論Serviceを優先する。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
@@ -225,18 +225,41 @@
             "docs/reference/FEATURE-LIST.md"
           ],
           "forbidden_patterns": [
-            "Agent Office.{0,100}(詳細操作面|詳細運用面)",
-            "Agent Office(?:では|を).{0,50}(成果分析|成果drill\\s*down)(?:を)?(行う|実行する|正本とする|できる)",
-            "(?:Agent )?Office.{0,100}(推薦方針|配分|設定).{0,50}(変更できる|編集できる|確定できる)"
+            "Agent Office.{0,80}(?:独自|専用).{0,40}(?:業務正本|権限体系|Domain Command|変更Command)",
+            "Agent Office.{0,80}(?:成果|順位|Credit|権限).{0,40}(?:独自計算|別計算)(?:する|とする)",
+            "(?:Agent )?Office.{0,80}(?:DB|CMS|決済|公開状態).{0,30}(?:直接更新|直接変更|直接実行)"
           ],
           "bad_fixtures": [
-            "Agent Officeは通常ビューより詳しい詳細操作面とする。",
-            "Agent Officeでは成果分析を行うことができる。",
-            "Officeで推薦方針を変更できる。"
+            "Agent Officeは独自の業務正本と変更Commandを持つ。",
+            "Agent Officeは成果順位を通常ビューと別計算する。",
+            "OfficeからCMSを直接更新する。"
           ],
           "good_fixtures": [
-            "Agent Officeは実行中Taskを見守る監視面とする。",
-            "成果分析は通常ビューを正本とする。"
+            "Agent Officeは共通Projectionで詳細分析し、型付きProposalを共通Domain Commandへ渡して詳細運用できる。",
+            "選択式ポップアップは決定論Serviceを使い、自由文の意味解釈だけLLMを利用する。"
+          ]
+        },
+        {
+          "invariant_id": "INV-OFFICE-LLM-001",
+          "statement": "Officeの定型操作・選択式Action・既知Queryは決定論Serviceを優先し、LLMは曖昧な自由文の意図解釈・非定型説明・構造化が必要な場合だけ利用する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md"
+          ],
+          "forbidden_patterns": [
+            "(?:選択式|定型操作|既知Action).{0,40}LLMを.{0,10}(?:必須とする|常に呼ぶ|毎回呼ぶ)",
+            "Office.{0,50}(?:クリック|選択).{0,30}(?:ごと|たび).{0,20}LLM"
+          ],
+          "bad_fixtures": [
+            "選択式の定型操作でもLLMを毎回呼ぶ。",
+            "OfficeはクリックごとにLLMを実行する。"
+          ],
+          "good_fixtures": [
+            "選択式Actionは決定論Serviceへ渡し、LLMを呼ばない。",
+            "自由文の曖昧な意図解釈が必要な場合だけLLMを使う。"
           ]
         }
       ]
