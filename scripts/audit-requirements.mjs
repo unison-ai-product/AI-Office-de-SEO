@@ -721,6 +721,33 @@ for (const requiredPhrase of [
     fail(errors, `screen flow: current transition phrase missing: ${requiredPhrase}`);
   }
 }
+const navigationPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md",
+);
+const navigation = fs.readFileSync(navigationPath, "utf8");
+for (const currentLabel of ["5. サイトページ管理", "6. ナレッジ管理", "### サイトページ管理", "### ナレッジ管理"]) {
+  if (!navigation.includes(currentLabel)) {
+    fail(errors, `navigation: current first-level responsibility missing: ${currentLabel}`);
+  }
+}
+if (/^5\. 検索流入分析$|^6\. 学習ナレッジ管理$/m.test(navigation)) {
+  fail(errors, "navigation: superseded S5/S6 first-level labels remain canonical");
+}
+if (
+  JSON.stringify(manifest.user_navigation) !==
+  JSON.stringify([
+    "ダッシュボード",
+    "キーワード管理",
+    "コンテンツ作成",
+    "オートメーション",
+    "サイトページ管理",
+    "ナレッジ管理",
+    "設定",
+  ])
+) {
+  fail(errors, "manifest.user_navigation: does not match current REQ-NAV-01 labels");
+}
 
 const l3DecisionPath = path.join(
   repoRoot,

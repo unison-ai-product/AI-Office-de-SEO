@@ -63,7 +63,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## 6. キーワード・Recommendation
 
 - RecommendationはAgent WorkflowのIntake Contractとする。採用時に、目的、対象Keyword Cluster、検索インテント、記事目的、推薦理由、CTA、内部リンク、品質、予算、保護条件、実行可能状態を引き継ぎ、ユーザーへ再入力させない。
-- 新規記事、リライト、Automationは主要なAgentic Workflowであるが、Agent関与の全範囲ではない。決定論的な収集・計算・差分検知も、Dashboard、Keyword、Content、Automation、検索流入分析、Knowledge、設定・Support、技術SEOの各面でAgentが説明、探索、変更提案、Task化、進行確認へ接続する。
+- 新規記事、リライト、Automationは主要なAgentic Workflowであるが、Agent関与の全範囲ではない。決定論的な収集・計算・差分検知も、Dashboard、Keyword、Content、Automation、サイトページ管理、Knowledge、設定・Support、技術SEOの各面でAgentが説明、探索、変更提案、Task化、進行確認へ接続する。
 - 市場影響としてAIO、リスティング、ドメイン信用性、検索需要、表示回数、季節性を扱う。
 - SEO／AIの取得性・表示性評価は、技術・サービス仕様が未確定なため初期提供を約束せず、リリース後の更新追従構想として保持する。将来実装時も `取得可能→実crawl→検索候補／回答取得→順位／引用／言及→referral→CV` を分離し、crawlを表示・成果の証拠にしない。DataForSEO、各社Webmasterデータ、直接観測、server／edge logは交換可能な候補とし、日本市場の対応、規約、原価、再現性を再調査して採否・頻度・対象surfaceを決める（`REQ-CAV-*`, `REQ-INT-08`, `REQ-MEASURE-12`）。
 - 将来は製品内アプリストアを設け、AI可視性、Crawlerログ、hosting／CMS／分析連携等をSite単位の有償拡張アプリとして追加できる構想を持つ。初期は自社開発アプリだけを想定し、第三者市場は別判断とする。購入、インストール、権限同意を分離し、月額・買切り・従量・導入支援をCatalog化する。標準契約機能を後からアプリへ移して二重課金しない。

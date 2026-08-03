@@ -121,7 +121,7 @@ Packは顧客向けの「作業メニュー」や任意の小機能名ではな�
 | Keyword管理 | 市場pool、GSC、SERP、cluster、順位、AIO、分類、score | keyword_researcher／analystが根拠を説明し、条件・重み・除外・方向性の変更案を作る | Research／Planning Ticket、採用RecommendationのIntake |
 | Content制作 | Article Summary、重複・保護・Preflight | planner／writer／QA／link architectが構成、進捗、問題、修正案を対話 | new article／rewrite／QA／Repair／Placement |
 | Automation | schedule、権限、接続、予算、Kill Switch | automation_operator／publish_managerが予定、停止理由、影響を説明し変更案を作る | Automation Ticket、CMS command |
-| 検索流入分析 | GSC・Tracker・順位・CV・市場差分の集計 | analyst／traffic_reporterが要因仮説、目的別評価、次施策を提示 | 採用施策をRecommendation／既存Workflowへ接続 |
+| サイトページ管理 | Article Summary、GSC・Tracker・順位・CV・変更履歴、link graphの集計 | analyst／traffic_reporterが記事単位の要因仮説、目的別評価、次施策を提示 | 採用施策をRecommendation／既存Workflowへ接続 |
 | Knowledge | Derived Facts、成功施策、Site補正、Pack version | knowledge_trainerが根拠、適用先、矛盾、再学習候補を説明し修正案を作る | Pack Compiler／Validate／管理承認済みPublish |
 | Setting／Support | 接続状態、契約、権限、通知、診断code | security_admin／support_agentが必要設定、影響、復旧方法を案内 | 承認済み設定command、support escalation |
 | Technical SEO | crawl／index／link graph／CWV等の機械診断 | technical_seoが影響、優先度、サイト側対応、記事側施策を説明 | 記事側施策だけ既存Recommendation／Workflowへ接続 |

@@ -28,7 +28,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## Product
 
 - [ ] AC-PRODUCT-01: 正式サービス名がAI Office de SEOで統一されている。 ｜ 検証: REQ-PRODUCT-01
-- [ ] AC-PRODUCT-02: ユーザー向け第一階層は、ダッシュボード、キーワード管理、コンテンツ作成、オートメーション、検索流入分析、学習ナレッジ管理、設定である。 ｜ 検証: REQ-NAV-01
+- [ ] AC-PRODUCT-02: ユーザー向け第一階層は、ダッシュボード、キーワード管理、コンテンツ作成、オートメーション、サイトページ管理、ナレッジ管理、設定である。S5へKeyword市場分析を重複配置せず、S6を学習結果だけの閲覧面に限定しない。 ｜ 検証: REQ-NAV-01, REQ-NAV-04
 - [ ] AC-PRODUCT-03: ユーザー画面に内部実装用語が第一階層として表示されない。 ｜ 検証: REQ-NAV-01
 
 ## Data Boundary

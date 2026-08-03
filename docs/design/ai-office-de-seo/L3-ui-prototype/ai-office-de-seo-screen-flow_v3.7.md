@@ -124,7 +124,7 @@ flowchart LR
     GS[グローバル検索] --- NC[W7 通知センター] --- JI[ジョブインジケータ→W5] --- HELP[ヘルプ/ステータス] --- SUP[W10 サポート]
   end
   subgraph SIDE[サイドメニュー]
-    S1[S1 ダッシュボード]; S2[S2 キーワード管理]; S3[S3 コンテンツ作成]; S4[S4 オートメーション]; S5[S5 検索流入分析]; S6[S6 学習ナレッジ]; S7[S7 設定]
+    S1[S1 ダッシュボード]; S2[S2 キーワード管理]; S3[S3 コンテンツ作成]; S4[S4 オートメーション]; S5[S5 サイトページ管理]; S6[S6 ナレッジ管理]; S7[S7 設定]
   end
   S1 -->|承認待ち| W4[W4 承認キュー]
   S1 -->|Recommendation採用| RI[Recommendation Intake freeze]
