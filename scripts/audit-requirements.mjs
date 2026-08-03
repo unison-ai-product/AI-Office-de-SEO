@@ -931,7 +931,7 @@ for (const requiredPhrase of [
   "Article Read Snapshot取得",
   "CMS Delivery準備",
   "公開・更新後評価",
-  "通常ビューとAgent Officeの往復・監視フロー",
+  "通常ビューとAgent Officeの往復・詳細操作フロー",
   "正規遷移契約マトリクス",
 ]) {
   if (!screenFlow.includes(requiredPhrase)) {

@@ -270,12 +270,15 @@
           "forbidden_patterns": [
             "Agent Office.{0,80}(?:独自|専用).{0,40}(?:業務正本|権限体系|Domain Command|変更Command)",
             "Agent Office.{0,80}(?:成果|順位|Credit|権限).{0,40}(?:独自計算|別計算)(?:する|とする)",
-            "(?:Agent )?Office.{0,80}(?:DB|CMS|決済|公開状態).{0,30}(?:直接更新|直接変更|直接実行)"
+            "(?:Agent )?Office.{0,80}(?:DB|CMS|決済|公開状態).{0,30}(?:直接更新|直接変更|直接実行)",
+            "(?:Agent )?Office.{0,80}(?:成果分析の場ではない|成果分析をOffice内で完結しない|成果の短い要約と通常ビューへのLinkだけ)",
+            "(?:Agent )?Office.{0,100}(?:結果要約|状態と結果要約).{0,50}(?:通常ビューへのlinkだけ|通常ビューへのLinkだけ)"
           ],
           "bad_fixtures": [
             "Agent Officeは独自の業務正本と変更Commandを持つ。",
             "Agent Officeは成果順位を通常ビューと別計算する。",
-            "OfficeからCMSを直接更新する。"
+            "OfficeからCMSを直接更新する。",
+            "Agent Officeは成果分析の場ではなく、成果の短い要約と通常ビューへのLinkだけを表示する。"
           ],
           "good_fixtures": [
             "Agent Officeは共通Projectionで詳細分析し、型付きProposalを共通Domain Commandへ渡して詳細運用できる。",
