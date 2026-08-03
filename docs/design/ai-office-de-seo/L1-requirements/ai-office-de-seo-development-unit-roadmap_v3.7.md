@@ -11,6 +11,10 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 # AI Office de SEO 開発ユニットロードマップ v3.7
 
+## 分類別正本への移行
+
+可用性・性能・RPO/RTOは `categories/non-functional-requirements_v1.md`、実装アーキテクチャ境界は `categories/technical-architecture-requirements_v1.md`、障害対応・保証は `categories/incident-warranty-requirements_v1.md`、AWS運用・復旧の対応付けは `../L3-implementation/ai-office-de-seo-aws-operations-recovery-map_v1.md`（AWS Operations／Recovery Map）を現在の正本とする。本書の `REQ-DUR-*` は開発順序の履歴・監査用として維持し、RPO/RTO等の数値判断は分類別正本を優先する。
+
 ## 1. 原則  ［REQ-DUR-01］
 
 一発で全部作らない。開発ユニット単位で、基盤から順番に積む。

@@ -15,7 +15,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 分類別正本への移行
 
-WordPress・CMS契約、Compatibility Matrix、縮退順序は `categories/integration-requirements_v1.md`、出力・自動投稿判定は `categories/logic-requirements_v1.md`、操作表示は `categories/screen-operation-requirements_v1.md`、Adapter実装境界は `categories/technical-architecture-requirements_v1.md` を現在の正本とする。本書の `REQ-WPA-*` はWordPress固有詳細として維持し、互換性・縮退の横断判断は `REQ-INT-05` を優先する。
+WordPress・CMS契約、Compatibility Matrix、縮退順序は `categories/integration-requirements_v1.md`、出力・自動投稿判定は `categories/logic-requirements_v1.md`、業務Lifecycleは `categories/business-requirements_v1.md`、操作表示は `categories/screen-operation-requirements_v1.md`、Adapter実装境界は `categories/technical-architecture-requirements_v1.md`、CMS共通の接続経路は `ai-office-de-seo-cms-connection-routing-map_v1.md` を現在の正本とする。本書の `REQ-WPA-*` はWordPress固有詳細として維持し、互換性・縮退の横断判断は `REQ-INT-05` を優先する。
 
 ## 1. WP連携の位置づけ  ［REQ-WPA-01］
 

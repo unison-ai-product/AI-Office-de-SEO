@@ -13,7 +13,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 分類別正本への移行
 
-リライト業務Lifecycleは `categories/business-requirements_v1.md`、対象判定・評価・状態遷移は `categories/logic-requirements_v1.md`、Snapshot・差分保持は `categories/data-requirements_v1.md`、WordPress反映は `categories/integration-requirements_v1.md` を現在の正本とする。本書の `REQ-RWR-*` はPatch runtime固有詳細として維持する。
+リライト業務Lifecycleは `categories/business-requirements_v1.md`、対象判定・評価・状態遷移は `categories/logic-requirements_v1.md`、Snapshot・差分保持は `categories/data-requirements_v1.md`、WordPress反映は `categories/integration-requirements_v1.md`、CTA・内部link軽量Patchの横断接続は `ai-office-de-seo-lightweight-content-patch-connection-map_v1.md` を現在の正本とする。本書の `REQ-RWR-*` はPatch runtime固有詳細として維持する。
 
 （正本: 旧 rewrite-patch-runtime / rewrite-cause-analysis-pack を v3.7 へ移植）
 

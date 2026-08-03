@@ -13,7 +13,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 分類別正本への移行
 
-管理Role・顧客支援・Feature Flag・Kill Switch・変更統制の横断要求は `categories/platform-administration-control-requirements_v1.md`、原価は `categories/cost-requirements_v1.md`、課金調整は `categories/billing-accounting-requirements_v1.md`、平常時運用は `categories/measurement-operations-requirements_v1.md` を現在の正本とする。本書の `REQ-ADM-*` は管理画面固有の詳細・移行未完項目として有効であり、同じ判断が分類別正本にある場合は分類別正本を優先する。
+管理Role・顧客支援・Feature Flag・Kill Switch・変更統制の横断要求は `categories/platform-administration-control-requirements_v1.md`、原価は `categories/cost-requirements_v1.md`、課金調整は `categories/billing-accounting-requirements_v1.md`、平常時運用は `categories/measurement-operations-requirements_v1.md`、管理者認可・監査境界は `categories/security-access-requirements_v1.md` を現在の正本とする。本書の `REQ-ADM-*` は管理画面固有の詳細・移行未完項目として有効であり、同じ判断が分類別正本にある場合は分類別正本を優先する。
 
 （正本: 旧 ui-admin / dev-admin-llm-provider の管理画面要求を移植。ユーザー向け画面は `REQ-AOUI` / `REQ-PRODUCT`）
 

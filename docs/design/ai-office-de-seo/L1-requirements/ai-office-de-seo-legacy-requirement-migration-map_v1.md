@@ -18,15 +18,15 @@ updated_at: 2026-08-03
 
 | 旧ID群 | 旧責務 | 現行判断の正本 | 旧詳細の扱い |
 |---|---|---|---|
-| `REQ-PRODUCT-*` | 製品全般、設定、通知、運用 | business、screen、data、platform administration、design | 詳細が残るが分類別判断と衝突時はsuperseded |
+| `REQ-PRODUCT-*` | 製品全般、設定、通知、運用 | business、customer organization governance、security access、data、billing accounting、screen、platform administration、design | 詳細が残るが分類別判断と衝突時はsuperseded |
 | `REQ-KGA-*` | Keyword／GSC／記事map | logic、data、business、Keyword Market／Report接続マップ | 数式・データ詳細は有効、業務flowは分類別正本 |
 | `REQ-AGENT-*` | Executor、Workflow、状態機械 | Agent Runtime＋Agent Requirements Map | 現在も実行詳細の正本。分類別業務判断を入力として受ける |
 | `REQ-PACK-*` | Pack、Ticket、Schema、Catalog | Pack/Ticket要求＋Agent Requirements Map | 現在も実行詳細の正本 |
-| `REQ-WPA-*` | WP、Automation、計測 | integration、business、screen、CMS Routing Map | WP Adapter詳細は有効、CMS共通判断は接続マップ優先 |
-| `REQ-RWR-*` | Rewrite／Patch | business、logic、integration、Lightweight Patch Map | Rewrite実行詳細は有効、承認・評価は分類別正本 |
-| `REQ-BILL-*` | Plan、credit、Provider原価 | `REQ-BILLING-*`、`REQ-COST-*`、technical Provider routing、Billing Capacity UI Map | 旧価格・商品条件は廃止。reserve等の未移行詳細だけ参照可 |
+| `REQ-WPA-*` | WP、Automation、計測 | integration、logic、business、screen、technical architecture、CMS Routing Map | WP Adapter詳細は有効、CMS共通判断は接続マップ優先 |
+| `REQ-RWR-*` | Rewrite／Patch | business、logic、data、integration、Lightweight Patch Map | Rewrite実行詳細は有効、承認・評価は分類別正本 |
+| `REQ-BILL-*` | Plan、credit、Provider原価 | `REQ-BILLING-*`、`REQ-COST-*`、integration、technical Provider routing（`REQ-TECH-10`）、Billing Capacity UI Map | 旧価格・商品条件は廃止。reserve等の未移行詳細だけ参照可 |
 | `REQ-SEC-*` | security、budget、observability | security access、non-functional、measurement operations | 詳細controlは有効、顧客権限は現行認可modelへ移行 |
-| `REQ-DUR-*` | 開発順、可用性、復旧 | non-functional、technical architecture、incident warranty、AWS Map | Roadmap履歴は監査用。RPO/RTO等は分類別正本 |
+| `REQ-DUR-*` | 開発順、可用性、復旧 | non-functional、technical architecture、incident warranty、AWS Operations／Recovery Map（L3: `../L3-implementation/ai-office-de-seo-aws-operations-recovery-map_v1.md`） | Roadmap履歴は監査用。RPO/RTO等は分類別正本 |
 | `REQ-ADM-*` | 内部管理、設定、監査 | platform administration、measurement operations、security access | 管理画面詳細は有効、顧客面と分離 |
 | `REQ-AOUI-*` | Office UI | design experience、screen operation、Agent Office UI | Office体験詳細は有効。監視専用記述はsuperseded |
 | `REQ-NAV-*`／`REQ-UJ-*` | Navigation／Journey | screen operation、design experience、business lifecycle | アクセシビリティ・遷移詳細は有効、業務順はLifecycle優先 |

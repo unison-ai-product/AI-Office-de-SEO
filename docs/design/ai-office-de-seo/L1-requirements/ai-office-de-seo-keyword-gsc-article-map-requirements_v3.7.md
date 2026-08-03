@@ -23,7 +23,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 分類別正本への移行
 
-動的Recommendationの判定正本は `logic/keyword-dynamic-recommendation-logic-requirements_v1.md` と `categories/logic-requirements_v1.md`、保持は `categories/data-requirements_v1.md`、GSC契約は `categories/integration-requirements_v1.md` を現在の正本とする。本書の `REQ-KGA-*` はキーワード・GSC・記事Mapの詳細要求として維持する。
+動的Recommendationの判定正本は `logic/keyword-dynamic-recommendation-logic-requirements_v1.md` と `categories/logic-requirements_v1.md`、業務Lifecycleは `categories/business-requirements_v1.md`、保持は `categories/data-requirements_v1.md`、GSC契約は `categories/integration-requirements_v1.md`、市場・シェア・レポートの横断接続は `ai-office-de-seo-keyword-market-share-connection-map_v1.md` と `ai-office-de-seo-keyword-report-connection-map_v1.md` を現在の正本とする。本書の `REQ-KGA-*` はキーワード・GSC・記事Mapの詳細要求として維持する。
 
 ## 1. 接続思想  ［REQ-KGA-01］
 

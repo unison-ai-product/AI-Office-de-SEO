@@ -13,7 +13,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 分類別正本への移行
 
-商品、契約、credit lot、ledger、Stripe、refundは `categories/billing-accounting-requirements_v1.md`、Provider原価は `categories/cost-requirements_v1.md`、外部Provider契約は `categories/integration-requirements_v1.md` を現在の正本とする。本書の `REQ-BILL-*` は既存詳細と移行未完項目として維持し、金銭整合の横断判断は課金・会計要求を優先する。
+商品、契約、credit lot、ledger、Stripe、refundは `categories/billing-accounting-requirements_v1.md`、Provider原価は `categories/cost-requirements_v1.md`、外部Provider契約は `categories/integration-requirements_v1.md`、Provider routing実装境界は `categories/technical-architecture-requirements_v1.md`（`REQ-TECH-10`）、残高・Capacity表示の横断接続は `ai-office-de-seo-billing-capacity-ui-connection-map_v1.md` を現在の正本とする。本書の `REQ-BILL-*` は既存詳細と移行未完項目として維持し、金銭整合の横断判断は課金・会計要求を優先する。
 
 ## 1. 課金  ［REQ-BILL-01］
 
