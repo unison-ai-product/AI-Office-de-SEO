@@ -88,7 +88,7 @@ WP投稿IDは補助参照とし、主識別子にはしない。URL変更、cano
 - outline snapshot
 - ticket snapshot metadata
 - QA result
-- WP draft URL
+- CMS edit／Preview URL（初期WordPress AdapterではWP下書きURL）
 - job usage
 - token / credit usage
 

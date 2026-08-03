@@ -523,7 +523,9 @@ REQ-PACK-07の「主なJSON項目」列をJSON Schemaへ確定する。内部は
 ## 4. Workflow / Pack 型（REQ-PACK-11 の型確定）
 
 - workflow型: `{ workflow_key, flow_pack_keys[], stages[{stage, phase_bindings, transitions[{to, transition_bindings}], loop{converge, stop_guards[]}}], permissions[], bindings_ref }`。
-- `new_article_workflow.v1`の状態順は`intake_gate → sandbox_seal → keyword_intent → serp_research → site_strategy → outline_architect → section_brief → draft_writer → self_evolution → quality_gate → cms_draft → preview_approval → cleanup`とする。`intake_gate / sandbox_seal / quality_gate / preview_approval`を強制gateとし、各stateは`on_enter bindings`、成功遷移、保留遷移、失敗遷移、checkpoint、stop_guardsを持つ。Layer Aにはこのinstance全体をcanonical JSON＋hash＋versionで格納する。
+- `new_article_workflow.v1`の状態順は`intake_gate → sandbox_seal → keyword_intent → serp_research → site_strategy → outline_architect → section_brief → draft_writer → self_evolution → quality_gate → cms_draft → preview_approval → cleanup`とする。既存keyとの互換性のため`cms_draft`を維持するが、その意味は単純な送信処理ではなく`assembly_placement_cms_draft`であり、内部phaseを`assemble → decorate → featured_image → placement → cms_validate → cms_deliver`へ固定する。`intake_gate / sandbox_seal / quality_gate / preview_approval`を強制gateとし、各stateは`on_enter bindings`、成功遷移、保留遷移、失敗遷移、checkpoint、stop_guardsを持つ。Layer Aにはこのinstance全体をcanonical JSON＋hash＋versionで格納する。
+
+- `quality_gate`の通過前に装飾・画像・CMS送信を開始しない。`cms_draft`は本文完成物を入力に、Site装飾設定、ユーザー選択した独自part、Featured Image Pattern、CTA／内部link Placement、CMS Capabilityを適用する。初期画像Scopeはアイキャッチだけとし、CMS検証と下書き作成結果を得てから`preview_approval`へ進む。
 - `catalog.article_type.v1`: `{ key, version, required_purpose_elements[], optional_purpose_elements[], allowed_heading_flows[], intent_constraints[], gate_keys[] }`。
 - `catalog.heading_flow.v1`: `{ key, version, nodes[{role, min, max, allowed_purpose_elements[]}], transition_rules[] }`。
 - `catalog.purpose_element.v1`: `{ key, version, purpose, required_inputs[], output_shape, evidence_rules[], placement_rules[] }`。

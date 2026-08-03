@@ -220,7 +220,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 8. Draft Writer（意味ユニット執筆）
 9. Self Evolution（自己改善）
 10. Quality Gate（品質検査・fail-close）
-11. WP Draft（下書き・Automation policy）
+11. Assembly / Placement / CMS Draft（本文QA後に装飾、アイキャッチ、CTA・内部link配置、CMS形式変換・検証、下書き送信）
 12. Preview / Approval（人手承認）
 13. Cleanup（後処理・完了判定）
 
@@ -232,8 +232,8 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 - Sandbox Fix 後に `tenant_id`/`site_id` を変更しない。
 - Keyword Intent と SERP-TTPS Research の成果がないままOutlineへ進まない。
 - Outline Contract がないまま本文生成しない。Section Briefs がないまま本文生成しない。
-- Quality Gate を通らない記事をWP下書きに送らない（fail-close）。
-- Preview または Automation承認なしに予約投稿しない。
+- Quality Gate を通らない記事をAssembly／PlacementとCMS下書き送信へ進めない（fail-close）。工程11は`assemble → decorate → featured_image → placement → cms_validate → cms_deliver`の内部phaseを持ち、本文完成前に装飾を開始せず、CMS送信成功前にPreview／Approvalへ進めない。初期画像Scopeはアイキャッチ基盤に限定する。
+- Preview またはAutomationの公開条件成立なしに予約投稿しない。初期WordPress AdapterではCMS下書きの編集URL／Preview URLを利用し、共通WorkflowをWordPress固有画面へ固定しない。
 - 最初の15記事は完成記事への人間承認を必須とする。WordPress実表示Previewは確認手段であり、URLを開いた事実自体を条件にしない。Outline確認はSite設定で任意に有効化し、有効時は見出しを修正・freezeしてから再開する。
 - リライト・全文再生成はAutomation承認だけで公開記事へ直接反映せず、WP下書きとユーザー承認を必須とする。
 - Cleanup が完了しないジョブを完了扱いにしない。

@@ -343,6 +343,58 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md", [
   "1ページ=1キーワード/1記事/1監視対象・スクロール禁止",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md", [
+  "cms_content_ref",
+  "cms_capability_snapshots",
+  "content_output_schemas",
+  "CMS edit／preview URL",
+  "`cms_patch_jobs`",
+  "共通table名・共通列・業務eventをWordPressへ固定しない",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
+  "wp.patch_conflict_detected",
+  "publish.published | wp_url",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
+  "publish.published | cms_url, cms_content_ref, publication_decision_ref",
+  "patch.action_conflicted",
+  '"principal_kind": {"enum": ["customer_user", "internal_user", "service", "ai_executor", "system"]}',
+  '"acting_context"',
+  "顧客本人へactorを書き換えない",
+  "generation.stage_phase_entered",
+  "generation.stage_phase_completed",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
+  '"type": {"enum": ["user", "system", "agent"]}',
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
+  "Recommendation Intakeまたは手動指定を共通Preflightへ渡す",
+  "接続中CMSの保存値を編集・更新の外部正本",
+  "他CMSへ固定した共通画面名・列・状態を作らない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-requirements_v3.7.md", [
+  "CMS edit／Preview URL（初期WordPress AdapterではWP下書きURL）",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
+  "Assembly / Placement / CMS Draft",
+  "assemble → decorate → featured_image → placement → cms_validate → cms_deliver",
+  "共通WorkflowをWordPress固有画面へ固定しない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
+  "assembly_placement_cms_draft",
+  "初期画像Scopeはアイキャッチだけ",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md", [
+  "`generation_stage_phases`",
+  "assemble / decorate / featured_image / placement / cms_validate / cms_deliver",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-2-repository-scope-api_v1.md", [
+  "resolveCustomerScope",
+  "resolveDelegatedScope",
+  "Site Assignment 0件=全Site",
+  "Operatorには`resolveDelegatedScope`を許可しない",
+  "authorization epoch更新後の旧Scope→拒否",
+]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-acceptance-trace_v3.7.md", [
   "同意→接続→サンプル学習→戦略入力→マップ→初回生成→承認公開",
   "フィルタ→ギャップ→補充→候補採否→生成起動/一括投入",

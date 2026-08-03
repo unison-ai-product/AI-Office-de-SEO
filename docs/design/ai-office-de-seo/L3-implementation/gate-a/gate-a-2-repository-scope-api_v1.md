@@ -15,15 +15,28 @@ DU-01（フェーズ0）の土台。下記はTypeScript風の規範形であり�
 ## 1. スコープ型（型でdefault-denyを表現）
 
 ```ts
-type TenantScope = { readonly tenantId: TenantId }
+type PrincipalContext = {
+  readonly principalKind: "customer_user" | "internal_user" | "service" | "ai_executor"
+  readonly principalId: PrincipalId
+  readonly authorizationEpoch: number
+}
+type TenantScope = PrincipalContext & {
+  readonly tenantId: TenantId
+  readonly membershipId?: MembershipId
+  readonly delegationId?: DelegationId
+}
 type SiteScope   = TenantScope & { readonly siteId: SiteId }
 type JobScope    = SiteScope   & { readonly jobId: JobId }   // = SiteSandboxContext（作成後不変, REQ-PRODUCT-02）
 
 // スコープ取得の唯一の入口（サーバー側で解決。クライアント申告値を受けない, REQ-SEC-01）
-resolveScope(session, activeTenantId): TenantScope
-resolveSiteScope(scope: TenantScope, siteId): SiteScope     // 所属検証込み
-createSandbox(scope: SiteScope): JobScope                   // job作成時のみ・以後変更不可
+resolveCustomerScope(session, activeOrganizationId): TenantScope // Membershipと基本権限を検証
+resolveDelegatedScope(internalSession, delegationId): TenantScope // Managerの対象・操作・期限を検証
+resolveSiteScope(scope: TenantScope, siteId): SiteScope           // Site Assignment 0件=全Site、1件以上=指定Site
+authorize(scope, action, resource): AuthorizationDecision         // 業務Permission、step-up、委任、policy version
+createSandbox(scope: SiteScope, decision: AuthorizationDecision): JobScope // job作成時のみ・以後変更不可
 ```
+
+顧客Sessionと内部管理Sessionは別namespace・別認証cookie・別resolverを使用する。`internal_user`を顧客Membershipへ変換せず、Managerの顧客アクセスはAdminが発行した期限付き`delegationId`を必須とする。Operatorには`resolveDelegatedScope`を許可しない。`TenantScope`の成立は業務操作の許可を意味せず、各副作用は`authorize`を通す。
 
 ## 2. クエリ能力の付与（スコープなしにクエリ手段が存在しない）
 
@@ -39,6 +52,7 @@ SiteDb.repo<T extends SiteTable>(t): ScopedRepo<T>
 - アプリ/Executor/API層から到達可能なクエリ手段は `db.forTenant / db.forSite` のみ。Unscopedなハンドルをexportしない（モジュール境界＋lint/依存ルールで強制）。
 - Executorはこの層にすら触れない（Source Pack経由のみ, REQ-PACK-06）。
 - 越境・スコープ未指定はコンパイル/実行時の双方でfail-close＋監査（REQ-SEC-07, AC-TENANT-02）。
+- `authorization_epoch`、Membership、Site Assignment、Delegationの変更後は既存Scopeを再利用せず再解決する。Scopeの存在だけでupdate、execute、approve、publish、purchase、impersonateを許可しない。
 
 ## 3. RLS（多層防御・方針決定）
 
@@ -54,4 +68,4 @@ SiteDb.repo<T extends SiteTable>(t): ScopedRepo<T>
 
 ## 5. 負のテスト（受入に直結・実装と同時に作成）
 
-1. スコープなしでrepo取得→コンパイル不能（型）/実行時fail-close。2. 別tenantのsite_idでresolveSiteScope→拒否＋監査。3. RLS単独でも越境SELECTが0行。4. Executorプロセスからdb資格情報へ到達不能。5. アプリロールからglobal_signalsへINSERT→拒否。6. shared_obsへアプリからwrite→拒否。（AC-TENANT-02/03, AC-SANDBOX-*, AC-NET-04）
+1. スコープなしでrepo取得→コンパイル不能（型）/実行時fail-close。2. 別tenantのsite_idでresolveSiteScope→拒否＋監査。3. Site Assignment外のSite→拒否、Assignment 0件→全Siteとして解決。4. 業務Permissionなしのupdate／execute→拒否。5. 顧客Sessionから内部resolver、内部Sessionから顧客resolver→拒否。6. 期限切れ／対象外DelegationとOperator代理→拒否。7. authorization epoch更新後の旧Scope→拒否。8. RLS単独でも越境SELECTが0行。9. Executorプロセスからdb資格情報へ到達不能。10. アプリロールからglobal_signalsへINSERT→拒否。11. shared_obsへアプリからwrite→拒否。（AC-L1-ACCESS-01〜05/11/14〜16、AC-TENANT-02/03、AC-SANDBOX-*、AC-NET-04）

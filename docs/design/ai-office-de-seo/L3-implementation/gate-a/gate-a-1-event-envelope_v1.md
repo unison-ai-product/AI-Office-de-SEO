@@ -2,7 +2,7 @@
 document_id: AOS-L3-GATE-A1-EVENT-ENVELOPE
 title: Gate A-1 イベント共通エンベロープ v1
 layer: L3
-version: 1.5
+version: 1.6
 kind: contract
 status: current-draft
 updated_at: 2026-08-03
@@ -28,14 +28,29 @@ updated_at: 2026-08-03
     "job_id":         {"type": ["string", "null"]},
     "ticket_id":      {"type": ["string", "null"]},
     "lane":           {"enum": ["interactive", "scheduled", null]},
-    "actor":          {"type": "object", "required": ["type"],
-                       "properties": {"type": {"enum": ["user", "system", "agent"]}, "id": {"type": ["string","null"]}}},
+    "actor":          {"type": "object", "required": ["principal_kind", "id"],
+                       "properties": {
+                         "principal_kind": {"enum": ["customer_user", "internal_user", "service", "ai_executor", "system"]},
+                         "id": {"type": ["string","null"]},
+                         "delegation_ref": {"type": ["string","null"]},
+                         "authorization_decision_ref": {"type": ["string","null"]}
+                       }},
+    "acting_context": {"type": ["object","null"],
+                       "properties": {
+                         "customer_organization_id": {"type": ["string","null"]},
+                         "customer_user_id": {"type": ["string","null"]},
+                         "site_ids": {"type": "array", "items": {"type": "string"}},
+                         "purpose": {"type": ["string","null"]},
+                         "expires_at": {"type": ["string","null"], "format": "date-time"}
+                       }},
     "schema_version": {"type": "string"},
     "dedupe_key":     {"type": ["string", "null"]},
     "payload":        {"type": "object"}
   }
 }
 ```
+
+`actor.principal_kind`は顧客User、内部運用者、Service、AI Executorを混同しない。内部Managerが期限付き権限で顧客Contextを扱う場合、`actor`は内部Managerのまま記録し、`acting_context`と`delegation_ref`へ対象顧客・Site・目的・期限を記録する。顧客本人へactorを書き換えない。Automationは設定者のSessionをactorとして再利用せず`service`、LLMを用いるExecutorは`ai_executor`とし、認可Decisionと委任契約を参照する。`system`の`id`だけはnullを許可する。
 
 規約: tenant_id/site_id/job_idはスコープに応じてnull可（グローバルイベントは全null）。**payloadに記事本文全文・プロンプト全文・シークレットを含めない**（REQ-SEC-11）。laneはREQ-BILL-11。schema_versionはevent_type別payloadスキーマの版。
 
@@ -48,6 +63,8 @@ updated_at: 2026-08-03
 | generation.job_started | workflow_key, mode, lane | W,O | REQ-AGENT-09 |
 | generation.stage_entered | stage_id, state_index(1-13) | W,O | REQ-AGENT-09 |
 | generation.stage_completed | stage_id, snapshot_hash | W,O | REQ-AGENT-09 |
+| generation.stage_phase_entered | stage_id, phase_key, phase_index, phase_total | W,O | REQ-AGENT-09, REQ-WPA-09 |
+| generation.stage_phase_completed | stage_id, phase_key, result_ref?, content_hash? | W,O | REQ-AGENT-09, REQ-WPA-09 |
 | generation.gate_passed | gate_id | W,O | REQ-AGENT-08/09 |
 | generation.gate_held | gate_id, reason | W,N,O | REQ-AGENT-08/09 |
 | generation.outline_frozen | outline_hash | W,O | REQ-PACK-18 |
@@ -116,7 +133,6 @@ updated_at: 2026-08-03
 | evaluation.intervention_completed | evaluation_id, intervention_ref, article_ref, window, outcome, next_action? | W,N,O | REQ-LOGIC-06/08, REQ-DATA-07 |
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
 | automation.oscillation_detected | targets[] | N,O,A | REQ-PRODUCT-18 |
-| wp.patch_conflict_detected | url_hash, reason | N,O | REQ-WPA-12 |
 | cms.connection_diagnosed | connection_profile_id, version, cms_kind, state, required_user_actions[] | W,N,O | REQ-INT-05/06/09 |
 | cms.capability_changed | connection_profile_id, capability_key, before_status, after_status, evidence_ref | W,N,O | REQ-INT-05/06 |
 | cms.read_route_selected | connection_profile_id, adapter_key, role, reason, policy_version | O,A | REQ-INT-09 |
@@ -186,7 +202,7 @@ updated_at: 2026-08-03
 | publish.approval_requested | requester, schedule_at? | N,O | REQ-WPA-04 |
 | publish.approved | approver | N,O,A | REQ-WPA-04 |
 | publish.rejected | approver, reason | N,O,A | REQ-WPA-04 |
-| publish.published | wp_url | N,O | REQ-WPA-04 |
+| publish.published | cms_url, cms_content_ref, publication_decision_ref | N,O | REQ-WPA-04, REQ-INT-06 |
 | publish.updated | cms_ref, operation, resulting_hash, publication_decision_ref | N,O,A | REQ-LOGIC-05/06, REQ-WPA-04 |
 | publish.failed | reason | N,O | REQ-WPA-04 |
 | publish.cv_recorded | goal, date, count | O | REQ-WPA-05 |
@@ -232,5 +248,7 @@ v1.2改訂: 運営お知らせのイベント投入（REQ-PRODUCT-16のイベン
 v1.4改訂: Pack版のゴールデン評価・活性化後監視（REQ-ADM-10拡張）に伴い `config.pack_regression_detected` を追加（minor）。
 
 v1.5改訂: 現行SEO業務Lifecycleへの追随として、Site構築・段階開放・big keyword確認、月次計画・週次選択、公開判定、公開更新、1／3／6か月評価のevent typeを追加した。Envelopeと既存typeは変更しない。
+
+v1.6改訂: 13状態の互換keyを維持したまま、`cms_draft`状態内のAssembly／装飾／アイキャッチ／Placement／CMS検証・送信をAgent OfficeとTask Historyで識別するため、stage phase開始・完了eventを追加した。phaseは独立Workflow stateではなく、親stageを飛び越える遷移には使用しない。
 
 v1.3改訂（表記正規化・型不変）: カタログを **1 event_type = 1行** へ正規化した。旧版の複合行（例: `generation.gate_passed / gate_held`）は複数typeの省略表記であり、機械照合の契約としてregex `^[a-z]+\.[a-z_]+$` に行単位で適合しなかったため分割した。event_typeの集合・エンベロープ・payload意味論は不変（新規type追加なし）。分割時、旧複合行で共有されていた消費印・根拠は各行へ引き継ぎ、区別があったもの（N(held)/N(hard)等）は当該行にのみ付した。
