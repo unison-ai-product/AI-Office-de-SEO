@@ -4,7 +4,7 @@ title: AI Office de SEO 用語一覧（ユビキタス言語） v3.7
 version: 3.7
 layer: L2
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 related_plan: PLAN-L2-01-ai-office-de-seo-domain-model
 ---
@@ -13,11 +13,13 @@ related_plan: PLAN-L2-01-ai-office-de-seo-domain-model
 
 L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基づく。文脈＝所属する境界づけられたコンテキスト（BC）。
 
+分類別L1要求を現行判断の正本とし、旧v3.7 IDはLegacy Requirement Migration Mapに従う詳細参照とする。用語定義が旧価格、旧Role、WordPress固定、Office監視専用等を復活させてはならない。
+
 ## テナント・アクセス（Tenancy & Access）
 | 用語 | 定義 | 根拠 |
 |---|---|---|
 | Tenant | 契約単位。ID型論理分離で他テナントと越境不可 | REQ-PRODUCT-10 / REQ-SEC-07 |
-| Site | テナント配下のWordPressサイト。分析・生成の単位 | REQ-PRODUCT-02 |
+| Site | 顧客組織がSEO運用対象として登録するWebサイト。分析・生成・計画・評価・CMS接続の境界であり、CMS種別には依存しない。初期の書込AdapterはWordPressを対象とする | REQ-ORG-01〜04 / REQ-INT-01・05 / REQ-PRODUCT-02 |
 | SiteSandboxContext | ジョブ実行時に固定される `tenant_id`/`site_id`/`job_id` の境界。実行中に変更不可 | REQ-PRODUCT-02 / REQ-SEC-11 |
 | 基本権限・業務Permission・Site Assignment | 顧客認可の3要素。基本権限は契約者／サイトオーナー／ユーザー、業務Permissionは目標管理／キーワード・サイト戦略／記事制作／サイト分析、Site Assignmentは対象Siteを限定する | REQ-ORG-03〜07 / REQ-ACCESS-14〜18 |
 | User Order | ユーザー要望（soft/normal/strong）。SEO証跡・規制・境界を上書き不可 | REQ-PRODUCT-07 / REQ-PACK-02 |

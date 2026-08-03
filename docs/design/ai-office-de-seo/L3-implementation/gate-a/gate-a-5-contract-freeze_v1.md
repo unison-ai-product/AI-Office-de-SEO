@@ -12,6 +12,8 @@ updated_at: 2026-08-03
 
 本書は既存プロトが参照していたTicket／Snapshotの最小互換baselineであり、現在の全業務契約の正本ではない。Site導入、Keyword Report、月次・週次計画、Recommendation Intake、Publication Decision、評価、課金等を含む現行契約一覧と必須項目は `../ai-office-de-seo-contract-schemas_v3.7.md` を正本とする。本書だけを根拠に実装を開始しない。
 
+現行要求は分類別L1とL2 Domain Modelを意味正本とする。本書の旧REQ参照だけから新規field、state、Ticketを導出せず、現行L3 Contract Schemasとの互換確認に限って使用する。
+
 進化規則: 監査完了後に固定された各`.v1`では、任意フィールド追加=minor、必須追加・意味変更・削除=`.v2`新設とする（REQ-PACK-04）。`content_ref`は一時領域URI（TTL束縛・恒久保存禁止、REQ-SEC-11）。
 
 ## schema.ticket.base.v1（全ステージ共通・必須）

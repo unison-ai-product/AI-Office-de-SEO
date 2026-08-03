@@ -152,6 +152,9 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "schema.publication.decision.v1",
   "schema.evaluation.intervention.v1",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
+  "CMS種別には依存しない。初期の書込AdapterはWordPressを対象とする",
+]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
   "Site導入",
   "Keyword戦略Report",
@@ -238,6 +241,20 @@ for (const id of l3DecisionIds) {
 }
 for (const id of crosswalkIds) {
   if (!l3DecisionIds.has(id)) fail(errors, `open items crosswalk: undefined ${id}`);
+}
+
+const downstreamRoots = [
+  path.join(designRoot, "L2-domain"),
+  path.join(designRoot, "L3-implementation"),
+  path.join(designRoot, "L3-ui-prototype"),
+];
+const migratedLegacyPattern = /REQ-(?:PRODUCT|KGA|WPA|BILL(?!ING)|SEC|ADM|DUR|SRC|RWR|AOUI|NAV|UJ)-/;
+const migrationBoundaryPattern = /現行要求|現行[^\r\n]{0,20}正本|分類別|旧互換baseline|prototype-baseline/;
+for (const file of downstreamRoots.flatMap((root) => markdownFiles(root))) {
+  const content = fs.readFileSync(file, "utf8");
+  if (migratedLegacyPattern.test(content) && !migrationBoundaryPattern.test(content)) {
+    fail(errors, `${path.relative(repoRoot, file)}: legacy requirement refs lack a current-requirement boundary`);
+  }
 }
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));

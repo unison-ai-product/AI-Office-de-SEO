@@ -4,7 +4,7 @@ title: AI Office de SEO Quality Gate実装・較正設計（L3スケルトン）
 version: 3.7
 layer: L3
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
@@ -12,6 +12,8 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 # AI Office de SEO Quality Gate実装・較正設計（L3スケルトン）
 
 REQ-PACK-09の各ゲートを検証実装へ、REQ-PACK-10の計測指標を計測実装＋Config Registry初期値へ確定する。few-shot選定基準とQA合否基準は同一のgate定義を単一ソースとする（REQ-PACK-12。検証: AC-PACK-12）。
+
+本書は`REQ-LOGIC-06・07`、`REQ-NFR-02・05`、`REQ-TECH-10`の現行要求を、詳細正本である`REQ-PACK-*`へ接続する。品質判定は公開責任を製品側へ移すものではなく、hard gate対象も二段階確認と版付き同意を経たユーザーの手動公開を禁止しない。日本語可読性、YMYL、near-duplicate等の未較正値はOpen Items RegisterのDD-11〜13／OC-05へ接続する。
 
 ## 1. ゲート実装台帳（hard）
 

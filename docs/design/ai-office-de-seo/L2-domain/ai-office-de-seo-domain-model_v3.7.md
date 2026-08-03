@@ -4,7 +4,7 @@ title: AI Office de SEO ドメインモデル（DDD） v3.7
 version: 3.7
 layer: L2
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 related_plan: PLAN-L2-01-ai-office-de-seo-domain-model
 ---
@@ -13,9 +13,11 @@ related_plan: PLAN-L2-01-ai-office-de-seo-domain-model
 
 L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（AOS-L2-GLOSSARY）に従う。本書はL2（ドメイン設計）であり、実装（DDL/JSONスキーマ）はL3で確定する。
 
+現行の業務判断は分類別L1要求を正本とし、`REQ-AGENT-*`／`REQ-PACK-*`は分類別要求が代替していない実行詳細、その他のv3.7 IDはLegacy Requirement Migration Mapに従う補助根拠として扱う。旧IDだけから価格、顧客権限、公開条件、CMS境界、Office責務を導出しない。
+
 ## 1. サブドメイン分類
 
-- Core（差別化＝SEOコンテンツ生成エンジン）: Content Index / Search Performance / Generation / Quality / Rewrite。
+- Core（差別化＝SEO運用LifecycleとRecommendation）: Content Index / Keyword Market & Site Share / Search Performance / Planning & Recommendation / Generation / Quality / Rewrite / Evaluation。
 - Supporting（中核を支える）: External Intelligence / Publishing & Automation / Provider / Config & Governance。
 - Generic（汎用・置換可能）: Tenancy & Access / Billing & Credit（Stripe）/ Observability & Audit / Experience(UI) / Notification / Support / Platform Operations。
 

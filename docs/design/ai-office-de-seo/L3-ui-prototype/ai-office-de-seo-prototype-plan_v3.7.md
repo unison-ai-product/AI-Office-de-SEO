@@ -4,7 +4,7 @@ title: AI Office de SEO 画面プロトタイプ構築計画 v3.7
 version: 3.7
 layer: L3
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-07-05
 related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 ---
@@ -15,6 +15,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 - 目的: 2モードUI（通常SaaS / Agent Office）の体験・情報設計・コンポーネント分割を、実装前に動くモデルで検証する。
 - 位置づけ: これはUI検証のためのプロトタイプであり、本番実装順序（REQ-DUR-03: 本質A/B先行）とは別トラックである。REQ-DUR-05「Agent Office演出を実イベントログなしに先行しない」は本番化の禁止事項であり、プロトはモックイベント（AOS-L3-CONTRACT-SCHEMAS §5の共通エンベロープ準拠）で駆動してよい。ただしモックイベントの形は本番イベントスキーマと同一とし、後日の実接続で差し替え可能にする。
+- 現行化境界: プロト変更は、分類別L1、L2、L3契約、画面台帳、Screen Flow、Prototype Modernization Registerの追従監査完了後に開始する。本書の旧REQ参照は詳細検証観点であり、旧価格、旧Role、旧公開条件、WordPress固定、Office監視専用を復活させる根拠にしない。プロト実装ファイルはこの設計整備中に変更しない。
 
 ## 2. 検証したいこと（プロトの問い）
 

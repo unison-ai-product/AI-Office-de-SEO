@@ -4,7 +4,7 @@ title: AI Office de SEO データDDL設計 v3.7
 version: 3.7
 layer: L3
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
@@ -12,6 +12,8 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 # AI Office de SEO データDDL設計
 
 L2の各集約（AOS-L2-DOMAIN-MODEL §4）をPostgreSQLの論理DDLへ写像する設計正本。列挙済みのtable、key、制約、保存禁止、履歴原則をmigrationへ落とし、物理partition、index、保持実数は負荷試験と運用較正を経てversion固定する。
+
+分類別L1要求とL2を現行の意味正本とする。旧v3.7 IDはLegacy Requirement Migration Mapに従う詳細controlの根拠に限り、旧顧客Role、旧Plan、WordPress固定、Office監視専用をtableやenumへ持ち込まない。`REQ-AGENT-*`／`REQ-PACK-*`は分類別要求が代替していない実行契約として併用する。
 
 ## 0. 全テーブル共通の不変条件（先に固定・変更不可）
 

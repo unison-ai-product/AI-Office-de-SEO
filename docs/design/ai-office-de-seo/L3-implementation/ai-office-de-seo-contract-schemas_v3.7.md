@@ -4,7 +4,7 @@ title: AI Office de SEO 契約スキーマ設計（L3スケルトン） v3.7
 version: 3.7
 layer: L3
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
@@ -12,6 +12,8 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 # AI Office de SEO 契約スキーマ設計（L3スケルトン）
 
 L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメインイベント）をJSON Schemaへ確定する。キーは `namespace.name.version` で版固定（REQ-PACK-04。検証: AC-PACK-02）。
+
+分類別L1要求とL2集約を現行の意味正本とし、`REQ-AGENT-*`／`REQ-PACK-*`はTicket・Snapshot・Workflowの詳細契約、その他のv3.7 IDはLegacy Requirement Migration Mapに従う補助参照とする。旧IDだけを根拠にfield、enum、defaultを追加しない。
 
 ## 0. Recommendation Intake Contract
 

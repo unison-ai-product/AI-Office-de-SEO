@@ -4,7 +4,7 @@ title: AI Office de SEO 開発管理者コンソール 画面一覧 v3.7
 version: 3.7
 layer: L3
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 ---
@@ -12,6 +12,8 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 # AI Office de SEO 開発管理者コンソール 画面一覧
 
 ユーザー向け画面（AOS-L3-SCREEN-INVENTORY）と分離した運用面（REQ-ADM-01）。「コードを見なくても運用できる」ことを設計目標とし、ログ閲覧・モデル/プロンプト調整・入金/コスト管理をすべて画面から行えるようにする。
+
+現行要求は分類別L1のPlatform Administration、Security Access、Billing Accounting、Measurement Operations、Incident Warrantyを正本とする。本文に残る`REQ-ADM-*`、`REQ-SEC-*`等は管理操作の詳細参照であり、旧価格、旧顧客Role、顧客面との混在を復活させる根拠にしない。
 
 ## 0. 全画面共通の不変条件（先に固定）
 

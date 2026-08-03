@@ -4,7 +4,7 @@ title: AI Office de SEO 旧v3.7要求・分類別正本移行マップ
 version: 1.0
 layer: L1
 kind: migration_map
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 ---
 
@@ -13,6 +13,8 @@ updated_at: 2026-08-03
 ## 1. 原則
 
 旧IDは監査・詳細仕様の参照安定性のため一括改番しない。業務判断が分類別正本へ移った領域では分類別REQを優先し、旧文書に残る詳細は衝突しない範囲だけ有効とする。新規L2／L3は分類別REQと接続マップを根拠にし、旧IDだけを根拠に新しい横断判断を作らない。
+
+`REQ-AGENT-*`と`REQ-PACK-*`は名称上はv3.7文書内にあるが、現行分類別要求が代替していないAgent実行・Ticket・Packの詳細正本である。これらを機械的に廃止対象へ含めない。それ以外の旧ID群は、本表の現行判断正本と併記して初めて新規L2／L3判断の根拠にできる。
 
 ## 2. ID群別の移行先
 
@@ -45,4 +47,3 @@ updated_at: 2026-08-03
 - 新規実装の根拠が旧IDだけになっていない。
 - 旧価格、旧Role、一律承認、Office監視専用、WP専用内部設計が現行fixtureへ入らない。
 - 旧詳細を削除する場合も、Trace、Contract、testから参照されていないことをCIで確認する。
-
