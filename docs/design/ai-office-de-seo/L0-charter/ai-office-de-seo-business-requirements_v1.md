@@ -1,9 +1,14 @@
 ---
+document_id: AOS-L0-BUSINESS-REQUIREMENTS
 title: AI Office de SEO ビジネス要求 v1.0
+version: 1.0
+layer: L0
+kind: requirements
 status: approved_with_assumptions
 source: SEO_AGENT_事業計画書_コンサル料金改訂版.docx（外部入力・リポジトリ非管理）
 source_date: 2026-04
 defined_at: 2026-07-13
+updated_at: 2026-08-03
 ---
 
 # AI Office de SEO ビジネス要求 v1.0

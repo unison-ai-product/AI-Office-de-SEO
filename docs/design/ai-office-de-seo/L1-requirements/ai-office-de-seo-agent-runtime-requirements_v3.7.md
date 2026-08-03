@@ -125,7 +125,7 @@ freeze後の各工程は Layer A/B/C を cache prefix として再利用し、�
 
 ## 4. 品質段階・Provider Routing  ［REQ-AGENT-04］
 
-品質段階の主モデルは低い段階から `GPT Luna`、`GPT tera`、`Sonnet`、`Opus` の順とし、工程別の補助モデル、fallback、調査量、検査回数、Repair回数はversion付きProvider Routingで設計・管理する。特定モデルを本文生成・Repair・構成判断へ固定しない。モデル名は一般ユーザー画面には出さず、品質段階、予測クレジット、残り本数として表示する。
+品質段階はProvider非依存の安定した商品codeで管理し、工程別の必要Capability、調査量、検査回数、Repair方針、原価・latency上限をversion付きProvider Routingへ渡す。実Provider、model、snapshot、fallbackはModel Registryで解決し、Kimi、Grok、Qwen等の低コスト帯やlocal LLMを含むAdapterへ交換可能にする。特定モデルを本文生成・Repair・構成判断または品質段階名へ固定しない。一般ユーザーにはProvider名ではなく品質段階、予測credit、利用可能量を表示する。
 
 ## 5. データ取得（Source Pack経由・直テーブル禁止）  ［REQ-AGENT-05］
 

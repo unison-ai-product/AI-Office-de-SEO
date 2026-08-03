@@ -2,6 +2,8 @@
 document_id: AOS-L3-GATE-A5-CONTRACT-FREEZE
 title: Gate A-5 Ticket/Snapshot契約 必須フィールド凍結 v1
 layer: L3
+version: 1.0
+kind: contract
 status: frozen-v1
 updated_at: 2026-07-05
 ---

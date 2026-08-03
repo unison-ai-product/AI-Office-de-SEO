@@ -13,7 +13,7 @@ related_plan: PLAN-L0-01-ai-office-de-seo-charter
 
 ## 1. プロダクト定義
 
-AI Office de SEOは、WordPressサイト向けのSEOコンテンツ運用SaaSである。
+AI Office de SEOは、SEO運用代行システムとして提供するSEOコンテンツ運用SaaSである。初期提供・主検証対象のCMSはWordPressだが、内部はCMS非依存のPublication ContractとAdapter境界で設計し、WordPress専用品として業務ロジックを固定しない。
 
 ユーザーは、キーワード調査、記事設計、新規記事作成、リライト改善、投稿予約、検索流入分析、サイト方針の学習を、AIエージェントが働くオフィスのような体験で進められる。
 

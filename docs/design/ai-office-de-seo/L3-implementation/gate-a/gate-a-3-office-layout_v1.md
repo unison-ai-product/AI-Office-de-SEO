@@ -2,8 +2,10 @@
 document_id: AOS-L3-GATE-A3-OFFICE-LAYOUT
 title: Gate A-3 office_layout.json スキーマ v1（凍結）
 layer: L3
-status: frozen-v1.3
-updated_at: 2026-07-05
+version: 1.4
+kind: contract
+status: frozen-v1.4
+updated_at: 2026-08-03
 ---
 
 # Gate A-3: office_layout.json スキーマ v1（凍結）

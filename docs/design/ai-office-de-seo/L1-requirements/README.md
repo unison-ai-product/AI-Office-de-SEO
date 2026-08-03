@@ -105,6 +105,8 @@ CMSの変更発見、記事読取り、投稿・更新、Media、Editor、Previe
 
 契約、credit、自動チャージ、Capacity、Plan変更、支払失敗の顧客画面接続は`ai-office-de-seo-billing-capacity-ui-connection-map_v1.md`を正本とする。価格表の表示だけで課金・利用制御を完了扱いにしない。
 
+旧v3.7 ID群と分類別正本の責務・優先順位・下流参照規則は`ai-office-de-seo-legacy-requirement-migration-map_v1.md`を移行索引とする。旧IDを一括改番せず、新規実装が旧IDだけを根拠にしないようにする。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

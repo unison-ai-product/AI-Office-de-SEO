@@ -21,6 +21,30 @@
 
 構造面の健全性は高い。**REQ定義417件でID重複ゼロ／正本パス参照切れゼロ／検証欄欠落ゼロ**、AC本文の正本↔トレース一致は240件中239件。壊れているのは「IDの張り方」ではなく「IDの指し先」である。
 
+## 2026-08-03 解消状況
+
+本節を本レビュー指摘の状態正本とする。元の指摘本文は監査履歴として変更しない。
+
+| ID | 状態 | 解消根拠／残件 |
+|---|---|---|
+| C1 | resolved | AC検証先を振り直し、要求監査が全REQ被覆・重複なし・参照切れなしで通過する。現行結果は443 REQ、443 covered REQ。 |
+| C2 | resolved | KRL受入条件を現行prefixで横断Traceへ収録し、未被覆REQを解消。 |
+| C3 | resolved | L0冒頭と旧価格章へ廃止済み移行注記を追加し、`REQ-BILLING-01/02/03/16`を現行正本として明記。 |
+| I1 | resolved | RPO 1時間／RTO 4時間へ一本化し、AWS Operations Recovery Mapと復元演習へ接続。旧24時間／8時間例示は現行資料から撤去。 |
+| I2 | resolved | `REQ-PACK-11.1〜11.7`を各見出しへ宣言。監査対象として解決可能。 |
+| I3 | resolved | Design AC本文を正本へ同期し、狭幅で非対応操作を対応済みと誤表示しない条件を維持。 |
+| I4 | resolved | Trace §0.1に`AC-SEC-08〜10`、`AC-WPA-01〜07`、`AC-AOUI-05/06`を予約欠番・再利用禁止として記録。 |
+| I5 | resolved | `scripts/audit-requirements.mjs`と`.github/workflows/requirements-audit.yml`を追加し、正本／Trace、複数REQ、参照、被覆をCI検査。 |
+| I6 | accepted_migration_debt | `REQ-BILLING-*`を現行正本、`REQ-BILL-*`を旧詳細・移行未完IDとして明示。下流新規参照は禁止するが、監査履歴と旧詳細のIDは破壊改番しない。完全移行台帳は継続対象。 |
+| I7 | resolved | `REQ-KGA-22`、`REQ-WPA-14`を含め全443 REQが受入条件へ接続済み。 |
+| M1 | accepted_migration_debt | パーサは両見出し形式を検査可能。既存IDの一括整形は差分リスクが高いため、新規は見出し式、旧埋込式は改版時移行とする。 |
+| M2 | resolved | L0 business requirementsとGate A全Markdownへ共通frontmatterを補完。 |
+| M3 | resolved | リポジトリ入口の現行Plan表現をEntry／Standard／Premium／Enterpriseへ更新。 |
+| M4 | resolved | L0を「初期主検証CMSはWordPress、内部はCMS非依存Publication Contract／Adapter」と修正。 |
+| M5 | resolved | Decision Summary §15へ原価350円、決済4.3%、credit180日、Dunning 14日／8回、RPO／RTOを計測方法・設定箇所・確定時期付きで登録。 |
+
+`accepted_migration_debt`は要求不明ではなく、正本順位と新規利用禁止が確定した移行債務を表す。完了と誤表示せず、旧ID／旧見出しを触る変更時に解消する。
+
 ---
 
 ## Critical

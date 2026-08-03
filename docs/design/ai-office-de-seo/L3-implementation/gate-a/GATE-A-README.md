@@ -1,3 +1,13 @@
+---
+document_id: AOS-L3-GATE-A-README
+title: Gate A 成果物一覧
+version: 1.0
+layer: L3
+kind: index
+status: active
+updated_at: 2026-08-03
+---
+
 # Gate A 成果物（v1凍結）
 
 | # | 成果物 | 状態 | 主な消費者 |

@@ -2,6 +2,8 @@
 document_id: AOS-L3-GATE-A1-EVENT-ENVELOPE
 title: Gate A-1 イベント共通エンベロープ v1（凍結）
 layer: L3
+version: 1.4
+kind: contract
 status: frozen-v1.4
 updated_at: 2026-07-05
 ---

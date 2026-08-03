@@ -211,7 +211,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - プラン内利用上限と、超過分の追加クレジットを持つ。
 - 品質段階ごとの生成クレジット予測から作成可能本数を算出し、週次作成上限でWordPress・外部API負荷を制御する。
-- 品質段階は安定した商品コードで管理し、実Provider名・モデル名を商品IDに固定しない。`GPT Luna → GPT tera → Sonnet → Opus` は当初想定した品質順の表示ラベル／routing aliasとして保持できるが、各aliasから実Provider、model、snapshot、調査量、検査、Repair、fallbackへの対応をModel Registryで版管理する。
+- 品質段階はProvider非依存の安定した商品codeで管理し、実Provider名・モデル名を商品ID、表示名、固定aliasにしない。各品質codeから必要Capability、実Provider、model、snapshot、調査量、検査、Repair、fallbackへの対応をModel Registry／Routing Policyで版管理し、Kimi、Grok、Qwen等の低コスト帯やlocal LLMを含む技術互換性を維持する。
 - 将来の原価率改善に向け、Kimi、Grok、Qwen系等の外部APIおよび自己管理・ローカルLLMを共通Model Capability Contractへ接続できる技術互換性を維持する。routeは必要能力、品質評価、latency、実効原価から選び、特定ProviderやOpenAI互換APIだけへ中核Workflowを固定しない。
 - 顧客請求はappend-only ledgerを正本とし、credit lot、reserve、commit、release、失効、繰越、refund、manual adjustmentを追跡する。障害要求が返還可否を判断し、課金要求が元取引を参照して返還を記帳する。
 - 初期価格階段はEntry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜（月額・税別）とする。EntryとStandardはセルフ月契約、Premiumはセルフ年契約のみ、Enterpriseは問い合わせによる年契約のみとする。公開画面では各税込総額を同一領域へ明瞭に併記する。
@@ -260,6 +260,31 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
    - 計測方法: 品質別Preflight見積、実績credit、Provider原価、週次利用率、追加購入率、backup使用量、復元件数を商品・tenant・Site単位で集計する。
    - 設定箇所: `REQ-BILLING-01` のPrice Catalog、`REQ-BILLING-03` のcredit lot・利用枠、`REQ-COST-04/05` の見積・実績、Plan Configuration。
    - 確定時期: 価格表公開前に初期値を承認し、β運用の実績較正後、一般販売開始前に販売versionを固定する。
+
+2. 標準記事生成1件当たり提供原価の約350円仮説。
+   - 計測方法: 品質段階別のtoken、画像、外部取得、Repair、cache、基盤配賦、失敗・再開原価をJob単位で実測し、中央値とP95を算出する。
+   - 設定箇所: Provider Cost Table、Cost Trace、Preflight係数、Price Catalogの採算検証資料。顧客販売本数の固定値には使用しない。
+   - 確定時期: 最小縦切りの実Job計測後に仮説を更新し、β終了時にPlan別粗利計画へ反映する。
+
+3. Stripe等の決済原価4.3%仮説。
+   - 計測方法: 支払方法、Stripe利用製品、契約rate、返金、chargeback、税、通貨換算を費目別に照合する。
+   - 設定箇所: Provider Cost Table。顧客請求へカード手数料として直接上乗せしない。
+   - 確定時期: Stripe本番契約・採用製品確定時に初期rateを固定し、月次原価照合で改版する。
+
+4. 追加購入creditの180日失効と資金決済法上の取扱い。
+   - 計測方法: 販売額、未使用残高、失効率、利用期間をlot単位で集計し、法務・決済事業者へ商品設計を確認する。
+   - 設定箇所: Price Catalog version、Credit Lot policy、契約表示。
+   - 確定時期: 追加credit販売開始前。確認未了のCatalog versionを販売可能にしない。
+
+5. 支払失敗時の14日・最大8回再試行。
+   - 計測方法: 決済成功回復率、hard decline、認証要求、問い合わせ、猶予中利用制限、回収費用をDunning attempt単位で集計する。
+   - 設定箇所: Dunning Policy versionと外部決済設定。顧客画面には次回試行と猶予期限を表示する。
+   - 確定時期: 決済test fixtureと運用Runbook検証後、販売開始前に初期Policyを承認し、実績で較正する。
+
+6. 正本データのRPO 1時間／RTO 4時間。
+   - 計測方法: 全体復元とtenant選択復元の演習で復元点、整合性、実測RPO/RTO、手動工程を記録する。
+   - 設定箇所: AWS配置・復旧ADR、Backup Policy、Runbook、監視alert。要求値をConfigで緩和して済ませない。
+   - 確定時期: Production Hardening前の初回演習で達成可能性を判定し、未達なら構成・運用または正式目標を意思決定する。
 
 ## 16. 監査上の注意
 

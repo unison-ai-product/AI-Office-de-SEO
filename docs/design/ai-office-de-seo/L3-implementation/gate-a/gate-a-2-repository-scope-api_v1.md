@@ -2,6 +2,8 @@
 document_id: AOS-L3-GATE-A2-REPO-SCOPE
 title: Gate A-2 Repository層スコープ強制API v1（凍結）
 layer: L3
+version: 1.0
+kind: contract
 status: frozen-v1
 updated_at: 2026-07-02
 ---

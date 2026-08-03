@@ -77,10 +77,10 @@
 
 ### Structural / Audit
 
-21. `audit-requirements.mjs`はID・参照・AC集合の構造整合を証明するが、意味上の正本順位、新旧衝突、Lifecycle接続、画面カバレッジは証明しない。
-22. `TODO/open/未確定/要調整`はL1〜L3・プロトに多数残る。単純件数ではなくLaunch blocker、設計時確定、運用較正、将来構想へ分類する台帳が必要。
-23. L2/L3の根拠REQが旧`REQ-PRODUCT/KGA/WPA/BILL/SEC`中心で、分類別現行REQとの双方向参照が不足。
-24. 旧レビュー指摘が修正済みかを、レビュー文書自身に`resolved/superseded/open`で返していない。
+21. `audit-requirements.mjs`はID・参照・AC集合の構造整合を証明する。意味監査は本書のEnd-to-End接続表、新旧差分表、画面再構成、未確定台帳、旧要求移行マップ、レビュー解消表を証拠とし、構造監査だけで完了判定しない。残件は実プロト操作・Contract Test・障害／復元試験の証拠取得。
+22. `TODO/open/未確定/要調整`を`ai-office-de-seo-open-items-register_2026-08-03.md`へ、Launch blocker、設計時判断、運用較正、将来構想、移行債務として分類した。新規項目は証拠、設定／正本、確定時期を必須とする。
+23. 旧`REQ-PRODUCT/KGA/WPA/BILL/SEC`等と分類別現行REQの責務・優先順位・下流参照規則を`ai-office-de-seo-legacy-requirement-migration-map_v1.md`へ追加した。残件は各L2/L3文書の改版時に分類別REQ併記を進め、旧ID単独参照を解消すること。
+24. `ai-office-de-seo-requirements-review_2026-07-31.md`へ全Critical／Important／Minorの`resolved / accepted_migration_debt`と証拠を追記した。新しいレビューも同じ方式で状態を返す。
 
 ## 6. 画面プロトを磨くために必要な再構成
 

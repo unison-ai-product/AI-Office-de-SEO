@@ -2,6 +2,8 @@
 document_id: AOS-L3-GATE-A4-DESIGN-TOKENS
 title: Gate A-4 デザイントークン v1（凍結）
 layer: L3
+version: 1.0
+kind: contract
 status: frozen-v1
 updated_at: 2026-07-05
 ---
