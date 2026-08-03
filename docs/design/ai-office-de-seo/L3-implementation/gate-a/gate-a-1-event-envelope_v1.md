@@ -2,7 +2,7 @@
 document_id: AOS-L3-GATE-A1-EVENT-ENVELOPE
 title: Gate A-1 イベント共通エンベロープ v1
 layer: L3
-version: 1.8
+version: 1.9
 kind: contract
 status: current-draft
 updated_at: 2026-08-03
@@ -124,6 +124,13 @@ updated_at: 2026-08-03
 | recommendation.held | recommendation_id, version, reason, release_condition | W,N,O | REQ-KRL-07/09 |
 | recommendation.expired | recommendation_id, version, cause | W,O | REQ-KRL-09 |
 | recommendation.dispatched | recommendation_id, version, intake_ref, route_class, action_key, execution_ref, requires_agent_job, workflow_key?, job_id?, correlation_id | W,O | REQ-LOGIC-03, REQ-AGENT-09 |
+| execution.admission_requested | admission_id, version, intake_ref, route_class, action_key, billing_mode, idempotency_key, correlation_id | W,O,A | REQ-LOGIC-11, REQ-SEC-12 |
+| execution.admission_evaluated | admission_id, version, verdict, check_refs[], estimate_ref, reason_codes[], valid_until? | W,O,A | REQ-LOGIC-11, REQ-SEC-12 |
+| execution.admission_reservation_pending | admission_id, version, estimate_ref, reserved_max_credit, credit_unit | W,O | REQ-LOGIC-11, REQ-BILLING-04 |
+| execution.admission_ready | admission_id, version, billing_mode, reservation_ref?, authorization_decision_ref, valid_until | W,O,A | REQ-LOGIC-11, REQ-BILLING-04 |
+| execution.admission_held | admission_id, version, reason_codes[], required_actions[], return_context, reservation_disposition | W,N,O,A | REQ-LOGIC-11, REQ-SEC-12 |
+| execution.admission_consumed | admission_id, version, action_execution_ref, dispatch_event_ref, consumed_at | W,O,A | REQ-LOGIC-11, REQ-TECH-07 |
+| execution.admission_expired | admission_id, version, reservation_disposition, expired_at | W,N,O,A | REQ-LOGIC-11, REQ-BILLING-04 |
 | recommendation.user_action_requested | recommendation_id, intake_ref, action_kind, reason_refs[], release_condition | W,N,O | REQ-KRL-07/08 |
 | recommendation.no_action_recorded | recommendation_id, type(protect/observe/no_action), next_evaluation_at? | W,O | REQ-KRL-07/09 |
 | recommendation.superseded | recommendation_id, version, superseded_by_ref, cause, origin | W,O | REQ-KRL-09 |
@@ -228,9 +235,9 @@ updated_at: 2026-08-03
 | publication.fact_recorded | publication_fact_id, publication_job_ref?, effect_kind, attribution, external_post_ref, canonical_url_ref, resulting_content_hash, effective_at, verified_at, verification_evidence_ref, correlation_id? | N,O,A | REQ-WPA-04, REQ-INT-06, REQ-MEASURE-13/14 |
 | publication.attribution_reconciled | prior_publication_fact_ref, new_publication_fact_ref, from_attribution, to_attribution, evidence_refs[], rule_version | O,A | REQ-MEASURE-14 |
 | publication.cv_recorded | goal_ref, date, url_ref, count | O | REQ-WPA-05 |
-| billing.credit_reserved | amount, ledger_ref | O,A | REQ-BILL-07 |
-| billing.credit_committed | amount, ledger_ref | O,A | REQ-BILL-07 |
-| billing.credit_released | amount, ledger_ref | O,A | REQ-BILL-07 |
+| billing.credit_reserved | reservation_id, admission_ref, estimate_ref, billing_subject_ref, amount, credit_unit, lot_allocations[], ledger_ref, idempotency_key | O,A | REQ-BILL-07 |
+| billing.credit_committed | reservation_id, billing_subject_ref, outcome_or_result_ref, amount, credit_unit, ledger_ref, idempotency_key | O,A | REQ-BILL-07 |
+| billing.credit_released | reservation_id, billing_subject_ref, amount, credit_unit, reason_code, ledger_ref, idempotency_key | O,A | REQ-BILL-07 |
 | billing.monthly_granted | amount | N,O,A | REQ-BILL-08 |
 | billing.balance_low | threshold | N,O,A | REQ-BILL-02 |
 | billing.subscription_state_changed | from, to | N,O,A | REQ-BILL-08 |
@@ -269,6 +276,8 @@ updated_at: 2026-08-03
 
 `recommendation.presented`は同じDecision Eligibility versionにつき一度だけ発行し、画面閲覧・再表示では再発行しない。Site最初の同eventから`site.first_recommendation_presented`を一度だけ導出する。`recommendation.decision_recorded`の`accepted / accepted_with_edit`は`intake_ref`必須、`held / excluded`は`intake_ref`禁止とし、automaticではService actorと委任Policyを監査参照する。`recommendation.dispatched.requires_agent_job=false`では`workflow_key / job_id`を禁止し、Action所有Serviceの`execution_ref`を必須とする。
 
+`execution.admission_ready`は、有償Actionでは同じAdmission／estimate versionの`billing.credit_reserved`を参照する場合だけ発行する。非課金Actionは`billing_mode=non_billable`とし`reservation_ref`を禁止する。`execution.admission_consumed`とAction dispatch eventは同じtransactional outboxで一度だけ作成し、未consume、期限切れ、heldのAdmissionからProvider呼出し・外部write・Job／Patch開始を行わない。Admission再評価は新versionとし、古いReservationの処分を`held / expired / superseded`側で明示する。同一Jobのretry／checkpoint再開から新しいAdmissionまたはreserve eventを発行しない。
+
 v1.1改訂: 通知カタログ（REQ-PRODUCT-11）との突合で4種追加（approval_requested / webhook_failed / reconciliation_mismatch / cache_hit_floor_breached）。凍結規則どおりevent_type追加はminorでありエンベロープ・既存typeは不変。
 
 v1.2改訂: 運営お知らせのイベント投入（REQ-PRODUCT-16のイベント由来原則との整合）で `platform.announcement_published` を追加（minor）。エンベロープ・既存typeは不変。
@@ -282,5 +291,7 @@ v1.6改訂: 13状態の互換keyを維持したまま、`cms_draft`状態内のA
 v1.7改訂: Site導入の4段階Capabilityをscope付きmilestone／change eventとして追加し、Connection Profile確認、記事読取、operation別write readiness、Activationを別事実として再構築可能にした。
 
 v1.8改訂: Recommendationの内部提案、判断可能な提示、手動／自動判断、Intake、正規Action dispatchを分離した。旧`recommendation.accepted`はmigration aliasとし、全ActionをAgent Workflowへ偽装しないpayloadへ変更した。
+
+v1.9改訂: freeze済みIntakeとAction dispatchの間にscope・version付きExecution Admissionを追加し、Preflight、Credit Reservation、Admission consume、Action開始を別事実として再構築可能にした。Credit eventをTicket非依存のbilling subjectへ一般化した。
 
 v1.3改訂（表記正規化・型不変）: カタログを **1 event_type = 1行** へ正規化した。旧版の複合行（例: `generation.gate_passed / gate_held`）は複数typeの省略表記であり、機械照合の契約としてregex `^[a-z]+\.[a-z_]+$` に行単位で適合しなかったため分割した。event_typeの集合・エンベロープ・payload意味論は不変（新規type追加なし）。分割時、旧複合行で共有されていた消費印・根拠は各行へ引き継ぎ、区別があったもの（N(held)/N(hard)等）は当該行にのみ付した。

@@ -171,6 +171,13 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - 不変条件: 採用後はRecommendation Intakeをfreezeし、Action Routingが選ぶAgent Workflow／Patch／Policy／Domain Command／ユーザー対応へ再入力なしで渡す／未実行Recommendationだけが目的・市場・分類変更による再計算対象／実行済みは履歴として保持／根拠、入力availability、予測credit、依存関係、保護条件を欠くものは実行可能にしない／手動起動はManual Intakeとして由来を分離しつつ同じPreflight・重複・カニバリ・権限・予算判定へ通す／ユーザー指定Taskは維持し、衝突時は相談と依存順序を提示する／自動予定だけを再検証でheld、needs_review、supersededへ遷移させる／観測、保護、no action、ユーザーエスカレーションにAgent Jobを偽造しない。
 - リライト不変条件: `recommendation_type=rewrite`は、対象記事のArticleSummaryと、本文・見出し・公開状態を取得したArticle Read Snapshot、原因・根拠、取得時刻・hash・availabilityを参照する。GSCまたはKeyword実績だけの候補は`request_input`、`observe`または`technical_escalation`に留め、本文変更を伴うRewrite Intakeへdispatchしない。
 
+### 4.3.1.1 ExecutionAdmission（Recommendation Planning Process Manager）
+
+- ルート: ExecutionAdmission。freeze済みRecommendation／Manual Intakeから正規Actionを実行してよいかを、Authorization、Entitlement、入力・鮮度、重複・カニバリ・保護、Connection、Capacity、Kill Switch、見積、Credit Reservationのversion付き証拠で判定する。
+- 状態: 有償Actionは`requested → evaluating → reservation_pending → ready → consumed`、非課金Actionは`billing_mode=non_billable`を明示して予約を省略する。回復可能な不足は`held`、実行不能は`rejected`、証拠version更新は`superseded`、未使用の有効期限超過は`expired`とする。
+- 不変条件: Intakeは変更しない／有償Actionはreserve完了前にreadyまたはdispatchしない／ready Admissionは一度だけconsumeする／consumeと正規Action dispatchを同じoutbox境界で確定する／dispatch直前に可変Gateを再検証する／retry・checkpoint再開・限定Repairで新しいreserveを作らない／非Agent ActionへTicketまたはJobを要求しない／一括表示でもAdmissionとreserveはAction単位で追跡する。
+- Billing & CreditはReservationを所有し、Recommendation PlanningはReservation Factを参照してAdmissionをreadyにする。Generation、Patch、Policy、Domain Command等のAction所有ContextはConsumed Admissionだけを受け取り、Preflight判定や顧客残高を独自計算しない。
+
 ### 4.3.2 KeywordStrategyReport / KeywordSiteDiagnosisReport
 
 - ルート: KeywordReport。`report_type=new_site_strategy / existing_site_diagnosis`で同一識別基盤を使うが、章・判定目的・入力availabilityを分ける。

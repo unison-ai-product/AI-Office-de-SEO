@@ -318,6 +318,12 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-o
   "選択式ポップアップを先に表示",
   "玄人向けに詳細分析・操作できる",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md", [
+  "`schema.execution.admission.v1`としてPreflight判定",
+  "Preflight結果でfreeze済みIntakeを書き換えない",
+  "ready Admissionを一度consumeしてからdispatchする",
+  "複数Actionの一括操作も個別Admissionを保持",
+]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md", [
   "site.setup_completed → cms.connection_profile_verified → site.first_recommendation_presented",
   "operation別`delivery_ready`または書込み可能を意味しない",
@@ -331,12 +337,19 @@ assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-m
   "`accepted* → dispatched → executing → completed → evaluating → learned`だけが実行経路",
   "`excluded / expired`は当該versionの終端",
   "採用は実行開始ではない",
+  "ExecutionAdmission（Recommendation Planning Process Manager）",
+  "有償Actionはreserve完了前にreadyまたはdispatchしない",
+  "consumeと正規Action dispatchを同じoutbox境界で確定する",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
   "schema.recommendation.presentation.v1",
   "schema.recommendation.decision.v1",
   "Recommendation type、target、主Objective、Keyword Cluster、Action route等の意味境界",
   "同一transaction／transactional outbox",
+  "schema.execution.admission.v1",
+  "requested|evaluating|reservation_pending|ready|held|rejected|expired|consumed|superseded",
+  "Provider有償呼出し、外部write、Agent Job、Patch適用",
+  "`admission_id + admission_version + estimate_version`",
   "schema.site.build_progress.v1",
   "content_read_ready{state, article_scope_ref, eligible_article_count",
   "delivery_ready[]{operation, state, connection_profile_version",
@@ -351,6 +364,14 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "lane_type(seo_content|cta_cv|internal_link|awareness)",
   "記事に単一の評価時計を持たせず",
   "Recovery Backupの最長3か月は復元可能期間",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
+  "Credit reserveはAgent有無に依存しない`admission_id + admission_version + estimate_version`",
+  "生成credit commitは`generation_outcome_id`",
+  "checkpoint再開で新しいreserve／commitを作らず",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
+  "reserve/commitは`ticket_id`単位",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
   "CMS種別には依存しない。初期の書込AdapterはWordPressを対象とする",
@@ -576,6 +597,11 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "recommendation_decisions",
   "採用Decisionだけ、またはIntakeだけが存在するcommitを禁止する",
   "意味境界を変える編集は`accepted_with_edit`にせず`manual_intakes`",
+  "execution_admissions",
+  "execution_admission_transitions",
+  "二重Consumerによる二重Job／Patchを防ぐ",
+  "Ticketのない非Agent Actionへ架空Ticketを作らず",
+  "credit_reservations",
   "scope_kind(site/analysis_version/article/operation)",
   "重複boolean列を置かない",
   "該当operationだけを失効させる",
@@ -602,6 +628,11 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-e
   "recommendation.decision_recorded | recommendation_id",
   "requires_agent_job=false",
   "旧`recommendation.accepted`は`recommendation.decision_recorded(result=accepted)`",
+  "execution.admission_requested | admission_id",
+  "execution.admission_ready | admission_id",
+  "execution.admission_consumed | admission_id",
+  "reservation_id, admission_ref, estimate_ref, billing_subject_ref",
+  "未consume、期限切れ、heldのAdmissionからProvider呼出し",
   "site.activated | activation_id",
   "product.loop_completed | loop_completion_id",
   "seo_content_lane_ref",
@@ -618,6 +649,9 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "`delivery_ready`をoperation単位",
   "保存された単一`connected` boolを正本にしない",
   "Recommendation再生成やGeneration Outcome再生成を要求しない",
+  "Intake → Execution Admission → 正規Action",
+  "Admissionを一度consumeし",
+  "Task HistoryはJobを持つActionだけ表示",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
   "PT-CMS-07",
@@ -629,6 +663,10 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-pr
   "PT-REC-08",
   "PT-REC-09",
   "accepted DecisionとRecommendation Intakeが同時に存在",
+  "PT-ADMIS-01",
+  "PT-ADMIS-02",
+  "PT-ADMIS-03",
+  "Batch合計だけをreserve正本にしない",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
   '"type": {"enum": ["user", "system", "agent"]}',
@@ -664,6 +702,8 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "Recommendation提示・判断",
   "Decision Eligibilityをfreezeした`presented` version",
   "`recommendation_feedback`は既読、click、UI改善等の分析補助",
+  "Preflight保留を「Recommendationが不採用になった」と表示しない",
+  "ClientまたはLLMが実行可能性・残高を再計算しない",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
   "| S4 | オートメーション | WP接続",
@@ -1057,7 +1097,7 @@ for (const requiredPhrase of [
   "分析 → 戦略／診断Report",
   "Report → 月次計画",
   "Recommendation → Intake",
-  "Intake → Agent Workflow",
+  "Intake → Execution Admission → 正規Action",
   "成果 → CMS下書き",
   "CMS下書き → 公開・更新",
   "Publication Fact → 評価 → 次回計画",

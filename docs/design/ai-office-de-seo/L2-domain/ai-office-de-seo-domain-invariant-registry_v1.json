@@ -187,6 +187,39 @@
             "意味境界を変える編集はManual Intakeへ分離する。",
             "非Agent Actionはexecution refだけを保持する。"
           ]
+        },
+        {
+          "invariant_id": "INV-ADMISSION-001",
+          "statement": "freeze済みIntakeを変更せずExecution Admissionで実行可否を判定し、有償ActionはCredit reserve済みのready Admissionを一度consumeしてから正規Actionへdispatchする。retryと非Agent Actionへ二重reserveや架空Jobを作らない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/billing-accounting-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md"
+          ],
+          "forbidden_patterns": [
+            "Preflight.{0,40}Intake.{0,20}(?:上書きする|更新する|書き換える)",
+            "(?:reserve|Reservation).{0,30}(?:未成立|なし|前).{0,30}(?:有償|billable).{0,20}(?:dispatch|Job開始|Provider呼出し)",
+            "(?:retry|再試行|checkpoint再開|限定Repair).{0,40}(?:新しい|追加).{0,20}(?:Admission|reserve|Reservation).{0,15}(?:作る|発行する|生成する|要求する)",
+            "non_billable.{0,30}(?:0 credit|0額).{0,20}(?:reserve|Ledger).{0,15}(?:作る|発行する|記録する|必須とする)",
+            "(?:一括|Batch).{0,40}(?:合計|総額)(?:だけ|のみ).{0,20}(?:reserve正本|Admission正本).{0,10}(?:とする|にする|として扱う)"
+          ],
+          "bad_fixtures": [
+            "Preflight結果でIntakeを書き換える。",
+            "reserveなしでbillable Actionをdispatchする。",
+            "checkpoint再開で新しいReservationを作る。",
+            "non_billable Actionにも0額Ledger reserveを作る。",
+            "一括操作は合計だけをreserve正本にする。"
+          ],
+          "good_fixtures": [
+            "PreflightはIntakeを変更せずversion付きAdmissionを作る。",
+            "billable ActionはReservation付きready Admissionをconsumeしてdispatchする。",
+            "checkpoint再開は既存Reservationを参照する。",
+            "non_billable ActionはReservationなしを明示する。",
+            "一括操作もAction単位のAdmissionを保持する。"
+          ]
         }
       ]
     },

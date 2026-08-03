@@ -71,6 +71,9 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-REC-07: 内部candidate／proposed、Queueへ判断可能に公開したpresented、画面閲覧、manual／automatic Decision、freeze済みIntake、dispatch、executionを別event・別時刻として再現し、再表示で採用率の分母を増やさない。
 - [ ] PT-REC-08: `accepted_with_edit`は許可fieldの変更差分を保持し、type、target、主Objective、Keyword Cluster、Action routeを変える指示はManual Intakeまたは新Recommendation versionへ分離する。
 - [ ] PT-REC-09: accepted DecisionとRecommendation Intakeが同時に存在し、どちらか片方だけのfixtureを拒否する。observe／protect／no_action等のdispatchではAgent Jobを作らず、正規Actionのexecution refを表示する。
+- [ ] PT-ADMIS-01: 採用済みIntakeとExecution Admissionを別状態で表示し、Preflight heldをRecommendation不採用へ戻さない。入力・権限・接続・Capacity・保護・Credit不足ごとに理由、必要操作、return contextを表示する。
+- [ ] PT-ADMIS-02: billable ActionはReservationなしのready／consume／dispatchを拒否し、non_billable Actionは架空の0 credit reserveなしで実行できる。同じAdmissionの二重consumeと同一Job再開時の二重reserveを拒否する。
+- [ ] PT-ADMIS-03: 一括採用した3件のうち2件ready、1件heldを個別に表示・実行し、Batch合計だけをreserve正本にしない。Preflight見積、reserved、committed、releasedを同じ金額として丸めない。
 - [ ] PT-PATCH-01: CTA候補が記事目的、検索intent、CV Goal、CTA part、link先、月次／累積値を持ち、本文全文リライトやCTA専用Writing Ticketなしで承認・適用できる。
 - [ ] PT-PATCH-02: 内部link候補がリンク元、リンク先、対象part、重複・公開・canonical・カニバリ・保護検査を持ち、既存記事への追加は承認後、削除は別確認になる。
 - [ ] PT-PATCH-03: 一括承認したPatchの一部が失敗または競合しても、成功・失敗・再試行が候補単位で表示され、Batch全体を成功にしない。

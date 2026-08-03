@@ -95,6 +95,41 @@ schema.intake.manual.v1 {
 
 根拠: `REQ-KRL-08/09`、`REQ-DATA-06/07`、`REQ-LOGIC-03`、`REQ-SCREEN-09/15/18`、Agent要求マップ。
 
+## 0.0.0 Execution Admission Contract
+
+freeze済みIntakeを実行してよいかを判定するPreflight正本を`schema.execution.admission.v1`とする。Recommendation採用、Intake、実行許可、Credit予約、Dispatchを一つの状態へ丸めない。
+
+```text
+schema.execution.admission.v1 {
+  admission_id, admission_version, tenant_id, site_id,
+  intake_ref, route{class, action_key, target_service, requires_agent_job},
+  action_subject_ref,
+  state(requested|evaluating|reservation_pending|ready|held|rejected|expired|consumed|superseded),
+  checks{
+    authorization_decision_ref, authorization_epoch,
+    entitlement_snapshot_ref, input_availability_ref, source_freshness_ref,
+    duplicate_assessment_ref?, cannibalization_assessment_ref?, protection_decision_ref?,
+    connection_readiness_refs[], capacity_snapshot_ref, kill_switch_version
+  },
+  quote{
+    estimate_ref, estimate_version, billing_mode(billable|non_billable),
+    credit_unit, expected_credit, reserved_max_credit, fixed_customer_credit,
+    pricing_version, cost_model_version, valid_until
+  },
+  reservation_ref?, reason_codes[], required_actions[], return_context,
+  config_versions[], evaluated_at?, ready_at?, consumed_at?,
+  idempotency_key, correlation_id
+}
+```
+
+- `requested → evaluating → reservation_pending → ready → consumed`を有償Actionの正常経路とする。非課金Actionは`billing_mode=non_billable`を明示して`reservation_pending`を省略できるが、架空の0 credit reserveを作らない。回復可能な不足は`held`、Policy上実行不能は`rejected`、見積・入力・認可等のversion更新は旧Admissionを`superseded`として新versionで再評価する。
+- `ready`は短時間有効な実行許可Snapshotであり、Intakeを書き換えない。有償Actionの`ready`には同じAdmission／estimate versionを参照する成功済み`reservation_ref`を必須とする。Provider有償呼出し、外部write、Agent Job、Patch適用は`ready`を一度`consumed`へ遷移させた後だけ開始する。
+- `consumed`と`recommendation.dispatched`またはManual Action dispatchは同一transactional outbox境界で一度だけ確定する。dispatch直前にauthorization epoch、Kill Switch、Connection、Capacity等の可変Gateを再検証し、変化時は消費せず`held / superseded`へ戻す。
+- reserveの冪等性はTicketではなく`admission_id + admission_version + estimate_version`で保証する。Agentを使わないPatch／Policy／Domain Commandにも同じAdmissionを利用できる。同一Jobのretry、checkpoint再開、限定Repairは既存Reservationを参照し、新しいAdmission／reserveを作らない。
+- 複数Recommendationの一括操作は各IntakeにAdmissionを作り、合算表示はProjectionとする。一件の不足で他項目を実行済みにせず、Batch合計だけをreserve正本にしない。
+
+根拠: `REQ-LOGIC-11`、`REQ-SEC-12`、`REQ-BILLING-04`、`REQ-AGENT-10`、`REQ-SCREEN-15/18`。
+
 ## 0.0.1 Lightweight Patch Contract
 
 CTA・内部linkの限定更新入力を`schema.patch.action.v1`、結果を`schema.patch.result.v1`とする。

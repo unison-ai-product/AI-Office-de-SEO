@@ -115,9 +115,11 @@ CMS Adapter、署名Webhookまたは許可された観測経路から外部の�
 
 ### REQ-LOGIC-11 生成Preflight
 
-生成開始前に、選択品質、入力、予算、固定価格内の限定Repair枠で成果生成が成立するかをPreflight判定する。成立しない見込みなら生成を開始せず、品質変更、入力追加または別実行を提案する。1回の生成価格は途中Repair回数で変動させず、ユーザー希望による再生成は新しいジョブとしてクレジットを消費する。サービス障害による中断はcheckpointから再開し、同一成果の再開を再生成として課金しない。
+freeze済みRecommendation／Manual Intakeから、正規Actionを開始可能かを`schema.execution.admission.v1`としてPreflight判定する。生成だけでなく軽量Patch、Policy、Domain Command等にも同じAdmissionを用い、選択品質、入力、Authorization、Entitlement、予算、重複、カニバリ、保護、接続、Capacity、Kill Switch、固定価格内の限定Repair枠をversion付き証拠で判定する。成立しない見込みならActionを開始せず、品質変更、入力追加、再接続、追加購入、権限者対応または別実行を提案する。Preflight結果でfreeze済みIntakeを書き換えない。
 
-入力はWorkflow version、必須入力availability、品質段階、Provider route候補、`REQ-COST-04` の原価見積、`REQ-BILLING-04` の請求reserve、外部接続、実行上限である。全必須入力が利用可能で、固定商品枠と技術上限の双方に収まる場合だけ `ready` とする。不足時は `input_required / budget_required / connection_required / capacity_wait` のいずれかと、不足項目、変更候補、再計算条件を返す。PreflightはProviderの有償呼出し前に完了し、価格・route・入力・接続・設定version変更時に再計算する。
+入力はIntake／route、Workflow version、必須入力availability、品質段階、Provider route候補、`REQ-COST-04` の原価見積、Authorization／Entitlement、`REQ-BILLING-04` の請求reserve、外部接続、Capacity、保護・重複判定である。有償Actionは同じAdmission／estimate versionのreserveが成立した場合だけ`ready`とし、非課金Actionは`non_billable`を明示して0額reserveを作らない。不足時は`held / rejected`とreason code、不足項目、変更候補、再計算条件、return contextを返す。PreflightはProviderの有償呼出し・外部write・Job／Patch開始前に完了し、ready Admissionを一度consumeしてからdispatchする。価格、route、入力、認可epoch、接続、Capacity、設定version変更時は旧Admissionを上書きせず新versionで再計算する。
+
+1回の生成価格は途中Repair回数で変動させず、同一Jobの障害再試行、checkpoint再開、限定Repairでは既存Reservationを参照する。ユーザー希望による別成果の再生成だけを新しいJob、Admission、見積、reserveとして扱う。複数Actionの一括操作も個別Admissionを保持し、合算表示だけを実行許可またはreserve正本にしない。
 
 ### REQ-LOGIC-05 急変時の推薦抑制
 
@@ -195,7 +197,7 @@ CTAの再利用対象はSite上で利用可能なpartとlink先に限定し、�
 - [ ] AC-L1-LOGIC-08: 投稿単位のCompatibility Matrixと対象operationから出力経路を再現でき、unknown時も既存記事の危険な上書きだけを保留できる。
 - [ ] AC-L1-LOGIC-09: 許可済み装飾だけを適用し、互換性不足時に本文を変更せず装飾なしまたは互換パーツへ縮退できる。
 - [ ] AC-L1-LOGIC-10: Pattern・Profile・記事slot・CMS size・model versionから画像生成を再現し、技術的不成立とadvisoryを区別できる。
-- [ ] AC-L1-LOGIC-11: Provider課金前に入力・固定商品枠・請求reserve・接続・技術上限を判定し、readyまたは再開条件を返せる。
+- [ ] AC-L1-LOGIC-11: freeze済みIntakeを変更せず、Provider課金・外部write・Job／Patch開始前に入力、認可、Entitlement、固定商品枠、保護、接続、Capacity、Kill Switch、見積をAdmissionへ記録できる。有償Actionはreserve付きready Admissionの単回consume後だけdispatchし、非課金Actionは0額reserveを作らず、保留は理由・再開条件・return contextを返し、retryや一括操作で二重reserveしない。
 - [ ] AC-L1-LOGIC-12: Site・用途ごとに許可済みArticle読取り経路のprimary／standbyを同じPolicy入力から再現し、差分取得、負荷抑制、連続失敗時のfailover、回復時のflapping抑止、全経路不成立の案内を実行できる。
 - [ ] AC-L1-LOGIC-13: 公開記事の変更を機械比較でCTA・SEO評価・error・軽微変更へ分類し、必要な評価または診断だけを起動して、単発取得失敗を削除や成果悪化として扱わず、LLMを意味派生が必要な処理だけへ限定できる。
 - [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先を既存QA・Placement・Automation・限定Repair Ticketへ接続し、CTA専用Agent・Writing Ticket・作業Packを増やさず実行できる。

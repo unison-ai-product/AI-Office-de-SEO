@@ -354,7 +354,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-AGENT-15: 品質段階と工程に応じてversion付きProvider Routingが主モデル・補助モデル・fallbackを選択し、特定Providerへ固定せず、一般ユーザーにはモデル名でなく品質段階と予測クレジットを表示する。 ｜ 検証: REQ-AGENT-04
 - [ ] AC-AGENT-16: ジョブが保留系状態（手動停止/Kill Switch/予算待ち/hard gate/承認待ち）から、freeze済みversion・サンドボックス不変のままステージ境界checkpointで再開でき、同一Jobの完了済みstage、限定Repair、Provider retry、cache再構築で新しい顧客reserve／commitを作らず、cache再ウォームは内部原価として計測され、保留期限超過は未使用reserveをreleaseして自動キャンセル・通知される。 ｜ 検証: REQ-AGENT-10, REQ-PACK-04, REQ-SEC-12
 - [ ] AC-AGENT-17: Outline Contract凍結時に用語ロックが確定して全Writing/Repairへ注入され、Section Briefが隣接ユニット文脈を含み、Assembly後にCohesion QA（coherence_flowゲート＋inter_unit_redundancy / term_consistencyのmetrics）が実行され、不合格は接続部の限定Repairへ回り（全文再生成しない）、指標がQA Snapshotに記録される。 ｜ 検証: REQ-AGENT-11, REQ-PACK-09, REQ-PACK-18
-- [ ] AC-AGENT-18: Orchestratorのクラッシュ・再実行が安全であり、Ticket発行がticket_id冪等キーでdedupeされ、記録済みSnapshotのあるTicketはLLM再呼び出しされず、reserve/commitがticket_id単位で冪等で、障害注入の負のテストでLLM費用・クレジットの二重計上が発生しない。 ｜ 検証: REQ-AGENT-10, REQ-BILL-07, REQ-SEC-02
+- [ ] AC-AGENT-18: Orchestratorのクラッシュ・再実行が安全であり、Ticket／Snapshotはticket_id、Credit reserveはadmission ID＋version＋estimate version、生成commitはGeneration Outcome、その他Actionは型付きAction Resultで冪等化され、Consumed Admission／dispatch再送、checkpoint再開、障害注入でもLLM費用・顧客creditの二重計上が発生しない。 ｜ 検証: REQ-AGENT-10, REQ-BILL-07, REQ-SEC-02
 - [ ] AC-AGENT-19: 許可ツールの強制がプロンプト注入ではなくツール実行層のサーバー側default-denyで行われ、未許可ツール要求が実行されず監査に残り、外部由来のLLM導出成果（Brief/Outline等）がcontent_role=derivedとして指示位置に置かれず、instruction-in-data detectionが契約検証に含まれる。 ｜ 検証: REQ-AGENT-06, REQ-AGENT-07, REQ-SEC-13
 - [ ] AC-AOUI-04: 詳細作業が全画面ワークベンチで、両モードが同一コンポーネントを使う。 ｜ 検証: REQ-AOUI-06
 - [ ] AC-AOUI-07: 部門(部屋)・フロア・ペルソナがconfig駆動で拡張でき（SECTION番号連番拡張・7画面外の専門部屋追加可）、サイドメニュー第一階層7項目と安全不変条件は保たれる。 ｜ 検証: REQ-AOUI-07, REQ-AOUI-02, REQ-ADM-09
@@ -517,7 +517,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-LOGIC-08: 投稿単位のCompatibility Matrixと対象operationから出力経路を再現でき、unknown時も既存記事の危険な上書きだけを保留できる。 ｜ 検証: REQ-LOGIC-08 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-09: 許可済み装飾だけを適用し、互換性不足時に本文を変更せず装飾なしまたは互換パーツへ縮退できる。 ｜ 検証: REQ-LOGIC-09 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-10: Pattern・Profile・記事slot・CMS size・model versionから画像生成を再現し、技術的不成立とadvisoryを区別できる。 ｜ 検証: REQ-LOGIC-10 ｜ 正本: `categories/logic-requirements_v1.md`
-- [ ] AC-L1-LOGIC-11: Provider課金前に入力・固定商品枠・請求reserve・接続・技術上限を判定し、readyまたは再開条件を返せる。 ｜ 検証: REQ-LOGIC-11 ｜ 正本: `categories/logic-requirements_v1.md`
+- [ ] AC-L1-LOGIC-11: freeze済みIntakeを変更せず、Provider課金・外部write・Job／Patch開始前に入力、認可、Entitlement、固定商品枠、保護、接続、Capacity、Kill Switch、見積をAdmissionへ記録できる。有償Actionはreserve付きready Admissionの単回consume後だけdispatchし、非課金Actionは0額reserveを作らず、保留は理由・再開条件・return contextを返し、retryや一括操作で二重reserveしない。 ｜ 検証: REQ-LOGIC-11 ｜ 正本: `categories/logic-requirements_v1.md`
 
 ### measurement-operations-requirements_v1
 
