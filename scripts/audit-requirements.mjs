@@ -323,6 +323,9 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "CMS送信を伴うRecommendationだけ`connection_required`で保留する",
   "通常ビュー ⇄ Office",
   "顧客面 → 内部管理面",
+  "本文途中停止設定",
+  "本文Preview・見出し/本文編集",
+  "Presentation Assembly<br/>装飾・アイキャッチ・CTA/内部link配置",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
   "S7 CMS REST API接続<br/>Capability診断",
@@ -400,6 +403,8 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-2-r
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md", [
   "`CmsPlacementInstruction`",
   "共通InstructionのWP固定",
+  "Semantic Assembly → QA",
+  "Presentation Assembly／Placement",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md", [
   "`WPBlockPlacementInstruction`",
@@ -409,6 +414,15 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/office_lay
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/office_layout.initial.json", [
   '"wp_draft"',
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-quality-gate-implementation_v3.7.md", [
+  "Semantic Assembly後、装飾前",
+  "Presentation Assembly／装飾前",
+]);
+assertIncludes("docs/reference/ai-office-de-seo-artifact-alignment-ledger_2026-08-03.md", [
+  "Keyword分析開始とCMS write Capabilityを分離",
+  "acting principalを顧客本人へ書き換えない",
+  "QA前のSemantic AssemblyとQA後のPresentation Assembly",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-acceptance-trace_v3.7.md", [
   "同意→接続→サンプル学習→戦略入力→マップ→初回生成→承認公開",

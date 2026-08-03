@@ -59,6 +59,10 @@
 - 旧監査資料は履歴bannerを持ち、Officeの固定6部屋／固定Agent数を現行仕様として使用しない。UI Partsはframework非依存、Gate Aは現行要求境界を明示した。
 - L3 Decision Table 35件はOpen Items Registerへ全件分類し、Configの`TODO(L3)` key familyも確定証拠と改版先へ接続した。
 - L2／L3で旧IDを参照する文書には現行要求境界を必須化し、Site定義をCMS非依存へ修正した。
+- 画面遷移のSource診断はSite接続を維持しつつ、Keyword分析開始とCMS write Capabilityを分離した。CMS送信だけを`connection_required`で保留し、成立済みSourceの分析・Reportを止めない。
+- 共通DDL／event／Office configに残っていた`wp_post_id`、`wp_capability_snapshots`、`wp_draft`、`wp_url`等をCMS共通ref／stateへ移し、WordPress固有値は初期Adapter extensionへ限定した。
+- Event EnvelopeとRepository Scope APIを顧客User、内部User、Service、AI Executor、期限付きManager代理へ追従させ、acting principalを顧客本人へ書き換えない契約、Site Assignment、業務Permission、authorization epochの負テストを追加した。
+- Agent Workflowの旧「Assembly」混在を、QA前のSemantic AssemblyとQA後のPresentation Assembly／装飾／アイキャッチ／CTA・内部link Placement／CMS送信へ分離した。既存13状態keyは互換維持し、工程11の内部phaseとEventで詳細進捗を表す。
 
 ## 5. 主要決定の縦方向追従証拠
 

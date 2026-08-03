@@ -180,9 +180,13 @@ flowchart TD
   G -->|ON| H[見出し構成を確認・修正・確定]
   G -->|OFF| I[Meaning Unit Writing]
   H --> I
-  I --> J[QA/限定Repair]
+  I --> I2{本文途中停止設定}
+  I2 -->|OFF| J[Semantic Assembly→QA/限定Repair]
+  I2 -->|ON| I3[本文Preview・見出し/本文編集]
+  I3 -->|確定・編集箇所を保護| J
+  I3 -->|差し戻し| F
   J -->|hard gate該当| K[二段階確認＋同意<br/>または差し戻し]
-  J -->|通過| L[装飾・画像・Assembly]
+  J -->|通過| L[Presentation Assembly<br/>装飾・アイキャッチ・CTA/内部link配置]
   K -->|公開継続| L
   K -->|修正| F
   L --> M[CMS下書き送信<br/>編集URL/Preview URL]
