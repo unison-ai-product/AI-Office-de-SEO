@@ -1,16 +1,18 @@
 ---
 document_id: AOS-L3-GATE-A5-CONTRACT-FREEZE
-title: Gate A-5 Ticket/Snapshot契約 必須フィールド凍結 v1
+title: Gate A-5 Ticket/Snapshot契約 互換baseline v1
 layer: L3
 version: 1.0
 kind: contract
-status: frozen-v1
-updated_at: 2026-07-05
+status: current-draft
+updated_at: 2026-08-03
 ---
 
-# Gate A-5: schema.ticket.* / schema.snapshot.* 必須フィールド凍結 v1
+# Gate A-5: schema.ticket.* / schema.snapshot.* 互換baseline v1
 
-進化規則（凍結）: 必須フィールド集合は各`.v1`で固定。任意フィールド追加=minor、必須追加・意味変更・削除=`.v2`新設（REQ-PACK-04の版固定と両立）。`content_ref`は一時領域URI（TTL束縛・恒久保存禁止、REQ-SEC-11）。
+本書は既存プロトが参照していたTicket／Snapshotの最小互換baselineであり、現在の全業務契約の正本ではない。Site導入、Keyword Report、月次・週次計画、Recommendation Intake、Publication Decision、評価、課金等を含む現行契約一覧と必須項目は `../ai-office-de-seo-contract-schemas_v3.7.md` を正本とする。本書だけを根拠に実装を開始しない。
+
+進化規則: 監査完了後に固定された各`.v1`では、任意フィールド追加=minor、必須追加・意味変更・削除=`.v2`新設とする（REQ-PACK-04）。`content_ref`は一時領域URI（TTL束縛・恒久保存禁止、REQ-SEC-11）。
 
 ## schema.ticket.base.v1（全ステージ共通・必須）
 `workflowKey / promptPackKeys[] / sourceNeedKeys[] / schemaKeys[] / returnTo / userPrompt / content_role_map`（REQ-PACK-01。本文非内包）
@@ -46,5 +48,6 @@ updated_at: 2026-07-05
 - v1.1追補（任意追加=minor規則内）: `snapshot.outline_contract.v1` に任意フィールド `terminology_lock[]`（記事内で固定する用語・表記のリスト、`REQ-AGENT-11`）、`snapshot.qa.v1` のmetricsに `inter_unit_redundancy` / `term_consistency` を追補。必須集合・既存意味論は不変。
 - v1.2追補（任意追加=minor規則内）: `snapshot.outline_contract.v1` の `writing_methods` に `primary_variant?`（`REQ-PACK-19`のvariant）、`snapshot.qa.v1` のmetricsに `ai_phrase_density`（`REQ-PACK-09`のhuman_voiceゲート）を追補。必須集合・既存意味論は不変。
 
-## 消費者への確約
-W2/W3画面はこの形のみに依存してモック実装可。QA表示は`snapshot.qa.v1`のgates/metricsをそのまま描画（追加加工の禁止＝単一ソース、REQ-PACK-12）。
+## 消費者への条件
+
+W2/W3画面はこの互換baselineだけで新規実装しない。L3 Contract Schemasで該当契約の`complete / partial / missing`を確認し、`partial / missing`を解消してから利用する。QA表示は`snapshot.qa.v1`のgates/metricsを正本として描画する（REQ-PACK-12）。

@@ -165,6 +165,8 @@ assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-bi
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-development-unit-roadmap_v3.7.md", [
   "初期=単一VPS",
   "VPS段階はCompose相当",
+  "アプリ内ヘルプ・FAQ。専用サイト構築で対応する",
+  "オンボーディングはコンサルティングとして提供し、そこで価格を取る",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md", [
   "対象Role: Editor以上",
@@ -179,6 +181,19 @@ for (const field of ["canonical_paths", "l3_preparation_paths", "gate_a_paths", 
     if (!fs.existsSync(path.join(repoRoot, relativePath))) {
       fail(errors, `manifest.${field}: missing path ${relativePath}`);
     }
+  }
+}
+for (const field of ["verification_log", "alignment_ledger"]) {
+  const relativePath = manifest[field];
+  if (!relativePath || !fs.existsSync(path.join(repoRoot, relativePath))) {
+    fail(errors, `manifest.${field}: missing path ${relativePath ?? "(unset)"}`);
+  }
+}
+for (const relativePath of manifest.gate_a_paths ?? []) {
+  if (!relativePath.endsWith(".md")) continue;
+  const content = fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
+  if (/^status:\s*frozen/m.test(content)) {
+    fail(errors, `${relativePath}: Gate A cannot remain frozen during current-requirement alignment`);
   }
 }
 for (const canonicalFile of [...canonicalSources, path.join(l1Root, "README.md")]) {

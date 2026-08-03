@@ -1,11 +1,11 @@
 ---
 document_id: AOS-L3-UI-PARTS-CATALOG
 title: AI Office de SEO UIパーツカタログ（オブジェクト定義） v1
-version: 1.1
+version: 1.2
 layer: L3
 kind: design
 status: draft
-updated_at: 2026-07-10
+updated_at: 2026-08-03
 related: AOS-L3-SCREEN-INVENTORY / AOS-L3-SCREEN-CONNECTION-MAP / AOS-L3-PROTO-IMPL-MAP
 ---
 
@@ -64,7 +64,7 @@ PrimaryButton { label, onClick, disabled?, size: 'md'|'sm' }   // brand-gradient
 SecondaryButton { label, onClick, tone?: 'brand'|'neutral'|'danger' } // 白地+border #C9D4E4・hoverでborder brand
 GhostPill { label, onClick, dashed?: bool }                    // 999px・検証用スイッチ等（例: 版更新の再現）
 ```
-- 全ボタンに `roGuard()` 相当（閲覧専用ロール時は編集系を無効化）を必ず通す（方針: roGuard on edit handlers）。
+- 変更系ボタンは共通 `AuthorizationDecisionGuard` を必ず通す。基本権限、業務権限、Site Assignment、Plan・予算・接続条件をサーバー側の共通認可契約で判定し、顧客向け閲覧専用Roleを別に作らない。業務権限を持たないユーザーは閲覧可能な操作だけが許可される。
 
 ## 2.3 `StatusChip` — 状態チップ（999px丸チップ群・出現 148 の主用途）
 
@@ -252,7 +252,7 @@ TenantScope { value: tScope, appliesTo: [tickets, ...] }
 
 ## 5.5 `UXGuards` — 横断ガード → ミドルウェア/共通フック
 
-`roGuard()`（閲覧専用ロールの編集ブロック・全編集ハンドラ先頭）/ `showToast`・`showUndoToast`（LABELS.msg辞書キー経由）/ `rejectApproval` / `exportCsv`（表示行と同一配列から生成）/ `kwAddRegister` / onEsc状態リスト（モーダル追加時に登録必須）
+`AuthorizationDecisionGuard`（基本権限・業務権限・Site Assignmentを共通契約で判定し、全変更Commandの実行直前にも再判定）/ `showToast`・`showUndoToast`（LABELS.msg辞書キー経由）/ `rejectApproval` / `exportCsv`（表示行と同一配列から生成）/ `kwAddRegister` / onEsc状態リスト（モーダル追加時に登録必須）
 
 ## 5.6 `Platform` — 基盤系
 
@@ -272,12 +272,13 @@ TenantScope { value: tScope, appliesTo: [tickets, ...] }
 
 1. **対応表として使う**: 本書のオブジェクト名をそのままReactコンポーネント名にする（`<SectionCard>`, `<FilterChips>` …）。プロトのインラインstyleはトークン（§1）＋バリアントpropsに畳む。
 2. **文言はコンポーネントに持たせない**: label/message は全て i18n メッセージキーで受ける（PT-Q の本実装対応）。動的組み立て文（検出文・トースト・分析文）はキー＋パラメータ形式で設計。
-3. **横断規約はコンポーネントに内蔵する**: roGuard（編集系の閲覧専用ガード）・onEscリスト登録・Undo/確認の使い分け・空状態必須・CSV単一ソース・フィルタ変更時の従属リセット。プロトで「毎回手で書いて漏れた」ものほど部品側に埋める。
+3. **横断規約はコンポーネントに内蔵する**: Authorization Decision（表示可否・操作可否の説明。認可正本はサーバー側）・onEscリスト登録・Undo/確認の使い分け・空状態必須・CSV単一ソース・フィルタ変更時の従属リセット。プロトで「毎回手で書いて漏れた」ものほど部品側に埋める。
 4. **プロト側の追加改修は非推奨**: DCランタイムに部品機構が無いため、プロトでの共通化は行わない（コピーのまま凍結）。新パーツが必要になったら本書に追記してからプロトに書く。
 
 ---
 
 # 7. 変更履歴
 
+- v1.2（2026-08-03）: 旧閲覧専用Role／roGuard前提を、契約者・サイトオーナー・ユーザー＋業務権限＋Site Assignmentを解決する共通Authorization Decisionへ置換。
 - v1.1（2026-07-10）: §5 ロジック層カタログを追加（クラスメソッド95＋管理14＋定数48の全数抽出→7責務オブジェクトに分解）。旧§5/§6は§6/§7に繰り下げ。
 - v1.0（2026-07-10）: 初版。プロト実測（白カード92・主ボタン106・999pxチップ148・モーダル47・style-hover199・オフィスで見るピル16）に基づき通常ビュー14種＋Office 3群＋管理5種を定義。

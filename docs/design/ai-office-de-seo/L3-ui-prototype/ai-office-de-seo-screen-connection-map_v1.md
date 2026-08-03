@@ -1,11 +1,11 @@
 ---
 document_id: AOS-L3-SCREEN-CONNECTION-MAP
 title: AI Office de SEO 画面接続マップ（実装準拠・不一致台帳） v1
-version: 1.8
+version: 1.9
 layer: L3
 kind: design
-status: draft
-updated_at: 2026-07-10
+status: prototype-baseline
+updated_at: 2026-08-03
 related: AOS-L3-SCREEN-INVENTORY / AOS-L3-SCREEN-FLOW / AOS-L3-ADMIN-SCREEN-INVENTORY / AOS-L3-PROTO-IMPL-MAP
 ---
 
@@ -20,6 +20,8 @@ related: AOS-L3-SCREEN-INVENTORY / AOS-L3-SCREEN-FLOW / AOS-L3-ADMIN-SCREEN-INVE
 > **2026-07-10 追記5（要求突合ラウンド＋残課題解消。v1.8）**: (a) 要求定義書群との双方向突合で検出した本物の要求漏れ＝REQ-KGA-22後半（地域ページ生成・NAP一貫性・ローカル競合）とREQ-PRODUCT-09（重要変更時の再同意ゲート）を実装。(b) technical_seoの部屋に4枚目の詳細ページ`tk_local`を新設し、S5ローカル課題行のOffice着地をtk_crawlフォールバックから直行に変更。(c) ADM-S12チケット一覧行の死にコード（未配線ハンドラ4種）を削除し選択中行ハイライトを配線。(d) dc-runtime（support.js）の系統バグ＝**SVG内`{{ }}`バインディングが全ページで不可視**（HTML spanで包まれSVGが無視する）をtspan化で修正＝ヘルスゲージ数値/ラベル・リンクグラフのノードラベル・チャート軸が初めて可視化。詳細は新設「§10」。**§1.9のDETAIL_PAGES表・復路一覧は本文更新済み**。UIパーツのオブジェクト定義は姉妹文書 `ai-office-de-seo-ui-parts-catalog_v1.md` を新設。
 
 > **2026-08-03 現行Lifecycle追補**: 要求上の正規遷移は `ai-office-de-seo-screen-flow_v3.7.md` §0〜§7へ更新済み。Site導入→新規／既存分岐→Keyword分析→戦略／診断Report→月次計画→Recommendation Intake→施策別Workflow→CMS下書き／公開条件→評価・再推薦を正本とする。本書§1以降は既存プロト実装の実測台帳であり、正規遷移と異なる箇所は「要求未定義」ではなくプロト追随待ちとして扱う。特にS3での入力再選択、旧価格・旧Role、旧承認条件、Office監視専用導線を新仕様として再利用しない。
+>
+> **正本境界**: 本書は2026-07-10時点のプロト接続を保存する移行用baselineであり、現行画面要求または実装指示の正本ではない。現行の画面責務は`screen-inventory`、正規遷移は`screen-flow`、認可はAuthorization Operation Matrix、データ形はL3 Contract Schemasを参照する。本書内の「凍結」「意図的残置」「Officeは決定を持たない」等は過去実装の説明であり、新実装へ継承しない。
 
 # 0. 本書の位置づけ
 

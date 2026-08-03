@@ -1,16 +1,16 @@
 ---
 document_id: AOS-L3-GATE-A4-DESIGN-TOKENS
-title: Gate A-4 デザイントークン v1（凍結）
+title: Gate A-4 デザイントークン v1
 layer: L3
 version: 1.0
 kind: contract
-status: frozen-v1
+status: current-draft
 updated_at: 2026-07-05
 ---
 
-# Gate A-4: デザイントークン v1（凍結）
+# Gate A-4: デザイントークン v1
 
-Design.md §6のブリーフ（ダークネイビー＋ネオンブルー/パープル、2テーマ、猫型ロボット、テキストは常にHTML/CSS）を正確に実装するトークン。`design-tokens.css`（同梱）が正本。**セマンティックトークン名を凍結**（実値の微調整はminor）。
+Design.md §6のブリーフ（ダークネイビー＋ネオンブルー/パープル、2テーマ、猫型ロボット、テキストは常にHTML/CSS）を実装するトークン。`design-tokens.css`（同梱）が現行baseline。要求・画面監査後にセマンティックトークン名を版固定し、実値の微調整はminorとして扱う。
 
 - パレット（Office=dark）: 基調 `ink-900 #0A1224` / 面 `ink-800 #111B31` / 浮面 `ink-700 #18243E`。プライマリ=ネオンブルー `neon-blue #4DA3FF`、アクセント=パープル `neon-purple #9B7BFF`。AI定番の「クリーム+テラコッタ」「黒+アシッドグリーン」は不採用（ブリーフ優先）。
 - 状態色（キャラ4状態＝state_*アセットと同義）: idle `#8A97AD` / working `#4DA3FF`（pulse可） / done `#3ED598` / error `#FF6B6B` / hold(保留系) `#F5B93E`。W5/W7/バッジで同一マッピングを使う。

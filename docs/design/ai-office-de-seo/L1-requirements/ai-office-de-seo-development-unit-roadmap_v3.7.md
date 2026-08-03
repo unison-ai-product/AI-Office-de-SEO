@@ -5,7 +5,7 @@ version: 3.7
 layer: L1
 kind: design
 status: draft
-updated_at: 2026-07-30
+updated_at: 2026-08-03
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
 
@@ -123,23 +123,23 @@ manual運用の実績後に、制限付き自動化を追加する。
 - 本質A データ整備: URLマスター・本文非保持境界、GSC Data Mart、Keyword Map、競合Top5・Article Map、カバー率、Query Drift。エージェントが判断に使う一次データを、サイト境界内で正しく整える。
 - 本質B エージェントの仕組み: Pack / Ticket / Schema / Router、Research / Outline固定ワークフロー、Meaning Unit生成・QA・Repairループ、エージェント観測（Token / Cache / QA fail / Schema validationの構造化ログ）、事前見積・予算ガード。
 
-非本質・後段は、WP出力（投稿形式チェック・下書き・予約・承認）、分散バッチによるスケール、Stripe課金、Agent Office UI、Autopilotである。これらは本質が動いた後に載せる。
+CMS出力、課金、通常ビュー、FAQチャットは商用利用の成立条件であり、単なる非本質として最後へ追いやらない。Agent Officeは通常ビューと同じ業務状態・Commandへ接続する詳細操作面として通常ビューの業務契約確定後に実装する。Autopilotは最初の新規15記事、同意、権限、予算、接続、公開判定が成立した後に解放する。
 
-スコープ外（本ロードマップの構築対象に含めない）:
+初期構築対象に含める横断業務:
 
-- 自己完結型オンボーディングUX。オンボーディングはコンサルティングとして提供し、そこで価格を取る。製品側は、接続・取り込み・レギュレーション設定の各機能を提供し、コンサルがそれを使う。
-- アプリ内ヘルプ・FAQ。専用サイト構築で対応する。記事内のFAQ生成（faq_answer意味ユニット、FAQブロック、FAQハブ記事タイプ）は本質側の生成機能であり、これとは別物として維持する。
+- Site設定、CMS／GSC接続、キーワード入力／市場探索、文体、CV設定を完了する導入フロー。人的導入支援は任意の有償支援またはPlan条件であり、製品利用の必須条件にしない。
+- 画面Contextと接続診断に基づくアプリ内FAQチャット、問い合わせへのエスカレーション。記事内FAQ生成（faq_answer意味ユニット、FAQブロック、FAQハブ記事タイプ）とは別機能として扱う。
 
 ### 3.2 推奨実装順序（本質先行のフェーズ）
 
 依存順を保ちつつ、本質A・Bを前段に寄せる。フェーズはリリース区切りではなく構築順序である。
 
 - フェーズ0 土台: DU-00 UT-TDD準備 → DU-01 SiteSandboxContext → DU-02 URLマスター・本文非保持境界。全AIジョブと全データの境界・トレースの土台。
-- フェーズ1 データ整備【本質A】: DU-04 GSC Data Mart → WP取り込み（DU-03のうち接続・記事サマリー同期・サンプル記事取り込み）→ DU-05 Keyword Map → DU-06 競合Top5・Article Map。オンボーディングはコンサル同伴で行い、製品はこの取り込み機能を提供する。
+- フェーズ1 Site導入・データ整備【本質A】: Site設定→CMS接続→新規／既存Site分岐→GSC／キーワード入力または業界Big Keyword探索→記事サマリー同期→DU-04 GSC Data Mart→DU-05 Keyword Map→DU-06 競合・Article Map。分類が完了した領域から自動構築期間として順次開放する。
 - フェーズ2 エージェント中核【本質B】: DU-07 Pack / Ticket / Schema / Router（まずMock Executor）→ エージェント観測と事前見積（DU-08のうちToken / Cache / Observability・事前シミュレーション）→ DU-09 Research / Outline固定ワークフロー。
 - フェーズ3 生成の実証【本質Bの縦切り】: DU-10 新規記事の最小縦切り → DU-11 リライトの最小縦切り（GSC Query Drift → Cause Analysis → Repair → QA）。ここまでで本質A・Bが実データで一気通貫する。
-- フェーズ4 出力・スケール【後段】: WP出力（DU-03のうち投稿形式チェック・下書き・予約）＋ DU-12 投稿予約・承認 → DU-14 分散バッチ事前計算。
-- フェーズ5 商用化・体験・自動化【後段】: DU-13 Stripe / Credit（クレジット台帳・追加購入。オンボーディングのコンサル課金と併存）→ DU-15 Agent Office UI → DU-16 Autopilot → DU-17 Production Hardening。
+- フェーズ4 出力・通常操作・支援: CMS Publication ContractとWordPress Adapter（投稿形式チェック・Media・下書き・Preview／Revision能力）＋DU-12 投稿予約・承認→通常ビューの月次計画・週次予定・Recommendation・承認・評価→FAQチャット／接続診断。
+- フェーズ5 商用化・詳細体験・自動化: DU-13 Stripe / Credit（台帳・追加購入・自動チャージ・Plan／Capacity）→DU-14 分散バッチ事前計算→DU-15 Agent Office詳細操作面→DU-16 Autopilot→DU-17 Production Hardening。
 
 補足: DU-03「WordPress連携」は、取り込み側（フェーズ1）と出力側（フェーズ4）に分けて実装する。DU-08「Token / Credit / Observability」は、観測・事前見積（フェーズ2）とクレジット台帳・課金（フェーズ5）に分けて実装する。
 

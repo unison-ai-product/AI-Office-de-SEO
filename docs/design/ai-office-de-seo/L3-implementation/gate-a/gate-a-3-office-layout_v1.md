@@ -4,13 +4,13 @@ title: Gate A-3 office_layout.json スキーマ v1（凍結）
 layer: L3
 version: 1.4
 kind: contract
-status: frozen-v1.4
+status: current-draft
 updated_at: 2026-08-03
 ---
 
-# Gate A-3: office_layout.json スキーマ v1（凍結）
+# Gate A-3: office_layout.json スキーマ v1
 
-Agent Officeの部屋・フロア・ペルソナをconfig駆動で描画するための形（REQ-AOUI-07）。初期インスタンスは `office_layout.initial.json`（同梱）。**スキーマの必須フィールドを凍結**。フロア割当・暫定ポーズ割当は初期値であり、JSONの変更のみで差し替え可能（それがこのスキーマの目的）。
+Agent Officeの部屋・フロア・ペルソナをconfig駆動で描画するための形（REQ-AOUI-07）。初期インスタンスは `office_layout.initial.json`（同梱）。現行要求監査後にスキーマversionの必須フィールドを固定する。フロア割当・暫定ポーズ割当・persona数は初期モック構成であり、製品要求上の固定数ではない。JSONとCatalogの変更で追加・統合・差し替え可能にする。
 
 ## スキーマ要旨
 
@@ -39,5 +39,5 @@ Agent Officeの部屋・フロア・ペルソナをconfig駆動で描画する�
 - 追加・改名・並替はJSON変更のみで完結し、コード変更を要さない（AC-AOUI-07の検証対象）。
 - v1.1追補（任意フィールド=minor規則内）: `rooms[].holo{ type: chips|bars|doc|flow|books|toggles|net, title }`（部屋のホログラム表示タイプ。プロト実装からの収穫。未指定時は既定表示）。
 - v1.2追補（許容値拡張=minor規則内）: `screen_refs` のワークベンチ範囲を w1〜w9 → w1〜w10 へ拡張（v3.7.33のW10サポート追加に追随）。既存フィールド・必須集合は不変。
-- v1.3追補（初期インスタンス改訂・スキーマ不変）: `office_layout.initial.json` を **7フロア構成（1部屋=1フロア＋ハブ、config v2.1.0）** へ改訂。PO決定（ゆとり重視）とプロトのconfig駆動実証（PT-G: コード変更なしで2F⇄7F追従）に基づく。部屋7・ペルソナ13・screen_refs・必須フィールドは不変。エレベーター表示はfloors配列から生成する。
+- v1.3追補（初期インスタンス改訂・スキーマ不変）: `office_layout.initial.json` を **7フロア構成（1部屋=1フロア＋ハブ、config v2.1.0）** へ改訂。初期baselineは部屋7・ペルソナ13だが、必要なLLM runtime数または将来のpersona上限を意味しない。エレベーター表示はfloors配列から生成する。
 - v1.4追補（ペルソナ業務能力）: `service_keys`、`interaction_capabilities`、`proposal_types`を必須化し、旧configの工程表示専用mappingを現行のAgent Interaction／Advisory／Executionへ接続する。v1.3インスタンスはmigration時にペルソナID別既定値を補い、空の能力で現行扱いしない。

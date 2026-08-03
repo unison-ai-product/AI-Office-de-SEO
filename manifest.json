@@ -98,6 +98,7 @@
     "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-aws-operations-recovery-map_v1.md"
   ],
   "verification_log": "docs/reference/ai-office-de-seo-verification-log_v3.7.md",
+  "alignment_ledger": "docs/reference/ai-office-de-seo-artifact-alignment-ledger_2026-08-03.md",
   "gate_a_paths": [
     "docs/design/ai-office-de-seo/L3-implementation/gate-a/GATE-A-README.md",
     "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md",

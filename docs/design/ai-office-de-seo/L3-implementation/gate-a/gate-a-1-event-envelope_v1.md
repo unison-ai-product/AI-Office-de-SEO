@@ -1,16 +1,16 @@
 ---
 document_id: AOS-L3-GATE-A1-EVENT-ENVELOPE
-title: Gate A-1 イベント共通エンベロープ v1（凍結）
+title: Gate A-1 イベント共通エンベロープ v1
 layer: L3
 version: 1.5
 kind: contract
-status: frozen-v1.5
+status: current-draft
 updated_at: 2026-08-03
 ---
 
-# Gate A-1: イベント共通エンベロープ v1（凍結）
+# Gate A-1: イベント共通エンベロープ v1
 
-全ドメインイベント・モックイベント・通知導出・W5/キャラ状態・監査写像の共通形。**v1の必須フィールドは凍結**（追加は任意フィールド＋minor、破壊変更は.v2）。
+全ドメインイベント・モックイベント・通知導出・W5/キャラ状態・監査写像の共通形。現行要求監査後にv1の必須フィールドを固定し、以後は追加を任意フィールド＋minor、破壊変更を.v2で扱う。
 
 ## エンベロープ（JSON Schema要旨）
 

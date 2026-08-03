@@ -174,7 +174,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## Role
 
 - [ ] AC-ROLE-01: 自動運用の有効化が顧客側の契約者またはサイトオーナーに限定され、顧客の停止操作と内部運用のKill Switchが別の認可境界・監査記録で実行される。 ｜ 検証: REQ-PRODUCT-08, REQ-WPA-04
-- [ ] AC-ROLE-02: 契約・プラン変更がOwnerに限定される。 ｜ 検証: REQ-PRODUCT-08
+- [ ] AC-ROLE-02: 契約・プラン変更、credit購入、課金上限、自動チャージが契約者に限定され、サイトオーナーまたはユーザーへ業務権限を付与しても実行できない。 ｜ 検証: REQ-PRODUCT-08
 - [ ] AC-ROLE-03: すべてのRoleでtenant/site境界が強制され、Role権限が境界を上書きしない。 ｜ 検証: REQ-PRODUCT-08, REQ-SEC-01
 
 ## Performance
@@ -190,8 +190,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## Delivery / Scope
 
-- [ ] AC-DELIV-01: オンボーディングはコンサルティングとして提供され、製品側は接続・取り込み・レギュレーション設定の各機能を提供する（自己完結型オンボーディングUXを製品スコープに含めない）。 ｜ 検証: REQ-PRODUCT-09
-- [ ] AC-DELIV-02: アプリ内ヘルプ・FAQは製品スコープ外とし、専用サイトで対応する。記事内のFAQ生成機能はこれと別物として維持される。 ｜ 検証: REQ-PRODUCT-09
+- [ ] AC-DELIV-01: 製品内でSite設定、CMS／GSC接続、キーワード入力／探索、文体、CV設定を完了でき、大規模Siteは自動構築期間として段階開放される。人的導入支援は有償支援またはPlan条件として分離され、利用開始の必須条件にならない。 ｜ 検証: REQ-PRODUCT-09
+- [ ] AC-DELIV-02: アプリ内FAQチャットが画面Contextと接続診断を用いて一次回答し、解決不能時は問い合わせへ接続する。SEO相談等の有償支援とシステム不具合受付を区別し、記事内FAQ生成機能とも混同しない。 ｜ 検証: REQ-PRODUCT-09
 - [ ] AC-DELIV-03: 登録時の同意書で、公開コンテンツの最終責任がユーザーに帰属し、サービスは生成物の最終責任を負わない旨に同意を得る。同意書・規約が版管理され、重要変更の版UP時に差分提示つき再同意が要求され、同意記録に版が紐付く。 ｜ 検証: REQ-PRODUCT-09
 
 ## Notification
