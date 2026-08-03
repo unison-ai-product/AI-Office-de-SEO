@@ -114,6 +114,13 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 - ルート: PublicationJob（PostEnvelopeを内包）。
 - 不変条件: QA・権限・予算・接続・Automation Policyを副作用直前に再判定する／最初の新規15記事およびリライト・記事置換は所定の承認を要求する／解放済み新規記事はAutomation Policyの範囲で自動公開できる／hard gate例外は判定を残した二段階確認・版付き同意による手動公開だけを許可する／CMS能力にないslot/blockはfail-close（REQ-WPA-08）／最終HTML全文は恒久保存しない（REQ-WPA-09）。
 
+### 4.5.1 CmsConnectionProfile / ArticleReadProfile（Publishing & Integration）
+
+- ルート: CmsConnectionProfile。CMS identity、Discovery、Read、Write、Media、Editor、Preview／Revision、Measurement、Capacityを別Capabilityとして集約する。
+- ArticleReadProfileは利用可能Adapterごとのhealth、完全性、freshness、latency、Site負荷、費用、rate limit、Plan適合と`primary / standby / disabled`を保持する。
+- 状態: `diagnosing / ready / degraded / action_required / unavailable`。個別Capabilityは`full / degraded / update_required / unsupported / unknown`。
+- 不変条件: ユーザーに内部経路選択を要求しない／readとwriteを別認可にする／変更発見と本文取得を分離する／初回全件後は差分同期／一時失敗でflappingしない／書込み応答だけで反映済みにしない／公開表示・CMS保存値・変更event・Revisionを用途別正本として混合しない。
+
 ### 4.6 CreditAccount（Billing）
 - ルート: CreditAccount（append-only Ledgerを内包）。
 - 不変条件: 台帳はappend-only・残高を直接書換えない／reserve→commit/release／`stripe_event_id`+`idempotency_key`で二重付与防止（REQ-BILL-07）／activeのみ月次付与（REQ-BILL-08）。

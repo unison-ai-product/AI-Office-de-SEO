@@ -107,6 +107,13 @@ updated_at: 2026-07-05
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
 | automation.oscillation_detected | targets[] | N,O,A | REQ-PRODUCT-18 |
 | wp.patch_conflict_detected | url_hash, reason | N,O | REQ-WPA-12 |
+| cms.connection_diagnosed | connection_profile_id, version, cms_kind, state, required_user_actions[] | W,N,O | REQ-INT-05/06/09 |
+| cms.capability_changed | connection_profile_id, capability_key, before_status, after_status, evidence_ref | W,N,O | REQ-INT-05/06 |
+| cms.read_route_selected | connection_profile_id, adapter_key, role, reason, policy_version | O,A | REQ-INT-09 |
+| cms.read_route_failed_over | connection_profile_id, from_adapter, to_adapter, error_class, cooldown_until | W,N,O,A | REQ-INT-09 |
+| cms.read_connection_required | connection_profile_id, failed_routes[], required_user_actions[] | W,N,O | REQ-INT-09 |
+| cms.write_verification_completed | publication_or_patch_ref, post_ref, status, resulting_hash?, verified_at | W,O,A | REQ-WPA-09/12 |
+| cms.capacity_threshold_reached | connection_profile_id, dimension, usage, limit, forecast_at | W,N,O | REQ-BILLING-03 |
 | patch.candidate_proposed | patch_action_id, type, target_article_ref, target_part_ref, recommendation_ref? | W,O | REQ-WPA-12/13, REQ-KGA-09 |
 | patch.batch_approved | approval_batch_ref, patch_action_refs[], approved_by | W,O,A | REQ-WPA-12, REQ-PRODUCT-08 |
 | patch.action_scheduled | patch_action_id, cms_job_ref, scheduled_at | W,O | REQ-WPA-12 |

@@ -70,6 +70,8 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 ## 5. Publishing & Automation（PublicationJob / PostEnvelope 集約）
 
 対象: wp_capability_snapshots（snapshotKey / schemaVersion）、dynamic_post_schemas、publication_jobs（dynamicPostSchemaKey・slot assignment metadata・content hash・validation result・WP draft URL・job result・correlation_id）、scheduled_actions / automation_policies / approval_requests / content_calendar_slots、recommendation_feedback / saved_views / user_exploration_sessions。`recommendation_items`と`recommendation_intakes`の所有ContextはSearch Performanceとし、Publishingは参照だけを持つ。
+
+CMS接続は`cms_connection_profiles`（profile_id+version、CMS identity、状態、Policy version、required user actions）、`cms_capability_results`（capability key、status、evidence、confidence、checked_at）、`cms_discovery_routes`、`cms_read_routes`（primary/standby/disabled、health、選択理由）、`cms_write_routes`（operation、permission、capability）、`cms_editor_profiles`、`cms_connection_health`（error class、latency、success、freshness、Site負荷、費用、rate limit、連続失敗、cooldown）、`cms_route_transitions`（before/after、reason、probe、observed period）、`cms_capacity_usage`（記事、初回取込、月間変更、storage、processing、Plan）へ分離する。read routeの更新でwrite permissionを更新せず、unknown permissionを許可へ正規化しない。
 根拠: REQ-WPA-02/04/08/09、REQ-AOUI-05、REQ-SEC-11。検証: AC-WPA-08, AC-AUTO-01/02, AC-AOUI-03。
 
 - TODO(L3): PostEnvelopeSnapshot は一時保存（最終HTML/ブロック全文は恒久保存しない）。

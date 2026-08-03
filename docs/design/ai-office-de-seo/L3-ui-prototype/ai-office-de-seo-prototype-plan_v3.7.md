@@ -78,6 +78,17 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-REPORT-04: Cluster単位の優先／通常／保留／除外変更前に、未実行推薦、月次配分、予測creditへの影響を表示し、実行済み施策を変更しない。
 - [ ] PT-REPORT-05: 部分分析Reportがcoverageと未分析領域を表示し、分析済みClusterから段階利用できる。
 - [ ] PT-REPORT-06: Reportから月次計画、Recommendation、Market／Share詳細、Officeへ`report_id+version`とCluster Contextを保持して往復できる。
+- [ ] PT-CMS-01: CMS接続が読取り、下書き、既存更新、Media、Editor、Preview、Revision、TrackerをCapability別に表示し、接続済みboolだけで投稿可能にしない。
+- [ ] PT-CMS-02: Site URL、認証、Plugin等の必要項目だけを設定でき、内部Adapter、primary／standby、fallback、rate limitの設定UIが顧客面に存在しない。
+- [ ] PT-CMS-03: 初回取込は記事数、処理済み、残件、段階開放、Capacityを表示し、通常同期は変更対象だけを処理するfixtureを持つ。
+- [ ] PT-CMS-04: primary障害時に内部failoverしてもwrite permissionが変化せず、全経路不成立時だけ必要なユーザー操作を表示する。
+- [ ] PT-CMS-05: 下書き／PatchのAPI成功と反映確認を分け、verification失敗を成功表示しない。
+- [ ] PT-CMS-06: Block、Classic、Content-Only、検証済みBuilder、未知Builderで、利用可能、一部制限、更新必要、未対応と縮退候補が変わる。
+- [ ] PT-MIG-01: 顧客画面に旧価格68,000／128,000／298,000円、Prime表記、Credit Pack S/M/L/XL、繰越150%、追加credit 3か月を現行値として表示しない。
+- [ ] PT-MIG-02: 顧客画面とfixtureが現行のEntry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜、税込併記、月／年契約条件、追加credit180日をPrice Catalogから表示する。
+- [ ] PT-MIG-03: 顧客認可にOwner／Admin／Editor／Viewerを正本として使用せず、契約者／サイトオーナー／ユーザー、業務Permission、Site付与から判定する。
+- [ ] PT-MIG-04: Officeを監視専用にせず、通常ビューの詳細操作、Agent会話Proposal、影響・credit確認、共通Command、双方向同期を操作できる。
+- [ ] PT-MIG-05: 旧モックfixtureを読み込んでも、現行Schemaへのmigrationまたは拒否が行われ、旧値がPlan、権限、承認、Office状態へ昇格しない。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。

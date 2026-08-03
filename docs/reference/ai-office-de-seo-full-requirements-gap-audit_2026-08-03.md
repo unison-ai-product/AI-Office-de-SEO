@@ -52,10 +52,10 @@
 ### Critical
 
 1. **Recommendation Intakeの下流契約欠落** — L1では採用後引継ぎを要求するが、L2集約、L3 schema、DDL、eventがなかった。本監査で骨格を追加。実JSON SchemaとContract Testは残る。
-2. **L3画面プロトが現行業務Lifecycleを表していない** — S3起点の生成、旧7画面、Office監視専用の実装が中心。新規／既存Siteの導入、戦略／診断Report、月次計画、Recommendation Intake、15記事解放、段階評価を一本の画面遷移として再設計する必要がある。
-3. **旧要求と現行要求が同じ文書群に有効形で併存** — Claude優先、一律承認、旧Role、旧価格、Office監視専用等。移行注記がある文書とない文書が混在し、L2/L3が旧IDを参照する。
+2. **L3画面プロトと現行業務Lifecycleの差** — 現行Lifecycle、導入、Report、Intake、Patch、評価の画面要求と受入条件は追加したが、実モックはなおS3起点・旧fixture中心である。要求上の再設計は進んだが、モック実装と操作試験は未完了。
+3. **旧要求と現行要求の併存** — Screen Inventoryの現行S7をPrice Catalog／Plan Configuration／現行権限へ差し替え、Office監視専用と2026-07実装追記をsupersededと明示し、`PT-MIG-01〜05`を追加した。旧要求文書群全体の移行台帳と旧fixture migrationは未完了。
 4. **認可モデルの画面・Agent・Automationへの伝播** — 操作対応表、L2集約、L3契約・DDL、プロト受入`PT-AUTH-01〜06`を2026-08-03に追加した。実装と負テストによる証明は未完了。
-5. **プロト受入条件が旧画面の完成度を検証している** — 現行Lifecycleに必要な画面がないまま、旧モックの導線・監視面の完成を受入可能にしている。Prototype Acceptanceを現行Journey単位へ改訂する必要がある。
+5. **プロト受入条件の現行化** — `PT-LC / AUTH / MARKET / REC / PATCH / REPORT / CMS / MIG`を追加し、旧画面の完成度だけで受入不可とした。fixture、実操作、状態遷移の自動試験は未実装。
 
 ### Important
 
@@ -65,8 +65,8 @@
 9. 新規Site戦略Reportと既存Site診断Reportは、別の業務目的・章・入力availability・操作をKeyword Report接続マップ、L2集約、L3 schema／DDL／event、画面要件、`PT-REPORT-01〜06`へ追加した。実モック画面の作成と操作試験は未完了。
 10. CTA/CVは軽量Patch接続マップ、L2集約、L3 action/result schema、DDL、event、`PT-PATCH-01/05`へ、記事目的、直接CV、認知貢献、月次／累積評価を追加した。実装と母数・判定閾値の較正は未完了。
 11. 内部linkはcandidate lifecycle、承認Batch、候補単位の部分失敗、CMS反映確認、再評価を軽量Patch接続マップと`PT-PATCH-02〜05`へ追加した。実装・CMS別Contract Testは未完了。
-12. CMS読取り経路の自動選択はL1にあるが、Siteごとの選択結果、health、切替履歴、料金／Plan制御のL2集約がない。
-13. WordPress Capability Matrixは詳細だが、CMS共通Publication ContractとUI表示項目の完全対応表がない。
+12. CMS読取り経路はCMS接続Routing Map、L2 CmsConnectionProfile、L3 Profile schema／DDL／event、`PT-CMS-01〜05`へ、Site別選択結果、health、切替履歴、Capacity／Planを追加した。Adapter実装とfailover試験は未完了。
+13. WordPress Capability MatrixはCMS接続Profileと画面Capability表示、`PT-CMS-01/05/06`へ接続し、read／write／Media／Editor／Preview／Revision／反映確認を分離した。CMS共通Publication JSON SchemaとCMS別Contract Testは未完了。
 14. Officeの会話変更案はL1にあるが、Proposal schema、影響差分、credit見積、取消／rollback、通常ビュー同期eventがL3未定義。
 15. Agent personaと「担当業務・利用Service・Tool・Workflow・Permission・Office設備」の完全Mappingがない。
 16. 画像Pattern Editorはアイキャッチ基盤として決定しているが、Pattern version、variation tolerance、ロゴ余白、CMS size、生成結果、cache、再生成creditのL3 schemaが未確定。

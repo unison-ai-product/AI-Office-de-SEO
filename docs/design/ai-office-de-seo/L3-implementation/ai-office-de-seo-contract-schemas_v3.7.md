@@ -103,6 +103,35 @@ schema.patch.result.v1 {
 
 根拠: `REQ-BUS-02/04/05/06`、`REQ-SCREEN-02/09/18`、Keyword Report接続マップ。
 
+## 0.0.3 CMS Connection Profile Contract
+
+Siteごとの接続結果を`schema.cms.connection_profile.v1`へ固定する。
+
+```text
+{
+  connection_profile_id, version, tenant_id, site_id,
+  cms{kind, version?, site_url_ref, authenticated, diagnosed_at},
+  capabilities[]{key, status, evidence_ref?, confidence, checked_at},
+  discovery_routes[]{adapter_key, state, health_ref},
+  read_routes[]{adapter_key, role(primary/standby/disabled), health_ref, selected_reason},
+  write_routes[]{operation, adapter_key, permission_state, capability_ref},
+  editor_profile{editor_kind, post_type, builder_ref?, block_namespaces[], confidence},
+  assurance{preview, revision, verification, backup_entitlement},
+  measurement{tracker_state, event_contract_version?},
+  capacity{article_count, initial_import, monthly_changes, storage, processing, plan_ref},
+  state, required_user_actions[], policy_version, updated_at
+}
+```
+
+- capability statusは`full / degraded / update_required / unsupported / unknown`。
+- `required_user_actions`は再接続、権限確認、Plugin更新、手動取込等の業務操作を返し、内部Adapter優先度を含めない。
+- read route変更でwrite permissionを変更しない。`permission_state=unknown`は書込み不可とする。
+- ProfileのPolicy versionと選択理由から同じ入力でroutingを再現できる。
+
+記事取得結果は共通Article Snapshot Contractへ、投稿結果はPublication Contractへ、軽量更新は`schema.patch.result.v1`へ接続する。
+
+根拠: `REQ-INT-05/06/09`、`REQ-WPA-01〜14`、CMS接続・取得・投稿経路マップ。
+
 ## 0.1 Authorization Decision Contract
 
 すべての実行面で使用する認可入力・出力を`schema.authorization.decision.v1`として固定する。

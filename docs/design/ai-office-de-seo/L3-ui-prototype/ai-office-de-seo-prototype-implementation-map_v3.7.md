@@ -28,6 +28,8 @@ DCプロト `prototype/AI Office de SEO.dc.html`（単一ファイル・約8,900
 | Office | 監視・詳細中心 | 会話、Proposal、影響・credit、条件／Task変更、共通Command/Eventへの接続 |
 | 設定・課金 | 旧価格・旧credit fixture | version付きPlan Configurationと現行Billing要求から生成 |
 | 権限 | `memberRoles`と旧Role | 基本区分＋業務Permission＋Site付与＋Automation委任へ置換 |
+| CMS接続 | Google／WordPress接続boolと手動再試行 | `fixture.cms.connection_profile.v1`からread、write、Media、Editor、Preview、Revision、Tracker、Capacityを別表示。内部route選択はUIへ出さず、必要なユーザー操作だけを表示 |
+| 旧fixture migration | 旧価格・credit・Role・Office監視専用のstate／文言 | 現行Price Catalog、Plan Configuration、Authorization、Office Proposalへ変換できるものだけ移行し、変換不能値は拒否またはdemo historyへ隔離 |
 
 既存のカード、Modal、Tab、Office scene、Agent asset、通知、Task進捗、詳細Panelは再利用可能である。旧fixtureと旧mutation handlerを本番Store/API設計の種として無条件に採用しない。
 
