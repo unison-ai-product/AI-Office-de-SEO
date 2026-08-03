@@ -306,6 +306,37 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-e
   "選択式ポップアップと決定論Service",
   "必要な場合だけLLMを呼ぶ",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/README.md", [
+  "L1要求整理 → L2業務・ドメイン整理 → 通常ビュー／Officeビューの画面・遷移・fixture検証 → 発見差分をL1/L2へ反映 → L3実装詳細確定",
+  "L3のAPI、DDL、Event、Config、採用技術を画面検証前に最終凍結しない",
+  "画面側を暫定L3へ無理に合わせず",
+]);
+assertIncludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
+  "lifecycle_stage: pre_l3_ui_validation",
+  "画面検証の結果を制約する凍結仕様ではない",
+  "画面検証結果をL1/L2へ反映した後にL3実装設計",
+]);
+assertExcludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
+  "requires:\n    - PLAN-L3-01-ai-office-de-seo-implementation-design",
+  "要求・L2/L3契約・画面遷移の整合監査後に開始",
+]);
+assertIncludes("docs/plans/PLAN-L3-01-ai-office-de-seo-implementation-design.md", [
+  "PLAN-L3-02-ai-office-de-seo-screen-prototype",
+  "画面検証未了の領域をL3確定済みと表示しない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-handoff-gate_v3.7.md", [
+  "画面検証の開始をL3詳細確定でブロックしない",
+  "画面findingをL1/L2へ反映",
+  "この時点で実装用versionを固定",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/GATE-A-README.md", [
+  "画面検証前の暫定baseline",
+  "L3全体の確定を開始条件にしない",
+]);
+assertIncludes("docs/reference/ai-office-de-seo-artifact-alignment-ledger_2026-08-03.md", [
+  "L1→L2→画面検証→L1/L2差分反映→L3確定",
+  "L3確定前に要求差分を発見",
+]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
   "非公開Output Vault stagingのupload",
   "同一DB transactionで成立した後だけ`generation.job_completed`",

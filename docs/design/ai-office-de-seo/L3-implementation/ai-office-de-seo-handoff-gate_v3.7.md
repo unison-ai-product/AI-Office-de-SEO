@@ -1,6 +1,6 @@
 ---
 document_id: AOS-L3-HANDOFF-GATE
-title: AI Office de SEO L3先行確定リスト（設計・実装引き渡しゲート） v3.7
+title: AI Office de SEO L3確定リスト（画面検証後の実装引き渡しゲート） v3.7
 version: 3.7
 layer: L3
 kind: design
@@ -9,13 +9,13 @@ updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
 
-# L3先行確定リスト（設計・実装引き渡しゲート）
+# L3確定リスト（画面検証後の実装引き渡しゲート）
 
-L2以降を画面設計と実装へ渡す前に、**先に確定しないと手戻りが全体へ波及する項目**を優先度順に列挙する。判断基準は「未確定のまま着手した場合の手戻り半径」。現行要求への文書・Contract・DDL・Event・受入の追随を先に完了し、プロト更新はその後に行う。
+L1/L2を通常ビューとOfficeビューの画面・遷移・fixtureで検証し、発見差分を要求へ戻した後、実装へ渡す前に確定する項目を列挙する。判断基準は「未確定のまま実装した場合の手戻り半径」であり、画面検証の開始をL3詳細確定でブロックしない。既存Contract・DDL・Eventは検証用の暫定baselineとして使い、画面を暫定L3へ無理に合わせない。
 
-## Gate A: 着手前に確定必須（未確定だと全面手戻り）
+## Gate A: 本実装着手前に確定必須（画面検証中は暫定baseline）
 
-**互換baseline作成済み・現行要求監査中**: 全5件を `gate-a/` に作成済み（GATE-A-README.md参照）。ここでいう契約の「凍結」は、要求整理を停止する意味ではなく、実行ジョブや下流実装が参照する公開済みversionを途中変更しない互換性規則を指す。現行要求への追従監査が完了するまではGate A文書を`current-draft`として改版し、監査後に新versionを固定する。
+**暫定baseline作成済み・現行要求の画面検証待ち**: 全5件を `gate-a/` に作成済み（GATE-A-README.md参照）。画面検証中は`current-draft`として改版可能であり、凍結済み実装仕様とは呼ばない。ここで将来行う実装用versionの凍結は、要求整理を停止する意味ではなく、画面findingを反映した公開済み契約の互換性を守る意味に限定する。安全不変条件を維持しつつ、画面findingをL1/L2へ反映し、L3再監査後に実装用versionを固定する。
 
 | # | 項目 | 内容 | 根拠 | 主な消費者 |
 |---|---|---|---|---|
@@ -46,6 +46,7 @@ L2以降を画面設計と実装へ渡す前に、**先に確定しないと手�
 
 ## 進め方の提案
 
-1. 現行要求からL2、Contract、DDL、Event、画面遷移、受入までの追随監査を完了する。Gate A-1/A-5（契約）とA-2（境界API）を実装の最初のTask、A-3/A-4（config/token）を画面設計の最初のTaskとし、相互review後にプロト更新／実装へ進む。
-2. Gate Bは該当領域の着手直前にジャストインタイムで確定する（B-4は画面到達順）。
-3. Gate Cは着手をブロックしない。要求、設計、運用較正、将来構想、移行債務を含む未確定事項の全件索引は **Open Items Register** を正本とする。**L3 Decision Table** はL3技術判断のowner・期限・状態を管理し、全D-IDをOpen Items Registerの分類へ接続する。`TODO(L3)` key family、Config台帳、検証ログの項目をDecision Tableだけへ閉じ込めない。
+1. 現行L1/L2を画面台帳・Screen Flowへ反映し、通常ビューとOfficeビューの操作可能なプロトで業務Lifecycleを検証する。Gate A-3/A-4はconfig/tokenの暫定baselineとして使い、構成変更を許容する。
+2. 画面findingをL1/L2へ反映して再監査し、確定した意味からContract、DDL、Event、Configを更新する。Gate A-1/A-2/A-5を含むL3はこの時点で実装用versionを固定する。
+3. Gate Bは該当領域の本実装着手直前にジャストインタイムで確定する（B-4は画面到達順）。
+4. Gate Cは着手をブロックしない。要求、設計、運用較正、将来構想、移行債務を含む未確定事項の全件索引は **Open Items Register** を正本とする。**L3 Decision Table** はL3技術判断のowner・期限・状態を管理し、全D-IDをOpen Items Registerの分類へ接続する。`TODO(L3)` key family、Config台帳、検証ログの項目をDecision Tableだけへ閉じ込めない。

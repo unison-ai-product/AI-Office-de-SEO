@@ -15,7 +15,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 - 目的: 2モードUI（通常SaaS / Agent Office）の体験・情報設計・コンポーネント分割を、実装前に動くモデルで検証する。
 - 位置づけ: これはUI検証のためのプロトタイプであり、本番実装順序（REQ-DUR-03: 本質A/B先行）とは別トラックである。REQ-DUR-05「Agent Office演出を実イベントログなしに先行しない」は本番化の禁止事項であり、プロトはモックイベント（AOS-L3-CONTRACT-SCHEMAS §5の共通エンベロープ準拠）で駆動してよい。ただしモックイベントの形は本番イベントスキーマと同一とし、後日の実接続で差し替え可能にする。
-- 現行化境界: プロト変更は、分類別L1、L2、L3契約、画面台帳、Screen Flow、Prototype Modernization Registerの追従監査完了後に開始する。本書の旧REQ参照は詳細検証観点であり、旧価格、旧Role、旧公開条件、WordPress固定、Office監視専用を復活させる根拠にしない。プロト実装ファイルはこの設計整備中に変更しない。
+- 現行化境界: プロト変更は、分類別L1、L2、画面台帳、Screen Flow、Prototype Modernization Registerの追従監査後に開始する。既存L3契約は安全境界とfixture形状の暫定baselineとして参照するが、画面検証前の最終確定条件にはしない。通常ビュー／Officeを実際に操作して判明した不足・過剰・責務ずれをL1/L2へ戻し、その後にL3契約を確定する。本書の旧REQ参照は詳細検証観点であり、旧価格、旧Role、旧公開条件、WordPress固定、Office監視専用を復活させる根拠にしない。
 
 ## 2. 検証したいこと（プロトの問い）
 
@@ -34,7 +34,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - 実装: React（単一ページ内でモード切替）。CSSはダーク（Agent Office）/ライト（通常）2テーマ、Design.md §6のビジュアル言語（ダークネイビー＋ネオンブルー/パープル）に従う。
 - 素材: `docs/reference/assets/` のWebPを使用。使用可否はASSET-MAPPINGの確度に従う — 「確定」は本採用、「暫定」は仮置き（差し替え前提を明記）、「参照」「superseded」は画面に組み込まない。
 - 描画境界: 画像は背景・キャラ・部屋・看板枠・装飾のみ。テキスト・数値・表・グラフ・フォーム・進捗はHTML/CSS（REQ-NAV-05 / REQ-AOUI-03）。看板の固定ラベルのみ画像化可。
-- レイアウトのconfig駆動: 部屋・フロア・ペルソナ・部屋⇄画面対応は `office_layout.initial.json`（Gate A-3凍結・正本）から描画し、ハードコードしない（REQ-AOUI-07）。通常ビューとAgent Officeで別データ形状を作らず、同一JSONを正本に共有する。初期構成＝部屋7＋ハブ、7フロア（1部屋=1フロア）。
+- レイアウトのconfig駆動: 部屋・フロア・ペルソナ・部屋⇄画面対応は `office_layout.initial.json`（Gate A-3暫定baseline）から描画し、ハードコードしない（REQ-AOUI-07）。通常ビューとAgent Officeで別データ形状を作らず、同一JSONを共有する。初期構成＝部屋7＋ハブ、7フロア（1部屋=1フロア）は検証開始値であり、業務検証で不足・過剰が見つかればL1/L2とともに改版してからL3で固定する。
 - 状態管理: 画面状態・詳細コンポーネント・モックAPIクライアントを両モードで共有し、モードは「入口とクローム」だけを差し替える構造にする（REQ-AOUI-01の構造的証明を兼ねる）。
 
 ## 4. モックデータ契約（捏造を作らないためのルール）

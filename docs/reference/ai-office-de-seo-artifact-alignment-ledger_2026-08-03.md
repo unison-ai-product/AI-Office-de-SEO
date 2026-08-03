@@ -2,7 +2,7 @@
 
 ## 1. 目的
 
-要件更新に追従していない文書を「未定義事項」と誤認しないため、リポジトリ内の成果物を役割ごとに分類する。プロトタイプは要求・設計・契約の整合完了後に更新するため、本台帳では実装差分としてのみ管理する。
+要件更新に追従していない文書を「未定義事項」と誤認しないため、リポジトリ内の成果物を役割ごとに分類する。プロトタイプはL1/L2を実操作で検証し、L3確定前に要求差分を発見するために更新する。本台帳では、画面findingがL1/L2へ戻り、その後L3へ反映されたかを管理する。
 
 状態は次の4区分とする。
 
@@ -28,12 +28,12 @@
 | 受入トレース | `ai-office-de-seo-acceptance-trace_v3.7.md` | current | 447 REQとcanonical ACを横断追跡する。旧ACの意味も現行判断へ更新する |
 | 開発ロードマップ | `ai-office-de-seo-development-unit-roadmap_v3.7.md` | current | 現行SEO業務Lifecycleと商用成立条件に基づく構築順。コンサル必須・FAQ外出しの旧前提は廃止 |
 | L2 | domain model、glossary | current | Site Build、Keyword Report、月次／週次計画、Recommendation、Publication Decision、評価、認可を集約・用語へ写像 |
-| L3主要設計 | contract schemas、DDL、config registry、quality gate、decision table、AWS operations、handoff gate | current | 実装へ渡す契約・保存・設定・運用。`partial / missing / TODO(L3)`はtrue_open候補として管理 |
-| Gate A | event、repository scope、office layout、design tokens、Ticket/Snapshot baseline | current | 現行監査中のdraft。旧「凍結」は解除し、監査後にversion固定する。A-5は互換baselineで、全契約正本ではない |
-| 画面正本 | screen inventory、admin inventory、screen flow | current | 画面責務、通常／Office、管理面、Site導入から評価までの正規遷移 |
+| L3主要設計 | contract schemas、DDL、config registry、quality gate、decision table、AWS operations、handoff gate | current-draft | 画面検証前の暫定案。安全境界の参照には使うが、通常／OfficeのfindingをL1/L2へ反映後に実装用versionを確定する |
+| Gate A | event、repository scope、office layout、design tokens、Ticket/Snapshot baseline | current-draft | 画面検証用baseline。旧「凍結」は解除し、画面finding反映後のL3再監査でversion固定する。A-5は互換baselineで、全契約正本ではない |
+| 画面検証正本 | screen inventory、admin inventory、screen flow | current | L1/L2を通常／Office、管理面、Site導入から評価までの画面責務・遷移へ写像し、操作findingを要求へ戻す |
 | UI設計補助 | UI parts catalog、prototype plan、prototype implementation map | current | 将来の実装変換と差分管理。現行認可・Lifecycleを参照する |
 | 旧画面接続実測 | screen connection map | baseline | 2026-07-10プロトの実測。現行遷移の正本ではなく、追随作業時の差分入力 |
-| 計画書 | `docs/plans/PLAN-L0-01`〜`PLAN-L3-02` | current | 各層の成果物とDoD。プロト更新は全要求・L2/L3・画面遷移の整合後 |
+| 計画書 | `docs/plans/PLAN-L0-01`〜`PLAN-L3-02` | current | 各層の成果物とDoD。L1→L2→画面検証→L1/L2差分反映→L3確定の順序を正本化 |
 | review／audit資料 | `docs/reference/*review*`、`*audit*`、verification log | baseline | 当時の指摘と解消証拠。現在値の正本にはしない |
 | open items | `ai-office-de-seo-open-items-register_2026-08-03.md` | current | true_open候補、後続機能、実測待ちを区別する作業台帳 |
 | 機能一覧 | `docs/reference/FEATURE-LIST.md` | current | 447 REQの全数転記ではなく、現行Lifecycleと機能境界を利用者向けに要約する。全数coverageはacceptance traceを参照 |

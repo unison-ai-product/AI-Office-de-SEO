@@ -24,14 +24,17 @@ dependencies:
   parent: PLAN-L2-01-ai-office-de-seo-domain-model
   requires:
     - PLAN-L1-01-ai-office-de-seo-requirements
+    - PLAN-L3-02-ai-office-de-seo-screen-prototype
   blocks: []
 ---
 
 # PLAN-L3-01 AI Office de SEO 実装設計
 
-L2ドメインモデル §7「L3への引き渡し」を成果物へ落とす: 各集約→テーブルDDL、各値/契約→JSONスキーマ（schema.ticket.* / schema.snapshot.* / イベント）、各ゲート→検証実装、しきい値・価格→Config Registry初期値テンプレート。
+L1/L2を反映した通常ビュー・Officeビューの画面検証と、その結果による要求差分の反映後に、L2ドメインモデル §7「L3への引き渡し」を成果物へ落とす。各集約→テーブルDDL、各値/契約→JSONスキーマ（schema.ticket.* / schema.snapshot.* / イベント）、各ゲート→検証実装、しきい値・価格→Config Registry初期値テンプレートを確定する。既存成果物は画面検証中の暫定案であり、検証前の形をそのまま実装凍結しない。
 
 確定条件（DoD）:
+
+- 通常ビューとOfficeビューの主要業務を操作可能なfixtureで検証し、発見した不足・過剰・責務ずれがL1/L2へ反映済みであること。画面検証未了の領域をL3確定済みと表示しないこと。
 
 - 全テーブルが境界キー（`tenant_id`、サイトに閉じるものは `site_id`）を持ち、保存禁止データ（REQ-SEC-11）の列が存在しないこと。
 - 全契約スキーマが `REQ-PACK-04` のキー命名（`namespace.name.version`）で版固定されること。
