@@ -180,7 +180,12 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/billing-
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
   "初回ログインと日常業務の正規入口は通常ビュー",
   "Agent Officeは名称どおり",
-  "詳細運用面",
+  "見守る監視面",
+  "成果drill downは通常ビュー内",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
+  "Officeの詳細操作",
+  "Officeで変更した設定・指示・方針",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/non-functional-requirements_v1.md", [
   "本番配置はAWSを前提",
@@ -190,6 +195,12 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-o
   "Entryの自動投稿はロック対象にせず",
   "Entryの数値予測は上位機能Preview",
   "開発管理画面または開発者Consoleとして扱わない",
+  "Agent Office実行監視",
+  "成果分析、Site／Cluster／記事drill downを完了する業務操作面",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md", [
+  "Agent Office詳細運用",
+  "Office側の詳細操作",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
   "schema.site.build_progress.v1",
@@ -210,6 +221,8 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "新規記事の自動公開設定",
   "新規記事15件まで解放進捗",
   "同一権限者の二段階確認＋版付き同意",
+  "Agent Officeはエージェントの実行状況を見守る監視面",
+  "成果詳細PanelはSite＝S1、Cluster＝S2、記事＝S5への要約link",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
   "公開前承認「必須・変更不可」→既定OFFの任意設定",
@@ -242,15 +255,16 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "実行環境は`TODO(L3)`、空文字、単位不明値を`active`として登録できない",
 ]);
 assertIncludes("docs/reference/FEATURE-LIST.md", [
-  "現在は446 REQを監査対象",
+  "現在は447 REQを監査対象",
   "Site接続→業界Big Keyword探索",
-  "Agent Officeは監視専用ではなく",
+  "Agent Officeは実Task・Agent・工程の監視面",
   "Entry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-requirements-decision-summary_v1.md", [
   "未確定事項の全件台帳ではない",
   "ai-office-de-seo-open-items-register_2026-08-03.md",
   "ここにないことを「確定済み」の根拠にしない",
+  "Agent Officeは実行中Task、担当Agent、工程、待機、完了、失敗、成果要約を見守る監視面",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-business-requirements_v1.md", [
   "CMS下書き・投稿",
@@ -283,9 +297,14 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-ag
   "キャラクターとExecutorの1対1表を別途作らない",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md", [
-  "全ペルソナ共通のOffice Conversation Runtime",
+  "エージェントの実行状況を見守る監視面",
+  "通常WorkbenchへのContext付きlink",
   "初期構成（確定）: 部屋7",
   "製品要求はReact等の特定フレームワークへ固定せず",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md", [
+  "Agent Officeは通常ビューの単純な複製でも監視専用画面でもない",
+  "Agent Officeは詳細運用を担う",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
   "これはLLM Agentの個体数、model数、常駐process数またはOfficeペルソナ数を表す一覧ではない",
@@ -299,10 +318,37 @@ assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-ag
   "React/HTML/CSS で描画する",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md", [
-  "通常ビューでは省略する根拠、条件、一覧、配分",
+  "成果分析、設定、承認、変更は通常ビューを正本",
   "製品要求はReact等の特定フレームワークへ固定せず",
   "初期リリースはdesktop標準",
   "後続versionではAgent Office Chatをmobileの主導線",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md", [
+  "Site全体 | S1 サマリー",
+  "Keyword Cluster | S2",
+  "記事 | S5",
+  "Office内に成果分析drill downを作らない",
+  "圏内到達",
+  "上位化",
+  "トップ確保",
+  "直前ページからのCV到達",
+  "Plan差は成果判定機能の有無ではなく",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md", [
+  "100位以内＝順位獲得",
+  "名称は「アシストCV」",
+  "複数ページ経路を保存する",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md", [
+  "REQ-MEASURE-14 顧客成果指標",
+  "Thin Plugin署名付きWebhook",
+  "7日移動窓",
+  "施策後に改善／市場変化の影響／評価準備中",
+  "単ホップ集計",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/cost-requirements_v1.md", [
+  "成果補正用SERP／AIO／listing",
+  "Plan差は機能ON／OFFではなく",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md", [
   "セルフ導入を標準",
@@ -766,7 +812,7 @@ for (const requiredPhrase of [
   "Article Read Snapshot取得",
   "CMS Delivery準備",
   "公開・更新後評価",
-  "通常ビューとAgent Officeの往復・変更フロー",
+  "通常ビューとAgent Officeの往復・監視フロー",
   "正規遷移契約マトリクス",
 ]) {
   if (!screenFlow.includes(requiredPhrase)) {

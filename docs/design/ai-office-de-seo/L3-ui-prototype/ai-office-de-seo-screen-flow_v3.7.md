@@ -145,22 +145,18 @@ flowchart LR
   W5 --> W6[W6 ジョブ履歴]
 ```
 
-### 1.1 通常ビューとAgent Officeの往復・変更フロー（2026-08-03現行要求）
+### 1.1 通常ビューとAgent Officeの往復・監視フロー（2026-08-03現行要求）
 
-通常ビューとOfficeは別システムではない。通常ビューは簡単操作、Officeは同じ対象を深掘りし、Agentとの会話や詳細条件から操作するViewである。Office内の状態変更は会話文を直接実行せず、共通の変更案・Task・Commandへ変換する。
+通常ビューとOfficeは別システムではない。通常ビューは分析、判断、設定、承認、変更を行う業務面、Officeは同じTask・Agent・工程eventを用いて実行状況を見守る監視面である。成果のSite／Cluster／記事drill downは通常ビュー内で行い、Officeは成果要約とContext付きlinkだけを持つ。
 
 ```mermaid
 flowchart LR
-  N[通常ビュー\n要点・推薦・承認] -->|対象文脈を保持| O[Agent Office\n部屋・Agent・詳細]
-  O --> Q{会話・詳細操作}
-  Q -->|質問・探索| A[根拠・一覧・分析説明]
-  Q -->|状態変更を伴う| P[変更案\n対象・差分・影響・クレジット]
-  P -->|確定| C[共通Command/Event]
-  C --> S[業務正本を更新]
-  S --> N
-  S --> O
-  A --> O
-  O -->|簡単操作へ戻る| N
+  N[通常ビュー\n分析・判断・設定・承認] -->|Task Contextを保持| O[Agent Office\n部屋・Agent・工程監視]
+  O --> T[Task状態\n待機・実行・完了・失敗]
+  T --> R[成果要約]
+  R -->|成果を確認| D[通常ビュー\nS1 Site / S2 Cluster / S5 記事]
+  T -->|判断・変更が必要| N
+  N -->|確定eventを同期| O
 ```
 
 ## 2. Recommendation／手動指定から生成〜公開（UJ-05）

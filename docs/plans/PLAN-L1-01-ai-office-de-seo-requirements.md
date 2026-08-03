@@ -60,6 +60,8 @@ generates:
     artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-business-metrics-map_v1.md
     artifact_type: design_doc
+  - artifact_path: docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md
+    artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-authorization-operation-matrix_v1.md
     artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-recommendation-action-routing-map_v1.md

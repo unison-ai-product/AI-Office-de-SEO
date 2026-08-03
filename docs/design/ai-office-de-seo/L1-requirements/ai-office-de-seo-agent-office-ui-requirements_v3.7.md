@@ -21,12 +21,12 @@ Agent Officeと内部Executor／Workflowの境界は `ai-office-de-seo-agent-req
 
 ## 1. 2つのUIモード  ［REQ-AOUI-01］
 
-同じ情報・詳細画面・データAPI・状態管理を共有し、問い合わせ方式だけを変える2モードを持つ。
+同じTask・Agent・工程event・Contextを共有し、役割を分ける2モードを持つ。
 
 - Standard SaaS: サイドメニュー → タブ/一覧 → 詳細。白基調・業務効率重視。
-- Agent Office: オフィス表示 → エージェント／部屋を選択 → 会話・設備・詳細Panelから、同じ業務正本の詳細探索、条件・方針変更、Task構成変更、実行監視を行う。暗色オフィス背景＋透過パーツ。
+- Agent Office: オフィス表示 → エージェント／部屋を選択 → 会話・設備・Task Panelから、実行中Task、工程、待機、完了、失敗、成果要約を監視する。暗色オフィス背景＋透過パーツ。
 
-Agent Officeは通常ビューの単純な複製でも監視専用画面でもない。通常ビューは簡単操作、Agent Officeは詳細運用を担う。詳細コンポーネント、command、取得API、権限、業務状態は共通化し、Office独自の部屋、会話、探索、設備、表示状態を持つ。
+Agent Officeは通常ビューの成果分析を複製せず、エージェントの実行状況を見守る監視面とする。通常ビューは分析、判断、設定、承認、変更を担う。Officeは独自の部屋、会話、設備、Task監視表現を持つが、成果分析・設定変更・承認が必要な場合は同じContextを通常ビューへ引き継ぐ。
 
 ## 2. 第一階層7画面  ［REQ-AOUI-02］
 
@@ -40,7 +40,7 @@ Agent Officeは部門（部屋）とエージェント（キャラ）で構成�
 
 ## 4. ペルソナ⇄内部エージェント/工程マッピング  ［REQ-AOUI-04］
 
-Agent Officeが実状態と業務能力を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、利用可能Tool、担当業務へ対応づける。ペルソナは独立runtimeそのものではないが、説明、探索、会話、変更案、Task化、実行監視を担うユーザー窓口である。会話実行は全ペルソナ共通のOffice Conversation Runtimeを使用し、`persona_id`別Role Profileと許可されたService／Proposal Schemaをセッション開始時に解決する。ペルソナ数だけ専用LLM、常駐processまたは独立記憶を作らない。
+Agent Officeが実状態を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、担当業務へ対応づける。ペルソナは独立runtimeそのものではなく、現在Task、工程、待機理由、完了成果、次の確認先を説明する監視上の窓口である。ペルソナ数だけ専用LLM、常駐processまたは独立記憶を作らない。下表の「会話から作れるもの」と「変更時の業務Permission」は、Officeで直接変更する契約ではなく、通常ビューへContext付きで遷移する先の能力・認可を示す。
 
 | persona | 主な業務 | 読む正本・Service | 会話から作れるもの | Executor／Tool接続 | 変更時の業務Permission | Office設備・詳細面 |
 |---|---|---|---|---|---|---|
@@ -72,7 +72,7 @@ Agent Officeが実状態と業務能力を反映するため、ユーザー向�
 
 ## 6. Console Mode / 全画面ワークベンチ  ［REQ-AOUI-06］
 
-詳細作業は全画面ワークベンチ（1画面分）で行い、両モードで同一コンポーネントを使う。Console Mode（開発管理者向け）は別要求（`REQ-ADM`）とする。
+詳細作業は通常ビューの全画面ワークベンチ（1画面分）で行う。Agent OfficeのTask Panelは要約と監視状態、通常WorkbenchへのContext付きlinkを持ち、成果分析componentを複製しない。Console Mode（開発管理者向け）は別要求（`REQ-ADM`）とする。
 
 ## 7. 部門・フロア・ペルソナの拡張性  ［REQ-AOUI-07］
 

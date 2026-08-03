@@ -104,7 +104,7 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 指標は視点を明示して分離する。運営側指標は、運用Loop完了Site数をNorth Starとし、Recommendation採用率、継続稼働率、アップセルevent、契約churnを併記する。MRR、契約数、契約churnは営業・価格・外部要因の影響を受ける経営指標であり、North Starへ使用しない。経営指標の正本は `BR-KPI-001`〜`BR-KPI-008` とする。
 
-顧客側の成果指標は、顧客Siteの検索流入、獲得keywordと順位、公開・更新数、CV、cluster充足等、SEO代行の結果として顧客へ示す値であり、運営側指標へ混合しない。指標ごとの評価対象、基準期間、市場影響、availability、成果非保証、通常ビューとAgent Officeの表示契約は別要求で定義する。
+顧客側の成果指標は、顧客Siteの検索流入、獲得keywordと順位、公開・更新数、CV、cluster充足等、SEO代行の結果として顧客へ示す値であり、運営側指標へ混合しない。指標ごとの評価対象、基準期間、市場影響、availability、成果非保証、通常ビューの表示契約は `REQ-MEASURE-14` を正本とする。Agent Officeは成果分析面にせず、実行中Taskと完了成果の要約・通常ビューへのlinkだけを表示する。
 
 運用Loopは `分析・Recommendation → 採用 → 記事公開または更新のCMS反映 → 評価対象登録` で構成する。Loop完了点は、CMSが公開・更新の反映成功を返し、その施策について評価基準値、評価起点、1カ月・3カ月・6カ月の評価予定が登録された時点とする。GSCデータ取得開始だけ、Recommendation採用だけ、CMS下書き作成だけ、評価画面の閲覧だけではLoop完了にしない。月内に1回以上Loopを完了したdistinct SiteをNorth Starへ1 Siteとして数え、同一Siteの複数完了件数は診断指標へ分離する。
 
@@ -113,6 +113,18 @@ Activationは顧客が初回価値を受け取った時点として、`Site設�
 継続稼働の強いsignalは、Recommendation採用、記事公開／更新のCMS反映、月次計画確定のいずれかに限定する。画面閲覧、施策評価閲覧、ログイン、通知既読だけを継続稼働へ算入しない。休眠はActivation到達済みSiteだけを対象とし、`max(activation_at, last_strong_activity_at) + 30日` を到達した時点で判定する。未Activation Siteは休眠ではなくOnboarding停滞へ分類する。
 
 財務計画の月次churn 5%／10%シナリオは契約解約だけを分子にする。休眠Siteは解約へ合算せず、先行指標として別表示する。複数Siteを持つ契約ではSite休眠・Site停止を契約解約とみなさない。算式、データ源、集計周期、除外条件は `ai-office-de-seo-product-business-metrics-map_v1.md` を正本とする。
+
+### REQ-MEASURE-14 顧客成果指標
+
+顧客成果はSite全体、Keyword Cluster、記事の3階層で保持し、すべて通常ビュー内でdrill downできるようにする。Site全体はS1サマリー、ClusterはS2戦略・診断ReportおよびCluster詳細、記事はS5流入・CVおよび施策評価を正本画面とする。Agent OfficeのA0〜A8はTask・Agent・工程の監視面とし、実行中Taskに関係する成果要約とS1／S2／S5へのlinkだけを表示して、独自の成果分析・Cluster／記事drill downを持たない。詳細な画面割当ては `ai-office-de-seo-customer-outcome-metrics-map_v1.md` を正本とする。
+
+公開・更新実績はAI OfficeのPublication CommandとCMS反映結果が同一correlationへ接続したものを主実績とする。Thin Plugin署名付きWebhook等で検知したCMS直接変更は `external_change` として分離し、AI Office実績数へ含めない。ただし、対象期間の順位、流入、CVをAI Office施策の成果として判定するときは交絡要因へ必ず含め、外部変更後の改善をAI Office単独成果と表示しない。
+
+順位の顧客向け段階は、割当Clusterに対するGSC URL×Queryのimpression加重平均掲載順位を7日移動窓で算出し、`圏内到達=50位以内、上位化=10位以内、トップ確保=3位以内` とする。100位以内は内部進捗signalに限定し顧客向け成果名にしない。外部順位計測はGSC欠損時または固定Keywordの補助観測とし、sourceを明示してGSC値へ混合しない。段階下降には別の退出閾値と継続日数を持つhysteresisを適用し、単日値で段階を往復させない。`protect` はリライト抑制等の運用flagであり、成果段階と別field・別表示にする。
+
+成果分類は同じ入力・rule versionから同じ結果を返す決定表で `施策後に改善／市場変化の影響／評価準備中` の3表示へ写像する。検索volume、GSC impression、organic CTR、AIO出現率、listing出現率、外部変更、index・計測availabilityを入力とし、LLMの自由判定を使用しない。内部reason code、閾値、入力期間、source freshnessを保持する。データ不足や交絡で確定できない場合、顧客へは「判定不能」ではなく、不足理由と次回評価日を伴う「評価準備中」または外部変更がある旨を表示する。
+
+CVは `REQ-WPA-05`、`REQ-INT-01/03` を優先し、自前JavaScript Trackerの日別・URL別・Goal別集計を正本とする。GA4等は補助sourceであり混合しない。複数ページのsession・経路を保存・復元せず、CV到達eventが持つ直前遷移元URLだけを単ホップ集計して「直前ページからのCV到達」として月次・累積表示する。これは相関ベースの補助指標であり、厳密な因果またはmulti-touch attributionとして表示しない。
 
 ## 受入条件
 
@@ -129,3 +141,4 @@ Activationは顧客が初回価値を受け取った時点として、`Site設�
 - [ ] AC-L1-MEASURE-11: support事例を相関IDと解決versionへ接続し、要求・runbook・テストへ還流できる。
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。
 - [ ] AC-L1-MEASURE-13: CMS反映後の評価対象登録をLoop完了として月次distinct Siteを算出し、4段階Activation、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。
+- [ ] AC-L1-MEASURE-14: 顧客成果をS1／S2／S5の3階層でdrill downし、AI Office実績と外部変更、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現でき、Agent OfficeはTask監視と通常ビューへの要約linkに限定される。

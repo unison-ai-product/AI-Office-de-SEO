@@ -1,6 +1,6 @@
 # AI Office de SEO 現行機能一覧
 
-この一覧は、分類別L1要求、詳細ロジック、Decision Summary、L2／L3契約から導出した製品機能の索引である。REQと受入条件の全数・coverageは本書へ重複転記せず、`ai-office-de-seo-acceptance-trace_v3.7.md`と`node scripts/audit-requirements.mjs`を正本とする。現在は446 REQを監査対象としている。
+この一覧は、分類別L1要求、詳細ロジック、Decision Summary、L2／L3契約から導出した製品機能の索引である。REQと受入条件の全数・coverageは本書へ重複転記せず、`ai-office-de-seo-acceptance-trace_v3.7.md`と`node scripts/audit-requirements.mjs`を正本とする。現在は447 REQを監査対象としている。
 
 ## 1. SEO業務Lifecycle
 
@@ -78,7 +78,7 @@
 ## 8. 通常ビュー・Agent Office・Support
 
 - 通常ビューは推薦、確認、承認、日常判断を簡単に行う標準画面とする。
-- Agent Officeは監視専用ではなく、同じ業務正本を詳細に探索し、Keyword選定条件、推薦方針、配分、Task構成、実行順、停止・再開等の変更Proposalを作れる詳細操作面とする。
+- Agent Officeは実Task・Agent・工程の監視面とし、成果要約から通常ビューのSite／Cluster／記事詳細へ移動する。Keyword選定、推薦方針、配分、承認、設定変更、成果分析は通常ビューを正本とする。
 - Office personaは業務窓口であり、persona数だけLLM instanceや独立runtimeを作らない。質問は回答、変更指示は型付きProposal→影響・credit・権限確認→共通Commandへ変換する。
 - 初期はdesktopを標準とし、mobile Office Chatは後続。3D表現は性能・accessibilityに応じ段階縮退する。
 - アプリ内FAQチャットを全Planへ提供し、画面Contextと接続診断から回答する。解決不能時は問い合わせへつなぎ、Premiumの優先有人対応とEnterpriseの個別SLAを分ける。

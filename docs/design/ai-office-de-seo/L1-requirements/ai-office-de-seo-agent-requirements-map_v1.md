@@ -63,7 +63,7 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 
 | 層 | 役割 | 例 |
 |---|---|---|
-| Office Persona Interaction | Officeペルソナによる会話、説明、探索、詳細操作、変更案、Task化 | キーワード選定理由の説明、月次方針の調整、分析結果の深掘り |
+| Office Persona Interaction | OfficeペルソナによるTask状態、工程、待機理由、成果要約、通常ビューの次確認先の説明 | 執筆工程の説明、公開待機理由、完了成果の要約、S1／S2／S5への案内 |
 | Advisory Reasoning | 指定されたOfficeペルソナまたはPlanning／QA Executorが決定論的な集計・診断を読み、意味付け、仮説、Recommendation、追加確認を提示 | 順位低下要因、CV導線、サイト認知への貢献、改善順序 |
 | Agentic Execution | Workflow、Ticket、Pack、Executorで成果を生成・検査・配置する | 新規記事、リライト、QA、Repair、CMS Automation |
 

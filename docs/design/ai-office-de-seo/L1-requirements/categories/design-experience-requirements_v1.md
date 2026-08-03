@@ -33,7 +33,7 @@ updated_at: 2026-07-30
 
 ### REQ-DESIGN-01 状態の同一性
 
-通常ビュー、Agent Officeビュー、通知、詳細画面は同じjob・Recommendation・承認・障害の正本状態を共有し、同じ対象を矛盾する状態で表示しない。Agent Officeは独自の部屋、会話、探索、詳細設定、Agent指示、表示状態を持てるが、公開・課金・承認・job完了等の業務事実を別管理しない。表示状態は `REQ-SCREEN-04/05/11` の正本状態とeventから導出し、演出の完了を処理完了として表示しない。
+通常ビュー、Agent Officeビュー、通知、詳細画面は同じjob・Recommendation・承認・障害の正本状態を共有し、同じ対象を矛盾する状態で表示しない。Agent Officeは独自の部屋、Agent、会話、Task監視表現を持てるが、成果分析、設定、公開、課金、承認、job完了等の業務事実を別管理しない。表示状態は `REQ-SCREEN-04/05/11` の正本状態とeventから導出し、演出の完了を処理完了として表示しない。
 
 ### REQ-DESIGN-02 情報階層・平易な用語
 
@@ -67,17 +67,17 @@ Agent Officeは「仕事をしている様子」を伝える体験層であり�
 
 ### REQ-DESIGN-09 通常ビューと仮想Officeの役割
 
-初回ログインと日常業務の正規入口は通常ビューとし、Recommendationの採否、承認、基本設定、費用確認等を少ない判断と操作で完了できる簡単操作面とする。Agent Officeは名称どおり、実行中Task、詳細情報、担当Agent、進捗、成果、Loop、蓄積Knowledgeを確認するだけでなく、通常ビューでは複雑になる詳細探索、方針調整、Agentへの指示、Workflow・Recommendation構成の変更を行う詳細運用面とする。
+初回ログインと日常業務の正規入口は通常ビューとし、Recommendationの採否、承認、設定、費用確認、成果分析を完了できる業務操作面とする。Agent Officeは名称どおり、担当AgentがTaskを実行する様子、工程、待機、判断待ち、完了、失敗、直近成果の要約を見守る監視面とする。
 
-通常ビューが推薦Keywordを提示する場合、Agent OfficeではKeyword一覧、cluster、採用・除外根拠、優先度成分、業界・目的・実績との関係を確認し、Keywordの選択条件、重み、除外、推薦の方向性を権限・変更可能範囲内で調整できる。同様に、記事制作、リライト、計測、評価、Knowledge等も、通常ビューの簡単操作とOfficeの詳細操作を対応付ける。
+通常ビューが推薦Keywordを提示する場合、Keyword一覧、Cluster、採用・除外根拠、優先度成分、業界・目的・実績との関係は通常ビューのS2で確認・変更する。Agent Officeは関連調査Taskの進捗と結果要約を表示し、詳細はContext付きlinkでS2へ戻す。記事制作、リライト、計測、評価、Knowledgeも同じ原則で、Officeは実行監視、通常ビューは分析・判断・変更を担う。
 
-通常ビューから対象Task、記事、Keyword、RecommendationのContextを維持して該当する部屋・Agent・詳細へ遷移し、Officeで変更した設定・指示・方針はversion、影響範囲、再計算対象を持って正本へ反映する。通常ビューへ戻ると元の判断位置へ復帰し、変更後のRecommendationと状態を簡潔に確認できる。
+通常ビューから対象TaskのContextを維持して該当する部屋・Agent・監視Panelへ遷移する。Officeから通常ビューへ戻ると、対象Site、Cluster、記事、Recommendation、Task、元の一覧位置を復元する。通常ビューで確定した変更と判断をOfficeのTask状態へ反映する。
 
-通常ビューの各操作に詳細確認・詳細設定・根拠探索が必要な場合は、Office側に対応する詳細導線を持たせる。両画面は同じ権限、業務entity、command、eventを使用し、表示密度と操作体験だけを変える。Agentへの質問は回答に留め、業務状態を変える会話は変更案として影響とcreditを表示してから確定する。Agent Officeへ内部管理者専用の開発操作、監査logまたはdebug情報を持ち込まない。
+詳細確認、詳細設定、根拠探索、成果drill downは通常ビュー内に配置する。OfficeからAgentへ質問した場合は現在Task、工程、待機理由、成果要約を返し、状態変更が必要な場合は通常ビューの対象操作へ案内する。Agent Officeへ成果分析の複製、内部管理者専用の開発操作、監査logまたはdebug情報を持ち込まない。
 
 Officeはフロア、部屋、エレベーター、役割別Agent、ライブフィードを持つ既存モックの空間構造を基線とする。経営者がゲーム内のオフィスを訪れ、NPCが自律的に働いているような第一印象を与えつつ、各Agentの行動、会話、状態、成果を実Taskと一致させる。Agentを選択または呼びかけると、その役割、現在Task、完了成果、判断待ち、参照Knowledgeを会話的に確認できる。
 
-部屋、Agent、設備、設定項目は、ゲームにおけるショップ、装備、能力構成に相当する発見性と操作感を持たせる。ユーザーはエレベーターで担当部門へ移動し、Agentへ話しかけ、詳細情報を取得し、Agentの動き方、参照Knowledge、推薦方針、実行条件を変更できる。ただし名称、説明、結果、費用、影響はSEO業務の意味を保ち、ゲーム用語だけで業務判断を要求しない。
+部屋、Agent、設備は、ゲーム内のOfficeを巡って働き方を確認できる発見性を持たせる。ユーザーはエレベーターで担当部門へ移動し、Agentへ話しかけ、現在Task、参照Knowledgeの要約、待機理由、完了成果を確認できる。推薦方針、実行条件、設定の変更は通常ビューへ引き継ぎ、ゲーム用語だけで業務判断を要求しない。
 
 将来の拡張アプリは、通常ビューでは新しい機能、設定、レポートまたは連携として追加し、Agent Officeでは新しいフロア、部屋、設備、専門Agent、既存設備のupgrade等として空間へ反映できる。例えばAI可視性アプリは分析室または観測設備、Crawler logアプリは技術監視設備、追加CMS Adapterは入稿設備として表現できる。表現形式はApp ManifestのOffice Scene Extensionで宣言し、同じ機能を二重実装しない。
 
@@ -93,7 +93,7 @@ Agent Officeは2D画像を配置した現行モックから、奥行き、カメ
 
 ### REQ-DESIGN-11 Loop・Knowledge Graph表現
 
-Agent Officeの詳細情報は内部ログの時系列表示だけにせず、目的、Recommendation、Keyword cluster、記事、Task、成果、計測、評価、学習、次回Recommendationの関係を、LoopおよびKnowledge Graphとして探索できる表現を持つ。nodeとedgeは正本entity・event・version・根拠から導出し、存在しない因果関係やAgentの架空行動を生成しない。
+Agent Officeは内部ログの時系列表示だけにせず、目的、Recommendation、記事、Task、成果要約、次工程の関係を、実行Loopとして監視できる表現を持つ。成果分析用のKeyword Cluster、計測、評価、学習の詳細Graphは通常ビューへ置き、Officeは要約nodeと通常ビューへのlinkだけを持つ。nodeとedgeは正本entity・event・versionから導出し、存在しない因果関係やAgentの架空行動を生成しない。
 
 Graphは全件を一度に描画せず、選択対象を中心に必要範囲だけ展開し、期間、Site、目的、Agent、状態で絞り込む。視覚表現と同じ内容を一覧・詳細でも確認でき、Task History、記事遍歴、Recommendation理由、Knowledge設定へ相互遷移できる。
 
@@ -111,7 +111,7 @@ mobile対応は初期リリースの必須範囲外とする。後続versionで�
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。
 - [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。
-- [ ] AC-L1-DESIGN-09: 通常ビューの簡単操作から同じ権限・業務正本のままOfficeの詳細へ移動し、会話による変更案の影響・creditを確認して確定し、再計算結果を両画面へ同期できる。
+- [ ] AC-L1-DESIGN-09: 通常ビューから同じTask ContextでOfficeの実行監視へ移動し、Officeから成果分析・設定・承認の通常画面へ復帰でき、通常ビューの結果をOfficeへ同期できる。
 - [ ] AC-L1-DESIGN-10: Officeを標準3D、簡略3D、軽量2Dへ切り替えても、同じTask状態・詳細・会話・操作を利用できる。
-- [ ] AC-L1-DESIGN-11: Recommendationから制作・計測・評価・学習・次回Recommendationまでを実entityに基づくLoop／Knowledge Graphと一覧の両方で追跡できる。
+- [ ] AC-L1-DESIGN-11: Officeでは実entityに基づくTask実行Loopを監視し、計測・評価・学習の詳細GraphはContext付きlinkから通常ビューで追跡できる。
 - [ ] AC-L1-DESIGN-12: 初期リリースがdesktop標準として成立し、後続mobile Chatへ通知・確認・説明・修正指示を追加してもdesktop業務の正本を分岐させない。

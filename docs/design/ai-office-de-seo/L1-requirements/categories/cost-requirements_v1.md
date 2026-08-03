@@ -34,6 +34,8 @@ updated_at: 2026-07-30
 
 固定費、変動費、準変動費を区別する。クレジット対象外の処理も原価ゼロとして扱わない。
 
+顧客成果の市場補正に使う検索volume、外部順位、AIO・listing出現率は外部データ費へ計上する。Provider Cost Tableはprovider、endpoint／dataset、地域、device、取得単位、単価version、取得頻度、cache hit、再取得、失敗費用、対象Plan Capacityを持つ。GSC・CMS・自前Trackerによる基本成果表示は全Plan、外部SERP市場補正も全Planの重点Clusterへ月次提供し、Plan差は機能ON／OFFではなく観測Cluster・Keyword・地域・device・追加再取得のCapacityで管理する。具体上限はβ原価実測後にPlan Configurationへ登録する。
+
 決済原価はPayment処理、Subscription管理、税計算、通貨換算、返金、chargeback、銀行振込等を分け、売上総額へ単一率を固定しない。Stripe標準構成の初期見積は国内カード3.6%＋Billing 0.7%＝4.3%とするが、実績は支払方法、利用製品、契約rate、発生日を持つProvider Cost Tableから計算する。Enterprise等の高額契約はカードと銀行振込の回収原価を比較する。
 
 ## 3. コスト帰属単位  ［REQ-COST-03］
@@ -108,6 +110,7 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 - テナント・サイト当たり月次原価
 - Provider/モデル別token・cache・retry原価
 - 外部データ取得単価とcache hitによる削減額
+- 成果補正用SERP／AIO／listingのPlan別観測件数、取得単価、再取得率、availability
 - DB/ストレージ増加量と単価
 - 見積誤差、失敗原価、返金原価
 - 人的サポート・コンサル原価
@@ -133,7 +136,7 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 
 ## 10. 受入条件
 
-- [ ] AC-L1-COST-01: コストが分類され、tenant/site/workflow/job/stage/attemptへ帰属できる。
+- [ ] AC-L1-COST-01: コストが分類され、tenant/site/workflow/job/stage/attemptへ帰属でき、成果補正用SERP／AIO／listingをProvider Cost TableとPlan Capacityへ追跡できる。
 - [ ] AC-L1-COST-02: expected/reserved/worst-caseを実行前に算出できる。
 - [ ] AC-L1-COST-03: 見積式、単価、route、workflowのversionを後から再現できる。
 - [ ] AC-L1-COST-04: retry、fallback、repair、外部再取得が元ジョブ原価へ含まれる。

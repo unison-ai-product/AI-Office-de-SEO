@@ -30,7 +30,7 @@ updated_at: 2026-08-03
 | `REQ-SEC-*` | security、budget、observability | security access、non-functional、measurement operations | 詳細controlは有効、顧客権限は現行認可modelへ移行 |
 | `REQ-DUR-*` | 開発順、可用性、復旧 | non-functional、technical architecture、incident warranty、AWS Operations／Recovery Map（L3: `../L3-implementation/ai-office-de-seo-aws-operations-recovery-map_v1.md`） | Roadmap履歴は監査用。RPO/RTO等は分類別正本 |
 | `REQ-ADM-*` | 内部管理、設定、監査 | platform administration、measurement operations、security access | 管理画面詳細は有効、顧客面と分離 |
-| `REQ-AOUI-*` | Office UI | design experience、screen operation、Agent Office UI | Office体験詳細は有効。監視専用記述はsuperseded |
+| `REQ-AOUI-*` | Office UI | design experience、screen operation、Agent Office UI | Officeは実Task監視面。成果分析・設定・承認は通常ビューを正本とし、旧い詳細操作面記述はsuperseded |
 | `REQ-NAV-*`／`REQ-UJ-*` | Navigation／Journey | screen operation、design experience、business lifecycle | アクセシビリティ・遷移詳細は有効、業務順はLifecycle優先 |
 | `REQ-SRC-*` | 外部Source／Crawler | integration、cost、technical architecture | Source詳細は有効、販売範囲は分類別正本 |
 
@@ -45,5 +45,5 @@ updated_at: 2026-08-03
 ## 4. 完了条件
 
 - 新規実装の根拠が旧IDだけになっていない。
-- 旧価格、旧Role、一律承認、Office監視専用、WP専用内部設計が現行fixtureへ入らない。
+- 旧価格、旧Role、一律承認、Office内の成果分析・詳細設定、WP専用内部設計が現行fixtureへ入らない。
 - 旧詳細を削除する場合も、Trace、Contract、testから参照されていないことをCIで確認する。

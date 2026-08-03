@@ -111,7 +111,7 @@ Feature ProviderがMCP等の動的Discoveryを利用する場合も、接続先�
 
 自動投稿、定期実行、イベント駆動Task、Agentへの会話指示は、設定した顧客ユーザーの権限をAgentへ恒久付与する仕組みにしない。Automation Policyは、設定者、対象Site、許可operation、上限、予算、同意version、有効期間、停止条件を持つ委任契約として保存する。job起動時と外部変更・公開等の副作用直前に、service principal、委任契約、対象resource、現在policyを組み合わせて再認可する。
 
-自動運用ON、最初の15記事の承認完了、Agent Officeの詳細操作、会話による変更案、内部Managerの代理操作のいずれも、tenant境界、顧客Permission、公開対象、予算、外部接続Scopeを拡張する根拠にしない。設定者の退会・権限喪失、委任期限切れ、Site移管、接続変更、Kill Switch時は新規副作用を停止し、既存jobを安全な確認待ちへ遷移させる。
+自動運用ON、最初の15記事の承認完了、Agent Officeから通常ビューへの遷移、内部Managerの代理操作のいずれも、tenant境界、顧客Permission、公開対象、予算、外部接続Scopeを拡張する根拠にしない。設定者の退会・権限喪失、委任期限切れ、Site移管、接続変更、Kill Switch時は新規副作用を停止し、既存jobを安全な確認待ちへ遷移させる。
 
 ### REQ-ACCESS-17 データ利用・外部送信境界
 
