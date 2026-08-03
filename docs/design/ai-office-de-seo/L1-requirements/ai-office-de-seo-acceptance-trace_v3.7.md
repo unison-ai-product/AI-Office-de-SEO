@@ -442,7 +442,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DATA-04: stale・incompleteな派生値を識別し再取得できる。 ｜ 検証: REQ-DATA-04 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-05: 未変更記事が再取得・再解析されない。 ｜ 検証: REQ-DATA-05 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-06: Recommendation Itemから理由、費用、リスクを表示できる。 ｜ 検証: REQ-DATA-06 ｜ 正本: `categories/data-requirements_v1.md`
-- [ ] AC-L1-DATA-07: 施策、獲得キーワード、順位、確実なページ遷移・CV、公開・更新の遍歴が、過剰な詳細ログなしで追跡できる。 ｜ 検証: REQ-DATA-07 ｜ 正本: `categories/data-requirements_v1.md`
+- [ ] AC-L1-DATA-07: 施策、獲得キーワード、順位、確実なページ遷移・CV、公開・更新の遍歴を追跡でき、Trackerの恒久保存が日別集計と欠損・除外countに限定され、user／session／複数ページ経路の保存tableが存在しない。 ｜ 検証: REQ-DATA-07 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-08: 保存量と索引量が設定上限を超えて無制限に増加しない。 ｜ 検証: REQ-DATA-08 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-09: エクスポート、削除、移管の対象と結果を監査できる。 ｜ 検証: REQ-DATA-09 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-10: 横断集計から顧客、Site、URLを特定できない。 ｜ 検証: REQ-DATA-10 ｜ 正本: `categories/data-requirements_v1.md`
@@ -497,7 +497,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### integration-requirements_v1
 
-- [ ] AC-L1-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。 ｜ 検証: REQ-INT-01 ｜ 正本: `categories/integration-requirements_v1.md`
+- [ ] AC-L1-INT-01: 初期Trackerが本文・フォーム値・user／session ID・複数ページpathを送らず、version付き契約でpage view、単ホップ遷移、明示CTA、指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。 ｜ 検証: REQ-INT-01 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。 ｜ 検証: REQ-INT-02 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。 ｜ 検証: REQ-INT-03 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。 ｜ 検証: REQ-INT-04 ｜ 正本: `categories/integration-requirements_v1.md`
@@ -523,8 +523,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - [ ] AC-L1-MEASURE-01: 同一のページ遷移から再現可能なイベント結果が得られる。 ｜ 検証: REQ-MEASURE-01 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-MEASURE-02: 複数CV Goalを検索インテント・月次目的・記事目的へ接続し、定義versionと重複規則に従ってCVを計上し、CTA施策を変更月と累積で評価できる。 ｜ 検証: REQ-MEASURE-02 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
-- [ ] AC-L1-MEASURE-03: 生イベントが期限後に集約・削除され、記事遍歴と施策評価は維持される。 ｜ 検証: REQ-MEASURE-03 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
-- [ ] AC-L1-MEASURE-04: 単一の非同期Trackerでpage view、明示CTA、到達URL CVを計測でき、未提供の高度計測を読み込まずページ表示を阻害しない。 ｜ 検証: REQ-MEASURE-04 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-03: 生イベントが日×URL、単ホップ遷移、CTA、URL×Goalへ集約後に期限削除され、user／session／複数ページ経路を残さず、記事遍歴と施策評価は維持される。 ｜ 検証: REQ-MEASURE-03 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-04: 単一の非同期Trackerでpage view、単ホップ遷移、明示CTA、到達URL CVを計測でき、同一event／CV到達の短期dedupeが機能し、未提供の高度計測を読み込まずページ表示を阻害しない。 ｜ 検証: REQ-MEASURE-04 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-MEASURE-05: 主要経路のSLO、error、latency、queue、Provider、cost、freshnessをdashboardから相関調査できる。 ｜ 検証: REQ-MEASURE-05 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-MEASURE-06: alertが影響・owner・runbookを持ち、storm集約と未応答escalationを検証できる。 ｜ 検証: REQ-MEASURE-06 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-MEASURE-07: 定常復旧操作を本番DB直接更新なしでrunbookどおり実行・rollback・監査できる。 ｜ 検証: REQ-MEASURE-07 ｜ 正本: `categories/measurement-operations-requirements_v1.md`

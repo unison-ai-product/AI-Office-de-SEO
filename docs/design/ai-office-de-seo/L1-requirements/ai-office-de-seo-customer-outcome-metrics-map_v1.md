@@ -23,11 +23,11 @@ updated_at: 2026-08-03
 
 | 分類 | 判定 | 成果数 | 評価context |
 |---|---|---|---|
-| `ai_office_publication` | Publication Command／DeliveryとCMS反映eventが同じcorrelation・対象・versionで検証済み | AI Office公開・更新実績へ算入 | AI Office施策の評価対象 |
-| `external_change` | Thin Plugin署名Webhook等で検知した変更に一致するAI Office Commandがない | AI Office実績から除外 | 順位・流入・CVの交絡要因として対象期間へ付与 |
+| `ai_office_publication` | Publication Command／Delivery、外部post ID、対象version／content hash、CMS反映eventが同じcorrelationで検証済み | AI Office公開・更新実績へ算入 | AI Office施策の評価対象 |
+| `external_change` | Thin Plugin署名Webhook等で検知した変更に一致するAI Office Commandがない | AI Office実績から除外 | 変更分類に応じ、実質本文等はSEO、CTA／導線はCVの交絡要因、軽微変更は履歴だけへ付与 |
 | `unknown_source` | event欠損、correlation不成立、接続切替中 | いずれにも算入しない | 「取得元確認中」として評価準備中へ送る |
 
-変更検知の主経路は `REQ-INT-05` とCMS Connection Routing MapのThin Plugin署名Webhookとする。外部変更のtitle、見出し、本文、CTA、内部link等の変更分類は `REQ-LOGIC-13` を使用する。
+変更検知は `REQ-INT-05` とCMS Connection Routing MapのSite別primary経路を使用し、WordPress Thin Plugin署名Webhookが利用可能な場合は優先する。`unknown_source`は再照合期限までDelivery結果、外部post ID、version／hash、変更eventを再照合し、確定後に元分類を上書きせずattribution eventを追記する。期限後も不明ならunknownを維持し、AI Office実績または外部変更へ推測配分しない。外部変更のtitle、見出し、本文、CTA、内部link等の変更分類は `REQ-LOGIC-13` を使用する。実質変更は該当するSEO／CV評価の交絡要因、軽微変更は履歴のみとし、外部変更というsource分類だけで全評価を無効化しない。
 
 ## 3. 順位段階
 

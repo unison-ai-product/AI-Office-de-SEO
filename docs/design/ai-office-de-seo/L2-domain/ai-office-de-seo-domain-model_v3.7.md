@@ -66,7 +66,8 @@ Site設定・接続
 | Strategy → Recommendation | MonthlyStrategy | 目的、重点領域、記事配分、予算配分、保護対象、期間、version |
 | Recommendation → Production | RecommendationIntake | 施策、Cluster、記事目的、Intent、CTA、内部Link、品質、予算、根拠、version |
 | Production → CMS Publication | ContentDeliveryPackage | 成果物、差分、装飾、画像参照、QA結果、承認条件、idempotency key |
-| CMS Publication → Customer Outcome | PublicationFact | AI Office経由／外部変更、URL、公開／更新時刻、変更種別、記事version |
+| CMS Publication → Customer Outcome | PublicationFact | AI Office経由／外部変更／取得元確認中、URL、外部post ID、Delivery／correlation、対象version／hash、公開／更新時刻、変更種別 |
+| Conversion Measurement → Customer Outcome | DailyUrlGoalAggregate | 日×URL×Goal、直前遷移元の単ホップ集計、source、定義version。user／session／経路は持たない |
 | Measurement → Strategy | InterventionOutcome | Keyword段階、CV、認知寄与、市場影響、評価可否、観測窓、version |
 
 ### 1.3 CommandとDomain Event

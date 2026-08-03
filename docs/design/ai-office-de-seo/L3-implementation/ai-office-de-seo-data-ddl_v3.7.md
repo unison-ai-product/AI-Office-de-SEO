@@ -58,10 +58,12 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をPostgreSQLの論理DDLへ写像す
 
 ## 3. Search Performance（GscDataMart / CoverageAssessment / RewriteCandidate 集約）
 
-対象: gsc_site_metrics_daily / gsc_page_metrics_daily / gsc_query_metrics_daily / gsc_page_query_metrics_daily、gsc_ingest_metadata（匿名化・切り捨て・取得次元・データ日）、coverage_assessments、query_drift、rewrite_candidates（28d比較・cv_28d・keyword_match_score・cannibalization_score・rewrite_priority_score・rewrite_reason）、cv_daily。
+対象: gsc_site_metrics_daily / gsc_page_metrics_daily / gsc_query_metrics_daily / gsc_page_query_metrics_daily、gsc_ingest_metadata（匿名化・切り捨て・取得次元・データ日）、coverage_assessments、query_drift、rewrite_candidates（28d比較・cv_28d・keyword_match_score・cannibalization_score・rewrite_priority_score・rewrite_reason）、page_views_daily、transitions_daily、cta_events_daily、cv_daily、cv_previous_page_daily、tracker_ingest_quality_daily、publication_facts、publication_attribution_events。
 根拠: REQ-PRODUCT-05、REQ-KGA-05/06/08/11、REQ-WPA-05、REQ-SEC-11。検証: AC-KGA-03/04/06/11/12, AC-CV-01。
 
 - 保持の確定事項（v3.7.1で解消済みの矛盾を踏襲）: GSC/CV日次実績は判定正本として日次粒度で保持（初期16か月・要調整）。1週間保持は日次より細かいリアルタイム系のみ。月/年集約は日次正本から導出（REQ-KGA-08）。
+- Trackerの恒久tableは集計tableだけとする。`page_views_daily=day×url`、`transitions_daily=day×previous_url×current_url`、`cta_events_daily=day×url×cta`、`cv_daily=day×conversion_url×goal`、`cv_previous_page_daily=day×previous_url×conversion_url×goal`を一意keyとし、count、excluded_count、missing_count、definition_versionを保持する。個別event、user、session、occurrence、複数ページpathを保存するtableを作らない。event IDとoccurrence IDのhashは期限付きdedupe cacheだけへ置き、TTL後に削除する。
+- `publication_facts`はSite、article、external post ID、operation、observed_at、source event、target version／content hash、Delivery／Command／correlation参照を持つ。`publication_attribution_events`はfactごとに`ai_office_publication / external_change / unknown_source`、reason、rule version、reconcile期限、確定時刻をappend-onlyで保持する。現在分類は最新eventから導出し、unknownを時刻近似でAI Office実績へ配分しない。外部変更の影響分類は別のchange classificationを参照し、軽微変更だけでSEO／CV評価を無効化しない。
 - TODO(L3): パーティション設計（日次・大規模サイト）、月次/年次集約テーブル、BigQuery Bulk Export併用時の取り込み経路（REQ-KGA-11）。
 
 ## 4. Generation / Quality / Rewrite（GenerationJob / QualityGateEvaluation / RewriteJob 集約）

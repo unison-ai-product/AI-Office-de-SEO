@@ -45,6 +45,8 @@ updated_at: 2026-07-30
 
 リリース時はCMS非依存の単一JavaScript Trackerで、ページ表示、遷移元・遷移先、明示CTA・button識別子、指定サンクスページ到達を取得できなければならない。記事本文、フォーム入力内容、不要な個人情報を送信せず、同意状態、Site識別子、イベントID、発生時刻、tracker versionを付与する。WordPressではThin Pluginを標準のTracker設置・接続導線とし、非WordPressではscript設置を使用する。計測ロジックの正本はTrackerに置き、Pluginへ重複実装しない。
 
+Trackerの受信契約は `schema.tracker.event.v1` とし、`site_id / event_id / event_type / occurred_at / current_url / previous_url? / cta_id? / goal_id? / consent_state / tracker_version / definition_version`だけを許可する。user ID、session ID、複数ページpath、フォーム値、本文、任意DOM payloadを送らない。`previous_url`は当該eventの直前遷移元を表す単ホップ値であり、Server側でsessionへ連結しない。再送は同じ`event_id`を使い、Serverは期限付き重複排除後に集計して生eventを削除する。
+
 ### REQ-INT-02 計測契約の更新
 
 計測イベントschemaとTrackerはversion管理し、後方互換期間、対応するサーバーversion、段階更新、失敗時停止、rollbackを持つ。計測項目の追加は、データ量、保守負担、確実性、利用目的を評価し、人員・運用余力を確保したリリース後のversion upとして追加できる。Site設定変更だけで対応可能な項目はserver-side configurationで配信する。
@@ -132,7 +134,7 @@ CMS APIが成功を返しただけでは`verified`にせず、外部post参照�
 
 ## 受入条件
 
-- [ ] AC-L1-INT-01: 初期Trackerが本文・フォーム値を送らず、ページ遷移と指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。
+- [ ] AC-L1-INT-01: 初期Trackerが本文・フォーム値・user／session ID・複数ページpathを送らず、version付き契約でpage view、単ホップ遷移、明示CTA、指定CVを取得でき、WordPressではThin Plugin、非WordPressではscriptで設置できる。
 - [ ] AC-L1-INT-02: Trackerとイベントschemaを互換性確認後に段階更新・rollbackできる。
 - [ ] AC-L1-INT-03: 外部分析連携が停止しても初期の自前計測を継続できる。
 - [ ] AC-L1-INT-04: GSC／URL Inspectionのクォータとavailabilityを保持してインデックス状態を取得し、取得不能を正常扱いせずユーザー対応へ接続できる。

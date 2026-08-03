@@ -596,7 +596,21 @@ L2 §5 のイベント（GenerationJobStarted / OutlineContractFrozen / QualityG
 
 - 共通: `{ event_id, event_type, occurred_at, tenant_id, site_id?, job_id?, actor, payload, schema_version }`。
 - 用途: Observability購読（REQ-SEC-13）、Agent Officeの活動可視化（REQ-AOUI-04。キャラ状態＝待機/作業/完了/エラーはこのイベントから導出）、監査。
-- payload Catalogは少なくとも次を固定する。`site.build_*={build_run_id,stage,stage_state,released_capabilities[],progress}`、`keyword.report_*={report_id,report_type,source_version,status}`、`plan.monthly_*={plan_id,period,version,status}`、`plan.weekly_execution_selected={selection_id,week,selected_item_refs[],deferred_item_refs[]}`、`recommendation.*={recommendation_id,version,state,reason_codes[]}`、`job/stage/ticket/snapshot.*={workflow_key,stage,ticket_id?,snapshot_id?,state,reason_code?}`、`quality.gate_*={snapshot_id,gate_key,verdict,hard_gate_block}`、`publish.decision_recorded={decision_id,operation,decision,reason_codes[],consent_ref?}`、`publish.*={external_post_id?,operation,state}`、`evaluation.intervention_*={evaluation_id,checkpoint_month,scope_ref,state,outcome?}`、`billing.credit_*={ledger_entry_id,lot_id?,amount,unit,state}`、`connection.*={connection_id,capability,state,reason_code?}`。payloadに本文、secret、Provider生responseを含めない。画面モックも同じevent typeとpayload versionを使用する。
+- payload Catalogは少なくとも次を固定する。`site.build_*={build_run_id,stage,stage_state,released_capabilities[],progress}`、`keyword.report_*={report_id,report_type,source_version,status}`、`plan.monthly_*={plan_id,period,version,status}`、`plan.weekly_execution_selected={selection_id,week,selected_item_refs[],deferred_item_refs[]}`、`recommendation.*={recommendation_id,version,state,reason_codes[]}`、`job/stage/ticket/snapshot.*={workflow_key,stage,ticket_id?,snapshot_id?,state,reason_code?}`、`quality.gate_*={snapshot_id,gate_key,verdict,hard_gate_block}`、`publish.decision_recorded={decision_id,operation,decision,reason_codes[],consent_ref?}`、`publish.*={delivery_id?,external_post_id?,operation,state,target_version?,content_hash?,correlation_id,source_event_id?}`、`publication.attribution_*={attribution_id,publication_fact_id,classification,reason_codes[],rule_version,reconcile_by?}`、`evaluation.intervention_*={evaluation_id,checkpoint_month,scope_ref,state,outcome?}`、`billing.credit_*={ledger_entry_id,lot_id?,amount,unit,state}`、`connection.*={connection_id,capability,state,reason_code?}`。payloadに本文、secret、Provider生responseを含めない。画面モックも同じevent typeとpayload versionを使用する。
+
+### 5.1 Tracker ingressと集計契約
+
+`schema.tracker.event.v1`は業務Domain Event共通Envelopeとは分離した公開ingress契約とする。
+
+```text
+{
+  site_id, event_id, event_type(page_view|transition|cta|conversion), occurred_at,
+  current_url, previous_url?, cta_id?, goal_id?, occurrence_id?,
+  consent_state, tracker_version, definition_version
+}
+```
+
+`occurrence_id`は同一CV到達の再読込・戻る操作を処理TTL内で重複排除する場合だけ使用し、永続tableへ保存しない。受信契約は追加fieldを既定拒否し、user ID、session ID、cookie ID、IP永続値、複数ページpath、フォーム値、本文、DOM断片を許可しない。集計出力は `schema.measurement.daily.v1` とし、`day / site_id / metric_kind / current_url / previous_url? / cta_id? / goal_id? / count / excluded_count / missing_count / definition_version`を持つ。`previous_url`を連結して経路を復元しない。
 
 ## 6. 契約検証（REQ-SEC-13）との対応
 

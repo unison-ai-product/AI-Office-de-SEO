@@ -52,13 +52,15 @@ CTA施策は変更月と累積の双方で、対象記事、記事目的、CTA�
 
 ### REQ-MEASURE-03 軽量保持
 
-詳細イベントは推薦・施策効果の判定に必要な最小項目だけを取得し、短期保持後に記事・日・イベント種別単位へ集約する。生イベントの保持期間、Site当たり上限、遅延到着、削除、再集計を定義し、分析要望ごとに無制限なイベント項目を追加しない。
+詳細イベントは推薦・施策効果の判定に必要な最小項目だけを取得し、短期保持後に日×URL、日×遷移元×遷移先、日×URL×CTA、日×到達URL×Goal、日×直前遷移元×到達URL×Goalへ集約する。生イベントの保持期間、Site当たり上限、遅延到着、削除、再集計を定義し、分析要望ごとに無制限なイベント項目を追加しない。個別user／sessionを集約keyにせず、単ホップ集計から複数ページ経路を復元しない。
 
 ### REQ-MEASURE-04 軽量Tracker
 
 初期計測はCMS内部ロジックへ密結合せず、非同期で読み込む単一のversion付きJavaScript Trackerを使用する。初期自動取得はpage viewとURL遷移に限定し、CTAは明示的なdata属性または登録selector、CVは設定済み到達URLで判定する。送信はページ表示を妨げない `sendBeacon` 等の非同期経路とし、失敗してもページ操作を停止しない。
 
 Trackerはcookie、常時heartbeat、MutationObserverによる全DOM監視、全click自動取得、heatmap、session replay、フォーム入力取得、スクロール高頻度送信を初期機能に含めない。設定はサーバー側のSite Configurationで変更し、計測項目の追加だけを理由にSite側scriptを頻繁に差し替えない。
+
+再送重複は同一`event_id`の期限付きdedupeで除外する。サンクスページの再読込・戻る操作は、Clientが同一CV到達について保持する短期`occurrence_id`を再利用し、Serverはhash化したdedupe keyを処理TTL内だけ保持する。これは個人・session・経路の識別子として保存せず、TTL後は集計値と重複除外countだけを残す。Clientが同一到達を識別できない場合は推測で除外せず、計測制約としてavailabilityへ記録する。
 
 ### REQ-MEASURE-05 運用Telemetry・Dashboard
 
@@ -118,7 +120,11 @@ Activationは顧客が初回価値を受け取った時点として、`Site設�
 
 顧客成果はSite全体、Keyword Cluster、記事の3階層で保持する。通常ビューのS1／S2／S5はRecommendation主導の要約と簡単なdrill downを提供する。Agent OfficeのA0〜A8は同じ成果Projectionを、Task、Agent、Recommendation、根拠、市場影響、変更履歴と横断する玄人向け詳細分析として表示する。Officeで成果値を別計算せず、条件変更は型付きProposalと共通Commandを使用する。詳細な画面割当ては `ai-office-de-seo-customer-outcome-metrics-map_v1.md` を正本とする。
 
-公開・更新実績はAI OfficeのPublication CommandとCMS反映結果が同一correlationへ接続したものを主実績とする。Thin Plugin署名付きWebhook等で検知したCMS直接変更は `external_change` として分離し、AI Office実績数へ含めない。ただし、対象期間の順位、流入、CVをAI Office施策の成果として判定するときは交絡要因へ必ず含め、外部変更後の改善をAI Office単独成果と表示しない。
+公開・更新実績はAI OfficeのPublication Command、Delivery、外部post ID、対象version／content hash、CMS反映結果が同一correlationへ接続したものだけを`ai_office_publication`として主実績へ算入する。検知変更に一致するAI Office Command／Deliveryがない場合は`external_change`としてAI Office実績数から除外する。event欠損、correlation不成立、接続切替、複数候補等で帰属を確定できない場合は`unknown_source`としていずれにも算入せず、再照合期限・不足source・次回probeを持つ「取得元確認中」へ送る。時刻の近さだけでAI Office実績へ推定帰属しない。
+
+WordPressで利用可能な場合の優先経路はThin Plugin署名付きWebhookとし、利用不能なSiteではCMS Connection Routing Mapが選んだnative webhook、REST modified、RSS／sitemap等の観測sourceを使用する。検知経路の違いを成果source分類そのものへ混入させず、provenanceとconfidenceを保持する。
+
+`external_change`の存在と成果への影響は分けて判定する。title、主要見出し、本文等の実質変更はSEO評価、CTA、遷移先、CV導線の変更はCV評価の交絡要因へ含め、外部変更後の改善をAI Office単独成果と表示しない。誤字、余白、色、意味を変えない装飾等は変更履歴へ残すが、それだけでSEO／CV評価全体を「評価準備中」にしない。分類は`REQ-LOGIC-13`の決定論結果とrule versionを参照する。
 
 順位の顧客向け段階は、割当Clusterに対するGSC URL×Queryのimpression加重平均掲載順位を7日移動窓で算出し、`圏内到達=50位以内、上位化=10位以内、トップ確保=3位以内` とする。100位以内は内部進捗signalに限定し顧客向け成果名にしない。外部順位計測はGSC欠損時または固定Keywordの補助観測とし、sourceを明示してGSC値へ混合しない。段階下降には別の退出閾値と継続日数を持つhysteresisを適用し、単日値で段階を往復させない。`protect` はリライト抑制等の運用flagであり、成果段階と別field・別表示にする。
 
@@ -130,8 +136,8 @@ CVは `REQ-WPA-05`、`REQ-INT-01/03` を優先し、自前JavaScript Trackerの�
 
 - [ ] AC-L1-MEASURE-01: 同一のページ遷移から再現可能なイベント結果が得られる。
 - [ ] AC-L1-MEASURE-02: 複数CV Goalを検索インテント・月次目的・記事目的へ接続し、定義versionと重複規則に従ってCVを計上し、CTA施策を変更月と累積で評価できる。
-- [ ] AC-L1-MEASURE-03: 生イベントが期限後に集約・削除され、記事遍歴と施策評価は維持される。
-- [ ] AC-L1-MEASURE-04: 単一の非同期Trackerでpage view、明示CTA、到達URL CVを計測でき、未提供の高度計測を読み込まずページ表示を阻害しない。
+- [ ] AC-L1-MEASURE-03: 生イベントが日×URL、単ホップ遷移、CTA、URL×Goalへ集約後に期限削除され、user／session／複数ページ経路を残さず、記事遍歴と施策評価は維持される。
+- [ ] AC-L1-MEASURE-04: 単一の非同期Trackerでpage view、単ホップ遷移、明示CTA、到達URL CVを計測でき、同一event／CV到達の短期dedupeが機能し、未提供の高度計測を読み込まずページ表示を阻害しない。
 - [ ] AC-L1-MEASURE-05: 主要経路のSLO、error、latency、queue、Provider、cost、freshnessをdashboardから相関調査できる。
 - [ ] AC-L1-MEASURE-06: alertが影響・owner・runbookを持ち、storm集約と未応答escalationを検証できる。
 - [ ] AC-L1-MEASURE-07: 定常復旧操作を本番DB直接更新なしでrunbookどおり実行・rollback・監査できる。

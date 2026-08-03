@@ -397,16 +397,21 @@
           "forbidden_patterns": [
             "複数ページ.{0,40}(経路|session).{0,40}(保存する|復元する|帰属する)",
             "multi[- ]?touch attribution.{0,30}(提供する|表示する|算出する)",
-            "アシストCV.{0,30}(として表示|として計上|を算出)"
+            "アシストCV.{0,30}(として表示|として計上|を算出)",
+            "(?:匿名)?セッション.{0,30}(?:最小データ|集計key|保存単位|保持する)",
+            "(?:tracker|Tracker).{0,60}(?:session_id|session ID|個別session).{0,30}(?:送信|保存|保持)"
           ],
           "bad_fixtures": [
             "複数ページの経路を保存する。",
             "multi-touch attributionを提供する。",
-            "アシストCVとして表示する。"
+            "アシストCVとして表示する。",
+            "匿名セッションを最小データとして保持する。",
+            "Trackerはsession_idを送信して保存する。"
           ],
           "good_fixtures": [
             "直前遷移元だけを単ホップ集計する。",
-            "複数ページのsession・経路を保存・復元せず、アシストCVとは表示しない。"
+            "複数ページのsession・経路を保存・復元せず、アシストCVとは表示しない。",
+            "Trackerはuser・sessionを送らず、受信eventを日別集計後に削除する。"
           ]
         }
       ]
@@ -419,16 +424,25 @@
       "invariants": [
         {
           "invariant_id": "INV-PUBATTR-001",
-          "statement": "CMS直接変更はAI Office公開・更新実績から除外し、成果判定の交絡要因へ含める。",
+          "statement": "CMS変更は検証済みcorrelationだけをAI Office実績へ算入し、不一致はexternal_change、不明はunknown_sourceとする。外部変更は実績から除外し、実質変更だけを該当評価の交絡要因へ含める。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md"
           ],
           "forbidden_patterns": [
-            "(?:external_change|外部変更).{0,80}(AI Office実績へ算入|主実績へ算入|施策効果として表示)"
+            "(?:external_change|外部変更).{0,80}(AI Office実績へ算入|主実績へ算入|施策効果として表示)",
+            "unknown_source.{0,60}(?:AI Office実績|external_change).{0,30}(?:推定|自動|暫定).{0,20}(?:算入|分類)",
+            "(?:誤字|余白|色|軽微変更)(?:だけで|を理由に).{0,30}(?:SEO|CV).{0,30}(?:評価不能|評価準備中|周期をリセット)"
           ],
-          "bad_fixtures": ["外部変更はAI Office実績へ算入する。"],
-          "good_fixtures": ["外部変更は実績から除外し、評価の交絡要因へ含める。"]
+          "bad_fixtures": [
+            "外部変更はAI Office実績へ算入する。",
+            "unknown_sourceはAI Office実績へ推定算入する。",
+            "軽微変更だけでSEOを評価準備中にする。"
+          ],
+          "good_fixtures": [
+            "検証済みcorrelationだけをAI Office実績へ算入する。",
+            "外部の実質変更は実績から除外し該当評価の交絡要因へ含め、軽微変更は履歴だけへ残す。"
+          ]
         }
       ]
     }
