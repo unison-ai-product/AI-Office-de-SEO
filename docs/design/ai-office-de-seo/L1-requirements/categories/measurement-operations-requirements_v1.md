@@ -1,11 +1,11 @@
 ---
 document_id: AOS-L1-MEASUREMENT-OPERATIONS-REQUIREMENTS
-title: AI Office de SEO 計測・運用要求 v1.1
-version: 1.1
+title: AI Office de SEO 計測・運用要求 v1.2
+version: 1.2
 layer: L1
 kind: measurement_operations_requirements
 status: draft
-updated_at: 2026-07-30
+updated_at: 2026-08-03
 ---
 
 # AI Office de SEO 計測・運用要求
@@ -100,6 +100,20 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 二軸は `取得高・表示高=維持／保護`、`取得高・表示低=選択性・内容・根拠・競合を診断`、`取得低・表示高=cache・第三者・過去取得等を確認し技術要監視`、`取得低・表示低=取得障害を先に診断` の決定表へ接続する。総合点だけで原因を隠さず、構成値、confidence、未観測理由、最終観測日時を保持する。
 
+### REQ-MEASURE-13 プロダクト指標・Activation・継続稼働
+
+指標は視点を明示して分離する。運営側指標は、運用Loop完了Site数をNorth Starとし、Recommendation採用率、継続稼働率、アップセルevent、契約churnを併記する。MRR、契約数、契約churnは営業・価格・外部要因の影響を受ける経営指標であり、North Starへ使用しない。経営指標の正本は `BR-KPI-001`〜`BR-KPI-008` とする。
+
+顧客側の成果指標は、顧客Siteの検索流入、獲得keywordと順位、公開・更新数、CV、cluster充足等、SEO代行の結果として顧客へ示す値であり、運営側指標へ混合しない。指標ごとの評価対象、基準期間、市場影響、availability、成果非保証、通常ビューとAgent Officeの表示契約は別要求で定義する。
+
+運用Loopは `分析・Recommendation → 採用 → 記事公開または更新のCMS反映 → 評価対象登録` で構成する。Loop完了点は、CMSが公開・更新の反映成功を返し、その施策について評価基準値、評価起点、1カ月・3カ月・6カ月の評価予定が登録された時点とする。GSCデータ取得開始だけ、Recommendation採用だけ、CMS下書き作成だけ、評価画面の閲覧だけではLoop完了にしない。月内に1回以上Loopを完了したdistinct SiteをNorth Starへ1 Siteとして数え、同一Siteの複数完了件数は診断指標へ分離する。
+
+Activationは顧客が初回価値を受け取った時点として、`Site設定完了 → CMS接続完了 → 分析・Recommendation提示 → 初回Recommendation採用による記事公開／更新のCMS反映` の4段階で計測し、第4段階をActivation到達とする。第3段階到達・第4段階未到達のSiteを最優先の改善対象として、件数、滞留時間、失敗工程、未完了理由を可視化する。分析・Recommendation提示だけをActivationとして扱わない。
+
+継続稼働の強いsignalは、Recommendation採用、記事公開／更新のCMS反映、月次計画確定のいずれかに限定する。画面閲覧、施策評価閲覧、ログイン、通知既読だけを継続稼働へ算入しない。休眠はActivation到達済みSiteだけを対象とし、`max(activation_at, last_strong_activity_at) + 30日` を到達した時点で判定する。未Activation Siteは休眠ではなくOnboarding停滞へ分類する。
+
+財務計画の月次churn 5%／10%シナリオは契約解約だけを分子にする。休眠Siteは解約へ合算せず、先行指標として別表示する。複数Siteを持つ契約ではSite休眠・Site停止を契約解約とみなさない。算式、データ源、集計周期、除外条件は `ai-office-de-seo-product-business-metrics-map_v1.md` を正本とする。
+
 ## 受入条件
 
 - [ ] AC-L1-MEASURE-01: 同一のページ遷移から再現可能なイベント結果が得られる。
@@ -114,3 +128,4 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 - [ ] AC-L1-MEASURE-10: capacity予測から対話API優先のscale・rate・batch制御を実行できる。
 - [ ] AC-L1-MEASURE-11: support事例を相関IDと解決versionへ接続し、要求・runbook・テストへ還流できる。
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。
+- [ ] AC-L1-MEASURE-13: CMS反映後の評価対象登録をLoop完了として月次distinct Siteを算出し、4段階Activation、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。

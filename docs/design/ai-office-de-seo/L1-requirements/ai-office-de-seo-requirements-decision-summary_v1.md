@@ -169,6 +169,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 障害を機能単位に封じ込め、全体停止を避ける。
 - 機械的に復旧可能な障害は即時自動復旧を目指す。人・金銭対応は営業日単位の運用とする。
 - 初期内部SLOは月間99.5%とし、機能別に計測する。契約上のSLA・service creditとは分離する。
+- 一般Planは返金を伴う可用性保証を設けず、内部SLOと公開Status Pageを提供条件とする。Enterpriseだけが個別SLAを契約でき、service creditは `REQ-BILLING-16` のappend-only調整eventとして記録する。
 - 認証、権限、契約、課金台帳、クレジット、公開命令、同意記録等の正本データは初期内部目標RPO 1時間、RTO 4時間とする。
 - AWSを第一配置先とし、CloudWatchを中心にmetrics、logs、tracesを相関させる。対象tenant、Site、記事、job、stage、Provider、失敗分類を相関IDから即時に追跡し、MTTD、MTTA、MTTI、MTTRを計測する。
 - 非同期処理はmanaged queueとDLQで隔離・再実行可能にし、静的配信・cache可能な読取はCloudFront等を利用してorigin負荷とlatencyを抑える。重いobjectや本文をtransaction databaseへ置かない。
@@ -181,6 +182,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - 一般的なWeb計測と同様、CMSへ密結合しない単一の非同期JavaScript Trackerを使用する。
 - 初期対象はpage view、URL遷移、明示CTA識別子、設定済み到達URLのCVとする。
 - WordPressではThin Pluginを標準導線とし、Trackerの自動設置、Siteペアリング、version・更新通知を提供する。計測ロジック自体はPluginへ重複実装しない。
+- 初期βのThin Pluginは自社ZIP配布＋署名付き更新とし、WordPress.org申請は後続判断とする。SaaS側S7はZIP取得、期限付きSiteペアリング、3段階セットアップ、接続・version・更新状態を持つ。
 - cookie、全click自動取得、常時heartbeat、全DOM監視、heatmap、session replay、フォーム内容取得は初期対象外とする。
 - 高度計測は人員と運用余力を確保したリリース後のversion upで追加する。
 

@@ -23,15 +23,16 @@
 | LB-03 | Stripe本番rate・採用製品・支払方法 | 本番契約、test webhook、照合試験 | Provider Cost Table／Dunning Policy | 課金本番化前 |
 | LB-04 | RPO 1h／RTO 4hの達成性 | full／tenant restore演習、整合試験 | AWS復旧ADR／Runbook | Production Hardening前 |
 | LB-05 | 顧客認可・Site境界の実強制 | API／worker／Agent／Automation負テスト | Authorization Decision Contract | 外部β前 |
-| LB-06 | CMS write／Media／Preview／RevisionのWP契約 | WP版・Editor別Contract Test、反映確認 | CMS Connection Profile | 投稿機能β前 |
+| LB-06 | CMS write／Media／Preview／Revision、自社ZIP配布・署名付き更新・SiteペアリングのWP契約実証 | WP版・Editor別Contract Test、改竄package拒否、ペアリングscope、反映確認 | CMS Connection Profile／Plugin Distribution Runbook | 投稿機能β前 |
 | LB-07 | Billing Ledger／reserve／commit／release／auto-chargeの整合 | 二重event、失敗、返金、照合fixture | Billing schema／Ledger | 有償Job開始前 |
 | LB-08 | 現行価格・契約・Plan構成・原価仮説に基づく財務モデル再生成 | 基準／保守caseの月次契約数、MRR、売上、原価、粗利、cash flow、churn、黒字転換を同一入力から再計算したversion付きmodelとreview記録 | 事業計画Financial Model。製品要求・Price Catalogの正本にはしない | 資金計画・販売目標の対外利用前 |
 | LB-09 | 規約、Privacy Policy、特商法、匿名集計・事例利用、解約・返金の法務文書と同意version | 弁護士／責任者review、同意fixture、旧version再表示・撤回試験 | Legal Document Registry／Consent Policy | 外部β募集・有償契約前 |
 | LB-10 | Google OAuth審査、GSC API利用規約、Scope・token保管・削除手順 | OAuth verification結果、規約適合review、接続／取消／削除試験 | Google Connection Policy／Security ADR | 一般顧客のGSC接続公開前 |
-| LB-11 | 公開SLO・非保証範囲、Status Page、障害告知・更新・終息運用 | SLO文書、障害訓練、Status Page fixture、顧客通知review | SLO／Incident Communication Policy | Production公開前 |
+| LB-11 | 一般Planは内部SLO＋公開Status Page・返金保証なし、Enterpriseは個別SLAという提供条件の実装・運用実証 | SLO文書、障害訓練、Status Page fixture、顧客通知review、Enterprise service credit台帳試験 | SLO／Incident Communication Policy | Production公開前 |
 | LB-12 | 適格請求書、Stripe Tax／請求書、特商法表示の実装・帳票整合 | 税務review、Stripe test invoice、返金・税額・端数照合 | Billing／Invoice Policy | 有償契約前 |
 | LB-13 | 商標・domain利用可否、成果非保証を含む販売・広告表現 | 商標調査、法務／marketing review、公開文面version | Brand／Marketing Claims Policy | 公開Site・販売資料公開前 |
-| LB-14 | North Star、activation、継続、churnの算式と計測契約 | 指標定義書、event-to-metric試算、欠損・重複fixture | Measurement Dictionary／Analytics Contract | β評価開始前 |
+| LB-14 | 決定済みの運営指標、顧客視点Activation、継続・休眠・契約churn計測契約の実装検証と初期目標校正 | event-to-metric試算、欠損・重複fixture、cohort検証、初期目標review | Measurement Dictionary／Analytics Contract | β評価開始前 |
+| LB-15 | 顧客Siteの成果指標体系（検索流入、順位、公開・更新数、CV、cluster充足等）の算式・市場補正・表示契約 | GSC／CMS／Tracker fixture、季節性・AIO・広告影響の補正検証、成果非保証review | Customer Outcome Metrics Dictionary | 顧客向け成果Dashboard確定前 |
 
 ## 4. Design decision
 
@@ -135,12 +136,12 @@ L3 Decision Tableの項目を次の分類へ必ず接続する。本表にない
 | D-27 | DD-11／DD-13 | segment、human voice、AI定型表現辞書 |
 | D-28 | DD-14 | 最低品質項目は要求済み。正式準拠水準、対象範囲、自動・手動検証方式が画面実装前の未決事項 |
 | D-29 | LB-10 | Google OAuth審査・API規約適合 |
-| D-30 | LB-06 | WordPress Plugin配布・更新経路 |
-| D-31 | LB-11 | 公開SLO／非保証方針とStatus Page運用 |
+| D-30 | decided／LB-06 | 初期βは自社ZIP配布＋署名付き更新。WordPress.org申請は後続open item、配布・ペアリング実証はLB-06 |
+| D-31 | decided／LB-11 | 一般Planは内部SLO＋公開Status Page・返金保証なし、Enterpriseだけ個別SLA。運用実証はLB-11 |
 | D-32 | LB-03／LB-12 | 適格請求書、Stripe税・請求書、特商法表示 |
 | D-33 | decided／launch作業 | 累計10社Trial方針は決定、cohort実数登録待ち |
 | D-34 | LB-13 | 商標、domain、成果非保証を含むmarketing表現規約 |
-| D-35 | LB-14 | North Star、activation、継続、churnの算式・計測定義 |
+| D-35 | decided／LB-14 | North Star、顧客視点Activation、継続、休眠、契約churnの定義は決定。実装fixtureと初期目標校正はLB-14 |
 
 ### 9.1 台帳整合規則
 

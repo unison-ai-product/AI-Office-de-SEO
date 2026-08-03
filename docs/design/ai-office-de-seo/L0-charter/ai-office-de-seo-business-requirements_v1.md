@@ -110,7 +110,7 @@ updated_at: 2026-08-03
 | BR-FIN-004 | HYPOTHESIS | 2026年4月の計画基準を148円/USD、為替バッファ10%とする。160円/USD超で料金・係数を見直す。 |
 | BR-FIN-005 | SHOULD | API価格とクレジット換算係数を四半期ごとにレビューする。 |
 | BR-FIN-006 | MUST | 300〜400円（中央値350円）は標準記事の直接AI/API原価、350〜700円は再試行・外部調査・品質確認を含む処理原価として別指標で管理する。粗利計算には後者の実績値を使用する。 |
-| BR-FIN-007 | HYPOTHESIS | 財務計画は月次チャーン5%を基準ケース、10%を保守ケースとする。36か月のMRR・CF・黒字転換月はこの二シナリオから再計算し、手書きの旧数値を使用しない。 |
+| BR-FIN-007 | HYPOTHESIS | 財務計画は契約解約だけを対象とする月次チャーン5%を基準ケース、10%を保守ケースとする。休眠Siteは解約へ合算せず先行指標として別管理する。36か月のMRR・CF・黒字転換月はこの二シナリオから再計算し、手書きの旧数値を使用しない。 |
 
 ## 7. KPI・経営判断要求
 
@@ -124,6 +124,8 @@ updated_at: 2026-08-03
 | BR-KPI-006 | MUST | 粗利率75%割れ時はAPI最適化、プロバイダー切替、料金改定を評価する。 |
 | BR-KPI-007 | MUST | MRR目標70%未達が2か月連続した場合、営業資源配分とチャネルROIを再評価する。 |
 | BR-KPI-008 | MUST | チャーン率10%超が2か月連続した場合、事業計画の再策定を評価する。 |
+
+本製品のNorth Starは月次の運用Loop完了Site数とする。運営側指標は運用Loop完了Site数、Recommendation採用率、アップセルevent、継続稼働率、契約churnで構成する。MRR、契約数、契約churnは経営指標として保持するがNorth Starへ使用しない。Activationは顧客がCMS反映による初回価値を受け取った時点として別軸で扱う。顧客側の検索流入、順位、公開・更新数等の成果指標は運営側指標へ混合せず別途定義する。算式とevent境界は `REQ-MEASURE-13` および `ai-office-de-seo-product-business-metrics-map_v1.md` を正本とする。
 
 ## 8. 営業・導入要求
 
@@ -167,7 +169,8 @@ updated_at: 2026-08-03
 | 反映済み | BR-PRC-002〜019 | REQ-BILLING-01〜16 | 商品階段、契約期間、credit lot、自動チャージ、Capacity、Trial、Plan変更・解約を分類別要求へ反映済み。具体付与量と品質別消費量は実原価計測後にPrice Catalogへ登録する。 |
 | 反映済み | BR-CNS-002〜008 | REQ-UPSELL-02/08、REQ-TECH-01/02 | FAQ優先、有償支援、Premium／Enterpriseカスタマイズ、Feature Object境界へ反映済み。人間による完全委託を標準商品として要求しない。 |
 | 要L3確定 | BR-CRD-001〜003、010 | REQ-BILLING-04/06/07、REQ-COST-01〜11 | 見積・台帳・Provider非依存の要求は定義済み。具体係数・基準creditは構築後の原価実測からversion付き設定へ確定する。 |
-| 追加 | BR-KPI-*、BR-SAL-*、BR-OPS-* | L0企画書、REQ-PRODUCT-22、REQ-ADM-02 | 事業KPI、営業SLA、要員トリガーは現行正本にほぼない。 |
+| 反映済み | BR-KPI-* | REQ-MEASURE-13、プロダクト・事業指標対応表 | North Star、Activation、継続、休眠、契約churnの境界・算式・データ源・周期を定義済み。MRR・契約数・契約解約率は事業指標として分離する。 |
+| 追加 | BR-SAL-*、BR-OPS-* | L0企画書、REQ-PRODUCT-22、REQ-ADM-02 | 営業SLA、要員トリガーは現行正本にほぼない。 |
 | 矛盾 | BR-CRD-008 | REQ-BILL-08 | 事業計画はモデル名表示を要求するが、既存要求は一般ユーザーへのprovider/model名非表示を要求する。既存方針を優先し、モデルは品質表示へ置換する。 |
 | 反映済み | BR-PRC-006〜007、019 | REQ-BILLING-03/16 | 月額付与creditは請求期間末、追加creditは最大180日、期限の近いlot優先として反映済み。 |
 | 反映済み | BR-CRD-005〜006 | REQ-BILLING-06/07、REQ-IRG-07 | 追加実行の事前承認と、当社障害で成果未提供の場合のcredit返還へ反映済み。 |

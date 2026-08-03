@@ -144,7 +144,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-AUTO-02: 自動運用はSite作成時OFFで、新規記事15件の人間承認・公開成功、権限者の版付き同意、対象・予算・品質・公開時間・停止条件が揃った場合だけ新規記事へ解放され、リライト更新は引き続き承認を要求する。 ｜ 検証: REQ-WPA-04
 - [ ] AC-AUTO-03: 緊急停止できる。 ｜ 検証: REQ-WPA-04, REQ-DUR-04
 - [ ] AC-AUTO-04: WordPressプラグインはデータ交換ソケット（取得・公開・トラッキング挿入/蓄積）であり利用はシステム側、導入するだけで連携し、Tenant/Siteスコープで認証され最小権限で正本へ書き込む。 ｜ 検証: REQ-WPA-07, REQ-SEC-09
-- [ ] AC-AUTO-05: プラグインはZIP配布で、更新の有無をWP管理画面とシステム側コンソールの双方へ通知し、更新は署名付き・Tenant/Siteスコープで適用される。 ｜ 検証: REQ-WPA-07
+- [ ] AC-AUTO-05: 初期βのプラグインは自社ZIP配布とし、SaaS側でSite用ZIP取得・期限付きペアリング・導入手順・接続versionを確認でき、更新の有無をWP管理画面とシステム側コンソールの双方へ通知し、更新は署名付き・Tenant/Siteスコープで適用される。 ｜ 検証: REQ-WPA-07, REQ-SCREEN-01
 
 ## Cost / Observability
 
@@ -384,7 +384,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-BILLING-13: 更新支払失敗後14日間の再試行・通知・機能制限と、支払成功時の復旧を二重付与なしに実行できる。 ｜ 検証: REQ-BILLING-13 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-14: 初期OFFの自動チャージについて残高しきい値・購入額・月間上限または無制限を権限者が設定でき、上限到達・決済失敗時に二重購入せず停止できる。 ｜ 検証: REQ-BILLING-14 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-15: 累計10社までの招待制Trialへ1～3カ月、Standard相当、固定creditを設定でき、通常の15記事承認を適用し、一般公開・枠再利用・明示契約なしの有償化を行わない。 ｜ 検証: REQ-BILLING-15 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
-- [ ] AC-L1-BILLING-16: 月・年契約の期間末解約、自動更新通知、14日・利用履歴なしの返金判定、計画Upgrade、更新時Downgradeを再現できる。 ｜ 検証: REQ-BILLING-16 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-16: 月・年契約の期間末解約、自動更新通知、14日・利用履歴なしの返金判定、計画Upgrade、更新時Downgradeを再現でき、Enterprise SLAのservice creditを根拠・承認・冪等性付きappend-only調整eventとして追跡できる。 ｜ 検証: REQ-BILLING-16 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 
 ### business-requirements_v1
 
@@ -571,7 +571,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ### screen-operation-requirements_v1
 
-- [ ] AC-L1-SCREEN-01: Dashboardで承認期限、停止、今週の予定、新規Recommendation、完了・評価の順に判断項目を確認し、月次計画と週次予定を運用modeに応じて確定できる。 ｜ 検証: REQ-SCREEN-01 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-01: Dashboardで承認期限、停止、今週の予定、新規Recommendation、完了・評価の順に判断項目を確認し、月次計画と週次予定を運用modeに応じて確定できる。WordPress Thin Pluginを選ぶ場合はSaaS側からZIP取得、Siteペアリング、接続・version・署名付き更新状態を確認できる。 ｜ 検証: REQ-SCREEN-01 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-02: 推薦一覧で理由、変更、費用、リスクを本文取得なしに把握できる。 ｜ 検証: REQ-SCREEN-02 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-03: 採否・保留理由と一括操作の個別検証結果を記録でき、ユーザー割込みを維持したまま影響と推奨順序を相談できる。 ｜ 検証: REQ-SCREEN-03 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-04: 長時間ジョブ中も他画面を操作し後から復帰できる。 ｜ 検証: REQ-SCREEN-04 ｜ 正本: `categories/screen-operation-requirements_v1.md`
@@ -656,6 +656,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-LOGIC-13: 公開記事の変更を機械比較でCTA・SEO評価・error・軽微変更へ分類し、必要な評価または診断だけを起動して、単発取得失敗を削除や成果悪化として扱わず、LLMを意味派生が必要な処理だけへ限定できる。 ｜ 検証: REQ-LOGIC-13 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先を既存QA・Placement・Automation・限定Repair Ticketへ接続し、CTA専用Agent・Writing Ticket・作業Packを増やさず実行できる。 ｜ 検証: REQ-LOGIC-14 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。 ｜ 検証: REQ-MEASURE-12 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-13: CMS反映後の評価対象登録をLoop完了として月次distinct Siteを算出し、4段階Activation、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。 ｜ 検証: REQ-MEASURE-13 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。 ｜ 検証: REQ-DATA-14 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。 ｜ 検証: REQ-DATA-15 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`

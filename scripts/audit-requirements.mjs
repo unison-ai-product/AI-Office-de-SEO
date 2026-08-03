@@ -242,7 +242,7 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "実行環境は`TODO(L3)`、空文字、単位不明値を`active`として登録できない",
 ]);
 assertIncludes("docs/reference/FEATURE-LIST.md", [
-  "現在は445 REQを監査対象",
+  "現在は446 REQを監査対象",
   "Site接続→業界Big Keyword探索",
   "Agent Officeは監視専用ではなく",
   "Entry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜",

@@ -174,6 +174,8 @@ Entry／Standardの月契約は解約予約後も支払済み期間末まで利�
 
 Upgradeは残期間差額を事前Previewし、支払成功を条件に、ユーザーが指定した適用日時または安全なstage境界へ計画適用する。実行中jobは開始時Entitlement Snapshotを維持し、途中で品質・上限・経路を切り替えない。追加credit等の独立商品は即時適用できる。Downgradeは次回更新時に適用し、失われる機能、超過するSite・ユーザー・データ、バックアップ、未実行jobへの対応を確定してから予約する。
 
+一般Planには返金を伴う可用性保証を設けず、内部SLOと公開Status Pageを提供条件とする。Enterpriseで個別契約したSLAに基づきservice creditを付与する場合は、通常利用creditや障害再実行返還と区別した `sla_service_credit_adjustment` としてappend-only ledgerへ記録する。調整eventは契約・SLA version、対象incident、算定期間、根拠、付与量または金額、承認者、冪等key、発行日時、元請求を保持し、既存利用eventを書き換えず、同一incident・同一SLA期間の二重補償を拒否する。
+
 ## 受入条件
 
 - [ ] AC-L1-BILLING-01: 契約時のPrice Catalog versionから商品、価格、付与量、制限、適用期間と、人間代行・汎用AI・SEOツールとの比較範囲および算定根拠を再現できる。
@@ -191,4 +193,4 @@ Upgradeは残期間差額を事前Previewし、支払成功を条件に、ユー
 - [ ] AC-L1-BILLING-13: 更新支払失敗後14日間の再試行・通知・機能制限と、支払成功時の復旧を二重付与なしに実行できる。
 - [ ] AC-L1-BILLING-14: 初期OFFの自動チャージについて残高しきい値・購入額・月間上限または無制限を権限者が設定でき、上限到達・決済失敗時に二重購入せず停止できる。
 - [ ] AC-L1-BILLING-15: 累計10社までの招待制Trialへ1～3カ月、Standard相当、固定creditを設定でき、通常の15記事承認を適用し、一般公開・枠再利用・明示契約なしの有償化を行わない。
-- [ ] AC-L1-BILLING-16: 月・年契約の期間末解約、自動更新通知、14日・利用履歴なしの返金判定、計画Upgrade、更新時Downgradeを再現できる。
+- [ ] AC-L1-BILLING-16: 月・年契約の期間末解約、自動更新通知、14日・利用履歴なしの返金判定、計画Upgrade、更新時Downgradeを再現でき、Enterprise SLAのservice creditを根拠・承認・冪等性付きappend-only調整eventとして追跡できる。
