@@ -306,14 +306,21 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-us
   "新規Site経路: 業界／業種",
   "既存Site経路: GSCを接続するかKeyword",
   "認証済みREST APIと対象投稿typeの下書き作成権限",
+  "本文・見出し・公開状態を取得できた記事だけを対象",
+  "GSCまたはKeyword実績だけから本文変更を推測しない",
   "再入力させずIntakeへ渡す",
   "Keyword／clusterを需要Market",
   "Articleを獲得Share",
   "確定Reportを当月目的",
   "未実行Recommendationは週次／月次に単純繰越せず",
+  "本文途中停止を有効にした場合は本文Preview",
+  "Semantic Assembly後にW3でCohesionを含むQuality Gate",
+  "Presentation Assemblyで装飾、アイキャッチ、CTA、内部link配置、CMS形式変換",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md", [
   "Site運用責任者（コンサル同席",
+  "リライトRecommendationはGSCまたはCMS記事取込",
+  "リライト起動→WP下書き",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
   "導入完了<br/>Recommendationの採否判断へ",
