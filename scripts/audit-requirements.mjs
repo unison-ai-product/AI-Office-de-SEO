@@ -448,6 +448,15 @@ assertIncludes("docs/reference/ai-office-de-seo-artifact-alignment-ledger_2026-0
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-acceptance-trace_v3.7.md", [
   "同意→接続→サンプル学習→戦略入力→マップ→初回生成→承認公開",
   "フィルタ→ギャップ→補充→候補採否→生成起動/一括投入",
+  "進捗→構成/QA→保留対応→承認",
+  "障害対応、なりすまし調査",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-acceptance-trace_v3.7.md", [
+  "分析開始とCMS書込Capabilityを同一Gateにせず",
+  "任意本文途中Preview・ユーザー編集保護→Semantic Assembly",
+  "Presentation Assembly（装飾・アイキャッチ・CTA・内部link・CMS形式変換）",
+  "Managerの期限付き代理調査、権限失効",
+  "内部actorを顧客本人へ書き換えない",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md", [
   "React/HTML/CSSコンポーネントで描画する",
