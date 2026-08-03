@@ -11,7 +11,7 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 
 # L3未決事項テーブル
 
-要求全体に散在する未決（`TODO(L3)`・検証ログのオープン項目・Gate B/C）を、**owner付きの単一台帳**として管理する。各項目はここで採否・実数・選定を確定し、確定値はConfig Registry / Cost Table / Catalogへ吸収する（`REQ-BILL-10` / `REQ-ADM-09`。要求本文へのハードコード禁止）。ownerは役割プレースホルダであり、担当者アサインは運用開始時に確定する。
+要求全体に散在するL3未決（`TODO(L3)`・検証ログのオープン項目・Gate B/C）を、**owner付きの技術判断台帳**として管理する。横断的な分類とLaunch可否は `docs/reference/ai-office-de-seo-open-items-register_2026-08-03.md`、個別判断のID・owner・期限は本書を正本とし、同Registerの全件対応表で取りこぼしを検査する。各項目はここで採否・実数・選定を確定し、確定値はConfig Registry / Cost Table / Catalogへ吸収する（現行正本は`REQ-BILLING-*`、`REQ-PAC-*`。旧`REQ-BILL-*`／`REQ-ADM-*`は詳細移行参照に限る）。ownerは役割プレースホルダであり、担当者アサインは運用開始時に確定する。
 
 凡例——区分: GateB（着手直前に確定）/ GateC（後から吸収可）/ 検証（外部仕様の再確認）/ **Launch（商用登録開放前に確定必須＝販売開始のブロッカー）**。状態: open / in-progress / decided。
 

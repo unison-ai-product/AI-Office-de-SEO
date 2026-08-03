@@ -189,12 +189,51 @@ assertIncludes("docs/reference/FEATURE-LIST.md", [
   "Agent Officeは監視専用ではなく",
   "Entry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜",
 ]);
+assertIncludes("docs/reference/ai-office-de-seo-content-consistency-audit_2026-07-09.md", [
+  "履歴スナップショット",
+]);
+assertIncludes("docs/reference/ai-office-de-seo-view-sync-audit_2026-07-09.md", [
+  "履歴スナップショット",
+]);
+assertIncludes("docs/reference/ai-office-de-seo-requirements-review_2026-07-31.md", [
+  "履歴スナップショット",
+]);
+assertIncludes("docs/reference/ai-office-de-seo-full-requirements-gap-audit_2026-08-03.md", [
+  "監査時点スナップショット",
+]);
+assertIncludes("docs/reference/ai-office-de-seo-reference-notes_v3.7.md", [
+  "数を合わせるためにAgentや部屋を作らない",
+  "Agent Officeの部屋数は固定しない",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md", [
+  "本実装（React）のコンポーネント分割の正本",
+  "そのままReactコンポーネント名にする",
+]);
 assertExcludes("docs/reference/FEATURE-LIST.md", [
   "全135 REQ",
   "Claude優先ルーティング",
   "オンボーディング=コンサル・ヘルプ=専用サイト",
   "VPS→クラウド",
 ]);
+
+const l3DecisionText = fs.readFileSync(
+  path.join(repoRoot, "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-l3-decision-table_v3.7.md"),
+  "utf8",
+);
+const openItemsText = fs.readFileSync(
+  path.join(repoRoot, "docs/reference/ai-office-de-seo-open-items-register_2026-08-03.md"),
+  "utf8",
+);
+const l3DecisionIds = new Set([...l3DecisionText.matchAll(/^\| (D-\d{2}) \|/gm)].map((match) => match[1]));
+const crosswalkStart = openItemsText.indexOf("## 9. L3 Decision Table全件対応");
+const crosswalkText = crosswalkStart >= 0 ? openItemsText.slice(crosswalkStart) : "";
+const crosswalkIds = new Set([...crosswalkText.matchAll(/^\| (D-\d{2}) \|/gm)].map((match) => match[1]));
+for (const id of l3DecisionIds) {
+  if (!crosswalkIds.has(id)) fail(errors, `open items crosswalk: missing ${id}`);
+}
+for (const id of crosswalkIds) {
+  if (!l3DecisionIds.has(id)) fail(errors, `open items crosswalk: undefined ${id}`);
+}
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const manifestArrayFields = [

@@ -86,3 +86,52 @@
 - `post_release_concept`を初期画面で利用可能に見せない。
 - `operational_calibration`は計測不能ならLaunch可としない。
 - `migration_debt`は旧値を有効化する理由にならない。
+
+## 9. L3 Decision Table全件対応
+
+L3 Decision Tableの項目を次の分類へ必ず接続する。本表にないL3 Decision IDを追加してはならない。`decided`は判断内容が確定したことを表し、実装・試験完了を意味しない。
+
+| L3 ID | 横断分類／対応key | 現在の意味 |
+|---|---|---|
+| D-01 | DD-01の前提 | Config契約は決定済み、migration実装待ち |
+| D-02 | DD-02 | Workflow契約決定済み、機械可読artifact・試験待ち |
+| D-03 | LB-05 | 顧客認可を全実行経路で強制する実装方式 |
+| D-04 | DD-03 | Source Extract契約決定済み、schema file・fixture試験待ち |
+| D-05 | DD-04 | 日本語形態素解析・辞書version |
+| D-06 | OC-01／OC-05 | Provider互換Routing、初期Model Registry、原価実数 |
+| D-07 | design_decision | Email provider、認証、bounce／抑制連携 |
+| D-08 | DD-05／DD-06 | Queue方式と専用MQへの移行条件 |
+| D-09 | DD-05 | AWS前提は決定、具体service構成はADR待ち |
+| D-10 | design_decision | 埋め込みmodel、vector index、再計算方式 |
+| D-11 | DD-11 | 日本語可読性。決定まではadvisory |
+| D-12 | LB-01／OC-07 | Keyword／SERP provider契約上限と原価 |
+| D-13 | post_release_concept | News／YouTube観測の提供可否。初期機能として表示しない |
+| D-14 | DD-09／DD-10 | Source別Retention、TTL、圧縮、保存境界 |
+| D-15 | LB-01／OC-01 | credit原価単位、品質係数、販売枠 |
+| D-16 | launch_blocker | 規約、privacy、特商法、同意、匿名集計、事例、解約・返金 |
+| D-17 | operational_calibration | URL検査quotaとランキング更新情報の取得経路 |
+| D-18 | PC-01 | AI表示性providerの四半期再検証 |
+| D-19 | OC-01／OC-05 | Prompt cache価格・TTL・routing原価 |
+| D-20 | DD-05／DD-06 | tenant資源profileとnode密度 |
+| D-21 | LB-04 | RPO／RTO達成性 |
+| D-22 | DD-02／DD-06 | 耐久Agent runtime方式 |
+| D-23 | design_decision | OTelを正本としたLLM trace補助手段 |
+| D-24 | DD-02／DD-03 | Mock Executor、event、fixture共用方式 |
+| D-25 | DD-11／DD-13 | Golden evaluation set |
+| D-26 | DD-11／DD-13 | 技法principles、検品lens、few-shot本文 |
+| D-27 | DD-11／DD-13 | segment、human voice、AI定型表現辞書 |
+| D-28 | launch_blocker | Accessibility目標水準と自動・手動検証方式 |
+| D-29 | launch_blocker | Google OAuth審査・API規約適合 |
+| D-30 | LB-06 | WordPress Plugin配布・更新経路 |
+| D-31 | launch_blocker | 公開SLA／非保証方針とStatus Page運用 |
+| D-32 | LB-03／launch_blocker | 適格請求書、Stripe税・請求書、特商法表示 |
+| D-33 | decided／launch作業 | 累計10社Trial方針は決定、cohort実数登録待ち |
+| D-34 | launch_blocker | 商標、domain、成果非保証を含むmarketing表現規約 |
+| D-35 | launch_blocker | North Star、activation、継続、churnの算式・計測定義 |
+
+### 9.1 台帳整合規則
+
+- L3 Decision TableへIDを追加した変更では、本表へ同じIDを追加する。
+- `launch_blocker`は法務・契約・審査・実証等の外部証拠が揃うまで未解消とする。
+- `design_decision`は対象sliceの着手前にADR、schema、policyまたはcontract testのいずれかへ確定内容を吸収する。
+- `operational_calibration`は初期値、計測event、改版先が揃って初めてLaunch可能とする。

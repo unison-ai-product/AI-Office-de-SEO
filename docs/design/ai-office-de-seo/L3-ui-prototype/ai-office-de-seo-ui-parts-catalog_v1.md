@@ -4,14 +4,14 @@ title: AI Office de SEO UIパーツカタログ（オブジェクト定義） v1
 version: 1.2
 layer: L3
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 related: AOS-L3-SCREEN-INVENTORY / AOS-L3-SCREEN-CONNECTION-MAP / AOS-L3-PROTO-IMPL-MAP
 ---
 
 # 0. 本書の位置づけ
 
-- **目的**: プロトタイプ（`AI Office de SEO.dc.html` / `Admin Console.dc.html`）に繰り返し出現するUIパーツを**オブジェクト（名前＋props＋状態＋使用箇所）として定義**し、本実装（React）のコンポーネント分割の正本にする。
+- **目的**: プロトタイプ（`AI Office de SEO.dc.html` / `Admin Console.dc.html`）に繰り返し出現するUIパーツを**オブジェクト（名前＋props＋状態＋使用箇所）として定義**し、本実装のフレームワーク非依存なコンポーネント境界候補にする。React等の採用は本書では決定しない。
 - **背景**: DCランタイムにはパーシャル/コンポーネント機構が無く、プロトでは同一パターンをインラインstyleのコピーで表現している（例: 白カード92回・主ボタングラデ106回・999px丸チップ148回・hover定義199回）。この「コピーの群れ」を本実装で1コンポーネント=1オブジェクトに畳み込むための対応表が本書。
 - **読み方**: §1がデザイントークン（全パーツの前提）、§2が通常ビュー共通パーツ、§3がOfficeビュー専用パーツ、§4が管理コンソール、§5がロジック層（クラスメソッドの責務分解）、§6が本実装への移行指針。**出現数・メソッド数はプロト実測値**（2026-07-10 grep全数抽出）。
 
@@ -37,7 +37,7 @@ related: AOS-L3-SCREEN-INVENTORY / AOS-L3-SCREEN-CONNECTION-MAP / AOS-L3-PROTO-I
 
 ## 1.2 Officeビュー（ダーク）
 
-`prototype/config/design-tokens.css` が正本: `primary #4DA3FF` / `done #3ED598` / `accent #9B7BFF` / `warn #F5C544` / `error #FF6B6B` / `text-2 #93A2C0` / surface系 `rgba(5,10,24,.88)`。部屋の色相は `FLOOR_HUE`（`buildRoom()`算出）を親要素の static filter で適用（keyframes filterとの分離原則は prototype/CLAUDE.md 参照）。
+旧プロト内の実装値は `prototype/config/design-tokens.css` を参照する: `primary #4DA3FF` / `done #3ED598` / `accent #9B7BFF` / `warn #F5C544` / `error #FF6B6B` / `text-2 #93A2C0` / surface系 `rgba(5,10,24,.88)`。これは再利用候補の実測値であり、本番Design Tokenの正本はGate A-4とDesign System versionで確定する。
 
 ---
 
@@ -270,7 +270,7 @@ TenantScope { value: tScope, appliesTo: [tickets, ...] }
 
 # 6. 本実装への移行指針
 
-1. **対応表として使う**: 本書のオブジェクト名をそのままReactコンポーネント名にする（`<SectionCard>`, `<FilterChips>` …）。プロトのインラインstyleはトークン（§1）＋バリアントpropsに畳む。
+1. **対応表として使う**: 本書のオブジェクト名を実装コンポーネントへ対応付ける（例: `SectionCard`, `FilterChips`）。特定frameworkの命名や継承構造を契約にせず、プロトのinline styleはtoken（§1）＋variant propertyへ畳む。
 2. **文言はコンポーネントに持たせない**: label/message は全て i18n メッセージキーで受ける（PT-Q の本実装対応）。動的組み立て文（検出文・トースト・分析文）はキー＋パラメータ形式で設計。
 3. **横断規約はコンポーネントに内蔵する**: Authorization Decision（表示可否・操作可否の説明。認可正本はサーバー側）・onEscリスト登録・Undo/確認の使い分け・空状態必須・CSV単一ソース・フィルタ変更時の従属リセット。プロトで「毎回手で書いて漏れた」ものほど部品側に埋める。
 4. **プロト側の追加改修は非推奨**: DCランタイムに部品機構が無いため、プロトでの共通化は行わない（コピーのまま凍結）。新パーツが必要になったら本書に追記してからプロトに書く。
