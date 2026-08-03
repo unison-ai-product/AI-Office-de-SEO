@@ -136,6 +136,10 @@ updated_at: 2026-08-03
 | evaluation.intervention_due | evaluation_id, intervention_ref, article_ref, window | W,N,O | REQ-LOGIC-06 |
 | evaluation.intervention_completed | evaluation_id, intervention_ref, article_ref, window, outcome, next_action? | W,N,O | REQ-LOGIC-06/08, REQ-DATA-07 |
 | evaluation.intervention_registered | evaluation_id, intervention_ref, publication_fact_ref, lane_id, lane_type(seo_content/cta_cv/internal_link/awareness), evaluation_origin_at, cadence, checkpoints_or_windows[], baseline_ref, correlation_id | W,O,A | REQ-MEASURE-13/14 |
+| site.setup_completed | site_id, site_mode, site_profile_version, site_identified_evidence_ref, completed_at | W,N,O,A | REQ-BUS-02, REQ-MEASURE-13 |
+| site.readiness_changed | site_id, readiness_key(site_identified/analysis_ready/content_read_ready/delivery_ready), scope_ref?, operation?, before_state, after_state, evidence_ref?, reason_codes[], readiness_version | W,N,O,A | REQ-BUS-02, REQ-INT-05/09 |
+| cms.connection_profile_verified | connection_profile_id, version, site_identity_ref, diagnostic_ref, available_capabilities[], missing_capabilities[], verified_at | W,N,O,A | REQ-INT-05/06/09, REQ-MEASURE-13 |
+| site.first_recommendation_presented | site_id, recommendation_id, version, source_report_ref, decision_eligibility_ref, presented_at | W,O,A | REQ-BUS-05/06, REQ-MEASURE-13 |
 | site.activated | activation_id, site_id, recommendation_ref, publication_fact_ref, activated_at, funnel_version | W,O,A | REQ-MEASURE-13 |
 | product.loop_completed | loop_completion_id, site_id, recommendation_ref, publication_fact_ref, evaluation_id, seo_content_lane_ref, completed_at, metric_rule_version | O,A | REQ-MEASURE-13 |
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |

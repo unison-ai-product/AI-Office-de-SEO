@@ -133,6 +133,14 @@ Site導入からReport開放までを`schema.site.build_progress.v1`とする。
   build_id, version, tenant_id, site_id, site_mode(new|existing),
   setup{site_profile_ref, industry_refs[], cross_axis_ref?, cms_profile_ref,
     gsc_connection_ref?, keyword_upload_ref?},
+  readiness{
+    site_identified{state, site_identity_ref, diagnosed_routes[], evidence_ref, verified_at},
+    analysis_ready{state, source_refs[], eligible_cluster_count, analysis_version?, reason_codes[]},
+    content_read_ready{state, article_scope_ref, eligible_article_count, snapshot_coverage,
+      snapshot_version?, reason_codes[]},
+    delivery_ready[]{operation, state, connection_profile_version,
+      capability_snapshot_ref, permission_evidence_ref?, reason_codes[]}
+  },
   input_conditions[]{kind, state, source_ref?, required_for[]},
   stages[]{stage_key, state, processed, total?, coverage?, availability,
     started_at?, updated_at, completed_at?, next_release_at?},
@@ -141,10 +149,13 @@ Site導入からReport開放までを`schema.site.build_progress.v1`とする。
 }
 ```
 
-- 新規SiteはCMS接続とSite設定後にbig keyword方向確認を行い、採用・除外・追加を経て市場探索へ進む。
+- `site_identified`は対象Siteの同一性、到達性、利用可能経路を確認した状態であり、CMS writeまたは公開権限の成立を意味しない。
+- 新規SiteはSite設定と`site_identified`成立後にbig keyword方向確認を行い、採用・除外・追加を経て市場探索へ進む。CMS write未成立でも市場探索は停止しない。
 - 既存SiteはGSCまたはKeyword uploadを分析開始条件とし、CMS記事を利用できる場合は記事対応へ統合する。
+- `analysis_ready`はSite／分析version単位で保持する。`content_read_ready`は記事範囲の集約表示であり、各リライト開始時に対象記事の有効なArticle Read Snapshotを再検証する。Site全体の単一boolで全記事を許可しない。
+- `delivery_ready`は`create_draft / update_post / upload_media / publish`等のoperation単位で保持し、副作用直前にConnection Profile version、Capability、Permissionを再検証する。あるoperationの成立を別operationへ流用しない。
 - `partially_available`を許し、完了領域からReportを開放する。全体未完了を空画面または完了として扱わない。
-- 記事送信は別途CMS REST write capabilityを必要とし、分析可能であることを送信可能へ読み替えない。
+- `cms.connection_profile_verified`は接続対象と診断結果を確定したOnboarding milestoneであり、`delivery_ready`の代替ではない。記事送信は別途operation別CMS write capabilityを必要とし、分析可能または接続Profile確認済みであることを送信可能へ読み替えない。
 
 根拠: `REQ-BUS-02〜06`、`REQ-LOGIC-02`、`REQ-INT-05/06`、`REQ-SCREEN-02/18`。
 

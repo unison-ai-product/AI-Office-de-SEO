@@ -55,24 +55,35 @@
       "invariants": [
         {
           "invariant_id": "INV-LIFECYCLE-001",
-          "statement": "導入状態をsite_identified・analysis_ready・content_read_ready・delivery_readyへ分離し、新規記事Recommendationはanalysis_ready、リライトは加えてcontent_read_ready、CMS送信はdelivery_readyを要求する。",
+          "statement": "導入状態をsite_identified・analysis_ready・記事scopeのcontent_read_ready・operation scopeのdelivery_readyへ分離する。新規記事Recommendationはanalysis_ready、リライトは対象記事のcontent_read_ready、CMS副作用は対象operationのdelivery_readyを要求し、Connection Profile確認済みをwrite可能へ読み替えない。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
-            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md"
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-business-metrics-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md"
           ],
           "forbidden_patterns": [
             "(?:CMS write|CMS書込|REST API).{0,40}(?:分析|市場探索|Recommendation).{0,30}(?:必須条件|開始条件とする|成立条件とする)",
             "(?:GSC|Keyword|キーワード)(?:実績|登録|連携).{0,40}(?:だけで(?!は)|のみで(?!は)).{0,20}(?:リライト|Rewrite).{0,20}(?:開始|生成|実行)",
-            "(?:delivery_ready|CMS write未成立).{0,40}(?:CMS送信|下書き送信).{0,20}(?:実行する|可能)"
+            "(?:delivery_ready|CMS write未成立).{0,40}(?:CMS送信|下書き送信).{0,20}(?:実行する|可能)",
+            "content_read_ready.{0,50}(?:Site全体|全記事).{0,20}(?:共通|一括)(?:bool|許可)",
+            "delivery_ready.{0,50}(?:Site全体|全operation|全操作).{0,20}(?:共通|一括)(?:bool|許可)",
+            "(?:connection_profile_verified|Connection Profile確認済み|CMS接続完了).{0,20}(?:なら|なので|をもって).{0,20}(?:書込み可能とする|投稿可能とする|公開可能とする)"
           ],
           "bad_fixtures": [
             "REST API接続を市場探索とRecommendationの必須条件とする。",
             "GSC実績だけでリライトを開始する。",
-            "delivery_ready未成立でもCMS送信を実行する。"
+            "delivery_ready未成立でもCMS送信を実行する。",
+            "content_read_readyをSite全体の共通boolとして全記事のリライトを許可する。",
+            "delivery_readyをSite全体の共通boolとして全operationを許可する。",
+            "Connection Profile確認済みなら投稿可能とする。"
           ],
           "good_fixtures": [
             "新規記事Recommendationはanalysis_ready、リライトはcontent_read_ready、CMS送信はdelivery_readyを要求する。",
-            "CMS write未成立でも分析を継続し、Deliveryだけを保留する。"
+            "CMS write未成立でも分析を継続し、Deliveryだけを保留する。",
+            "content_read_readyは対象記事scope、delivery_readyは対象operation scopeで副作用直前に再検証する。",
+            "Connection Profile確認済みでも不足Capabilityを表示し、投稿可能とは判定しない。"
           ]
         }
       ]

@@ -46,7 +46,7 @@
 1. fixture正本化: Price、Plan、Entitlement、Authorization、Site、Report、Recommendation、Intake。
 2. 共通resolver: Availability、Recipient、Authorization、CMS Capability。
 3. 通常ビューLifecycle: 導入、Report、月次計画、Recommendation、実行、評価。
-4. Office監視: persona別Task説明、工程、待機理由、成果要約、通常ビューへのContext遷移、通常ビュー結果の同期。
+4. Office専門分析・微調整: 通常ビューのRecommendation、成果、Keyword、記事、設定、TaskからContextを維持して入り、persona別Task説明、工程、待機理由、根拠、詳細分析、選択式の条件調整・Task操作を行う。通常ビューの結果と双方向同期し、監視専用面にはしない。
 5. Billing／Capacity、Notification、CMS、Image等の横断画面。
 6. Knowledge Graphと3D演出の強化。
 

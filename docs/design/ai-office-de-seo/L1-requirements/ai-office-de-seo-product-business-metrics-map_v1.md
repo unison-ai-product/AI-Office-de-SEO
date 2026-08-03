@@ -29,12 +29,12 @@ MRR、契約数、契約churnは運営側の経営指標である。ただし営
 
 | 段階 | 到達event | 判定 |
 |---|---|---|
-| ① Site設定完了 | `site_setup_completed` | 必須Site設定の保存と検証が完了 |
-| ② CMS接続完了 | `cms_connection_verified` | 認証、対象Site、必要Capabilityの接続検証が完了 |
-| ③ 分析・Recommendation提示 | `first_recommendation_presented` | 初回分析結果からユーザー判断可能なRecommendationを1件以上提示 |
+| ① Site設定完了 | `site.setup_completed` | 必須Site設定の保存・検証と`site_identified`が完了。CMS writeの成立は要求しない |
+| ② 対象CMS確認・接続診断完了 | `cms.connection_profile_verified` | 対象Site、Connection Profile、利用可能／不足Capabilityの診断結果がversion付きで確定。書込み可能を意味せず、`delivery_ready`はoperation別に判定する |
+| ③ 分析・Recommendation提示 | `site.first_recommendation_presented` | 初回分析結果から、内部候補ではなくユーザーが採否を判断できるRecommendation versionを1件以上表示 |
 | ④ 初回公開／更新反映（Activation） | `site.activated` | 初回Recommendation採用に相関する`ai_office_publication` Factが記録された。予約、下書き、API受付、外部変更、帰属確認中は除外 |
 
-各段階の到達率、前段階からの転換率、到達時間、滞留理由をSite cohort別に集計する。③到達・④未到達を最優先改善ファネルとして管理Dashboardへ表示する。下書き保存や成果物downloadだけでは④へ到達しない。
+各段階の到達率、前段階からの転換率、到達時間、滞留理由をSite cohort別に集計する。②は接続先と診断結果の確定であり、書込み権限を含む一括の「接続済み」ではない。③到達後も、実行するCMS操作の`delivery_ready`が未成立なら成果生成を失敗扱いにせずDeliveryだけを保留する。③到達・④未到達を最優先改善ファネルとして管理Dashboardへ表示する。下書き保存や成果物downloadだけでは④へ到達しない。
 
 Activationは運営側の契約獲得や画面利用ではなく、顧客がSEO代行の初回価値を受け取った時点を表す。そのためCMSへの公開・更新反映を必須とする。
 

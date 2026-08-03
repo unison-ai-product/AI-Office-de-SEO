@@ -76,10 +76,10 @@ AI Office de SEOの業務は、単一の直線工程ではなく、次の5つの
 |---|---|---|
 | `site_identified` | Site URLと対象Siteを登録し、到達性・所有範囲・利用可能な取得経路を診断できる | Site設定、新規Siteの市場探索 |
 | `analysis_ready` | 新規Siteは市場探索入力から分析対象Clusterが成立、既存SiteはGSCまたは登録Keywordが成立する | 戦略／診断Report、新規記事Recommendation |
-| `content_read_ready` | 対象記事の本文・見出し・公開状態を有効なArticle Read Snapshotとして取得できる | 当該記事のリライトRecommendation／Rewrite Intake |
-| `delivery_ready` | CMS write Adapter、対象post typeの下書き作成権限、必要な投稿形式Capabilityが検証済みである | CMS下書き・画像送信、公開／更新反映 |
+| `content_read_ready` | 対象記事ごとに本文・見出し・公開状態を有効なArticle Read Snapshotとして取得できる。Site表示は対象範囲のcoverage集約であり、全記事共通boolではない | 当該記事のリライトRecommendation／Rewrite Intake |
+| `delivery_ready` | `create_draft / update_post / upload_media / publish`等のoperationごとに、CMS write Adapter、対象post type、必要Capability、権限が検証済みである | 成立したoperationのCMS下書き・画像送信、公開／更新反映 |
 
-`delivery_ready`未成立を分析・Recommendation・生成の失敗にせず、CMS送信だけを保留する。反対に、`analysis_ready`だけでリライト本文変更を開始せず、`content_read_ready`だけでCMSへ送信しない。
+`delivery_ready`未成立を分析・Recommendation・生成の失敗にせず、対象operationのCMS送信だけを保留する。反対に、`analysis_ready`だけでリライト本文変更を開始せず、`content_read_ready`だけでCMSへ送信しない。Connection Profileの確認や一部Capability成立を、全operation共通の「接続済み」へ丸めない。
 - 新規Site経路:
   1. Siteに関する共通設定を行い、`site_identified`を成立させる。CMS read／write、GSC等の各Capabilityは同時に診断するが、CMS write未成立だけを理由に市場探索を停止しない
   2. 設定した業界／業種、商品・サービス、対象顧客、地域から、方向性を代表する単一語のビッグキーワード候補を探索する。候補は一度ユーザーへ提示し、方向性の確認、除外、追加を受けて探索起点を確定する

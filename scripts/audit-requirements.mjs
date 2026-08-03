@@ -323,6 +323,9 @@ assertExcludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-o
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
   "schema.site.build_progress.v1",
+  "content_read_ready{state, article_scope_ref, eligible_article_count",
+  "delivery_ready[]{operation, state, connection_profile_version",
+  "接続Profile確認済みであることを送信可能へ読み替えない",
   "schema.plan.monthly.v1",
   "schema.publication.decision.v1",
   "schema.publication.job.v1",
@@ -405,6 +408,14 @@ assertIncludes("docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-busines
 ]);
 assertIncludes("docs/reference/ai-office-de-seo-content-consistency-audit_2026-07-09.md", [
   "履歴スナップショット",
+]);
+assertIncludes("docs/reference/ai-office-de-seo-prototype-modernization-register_2026-08-03.md", [
+  "Office専門分析・微調整",
+  "通常ビューのRecommendation、成果、Keyword、記事、設定、TaskからContextを維持して入り",
+  "監視専用面にはしない",
+]);
+assertExcludes("docs/reference/ai-office-de-seo-prototype-modernization-register_2026-08-03.md", [
+  "Office監視:",
 ]);
 assertIncludes("docs/reference/ai-office-de-seo-view-sync-audit_2026-07-09.md", [
   "履歴スナップショット",
@@ -557,6 +568,10 @@ assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-e
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
   "publication.fact_recorded | publication_fact_id",
   "publication.job_verification_pending",
+  "site.setup_completed | site_id",
+  "site.readiness_changed | site_id",
+  "cms.connection_profile_verified | connection_profile_id",
+  "site.first_recommendation_presented | site_id",
   "site.activated | activation_id",
   "product.loop_completed | loop_completion_id",
   "seo_content_lane_ref",
@@ -571,6 +586,18 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-e
 assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
   '"type": {"enum": ["user", "system", "agent"]}',
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-business-metrics-map_v1.md", [
+  "site.setup_completed",
+  "cms.connection_profile_verified",
+  "site.first_recommendation_presented",
+  "書込み可能を意味せず、`delivery_ready`はoperation別に判定する",
+  "成果生成を失敗扱いにせずDeliveryだけを保留する",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-business-metrics-map_v1.md", [
+  "`site_setup_completed`",
+  "`cms_connection_verified`",
+  "`first_recommendation_presented`",
+]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
   "Recommendation Intakeまたは手動指定を共通Preflightへ渡す",
   "接続中CMSの保存値を編集・更新の外部正本",
@@ -579,6 +606,8 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "Semantic Assembly / Cohesionを含むQA・限定Repair / Presentation Assembly",
   "CMS接続Capability",
   "cms_capability_snapshot",
+  "content_read_ready`は記事coverage",
+  "delivery_ready`はoperation別Capability",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
   "| S4 | オートメーション | WP接続",

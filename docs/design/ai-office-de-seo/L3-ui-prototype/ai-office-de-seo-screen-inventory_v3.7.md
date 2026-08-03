@@ -101,7 +101,7 @@ Report情報設計は`ai-office-de-seo-keyword-report-connection-map_v1.md`を�
 ### 0.6 CMS接続状態
 
 - S7データ設定はCMS種別、接続状態、認証、記事読取り、下書き送信、既存記事更新、Media、Editor互換、Preview、Revision、Tracker、最終同期、必要なユーザー操作を業務名で表示する。
-- `接続済み`の単一表示だけで投稿可能と見なさない。分析可能だが送信不可、下書き可能だが既存更新不可、Media不可、Plugin更新必要等をCapability別に示す。
+- `接続済み`の単一表示だけで投稿可能と見なさない。`site_identified`は対象Site確認、`analysis_ready`は分析version、`content_read_ready`は記事coverage、`delivery_ready`はoperation別Capabilityとして表示する。分析可能だが送信不可、下書き可能だが既存更新不可、Media不可、Plugin更新必要等を区別し、Connection Profile確認済みを投稿可能へ読み替えない。
 - ユーザーへ`public_crawl`等のAdapter名、primary／standby、fallback、rate limit、polling頻度を選択させない。必要操作だけを再接続、権限確認、Plugin更新、手動取込として提示する。
 - 初回取込は自動構築期間、通常は差分同期として、記事数、処理済み、残件、利用可能になった機能、容量／処理使用率、上限到達予測を表示する。
 - 投稿またはPatchはCMS応答と反映確認を分け、cache反映待ち、権限、競合、rate limit、schema変更を別状態で表示する。
