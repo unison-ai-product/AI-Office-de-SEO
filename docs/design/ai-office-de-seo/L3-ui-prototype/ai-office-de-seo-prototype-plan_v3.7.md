@@ -117,6 +117,12 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-NOTIFY-05: popup dismiss、既読、確認済み、対応済みを別状態で保持し、既読にしただけで承認・障害対応が完了しない。
 - [ ] PT-NOTIFY-06: 同一eventの重複通知をdedupeし、ダイジェスト対象をまとめても要対応通知を埋没させない。
 - [ ] PT-NOTIFY-07: 通常ビューとOfficeが同じ通知・対応状態を表示し、内部Admin/Manager/Operator向け開発alertを顧客W7へ表示しない。
+- [ ] PT-AWS-01: API→queue→worker→Provider／CMS結果を同一correlationで追跡でき、本文・prompt全文・secretをtelemetryへ出さない。
+- [ ] PT-AWS-02: 1 Site、1 Provider、1 Feature Objectの障害fixtureで該当domainだけがthrottle／circuit open／停止し、無関係なSiteと機能が継続する。
+- [ ] PT-AWS-03: DLQ redriveとcheckpoint resumeで完了stage、credit commit、CMS副作用を二重実行しない。
+- [ ] PT-AWS-04: alertからimpact、対象scope、相関検索、runbookへ到達し、ack、実行、rollback、closeを監査eventへ残す。
+- [ ] PT-AWS-05: 全体復元とtenant選択復元の演習記録に復元点、整合結果、実測RPO/RTO、是正期限を表示し、backup作成成功だけを復旧可能の証拠にしない。
+- [ ] PT-AWS-06: canary異常時にdeploymentをrollbackし、drain済みJobをcheckpointから再開して失敗完了や追加課金にしない。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。

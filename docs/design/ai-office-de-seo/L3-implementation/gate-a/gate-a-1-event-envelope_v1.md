@@ -152,6 +152,11 @@ updated_at: 2026-07-05
 | notification.unresolved_action | decision_id, notification_class, fallback_attempted, reason | N,O,A | REQ-PRODUCT-11 |
 | platform.self_healed | action, target, flapping? | O,A | REQ-DUR-10 |
 | platform.maintenance_performed | action, target | O | REQ-DUR-10 |
+| platform.circuit_state_changed | circuit_key, scope_type, scope_ref, previous_state, current_state, reason, probe_at? | O,A | REQ-NFR-07, REQ-TECH-19 |
+| platform.bulkhead_throttled | domain_type, domain_ref, capacity_dimension, observed, limit | O,A | REQ-NFR-07/15 |
+| platform.runbook_executed | runbook_key, runbook_version, scope_ref, action, result, rollback_result? | O,A | REQ-MEASURE-07 |
+| platform.restore_rehearsed | rehearsal_ref, restore_scope, restore_point, measured_rpo, measured_rto, integrity_result | O,A | REQ-NFR-08, REQ-MEASURE-08 |
+| platform.deployment_rolled_back | deployment_ref, canary_ref, trigger_metric, checkpoint_resume_result | O,A | REQ-TECH-19 |
 | platform.announcement_published | audience(all/plan/tenant), announce_ref | N,O,A | REQ-PRODUCT-16 |
 | auth.owner_recovery_executed | from_ref, to_ref | N,O,A | REQ-SEC-16 |
 | support.ticket_created | ticket_id, severity | N,O | REQ-PRODUCT-22 |

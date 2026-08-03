@@ -72,7 +72,7 @@
 16. アイキャッチPatternは接続マップ、L2集約、L3 Pattern／Image Job schema、DDL、event、画面規則、`PT-IMAGE-01〜08`へ、version、variation、ロゴ、CMS size、cache、生成結果、Media、再生成creditを追加した。Editor実装、画像回帰評価、Provider／CMS Contract Testは未完了。
 17. 画面利用可否はUI Availability State Map、L3 Decision schema／event、画面共通規則、`PT-STATE-01〜06`へ、Scope、停止、障害、権限、Capability、Plan、接続、データ、credit、承認、処理中の優先と複合reasonを追加した。共通resolver実装と全画面fixture試験は未完了。
 18. 通知受信者は固定担当者を必須にせず、権限・Site付与・購読設定・必須通知からServer側で解決する正本、Schema、DDL、Event、画面要求、PTまで接続済み。残件は実プロトのRecipient Resolver、設定画面、popup、fallback fixture実装。
-19. L3のAWS配置・観測・Runbook・自動復旧・bulkhead・circuit breakerは要求に対して骨格段階。
+19. AWS配置・観測・Runbook・自動復旧・bulkhead・circuit breaker・Backup／Restore・Release rollbackをL3接続マップ、Event、`PT-AWS-01〜06`へ具体化した。残件はcompute／DB／queue等のADR、IaC、障害注入、復元演習による実証。
 20. 料金・利用枠・Capacity・追加容量・自動チャージの画面モックとPlan Configurationの対応が不足。
 
 ### Structural / Audit

@@ -34,6 +34,7 @@ L2以降をClaude Design（UI）とClaude Code（実装）で進める前に、*
 | B-3 | 認可判定のAPI形 | Role×操作マトリクス（`REQ-PRODUCT-08`）のサーバー側判定関数シグネチャと、画面側の可視/不可視制御の受け取り形 | REQ-SEC-08 | Code / Design |
 | B-4 | Source Extract JSON Schemaの第一陣 | プロトP0画面が使う分を先行確定: `source.keyword.map.v1`（attributes込み）/ `source.gsc.query_group.v1`（match込み）/ `source.keyword.assignment.v1` / `source.gsc.page_query_matrix.v1` / `schema.snapshot.qa.v1`。残りは画面到達順で | REQ-PACK-07 | Design(モック) / Code |
 | B-5 | 形態素解析エンジン選定 | KGA-15 exact段の正規化（分かち書き・助詞除去）の実装選定（MeCab系等・決定論）。辞書versionの持ち方に影響 | REQ-KGA-15 | Code |
+| B-6 | AWS初期配置・復旧ADR | AWS Operations Recovery Map v1の論理境界を維持してcompute、DB、queue、cache、Multi-AZ、backup隔離先、SLO、障害注入・復元演習方法を負荷・人数・費用から確定する。製品選定前でもcorrelation、bulkhead、circuit、Runbook、RPO/RTOの契約は変更しない | REQ-NFR-06〜08/14/15, REQ-TECH-19 | Code / Operations |
 
 ## Gate C: 先行確定不要（設計上、後から吸収できる）
 
