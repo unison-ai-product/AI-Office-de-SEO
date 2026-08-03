@@ -246,6 +246,60 @@ schema.image.generation_job.v1 {
 
 根拠: `REQ-SCREEN-19`、`REQ-PRODUCT-11/21`、Notification Recipient Routing Map。
 
+## 0.0.8 Billing Overview・AutoCharge・Capacity Contract
+
+顧客画面とOfficeが独自に残高、利用権、Capacityを合成せず、次のread modelを使用する。
+
+### `schema.billing.overview.v1`
+
+```text
+{
+  tenant_id, as_of,
+  subscription{subscription_id, state, plan_key, price_catalog_version,
+    plan_config_version, billing_cycle, period_start, period_end, renewal_at,
+    cancel_at?, tax_exclusive_amount, tax_inclusive_amount, currency},
+  entitlement_snapshot_ref,
+  credit{available, reserved, committed_this_period,
+    lots[]{lot_ref, source, remaining, expires_at}, next_expiry?},
+  auto_charge{policy_ref?, state, enabled, threshold?, purchase_product_ref?,
+    purchase_amount?, spent_this_period, monthly_limit_mode, monthly_limit_amount?},
+  payment{state, next_retry_at?, grace_ends_at?, payment_update_url_ref?},
+  capacity_snapshot_ref, availability
+}
+```
+
+### `schema.billing.auto_charge_policy.v1`
+
+```text
+{
+  policy_id, tenant_id, version, status,
+  enabled, balance_threshold, purchase_product_ref, purchase_amount,
+  monthly_limit{mode: finite|unlimited, amount?},
+  spent_period, spent_amount, authorization_decision_ref,
+  step_up_ref?, confirmation_version?, idempotency_key, updated_at
+}
+```
+
+### `schema.capacity.snapshot.v1`
+
+```text
+{
+  snapshot_id, tenant_id, site_id?, measured_at, aggregation_lag,
+  dimensions[]{dimension_key, usage, soft_limit, hard_limit, unit,
+    utilization, forecast_reach_at?, state, sellable, add_on_entitlement_ref?},
+  plan_config_version, source_refs[], availability
+}
+```
+
+規則:
+
+- 残高はLedgerから、機能はEntitlement Snapshotから、CapacityはDimension別集計から導出し、Client計算を認可・Preflightへ使用しない。
+- 自動チャージ有効化、無制限、上限引上げはstep-upと再確認を要求する。Agent会話はPolicy Proposalまでで決済を確定しない。
+- payment failureまたはlimit reached時は同一idempotency keyの購入を再発行せず、Jobを保留して選択肢を返す。
+- Price Catalog／Plan Configurationの新版を既存Subscription／Lotへ遡及適用しない。
+
+根拠: `REQ-BILLING-01〜16`、`REQ-NFR-15`、課金・Capacity画面接続マップ v1。
+
 ## 0.1 Authorization Decision Contract
 
 すべての実行面で使用する認可入力・出力を`schema.authorization.decision.v1`として固定する。

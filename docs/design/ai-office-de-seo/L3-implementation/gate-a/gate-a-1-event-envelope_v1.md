@@ -186,6 +186,15 @@ updated_at: 2026-07-05
 | billing.webhook_failed | stripe_event_ref | N(admin),O,A | REQ-ADM-02, REQ-BILL-07 |
 | billing.reconciliation_mismatch | diff_summary | N(admin),O,A | REQ-ADM-02, REQ-BILL-07 |
 | billing.cache_hit_floor_breached | grade, assumed, actual | N(admin),O | REQ-BILL-06 |
+| billing.auto_charge_policy_changed | policy_ref, version, enabled, limit_mode, authorization_ref | N,O,A | REQ-BILLING-14 |
+| billing.auto_charge_triggered | policy_ref, attempt_ref, trigger_balance, purchase_product_ref, amount | O,A | REQ-BILLING-14 |
+| billing.auto_charge_succeeded | attempt_ref, payment_ref, credit_lot_ref, ledger_ref | N,O,A | REQ-BILLING-14 |
+| billing.auto_charge_failed | attempt_ref, failure_class, job_hold_refs | N,O,A | REQ-BILLING-14 |
+| billing.auto_charge_limit_reached | policy_ref, spent_amount, monthly_limit, job_hold_refs | N,O,A | REQ-BILLING-14 |
+| billing.payment_grace_started | subscription_ref, retry_count, next_retry_at, grace_ends_at | N,O,A | REQ-BILLING-13 |
+| billing.payment_recovered | subscription_ref, payment_ref, entitlement_restored, duplicate_grant_prevented | N,O,A | REQ-BILLING-13 |
+| capacity.snapshot_measured | snapshot_ref, dimension_states, measured_at, aggregation_lag | O | REQ-NFR-15 |
+| capacity.limit_reached | dimension_key, scope_ref, state, usage, limit, allowed_actions | N,O,A | REQ-NFR-15, REQ-UPSELL-02 |
 | provider.route_decided | provider, model_ref | O,A | REQ-BILL-09 |
 | provider.health_degraded | provider | N(admin),O | REQ-BILL-09 |
 | provider.canary_rolled_back | provider, model_ref | N(admin),O,A | REQ-BILL-09 |

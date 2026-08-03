@@ -82,10 +82,10 @@ Agent Office会話は本文全文を業務正本へ保存せず、`office_conver
 
 ## 6. Billing & Credit（CreditAccount 集約）
 
-対象: usage_credit_ledger（append-only。monthly_grant / purchase_grant / promo_grant / manual_grant / reserve / release / commit / adjustment / expire / refund_reversal / chargeback_hold、stripe_event_id + idempotency_key 一意）、subscriptions、billing_plans(+versions) / credit_packs / credit_pack_prices、preflight_estimates。
-根拠: REQ-BILL-01/02/06/07/08/10、REQ-SEC-12。検証: AC-BILL-03/04, AC-SEC-12。
+対象: price_catalog_versions／catalog_products／catalog_prices、plan_configuration_versions、subscriptions（catalog/config version固定）、entitlement_snapshots、credit_lots、usage_credit_ledger（append-only。monthly_grant / purchase_grant / promo_grant / manual_grant / reserve / release / commit / adjustment / expire / refund_reversal / chargeback_hold、stripe_event_id + idempotency_key 一意）、auto_charge_policies（version、閾値、購入商品、月間有限／無制限上限、当月購入額、step-up／確認参照、状態）、auto_charge_attempts（policy/version、period、trigger balance、purchase idempotency、payment result、lot/ledger ref）、capacity_snapshots／capacity_dimension_usage／capacity_entitlements、invoices／payments／reconciliation_exceptions、preflight_estimates。
+根拠: REQ-BILL-01/02/06/07/08/10、REQ-BILLING-01〜16、REQ-NFR-15、REQ-SEC-12。検証: AC-BILL-03/04, AC-SEC-12, AC-L1-BILLING-01〜16。
 
-- TODO(L3): 残高はビュー/導出（台帳を直接書き換えない）。予約はmiss上限側で仮押さえ（REQ-BILL-06）。
+- 残高はビュー/導出（台帳を直接書き換えない）。予約はmiss上限側で仮押さえ（REQ-BILL-06）。CapacityはDimension別に保存し相殺しない。自動チャージ試行はperiod＋policy version＋purchase idempotencyで一意とし、決済成功とlot／ledger作成をoutbox／reconciliationで追跡する。
 
 ## 7. Provider / Config & Governance / Observability
 

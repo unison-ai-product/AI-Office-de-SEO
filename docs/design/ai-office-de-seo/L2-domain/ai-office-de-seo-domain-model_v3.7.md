@@ -131,6 +131,13 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 - ルート: CreditAccount（append-only Ledgerを内包）。
 - 不変条件: 台帳はappend-only・残高を直接書換えない／reserve→commit/release／`stripe_event_id`+`idempotency_key`で二重付与防止（REQ-BILL-07）／activeのみ月次付与（REQ-BILL-08）。
 
+### 4.6.1 Subscription／Entitlement／AutoChargePolicy／CapacityAccount
+
+- Subscriptionは契約主体、Price Catalog version、Plan Configuration version、状態、周期、更新、外部決済参照を持ち、契約時のEntitlement Snapshotを暗黙改版しない。
+- AutoChargePolicyは残高閾値、購入商品、1回購入額、月間上限または無制限、当月購入額、状態、認証・確認versionを持つ。自動購入も通常のCredit LotとLedgerへ記録する。
+- CapacityAccountはDimensionごとのusage、soft/hard limit、予測到達日、集計時刻、追加容量Entitlementを持ち、Dimension間を相殺しない。
+- 状態変更はBilling Commandで行い、通常ビュー、Office、Automationから同じ認可、step-up、冪等性を使う。支払失敗・上限到達時は新規有償副作用を保留するが、閲覧・export・支払修正を停止しない。
+
 ### 4.7 Site / SiteSandboxContext（Tenancy）
 - ルート: Site。
 - 不変条件: 全データ・キャッシュ・キュー・ログが `tenant_id`/`site_id` 境界を持ち越境不可（REQ-SEC-07/11）。

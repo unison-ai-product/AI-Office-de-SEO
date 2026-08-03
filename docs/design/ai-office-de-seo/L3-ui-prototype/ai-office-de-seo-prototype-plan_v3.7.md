@@ -123,6 +123,14 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-AWS-04: alertからimpact、対象scope、相関検索、runbookへ到達し、ack、実行、rollback、closeを監査eventへ残す。
 - [ ] PT-AWS-05: 全体復元とtenant選択復元の演習記録に復元点、整合結果、実測RPO/RTO、是正期限を表示し、backup作成成功だけを復旧可能の証拠にしない。
 - [ ] PT-AWS-06: canary異常時にdeploymentをrollbackし、drain済みJobをcheckpointから再開して失敗完了や追加課金にしない。
+- [ ] PT-BILLUI-01: S7がPrice Catalog／Plan Configuration／Entitlement versionから現Plan、税別・税込、周期、更新日、機能を表示し、旧価格やProvider名をハードコードしない。
+- [ ] PT-BILLUI-02: 残高、予約中、今月使用、失効予定LotをLedger read modelから表示し、画面計算値をPreflightや認可の正本にしない。
+- [ ] PT-BILLUI-03: 自動チャージは初期OFFで、閾値、購入額、月間有限上限／無制限を設定でき、有効化・無制限・上限引上げで影響表示、step-up、再確認を要求する。
+- [ ] PT-BILLUI-04: 自動チャージ上限到達／決済失敗で二重購入せず対象Jobを保留し、上限変更、手動購入、品質変更、中止を表示する。
+- [ ] PT-BILLUI-05: CapacityをDimension別の使用量、soft/hard limit、予測到達日、集計遅延で表示し、Entry／StandardはPremium、Premium／EnterpriseはPlan比較＋追加容量購入を提示する。
+- [ ] PT-BILLUI-06: 課金権限のないユーザーは利用量を見られるが購入・Plan変更・自動チャージ操作はできず、Office会話からも直接決済されない。
+- [ ] PT-BILLUI-07: `past_due`14日間は閲覧・export・支払修正を維持し、新規有償Job・自動投稿・追加費用を停止する。支払回復でEntitlement／creditを二重付与しない。
+- [ ] PT-BILLUI-08: Upgradeの差額と適用時刻、Downgrade／解約の次回更新適用、超過Site・Capacity・backup・予約Jobへの影響を確定前に表示する。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。
