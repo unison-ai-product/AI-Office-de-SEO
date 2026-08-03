@@ -5,7 +5,7 @@ version: 3.7
 layer: L3
 kind: design
 status: draft
-updated_at: 2026-07-05
+updated_at: 2026-08-03
 related: AOS-L1-USER-JOURNEY / AOS-L3-SCREEN-INVENTORY
 ---
 
@@ -118,8 +118,11 @@ flowchart LR
     S1[S1 ダッシュボード]; S2[S2 キーワード管理]; S3[S3 コンテンツ作成]; S4[S4 オートメーション]; S5[S5 検索流入分析]; S6[S6 学習ナレッジ]; S7[S7 設定]
   end
   S1 -->|承認待ち| W4[W4 承認キュー]
-  S1 -->|おすすめ採用| S3
-  S2 -->|選択/ギャップ/昇格から起動・プリセット引継| S3
+  S1 -->|Recommendation採用| RI[Recommendation Intake freeze]
+  S2 -->|Report/ClusterからRecommendation採用| RI
+  RI -->|新規/リライト| S3
+  RI -->|予定/軽量Patch| S4
+  RI -->|観測| S5
   S2 --> W1[W1 詳細ワークベンチ]
   S3 --> W5[W5 ジョブ進捗] --> W3[W3 プレビュー/QA]
   W3 -->|通過| W4 -->|承認| S4
@@ -151,34 +154,56 @@ flowchart LR
   O -->|簡単操作へ戻る| N
 ```
 
-## 2. 生成〜公開フロー（UJ-05）
+## 2. Recommendation／手動指定から生成〜公開（UJ-05）
+
+既定入口はversion付きRecommendationである。S3でKeyword、目的、CTA、内部link、品質、予算を再入力しない。ユーザー探索による手動指定も許可するが、Recommendationと同じIntake SchemaとPreflightへ正規化する。
 
 ```mermaid
 flowchart TD
-  A[起点選択 S3<br/>keyword/news/video<br/>※引継時プリセット] --> B{アサイン台帳<br/>プレチェック}
-  B -->|assigned済| B2[リライト誘導→UJ-06] 
-  B -->|OK| C[実行オプション<br/>今すぐ/おまかせ<br/>鮮度highは今すぐ既定]
-  C --> D[Preflight見積<br/>予約] --> E[W5 進捗 13状態<br/>停止/再開/キャンセル]
-  E --> F[W3 構成・QA<br/>記事タイプ/見出しフロー表示]
-  F -->|hard gate保留| G[対応: 要望追加→再実行<br/>or キャンセル]
-  G --> E
-  F -->|通過| H[W4 プレビュー承認] -->|承認| I[S4 公開/予約]
-  H -->|差し戻し| E
-  I --> J[W7 完了通知] --> K[S5 効果追跡]
+  A{入口} -->|既定| B[Recommendation採用<br/>Intake version freeze]
+  A -->|ユーザー探索| C[S2/S3 手動指定<br/>Keyword/URL/要望]
+  C --> D[共通Intakeへ正規化]
+  B --> E[Preflight<br/>権限/credit/接続/重複/保護/依存]
+  D --> E
+  E -->|不足/競合| E2[理由・必要操作・相談<br/>保留/修正/中止]
+  E -->|成立| F[W5 Agent Workflow<br/>停止/再開/キャンセル]
+  F --> G{Outline確認設定}
+  G -->|ON| H[見出し構成を確認・修正・確定]
+  G -->|OFF| I[Meaning Unit Writing]
+  H --> I
+  I --> J[QA/限定Repair]
+  J -->|hard gate該当| K[二段階確認＋同意<br/>または差し戻し]
+  J -->|通過| L[装飾・画像・Assembly]
+  K -->|公開継続| L
+  K -->|修正| F
+  L --> M[CMS下書き送信<br/>編集URL/Preview URL]
+  M --> N{公開条件}
+  N -->|新規15件未満| O[完成記事の承認必須]
+  N -->|新規15件到達＋自動運用有効| P[S4 予約/公開]
+  N -->|リライト/記事置換| Q[差分確認・承認必須]
+  O -->|承認| P
+  Q -->|承認| P
+  O -->|差し戻し| F
+  Q -->|差し戻し| F
+  P --> R[W7 完了通知] --> S[S5 公開/更新後評価]
 ```
 
-## 3. キーワード戦略→生成フロー（UJ-04）
+## 3. キーワード分析→Report→Recommendation（UJ-04）
 
 ```mermaid
 flowchart TD
-  A[S2 マップ] --> B[属性フィルター/価値スコア] --> C[ギャップマトリクス]
-  A --> D[手動追加/シード展開/CSV] --> A
-  A --> E[昇格キュー/起点別候補<br/>news・video] -->|採用| F[選択→生成起動]
-  C -->|未カバー象限| F
-  E -->|却下| A
-  F -->|単一| G[S3 プリセット引継]
-  F -->|複数一括| H[おまかせ投入<br/>Preflight合算]
-  A --> I[アサイン整理<br/>付替/分類変更]
+  A[S2 Keyword分析<br/>Market/Share/Cluster] --> B{Site種別}
+  A --> A2[追加/除外/分類修正] --> A
+  B -->|新規| C[Keyword戦略Report]
+  B -->|既存| D[Keyword・Site診断Report]
+  C --> E[Cluster単位<br/>優先/通常/保留/除外]
+  D --> E
+  E --> F[月次計画・記事/施策配分]
+  F --> G[Recommendation Queue]
+  G -->|採用| H[Intake freeze→UJ-05]
+  G -->|詳細| I[W1/Office<br/>Keyword・記事・根拠]
+  G -->|保留/除外| J[履歴＋次回再評価条件]
+  I -->|方針変更案を確定| K[未実行Recommendation再計算] --> G
 ```
 
 ## 4. 通知起点の対処フロー（UJ-03/07、通知→2遷移以内）
@@ -200,15 +225,28 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-  A[W9 登録・同意] --> B[S7 顧客組織/サイト作成<br/>Google接続/WP接続]
-  B -->|失敗| B2[再認可導線] --> B
-  B --> C[S6 文体指定<br/>です・ます/だ・である × 文語/口語<br/>Site言い回し学習 ON=サンプル10本]
-  C --> D[S6 ターゲット軸/主張軸]
-  D --> E[S2 マップ確認・補充] --> F[S3 初回生成] --> G[W4 承認→公開]
-  G --> H{承認済み新規記事<br/>15件到達?}
-  H -->|未達| F
-  H -->|到達| I[W9 自動公開の責任範囲・予算・品質・停止条件へ同意]
-  I --> J[新規記事の自動公開を解放]
+  A[W9 登録・必要同意] --> B[S7 契約主体・顧客組織・Site作成]
+  B --> C[S7 Site設定<br/>新規/既存・業界/業種・商品・顧客・地域・横断軸]
+  C --> D[S7 CMS REST API接続<br/>Capability診断]
+  D -->|失敗/不足| D2[再認証・権限確認・Plugin更新<br/>分析継続/送信保留] --> D
+  D --> E[S6 文体・ブランド・装飾設定<br/>言い回し学習は任意]
+  E --> F{Site種別}
+  F -->|新規| G[S2 big keyword方向確認<br/>市場探索]
+  F -->|既存| H[S7 GSC接続またはKeyword upload]
+  H --> I[S2 GSC/upload/CMS記事統合]
+  G --> J[S2 Cluster分析]
+  I --> J
+  J --> K{Report種別}
+  K -->|新規| L[S2 Keyword戦略Report]
+  K -->|既存| M[S2 Keyword・Site診断Report]
+  L --> N[S1 月次計画→Recommendation]
+  M --> N
+  N --> O[UJ-05 新規記事制作]
+  O --> P[CMS下書き→完成記事承認→公開]
+  P --> Q{本システム経由で承認・公開した<br/>新規記事15件到達?}
+  Q -->|未達| N
+  Q -->|到達| R[S4 自動運用設定<br/>責任範囲・予算・品質・停止条件・同意]
+  R --> S[新規記事の個別承認省略を解放]
 ```
 
 ## 6. 管理コンソール全体（UJ-08）
@@ -238,13 +276,23 @@ flowchart LR
 ## 7. 月次プランニング・フロー（UJ-09）
 
 ```mermaid
-flowchart LR
-  A[S1 プランニングタブ<br/>目標設定] --> B[推奨配分の確認・調整]
-  B --> C[S2 トポロジータブ<br/>強化カテゴリ/コア記事/順序確定]
-  C --> D[日次: UJ-03ループ＋<br/>S1 変動タブ確認]
-  D --> E[週次: 進捗 vs 予測レンジ<br/>→配分微調整]
-  E --> F[月末: 実績・乖離要因<br/>plan.monthly_closed通知]
-  F -->|翌月へ引き継ぎ| A
+flowchart TD
+  A[月初 S1計画案<br/>目的・重点領域・傾向配分・予算・週次枠] --> B{運用方式}
+  B -->|手動| C[権限者が差分確認・確定]
+  B -->|自動| D[期限まで変更/停止を受付]
+  D -->|変更なし| E[自動確定]
+  D -->|変更あり| C
+  C --> F[Recommendation Queue]
+  E --> F
+  F --> G[週次 実行予定選択<br/>上限・credit・依存・保護・品質]
+  G --> H{週次運用方式}
+  H -->|手動| I[一括確認→実行]
+  H -->|自動| J[通知→自動実行]
+  I --> K[日次 Dashboard判断Loop]
+  J --> K
+  K --> L[週次 未実行Recommendation再評価<br/>維持/順位変更/監視/失効]
+  L --> M[月末 実績・乖離・1/3/6か月評価]
+  M --> N[翌月計画案へ反映] --> A
 ```
 
 補足: 各Sノードは第二階層タブ（画面台帳§5）を持ち、通知・引き継ぎはタブへ直リンクする（2遷移以内の前提）。
