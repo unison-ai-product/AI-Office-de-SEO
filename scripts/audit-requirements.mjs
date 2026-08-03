@@ -223,6 +223,19 @@ for (const canonicalFile of [...canonicalSources, path.join(l1Root, "README.md")
     fail(errors, `manifest.canonical_paths: missing current canonical document ${relativePath}`);
   }
 }
+const layerPlanChecks = [
+  ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
+  ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],
+  ["/L2-domain/", "docs/plans/PLAN-L2-01-ai-office-de-seo-domain-model.md"],
+];
+for (const [pathFragment, planPath] of layerPlanChecks) {
+  const planText = fs.readFileSync(path.join(repoRoot, planPath), "utf8");
+  for (const artifactPath of manifest.canonical_paths.filter((item) => item.includes(pathFragment))) {
+    if (!planText.includes(artifactPath)) {
+      fail(errors, `${planPath}: missing generated canonical artifact ${artifactPath}`);
+    }
+  }
+}
 
 if (errors.length) {
   console.error(`Requirements audit failed (${errors.length})`);
