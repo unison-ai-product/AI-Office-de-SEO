@@ -20,6 +20,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 |---|---|---|
 | Tenant | 契約単位。ID型論理分離で他テナントと越境不可 | REQ-PRODUCT-10 / REQ-SEC-07 |
 | Site | 顧客組織がSEO運用対象として登録するWebサイト。分析・生成・計画・評価・CMS接続の境界であり、CMS種別には依存しない。初期の書込AdapterはWordPressを対象とする | REQ-ORG-01〜04 / REQ-INT-01・05 / REQ-PRODUCT-02 |
+| Site Connection Readiness | `site_identified / analysis_ready / content_read_ready / delivery_ready`をCapability別に保持する導入状態。Site登録、分析入力、記事読取り、CMS書込みを一つの「接続済み」へ丸めない | REQ-BUS-02 / REQ-LOGIC-03 / REQ-INT-05 |
 | SiteSandboxContext | ジョブ実行時に固定される `tenant_id`/`site_id`/`job_id` の境界。実行中に変更不可 | REQ-PRODUCT-02 / REQ-SEC-11 |
 | 基本権限・業務Permission・Site Assignment | 顧客認可の3要素。基本権限は契約者／サイトオーナー／ユーザー、業務Permissionは目標管理／キーワード・サイト戦略／記事制作／サイト分析、Site Assignmentは対象Siteを限定する | REQ-ORG-03〜07 / REQ-ACCESS-14〜18 |
 | User Order | ユーザー要望（soft/normal/strong）。SEO証跡・規制・境界を上書き不可 | REQ-PRODUCT-07 / REQ-PACK-02 |
@@ -227,7 +228,8 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | AIO（AI Overviews） | AI検索（の影響） | 既存方針 |
 | Orphan | 孤立ページ | 既存方針 |
 | checkpoint / fail-close | 途中経過の保存／安全側で遮断・拒否 | 内部語は非表示 |
-| Output Vault（成果物の一時保持。REQ-WPA-14） | 本文保持 〜M/D／退避中（再送待ち） | 全成果物を暗号化14日保持（コピー/DL・失敗時は再送）。本文非保持の唯一の例外 |
+| Output Vault（成果物の一時保持。REQ-WPA-14） | 本文保持 〜M/D／退避中（再送待ち） | 生成完了成果を暗号化して既定14日保持する受渡し領域（コピー／DL・失敗時再送）。Article Read／Workspace、Recovery Backupとは目的・期限を分離し、分析・学習・復元へ転用しない |
+| Recovery Backup | 変更前バックアップ／復元可能 〜M/D | CMS Revisionが使えない場合に変更前データを暗号化保持する復元専用領域。Site容量上限内かつ最長3か月で、古いものから削除する |
 | noindex / canonical | noindex（検索結果に出さない指定）／canonical（正規URLの指定） | 技術タブのみ・補足併記 |
 | キーワードマップ（旧UI名） | クラスター図 | 2026-07-08改名。業界では「キーワードマップ」=記事×キーワードの割当一覧を指すため、俯瞰バブル図の呼称として不適切だった。割当一覧はS5「ページ一覧」タブが担う（同日移設・旧S2「記事×キーワード」） |
 | トポロジープランナー（Topology Planner。REQ-KGA-19） | カテゴリーツリー | 2026-07-08改名（旧タブ名: トピッククラスター→サイト構造ツリー→同日「カテゴリーツリー」に再改名）。**中身はカテゴリ構造のツリー**（幹=トップカテゴリ／枝=サブカテゴリ）で、各カテゴリに主要キーワードをプルダウンで紐づける。キーワード間の関連性はクラスター図タブの責務。「トピッククラスター」は設計概念としてキャプション・説明文でのみ使用。2026-07-08にS2からS5サイトページ管理へ移設 |

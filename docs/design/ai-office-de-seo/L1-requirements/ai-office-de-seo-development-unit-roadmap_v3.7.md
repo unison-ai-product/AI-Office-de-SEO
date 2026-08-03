@@ -135,7 +135,7 @@ CMS出力、課金、通常ビュー、FAQチャットは商用利用の成立�
 依存順を保ちつつ、本質A・Bを前段に寄せる。フェーズはリリース区切りではなく構築順序である。
 
 - フェーズ0 土台: DU-00 UT-TDD準備 → DU-01 SiteSandboxContext → DU-02 URLマスター・本文非保持境界。全AIジョブと全データの境界・トレースの土台。
-- フェーズ1 Site導入・データ整備【本質A】: Site設定→CMS接続→新規／既存Site分岐→GSC／キーワード入力または業界Big Keyword探索→記事サマリー同期→DU-04 GSC Data Mart→DU-05 Keyword Map→DU-06 競合・Article Map。分類が完了した領域から自動構築期間として順次開放する。
+- フェーズ1 Site導入・データ整備【本質A】: Site設定→`site_identified`と接続Capability診断→新規／既存Site分岐→GSC／キーワード入力または業界Big Keyword探索→記事サマリー同期→DU-04 GSC Data Mart→DU-05 Keyword Map→DU-06 競合・Article Map。`analysis_ready / content_read_ready / delivery_ready`を独立判定し、分類が完了した領域から自動構築期間として順次開放する。
 - フェーズ2 エージェント中核【本質B】: DU-07 Pack / Ticket / Schema / Router（まずMock Executor）→ エージェント観測と事前見積（DU-08のうちToken / Cache / Observability・事前シミュレーション）→ DU-09 Research / Outline固定ワークフロー。
 - フェーズ3 生成の実証【本質Bの縦切り】: DU-10 新規記事の最小縦切り → DU-11 リライトの最小縦切り（Rewrite Recommendation → Article Read Snapshot確認 → Cause Analysis → Edit Plan → Repair／記事置換 → QA → CMS Draft → 承認）。ここまでで本質A・Bが実データで一気通貫する。
 - フェーズ4 出力・通常操作・支援: CMS Publication ContractとWordPress Adapter（投稿形式チェック・Media・下書き・Preview／Revision能力）＋DU-12 投稿予約・承認→通常ビューの月次計画・週次予定・Recommendation・承認・評価→FAQチャット／接続診断。

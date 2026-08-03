@@ -329,7 +329,7 @@ flowchart TD
 |---|---|---|---|---|---|
 | 登録・同意 → 顧客組織／Site作成 | 有効な顧客Session、必須同意 | 初回契約者。既存組織へのSite追加は契約者または対象範囲のサイトオーナー | Site設定へ | 同意不足、Plan上限、権限不足を同画面に表示し、入力を保持 | REQ-UJ-02 / REQ-ORG-01〜04 / REQ-ACCESS-08 |
 | Site設定 → Source診断 | Site基本情報、対象URL | 契約者またはサイトオーナー | 新規／既存の入力分岐へ | GSC、Keyword入力、CMS read/write、公開取得をCapability別に表示する。write不足だけで分析を止めず、CMS送信を伴う遷移で再接続先と復帰先を示す | REQ-BUS-02 / REQ-INT-01・05 / REQ-SCREEN-01 |
-| 新規Site → big keyword方向確認 | Site接続、業界／業種等の探索入力。未設定分類は推定可 | 候補閲覧は全員、追加・除外・方向確定はキーワード・サイト戦略 | 市場探索・Cluster分析へ | 候補不足時は探索条件と追加入力へ戻す。空Recommendationへ進めない | REQ-BUS-02・03 / REQ-SCREEN-01 / REQ-KRL-01 |
+| 新規Site → big keyword方向確認 | `site_identified`、業界／業種等の探索入力。未設定分類は推定可。CMS writeは不要 | 候補閲覧は全員、追加・除外・方向確定はキーワード・サイト戦略 | 市場探索・Cluster分析へ | 候補不足時は探索条件と追加入力へ戻す。空Recommendationへ進めない | REQ-BUS-02・03 / REQ-SCREEN-01 / REQ-KRL-01 |
 | 既存Site → Keyword統合 | GSCまたはKeyword upload。記事対応・リライトにはCMS記事取得も必要 | 接続設定は契約者またはサイトオーナー、Keyword追加・分類修正はキーワード・サイト戦略 | Market／Share・Cluster分析へ | Source別availabilityを表示し、利用できるSourceだけで部分処理。リライト不成立でも新規施策を止めない | REQ-BUS-02〜04 / REQ-DATA-06 / REQ-SCREEN-05 |
 | 分析 → 戦略／診断Report | 分析対象Keywordが1 Cluster以上成立 | 閲覧は全員、分析条件・評価設定変更はサイト分析、Cluster優先度等の変更はキーワード・サイト戦略 | 領域単位でReportを開放 | 未完了領域は処理中／不足／staleを表示し、完了領域の閲覧を妨げない | REQ-BUS-04・05 / REQ-SCREEN-04・05 |
 | Report → 月次計画 | Report versionが存在 | 目的・KPI・月次方針確定は目標管理。予算設定・配賦は契約者またはサイトオーナー | source_report_ref付きMonthlyPlan案へ | Report変更時は未実行分への影響差分を表示し、確定済み・実行済み履歴を保持 | REQ-BUS-06 / REQ-ORG-03・05 / REQ-UJ-09 |

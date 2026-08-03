@@ -438,7 +438,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - [ ] AC-L1-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。 ｜ 検証: REQ-DATA-01 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-02: 見出し構造、要点、イベント発生ポイントを機械抽出したArticle Summaryだけで記事の役割・不足・推薦根拠を判定できる。 ｜ 検証: REQ-DATA-02 ｜ 正本: `categories/data-requirements_v1.md`
-- [ ] AC-L1-DATA-03: DB、ログ、キュー、一時領域を検査し本文恒久保持がない。 ｜ 検証: REQ-DATA-03 ｜ 正本: `categories/data-requirements_v1.md`
+- [ ] AC-L1-DATA-03: DB、ログ、キュー、object storageを検査し、本文を含むobjectがArticle Read／Workspace、既定14日のOutput Vault、最長3か月のRecovery Backupだけに用途・期限・tenant／Siteを固定して存在し、期限削除と削除証跡が機能し、通常DB・学習・分析へ本文が複製されない。 ｜ 検証: REQ-DATA-03 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-04: stale・incompleteな派生値を識別し再取得できる。 ｜ 検証: REQ-DATA-04 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-05: 未変更記事が再取得・再解析されない。 ｜ 検証: REQ-DATA-05 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-06: Recommendation Itemから理由、費用、リスクを表示できる。 ｜ 検証: REQ-DATA-06 ｜ 正本: `categories/data-requirements_v1.md`

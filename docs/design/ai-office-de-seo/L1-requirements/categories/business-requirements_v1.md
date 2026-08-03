@@ -70,8 +70,18 @@ AI Office de SEOの業務は、単一の直線工程ではなく、次の5つの
 - 担当: サイトオーナーまたはキーワード・サイト戦略タグを持つユーザー。
 - 開始契機: Site作成、主要接続の変更、運用再開。
 - 共通設定: Site URL、名称、事業、商品・サービス、対象顧客、地域、CV、業界／業種、ブランド・表現方針、目標、保護・禁止方針を設定する。Site連携状態と取得可能範囲を確認する。
+- 接続成立状態は一語の「Site連携」で扱わず、次の4状態を独立判定する。
+
+| 成立状態 | 意味 | 解放する業務 |
+|---|---|---|
+| `site_identified` | Site URLと対象Siteを登録し、到達性・所有範囲・利用可能な取得経路を診断できる | Site設定、新規Siteの市場探索 |
+| `analysis_ready` | 新規Siteは市場探索入力から分析対象Clusterが成立、既存SiteはGSCまたは登録Keywordが成立する | 戦略／診断Report、新規記事Recommendation |
+| `content_read_ready` | 対象記事の本文・見出し・公開状態を有効なArticle Read Snapshotとして取得できる | 当該記事のリライトRecommendation／Rewrite Intake |
+| `delivery_ready` | CMS write Adapter、対象post typeの下書き作成権限、必要な投稿形式Capabilityが検証済みである | CMS下書き・画像送信、公開／更新反映 |
+
+`delivery_ready`未成立を分析・Recommendation・生成の失敗にせず、CMS送信だけを保留する。反対に、`analysis_ready`だけでリライト本文変更を開始せず、`content_read_ready`だけでCMSへ送信しない。
 - 新規Site経路:
-  1. Siteに関する共通設定を行い、Site連携を完了する
+  1. Siteに関する共通設定を行い、`site_identified`を成立させる。CMS read／write、GSC等の各Capabilityは同時に診断するが、CMS write未成立だけを理由に市場探索を停止しない
   2. 設定した業界／業種、商品・サービス、対象顧客、地域から、方向性を代表する単一語のビッグキーワード候補を探索する。候補は一度ユーザーへ提示し、方向性の確認、除外、追加を受けて探索起点を確定する
   3. 探索キーワードの意図、主従関係、cluster、競合、優先成分を分析・分類する
   4. 対象市場、cluster構成、需要、競合、Siteとの適合、不足情報をキーワード戦略レポートとして提示する
@@ -83,7 +93,7 @@ AI Office de SEOの業務は、単一の直線工程ではなく、次の5つの
   4. 市場キーワードを検索意図とSERP実績でcluster化し、既存URL、主従関係、順位・流入・CV実績を割り当てる
   5. 市場全体、cluster、獲得・未獲得、記事割当、市場状態、競合差分、AIO・広告・季節性をキーワード診断レポートとして提示する
   6. 新規記事、リライト、統合、内部リンク、保護、監視へ接続するキーワードRecommendationを提示する
-- 成立条件: 新規SiteのキーワードRecommendationはSite連携と業界／業種等の市場探索入力が成立していることを必須とする。既存SiteはGSC連携またはキーワード登録の少なくとも一方を必須とする。条件未達時はRecommendationを生成せず、不足する接続または登録操作を案内する。
+- 成立条件: 新規SiteのキーワードRecommendationは`site_identified`と業界／業種等の市場探索入力から`analysis_ready`が成立していることを必須とする。既存SiteはGSC連携またはキーワード登録の少なくとも一方による`analysis_ready`を必須とする。条件未達時はRecommendationを生成せず、不足する接続または登録操作を案内する。
 - リライト接続条件: リライト候補の生成は、GSCまたは登録Keyword等の分析入力に加え、CMS read、記事data取込、または許可された公開取得によって対象記事の本文・見出し・公開状態を取得できることを必須とする。GSCまたはKeyword実績だけでは本文変更を伴うリライトRecommendationを生成しない。記事を取得できない場合も、新規記事向けKeyword業務と取得済み範囲の診断は継続し、リライトだけを`read_connection_required`とする。
 - 記事送信条件: 新規記事、リライト、画像をCMSへ送るには、対象CMS Adapterで検証済みのwrite接続と対象投稿typeの下書き作成権限を必須とする。初期WordPress Adapterでは認証済みREST APIを使用する。Recommendation、分析、生成が成立していても、この条件を満たさない場合は送信工程だけを保留し、成果を保持して接続修復、再送または成果物持ち出しへ進める。
 - 成果物: 稼働可能なSite、接続状態、分析済みキーワード群、キーワード戦略レポートまたはキーワード診断レポート、キーワードRecommendation。

@@ -55,6 +55,16 @@ Article Read ProfileはSite、用途、候補経路、許可状態、primary／s
 
 本文全文、段落全文、生HTML、長い引用、LLM raw response、プロンプト全文を恒久DBへ保持しない。本文は隔離された一時領域で解析し、Article Summaryと必要なhash・位置参照を生成後に削除する。
 
+「本文非保持」は、本文を検索・分析・学習用の恒久コーパスまたは通常DBへ蓄積しないことを意味する。本文を含み得る領域は、次の目的・期限・正本を混同せず、列挙した3種類以外へ増やさない。
+
+| 領域 | 保持対象と目的 | 期限 | 利用禁止 |
+|---|---|---|---|
+| Article Read／Workspace | 取得本文または編集中本文。解析、生成、リライト、検証の実行に必要な一時入力 | Job完了・取消・Snapshot期限切れのうち最も早い時点 | 学習Corpus化、別Job流用、Recommendation／log／eventへの本文複製 |
+| Output Vault | 生成完了成果。CMS送信失敗時の喪失防止、再送、ユーザーのコピー／download | 既定14日。期限到達で本文削除 | 分析、学習、別成果生成、復元Backupとしての転用 |
+| Recovery Backup | 公開済み記事の変更前データ。CMS Revisionが使えない場合のユーザー復元 | Site容量上限内かつ最長3か月。容量超過時は古いものから削除 | Recommendation、成果評価、学習、通常の記事読取り正本としての利用 |
+
+WordPress Revision等、CMSが保有する履歴はCMS側の外部正本であり、AI Officeの恒久本文保有には算入しない。Output Vaultを生成成果の受渡し以外へ、Recovery Backupを復元以外へ流用して本文非保持を迂回しない。各領域はtenant／Site／用途を固定し、暗号化、期限、自動削除、削除証跡、認可を持つ。
+
 ### REQ-DATA-04 鮮度・完全性・根拠
 
 派生データは `observed_at`、`source_ref`、`schema_version`、`confidence`、`completeness`、鮮度期限を持つ。取得失敗または部分解析時は旧値を無条件に削除せず、staleまたはincompleteとして再取得対象にする。
@@ -135,7 +145,7 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 
 - [ ] AC-L1-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
 - [ ] AC-L1-DATA-02: 見出し構造、要点、イベント発生ポイントを機械抽出したArticle Summaryだけで記事の役割・不足・推薦根拠を判定できる。
-- [ ] AC-L1-DATA-03: DB、ログ、キュー、一時領域を検査し本文恒久保持がない。
+- [ ] AC-L1-DATA-03: DB、ログ、キュー、object storageを検査し、本文を含むobjectがArticle Read／Workspace、既定14日のOutput Vault、最長3か月のRecovery Backupだけに用途・期限・tenant／Siteを固定して存在し、期限削除と削除証跡が機能し、通常DB・学習・分析へ本文が複製されない。
 - [ ] AC-L1-DATA-04: stale・incompleteな派生値を識別し再取得できる。
 - [ ] AC-L1-DATA-05: 未変更記事が再取得・再解析されない。
 - [ ] AC-L1-DATA-06: Recommendation Itemから理由、費用、リスクを表示できる。

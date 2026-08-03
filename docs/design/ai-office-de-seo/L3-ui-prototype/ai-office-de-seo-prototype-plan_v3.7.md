@@ -58,8 +58,8 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 ## 6. プロト受入観点（チェックリスト）
 
-- [ ] PT-LC-01: 新規Siteで「Site設定・CMS接続→業界等の入力→big keyword方向確認→市場探索→Cluster分析→戦略Report→月次計画→Recommendation」へ到達できる。
-- [ ] PT-LC-02: 既存Siteで「Site設定→CMS/GSC/Keyword upload→統合分析→市場Keyword母集団に対する自社Share→診断Report→月次計画→Recommendation」へ到達できる。
+- [ ] PT-LC-01: 新規Siteで「Site設定・`site_identified`→業界等の入力→big keyword方向確認→市場探索→Cluster分析→戦略Report→月次計画→Recommendation」へ到達できる。CMS write未成立はDeliveryだけを保留し、市場探索を止めない。
+- [ ] PT-LC-02: 既存Siteで「Site設定→GSCまたはKeyword uploadによる`analysis_ready`→統合分析→市場Keyword母集団に対する自社Share→診断Report→月次計画→Recommendation」へ到達できる。リライトだけは対象記事の`content_read_ready`を追加条件とする。
 - [ ] PT-LC-03: Recommendation採用時に`recommendation_id+version`、`intake_ref`、`correlation_id`が発行され、目的、Cluster、intent、記事目的、CTA、内部link、品質、予算、保護、availabilityがS3／S4／Officeへ再入力なしで渡る。
 - [ ] PT-LC-04: Recommendation typeごとに新規、リライト、CTA Patch、内部link Patch、観測、技術エスカレーション、Automation変更へ分岐し、すべてを記事生成へ流さない。
 - [ ] PT-REC-01: 判定側の`create_new / merge_or_canonicalize / internal_link / do_nothing / index_diagnostic`が正規Actionへ変換され、画面、Intake、event、履歴で同じtypeを使用する。

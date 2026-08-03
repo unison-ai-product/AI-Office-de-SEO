@@ -157,6 +157,7 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - ルート: ArticleReadSnapshot。記事取得1回の結果と一時本文のライフサイクルを、ArticleSummaryやCMS write Capabilityから独立して管理する。
 - 値: ArticleRef、UrlRef、ConnectionProfileRef、ReadRouteRef、SourceKind、FetchedAt、SourceModifiedAt、PublicState、Title、Meta、HeadingTree、ContentRef、ContentHash、StructureHash、Size、Availability、WorkspaceRef、ExpiresAt、DestroyedAt、Correlation、Provenance。
 - 不変条件: 本文全文はSite／job scopedの暗号化一時objectにだけ置く／DB・event・log・Notification・Recommendationへ複製しない／本文変更を伴うRewrite Intakeはbody・headings・public state・freshnessが成立した有効Snapshotを必須とする／経路切替、source更新、hash変更、期限切れで旧Snapshotを再利用しない／完了・取消・期限切れ後は本文objectを破棄し、metadataと破棄証跡だけを残す／読取成功をCMS write permissionへ流用しない（REQ-DATA-15）。
+- 本文を含み得る保管境界は、実行中のArticle Read／Workspace、生成成果受渡しのOutput Vault、変更前復元のRecovery Backupに限定する。前者はJob／Snapshot期限、Output Vaultは既定14日、Recovery BackupはSite容量上限内かつ最長3か月とし、相互転用・学習・分析Corpus化を禁止する。CMS Revisionは外部正本として参照する。
 
 ### 4.3.1 Recommendation（Search Performance）
 
@@ -176,10 +177,10 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 
 ### 4.3.3 SiteBuildRun / MonthlyPlan / WeeklyExecutionSelection
 
-- `SiteBuildRun`: Site設定、新規／既存、CMS・GSC・Keyword uploadの入力成立、big keyword方向確認、分析Stage、coverage、段階開放、必要なユーザー操作を追跡する。
+- `SiteBuildRun`: Site設定、新規／既存、`site_identified / analysis_ready / content_read_ready / delivery_ready`のCapability別成立、CMS・GSC・Keyword uploadの入力状態、big keyword方向確認、分析Stage、coverage、段階開放、必要なユーザー操作を追跡する。4状態を単一の`connected`へ丸めない。
 - `MonthlyPlan`: 対象月、使用Report version、目的、重点Cluster、方向性配分、予算、週次枠、確定方式、仮定、availabilityを持つ。
 - `WeeklyExecutionSelection`: 月次計画とRecommendation集合から、credit、Capacity、依存、保護、品質に収まる当週候補と順序をfreezeする。
-- 不変条件: 新規Siteと既存Siteの入力条件を混同しない／部分完了を全体完了にしない／目的配分を達成保証にしない／月途中変更で実行済みを変更しない／ユーザー指定Taskを暗黙取消ししない／未実行Recommendationを単純繰越ししない。
+- 不変条件: 新規Siteと既存Siteの入力条件を混同しない／CMS write未成立だけで分析を止めない／Article Read未成立でリライトを開始しない／部分完了を全体完了にしない／目的配分を達成保証にしない／月途中変更で実行済みを変更しない／ユーザー指定Taskを暗黙取消ししない／未実行Recommendationを単純繰越ししない。
 
 ### 4.3.4 InterventionEvaluation
 

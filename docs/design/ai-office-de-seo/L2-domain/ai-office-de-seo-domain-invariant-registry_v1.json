@@ -55,14 +55,25 @@
       "invariants": [
         {
           "invariant_id": "INV-LIFECYCLE-001",
-          "statement": "新規記事RecommendationはSite接続とKeyword登録後、リライトRecommendationは加えてCMSまたは記事取込成立後に開始する。",
+          "statement": "導入状態をsite_identified・analysis_ready・content_read_ready・delivery_readyへ分離し、新規記事Recommendationはanalysis_ready、リライトは加えてcontent_read_ready、CMS送信はdelivery_readyを要求する。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md"
           ],
-          "forbidden_patterns": ["(?:Site接続|Keyword登録|キーワード登録).{0,30}(?:前|なし).{0,40}Recommendation.{0,20}(?:生成|表示|開始)"],
-          "bad_fixtures": ["Site接続前でもRecommendationを生成する。"],
-          "good_fixtures": ["Site接続とKeyword登録の成立後にRecommendationを開始する。"]
+          "forbidden_patterns": [
+            "(?:CMS write|CMS書込|REST API).{0,40}(?:分析|市場探索|Recommendation).{0,30}(?:必須条件|開始条件とする|成立条件とする)",
+            "(?:GSC|Keyword|キーワード)(?:実績|登録|連携).{0,40}(?:だけで(?!は)|のみで(?!は)).{0,20}(?:リライト|Rewrite).{0,20}(?:開始|生成|実行)",
+            "(?:delivery_ready|CMS write未成立).{0,40}(?:CMS送信|下書き送信).{0,20}(?:実行する|可能)"
+          ],
+          "bad_fixtures": [
+            "REST API接続を市場探索とRecommendationの必須条件とする。",
+            "GSC実績だけでリライトを開始する。",
+            "delivery_ready未成立でもCMS送信を実行する。"
+          ],
+          "good_fixtures": [
+            "新規記事Recommendationはanalysis_ready、リライトはcontent_read_ready、CMS送信はdelivery_readyを要求する。",
+            "CMS write未成立でも分析を継続し、Deliveryだけを保留する。"
+          ]
         }
       ]
     },
@@ -98,14 +109,27 @@
       "invariants": [
         {
           "invariant_id": "INV-CONTENT-001",
-          "statement": "記事本文は解析後に恒久保持せず、見出し・要点・event地点・Keyword／順位／CV遍歴をArticle Summaryとして保持する。",
+          "statement": "記事本文は恒久Corpus化せず、本文を含み得る領域をArticle Read／Workspace、Output Vault既定14日、Recovery Backup最長3か月へ限定し、目的外利用せず、Article Summaryと遍歴だけを恒久保持する。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/data-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/logic/article-summary-completeness-logic-requirements_v1.md"
           ],
-          "forbidden_patterns": ["記事本文.{0,40}(?:恒久|無期限|永続).{0,20}(?:保存|保持)"],
-          "bad_fixtures": ["記事本文を恒久保存する。"],
-          "good_fixtures": ["記事本文は解析後に破棄し、Article Summaryと遍歴を保持する。"]
+          "forbidden_patterns": [
+            "記事本文.{0,40}(?:恒久|無期限|永続).{0,20}(?:保存|保持)",
+            "Output Vault.{0,80}(?:唯一の例外|学習に利用|分析に利用|復元Backupとして利用)",
+            "(?:Recovery Backup|専用バックアップ).{0,80}(?:学習に利用|分析に利用|Recommendationに利用|無期限)",
+            "(?:Recovery Backup|専用バックアップ).{0,40}(?:最長|最大)?7か月"
+          ],
+          "bad_fixtures": [
+            "記事本文を恒久保存する。",
+            "Output Vaultは本文非保持の唯一の例外である。",
+            "Recovery Backupを分析に利用する。",
+            "専用バックアップは最長7か月保持する。"
+          ],
+          "good_fixtures": [
+            "記事本文は解析後に破棄し、Article Summaryと遍歴を保持する。",
+            "Output Vaultは既定14日、Recovery Backupは最長3か月とし、目的外利用しない。"
+          ]
         }
       ]
     },

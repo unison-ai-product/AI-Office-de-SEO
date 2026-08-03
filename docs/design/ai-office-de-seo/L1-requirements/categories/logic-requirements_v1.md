@@ -49,7 +49,7 @@ updated_at: 2026-07-30
 
 実績がなく数値を妥当に算出できない目的・候補は、擬似精密なスコアを生成せず `unknown`、参考情報、ルール一致、必要データ、再評価条件を示す。実績蓄積後に数値評価へ移行できる開放的な出力契約を持つ。
 
-Recommendation種別ごとに入力成立条件を判定する。新規記事向けキーワードRecommendationは、GSC連携、ユーザー登録キーワード、または新規Siteの市場キーワード探索で分析対象Clusterが成立していることを必要とする。リライトRecommendationは、既存SiteのGSCまたは登録キーワード等の分析入力に加え、CMS read、記事data取込、または許可された公開取得によって対象記事の本文・見出し・公開状態を取得できることを必要とする。GSCまたはKeyword実績だけでは本文変更を伴うRecommendationを成立させない。必要入力がない場合は推測だけでRecommendation Itemを作成せず、`input_required` または `read_connection_required` と不足入力、設定画面、再判定条件を返す。新規Siteの市場キーワード探索は、Site接続と業界／業種、商品・サービス、対象顧客等の探索条件からキーワード候補を生成した後、その候補を登録キーワード相当の入力として分析・分類する。
+Recommendation種別ごとに入力成立条件を判定する。新規記事向けキーワードRecommendationは、GSC連携、ユーザー登録キーワード、または新規Siteの市場キーワード探索で`analysis_ready`となり、分析対象Clusterが成立していることを必要とする。リライトRecommendationは、同じ分析入力に加え、CMS read、記事data取込、または許可された公開取得によって対象記事の本文・見出し・公開状態を取得した`content_read_ready`を必要とする。すなわち、対象記事の本文・見出し・公開状態を取得できることを必須とし、GSCまたはKeyword実績だけでは本文変更を伴うRecommendationを成立させない。必要入力がない場合は推測だけでRecommendation Itemを作成せず、`input_required` または `read_connection_required` と不足入力、設定画面、再判定条件を返す。新規Siteの市場キーワード探索は、`site_identified`と業界／業種、商品・サービス、対象顧客等の探索条件からキーワード候補を生成した後、その候補を登録キーワード相当の入力として分析・分類する。CMS writeを示す`delivery_ready`はCMS送信の成立条件であり、分析・Recommendationの開始条件へ混入させない。
 
 ### REQ-LOGIC-03 イベント駆動連鎖
 
