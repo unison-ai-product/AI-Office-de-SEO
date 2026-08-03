@@ -146,7 +146,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | 用語 | 定義 | 根拠 |
 |---|---|---|
 | Provider Adapter / Registry | LLMプロバイダの正規化アダプタと登録簿 | REQ-BILL-09 |
-| Routing Policy | 用途別capability要件での振り分け（Claude優先） | REQ-BILL-09 / REQ-AGENT-04 |
+| Routing Policy | 品質段階、用途別Capability、原価、latency、health、契約条件によるversion付き振り分け。特定Provider名を不変条件にしない | REQ-TECH-10 / REQ-AGENT-04 |
 | Cost Table / Capability Matrix | プロバイダ別原価表・能力表 | REQ-BILL-09 |
 
 ## 設定・ガバナンス（Config & Governance）

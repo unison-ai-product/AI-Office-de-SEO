@@ -80,6 +80,13 @@ updated_at: 2026-07-05
 | search.watchlist_threshold_crossed | keyword_group_id, delta | N,O | REQ-KGA-20 |
 | search.seasonal_refresh_due | url_hash, season_ref | N,O | REQ-KGA-20 |
 | search.index_issue_detected | url_hash, issue_type | N,O | REQ-KGA-21 |
+| recommendation.proposed | recommendation_id, version, type, target_ref, availability | W,O | REQ-KRL-08, REQ-DATA-06 |
+| recommendation.accepted | recommendation_id, version, intake_ref, correlation_id | W,O,A | REQ-LOGIC-03, REQ-SCREEN-09 |
+| recommendation.held | recommendation_id, version, reason, release_condition | W,N,O | REQ-KRL-07/09 |
+| recommendation.expired | recommendation_id, version, cause | W,O | REQ-KRL-09 |
+| recommendation.dispatched | recommendation_id, intake_ref, workflow_key, job_id, correlation_id | W,O | REQ-LOGIC-03, REQ-AGENT-09 |
+| recommendation.evaluation_started | recommendation_id, intervention_ref, evaluation_window | W,O | REQ-LOGIC-06, REQ-DATA-07 |
+| recommendation.learned | recommendation_id, result_class, site_calibration_version, global_candidate_ref? | W,O,A | REQ-KRL-10, REQ-DATA-10 |
 | plan.monthly_closed | period, target_delta, factors[] | N,O | REQ-PRODUCT-17 |
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
 | automation.oscillation_detected | targets[] | N,O,A | REQ-PRODUCT-18 |

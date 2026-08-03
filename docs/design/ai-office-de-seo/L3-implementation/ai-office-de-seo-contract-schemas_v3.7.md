@@ -13,12 +13,41 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 
 L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメインイベント）をJSON Schemaへ確定する。キーは `namespace.name.version` で版固定（REQ-PACK-04。検証: AC-PACK-02）。
 
+## 0. Recommendation Intake Contract
+
+採用RecommendationからAgentic Workflowへ渡す正規入力を`schema.intake.recommendation.v1`とする。画面、Office、Executorが独自に入力を再構築してはならない。
+
+```text
+{
+  recommendation_id, recommendation_version,
+  tenant_id, site_id, requested_by,
+  recommendation_type, target_ref,
+  objective_ref, keyword_cluster_ref,
+  search_intent, article_purpose,
+  reason_evidence_refs[],
+  cta_policy_ref?, internal_link_plan_ref?,
+  quality_tier, budget_estimate,
+  protection_policy, availability,
+  dependencies[], score_components,
+  accepted_at, correlation_id
+}
+```
+
+- `recommendation_type`: `new_article / rewrite / cta_patch / internal_link_patch / observe / technical_escalation / automation_change`。Coreが実行できない施策は、実行Workflowへ偽装せずユーザー対応Taskへ変換する。
+- `target_ref`: Keyword Cluster、記事、Site、CTA/CV Goal等の型付き参照を持つ。
+- `reason_evidence_refs[]`: 表示した推薦理由と実行入力が同じ根拠を指すための参照である。
+- `availability`: 入力Sourceの存在・鮮度・欠損理由を保持し、欠損値をLLMで補完しない。
+- 採用時にversionをfreezeする。実行前Preflightで権限、予算、接続、重複、カニバリ、保護、鮮度を再判定し、変化があれば元Recommendationを改変せず`held / superseded`へ遷移させる。
+- ユーザー手動起動も同Schemaへ正規化して由来を保持し、同じPreflightへ通す。
+
+根拠: `REQ-KRL-08/09`、`REQ-DATA-06/07`、`REQ-LOGIC-03`、`REQ-SCREEN-09/15/18`、Agent要求マップ。
+
 ## 1. schema.ticket.*（Ticket入力）
 
-正本フィールド（REQ-PACK-01 / REQ-PACK-11.7）: `{ workflowKey, promptPackKeys[], sourceNeedKeys[], schemaKeys[], returnTo, userPrompt, content_role_map }`。Ticketは本文を内包しない。
+正本フィールド（REQ-PACK-01 / REQ-PACK-11.7）: `{ workflowKey, intakeRef, promptPackKeys[], sourceNeedKeys[], schemaKeys[], returnTo, userPrompt, content_role_map }`。Ticketは本文やRecommendationの複製を内包せず、freeze済み`schema.intake.recommendation.v1`を`intakeRef`で参照する。
 
 - 対象: `schema.ticket.writing.v1` / `schema.ticket.repair.v1` / `schema.ticket.automation.v1` / QA用。
-- TODO(L3): 各ステージ別の追加フィールド（Writing: 対象MeaningUnitPlan参照、Repair: QA issue参照とpatch target、Automation: slot assignment参照）。
+- TODO(L3): 各ステージ別の追加フィールド（Writing: 対象MeaningUnitPlan参照、Repair: QA issue参照とpatch target、Automation: slot assignment参照）。全stageで`correlation_id`からRecommendation→Intake→Ticket→Snapshot→Publication→評価を追跡できること。
 - TODO(L3): `content_role_map` の型（requirement / reference の割当先、REQ-AGENT-07）。
 
 ## 2. schema.snapshot.*（Snapshot出力）

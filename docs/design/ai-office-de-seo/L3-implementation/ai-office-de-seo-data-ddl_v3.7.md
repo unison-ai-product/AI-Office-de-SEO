@@ -40,6 +40,7 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 
 - ArticleSummaryの配列・短文は件数/文字数上限をConfigで持つ。検索頻度の高いintent、tier、freshness、quality、content_hashは索引可能な小さい列とし、可変インベントリは上限つきJSONへ分離する。巨大JSON、本文断片、全世代コピーを作らない。
 - 推薦生成はarticle_summaries、Keyword Map、GSC read model、intervention_ledgerを入力とし、recommendation_itemsへ使用summary field、根拠ref、confidence、freshness、反証条件を保存する。推薦一覧の生成時にWP本文を再取得しない。
+- `recommendation_items`は`recommendation_id + version`を安定keyとし、type、target_ref、objective_ref、keyword_cluster_ref、search_intent、article_purpose、reason_evidence_refs、cta_policy_ref、internal_link_plan_ref、quality_tier、budget_estimate、protection_policy、availability、dependencies、score_components、status、expires_at、supersedes_refを保持する。採用時は`recommendation_intakes`へ`schema.intake.recommendation.v1`準拠のfreeze済み入力とcorrelation_idを保存し、`generation_jobs.intake_ref`から参照する。画面表示値からIntakeを再構築しない。
 
 ## 3. Search Performance（GscDataMart / CoverageAssessment / RewriteCandidate 集約）
 
@@ -51,7 +52,7 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 
 ## 4. Generation / Quality / Rewrite（GenerationJob / QualityGateEvaluation / RewriteJob 集約）
 
-対象: generation_jobs（freeze済み workflow/pack/catalog/config version、SiteSandboxContext）、tickets（キーのみ・本文非内包）、snapshots_meta（snapshot_hash・schema_key・returnTo・結果参照）、outline_contracts、qa_results（schema.snapshot.qa.v1 準拠のgates/metrics/ymyl/hard_gate_block）、rewrite_jobs / edit_plans / patch_audit（patch_id / section_id / operation / reason / quality result / cost / approved_by）。
+対象: generation_jobs（freeze済み workflow/pack/catalog/config version、SiteSandboxContext、intake_ref、correlation_id）、tickets（キーのみ・本文非内包・intake_ref）、snapshots_meta（snapshot_hash・schema_key・returnTo・結果参照）、outline_contracts、qa_results（schema.snapshot.qa.v1 準拠のgates/metrics/ymyl/hard_gate_block）、rewrite_jobs / edit_plans / patch_audit（patch_id / section_id / operation / reason / quality result / cost / approved_by）。
 根拠: REQ-PACK-01/04、REQ-AGENT-09、REQ-RWR-02/03/05、REQ-SEC-02。検証: AC-PACK-01/02, AC-AGENT-14, AC-RWR-01/02。
 
 - TODO(L3): Snapshot本体は本文を含む場合があるため一時領域（TTL）に置き、テーブルはメタ・hashのみ（REQ-SEC-11）。
@@ -61,7 +62,7 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 
 ## 5. Publishing & Automation（PublicationJob / PostEnvelope 集約）
 
-対象: wp_capability_snapshots（snapshotKey / schemaVersion）、dynamic_post_schemas、publication_jobs（dynamicPostSchemaKey・slot assignment metadata・content hash・validation result・WP draft URL・job result）、scheduled_actions / automation_policies / approval_requests / content_calendar_slots、recommendation_items / recommendation_feedback / saved_views / user_exploration_sessions。
+対象: wp_capability_snapshots（snapshotKey / schemaVersion）、dynamic_post_schemas、publication_jobs（dynamicPostSchemaKey・slot assignment metadata・content hash・validation result・WP draft URL・job result・correlation_id）、scheduled_actions / automation_policies / approval_requests / content_calendar_slots、recommendation_feedback / saved_views / user_exploration_sessions。`recommendation_items`と`recommendation_intakes`の所有ContextはSearch Performanceとし、Publishingは参照だけを持つ。
 根拠: REQ-WPA-02/04/08/09、REQ-AOUI-05、REQ-SEC-11。検証: AC-WPA-08, AC-AUTO-01/02, AC-AOUI-03。
 
 - TODO(L3): PostEnvelopeSnapshot は一時保存（最終HTML/ブロック全文は恒久保存しない）。
