@@ -81,6 +81,86 @@ function assertExcludes(relativePath, forbiddenFragments) {
     if (text.includes(fragment)) fail(errors, `${relativePath}: stale operative fragment remains: ${fragment}`);
   }
 }
+
+// Cross-document decisions are owned by DDD bounded contexts. The domain
+// registry is the single source of truth for aggregate invariants, canonical
+// sources, contradiction patterns, and positive/negative fixtures.
+const invariantRegistryPath = path.join(
+  designRoot,
+  "L2-domain",
+  "ai-office-de-seo-domain-invariant-registry_v1.json",
+);
+const invariantRegistry = JSON.parse(fs.readFileSync(invariantRegistryPath, "utf8"));
+const boundedContextKeys = new Set();
+const invariantIds = new Set();
+for (const context of invariantRegistry.bounded_contexts) {
+  if (boundedContextKeys.has(context.context_key)) {
+    fail(errors, `domain invariant registry: duplicate bounded context ${context.context_key}`);
+  }
+  boundedContextKeys.add(context.context_key);
+  if (!context.aggregate_root) fail(errors, `domain invariant registry: ${context.context_key} has no aggregate root`);
+  for (const reqId of context.owner_requirements ?? []) {
+    if (!reqDefinitions.has(reqId)) {
+      fail(errors, `domain invariant registry: ${context.context_key} references undefined owner ${reqId}`);
+    }
+  }
+  for (const invariant of context.invariants ?? []) {
+    if (invariantIds.has(invariant.invariant_id)) {
+      fail(errors, `domain invariant registry: duplicate invariant ${invariant.invariant_id}`);
+    }
+    invariantIds.add(invariant.invariant_id);
+    if (!(invariant.bad_fixtures?.length > 0) || !(invariant.good_fixtures?.length > 0)) {
+      fail(errors, `domain invariant registry: ${invariant.invariant_id} requires bad and good fixtures`);
+    }
+    for (const relativePath of invariant.canonical_sources ?? []) {
+      if (!fs.existsSync(path.join(repoRoot, relativePath))) {
+        fail(errors, `domain invariant registry: ${invariant.invariant_id} missing source ${relativePath}`);
+      }
+    }
+  }
+}
+const semanticPolicyRules = invariantRegistry.bounded_contexts.flatMap((context) =>
+  context.invariants.map((invariant) => ({
+    id: `${context.context_key}/${invariant.invariant_id}`,
+    aggregateRoot: context.aggregate_root,
+    files: invariant.canonical_sources,
+    forbidden: invariant.forbidden_patterns.map((pattern) => new RegExp(pattern, "i")),
+    badFixtures: invariant.bad_fixtures,
+    goodFixtures: invariant.good_fixtures,
+  })),
+);
+const negativeFixtureCount = semanticPolicyRules.reduce(
+  (count, rule) => count + rule.badFixtures.length,
+  0,
+);
+
+function paragraphUnits(text) {
+  return text
+    .split(/\r?\n\s*\r?\n/)
+    .map((paragraph) => paragraph.replace(/\s+/g, " ").trim())
+    .filter(Boolean);
+}
+
+for (const rule of semanticPolicyRules) {
+  for (const [index, fixture] of rule.badFixtures.entries()) {
+    const detected = rule.forbidden.some((pattern) => pattern.test(fixture));
+    if (!detected) fail(errors, `policy detector ${rule.id}: bad fixture ${index + 1} was not detected`);
+  }
+  for (const [index, fixture] of rule.goodFixtures.entries()) {
+    const falselyDetected = rule.forbidden.some((pattern) => pattern.test(fixture));
+    if (falselyDetected) fail(errors, `policy detector ${rule.id}: good fixture ${index + 1} was rejected`);
+  }
+  for (const relativePath of rule.files) {
+    const text = fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
+    for (const paragraph of paragraphUnits(text)) {
+      const matched = rule.forbidden.find((pattern) => pattern.test(paragraph));
+      if (matched) {
+        fail(errors, `${relativePath}: domain invariant conflict ${rule.id} (${rule.aggregateRoot}): ${matched}`);
+        break;
+      }
+    }
+  }
+}
 const tracePattern =
   /^- \[ \] (AC-L1-[A-Z0-9-]+): ([^\r\n]*?) ｜ 検証: ([^\r\n]*?) ｜ 正本: `([^`\r\n]+)`$/gm;
 
@@ -1038,5 +1118,5 @@ if (errors.length) {
 }
 
 console.log(
-  `Requirements audit passed: ${reqDefinitions.size} REQ definitions, ${coveredRequirements.size} covered REQ, ${sourceAcceptance.size} canonical AC, ${traceAcceptance.size} traced AC.`,
+  `Requirements audit passed: ${reqDefinitions.size} REQ definitions, ${coveredRequirements.size} covered REQ, ${sourceAcceptance.size} canonical AC, ${traceAcceptance.size} traced AC; ${boundedContextKeys.size} bounded contexts, ${invariantIds.size} domain invariants, ${negativeFixtureCount} contradiction fixtures verified.`,
 );

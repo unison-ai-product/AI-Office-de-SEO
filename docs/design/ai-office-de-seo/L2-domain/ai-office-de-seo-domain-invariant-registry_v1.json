@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-08-03",
+  "bounded_contexts": [
+    {
+      "context_key": "agent_execution_experience",
+      "context_name": "Agent Execution Experience",
+      "aggregate_root": "AgentTaskProjection",
+      "owner_requirements": ["REQ-SCREEN-18", "REQ-DESIGN-09", "REQ-AOUI-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-OFFICE-001",
+          "statement": "Agent Officeは実Task・Agent・工程の監視面であり、成果分析・設定・承認・変更は通常ビューを正本とする。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-development-unit-roadmap_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-requirements-decision-summary_v1.md",
+            "docs/reference/FEATURE-LIST.md"
+          ],
+          "forbidden_patterns": [
+            "Agent Office.{0,100}(詳細操作面|詳細運用面)",
+            "Agent Office(?:では|を).{0,50}(成果分析|成果drill\\s*down)(?:を)?(行う|実行する|正本とする|できる)",
+            "(?:Agent )?Office.{0,100}(推薦方針|配分|設定).{0,50}(変更できる|編集できる|確定できる)"
+          ],
+          "bad_fixtures": [
+            "Agent Officeは通常ビューより詳しい詳細操作面とする。",
+            "Agent Officeでは成果分析を行うことができる。",
+            "Officeで推薦方針を変更できる。"
+          ],
+          "good_fixtures": [
+            "Agent Officeは実行中Taskを見守る監視面とする。",
+            "成果分析は通常ビューを正本とする。"
+          ]
+        }
+      ]
+    },
+    {
+      "context_key": "customer_outcome",
+      "context_name": "Customer Outcome",
+      "aggregate_root": "CustomerOutcomeSnapshot",
+      "owner_requirements": ["REQ-MEASURE-14", "REQ-LOGIC-06"],
+      "invariants": [
+        {
+          "invariant_id": "INV-OUTCOME-001",
+          "statement": "100位以内は内部進捗signalであり、顧客向け成果段階は圏内到達・上位化・トップ確保とする。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md",
+            "docs/reference/FEATURE-LIST.md"
+          ],
+          "forbidden_patterns": ["(?:100位以内|100位).{0,40}(順位獲得|成果獲得|顧客成果)(として|へ表示|に算入)"],
+          "bad_fixtures": ["100位以内に入ったため順位獲得として顧客成果へ表示する。"],
+          "good_fixtures": ["100位以内は内部進捗signalに限定する。"]
+        }
+      ]
+    },
+    {
+      "context_key": "conversion_measurement",
+      "context_name": "Conversion Measurement",
+      "aggregate_root": "DailyUrlGoalAggregate",
+      "owner_requirements": ["REQ-WPA-05", "REQ-INT-01", "REQ-INT-03", "REQ-MEASURE-14"],
+      "invariants": [
+        {
+          "invariant_id": "INV-CV-001",
+          "statement": "CVは日別・URL別・Goal別と直前遷移元の単ホップ集計に限定し、session・multi-touch経路を保持しない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-wp-automation-dynamic-post-requirements_v3.7.md"
+          ],
+          "forbidden_patterns": [
+            "複数ページ.{0,40}(経路|session).{0,40}(保存する|復元する|帰属する)",
+            "multi[- ]?touch attribution.{0,30}(提供する|表示する|算出する)",
+            "アシストCV.{0,30}(として表示|として計上|を算出)"
+          ],
+          "bad_fixtures": [
+            "複数ページの経路を保存する。",
+            "multi-touch attributionを提供する。",
+            "アシストCVとして表示する。"
+          ],
+          "good_fixtures": [
+            "直前遷移元だけを単ホップ集計する。",
+            "複数ページのsession・経路を保存・復元せず、アシストCVとは表示しない。"
+          ]
+        }
+      ]
+    },
+    {
+      "context_key": "publication_attribution",
+      "context_name": "Publication Attribution",
+      "aggregate_root": "PublicationAttribution",
+      "owner_requirements": ["REQ-INT-05", "REQ-LOGIC-13", "REQ-MEASURE-14"],
+      "invariants": [
+        {
+          "invariant_id": "INV-PUBATTR-001",
+          "statement": "CMS直接変更はAI Office公開・更新実績から除外し、成果判定の交絡要因へ含める。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md"
+          ],
+          "forbidden_patterns": [
+            "(?:external_change|外部変更).{0,80}(AI Office実績へ算入|主実績へ算入|施策効果として表示)"
+          ],
+          "bad_fixtures": ["外部変更はAI Office実績へ算入する。"],
+          "good_fixtures": ["外部変更は実績から除外し、評価の交絡要因へ含める。"]
+        }
+      ]
+    }
+  ]
+}

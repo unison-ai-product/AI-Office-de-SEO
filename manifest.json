@@ -52,7 +52,8 @@
   ],
   "domain_paths": [
     "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md",
-    "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md"
+    "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
+    "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-invariant-registry_v1.json"
   ],
   "cross_cutting_paths": [
     "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md",
