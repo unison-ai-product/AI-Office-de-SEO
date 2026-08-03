@@ -834,6 +834,21 @@ for (const requiredPhrase of ["Article Read Snapshot確認", "Edit Plan freeze",
     fail(errors, `agent runtime: current rewrite workflow element missing: ${requiredPhrase}`);
   }
 }
+const contractSchemasPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
+);
+const contractSchemas = fs.readFileSync(contractSchemasPath, "utf8");
+for (const requiredPhrase of [
+  "schema.snapshot.article_read.v1",
+  "public_state(published|draft|private|redirected|not_found|unknown)",
+  "availability{body, headings, public_state, freshness, reason_codes[]}",
+  "Article Read SnapshotなしにEdit Plan",
+]) {
+  if (!contractSchemas.includes(requiredPhrase)) {
+    fail(errors, `contract schemas: Article Read Snapshot contract missing: ${requiredPhrase}`);
+  }
+}
 const layerPlanChecks = [
   ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],

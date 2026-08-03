@@ -188,6 +188,33 @@ Siteごとの接続結果を`schema.cms.connection_profile.v1`へ固定する。
 
 根拠: `REQ-INT-05/06/09`、`REQ-WPA-01〜14`、CMS接続・取得・投稿経路マップ。
 
+### 0.0.3.1 Article Read Snapshot Contract
+
+本文変更を伴うリライト、記事置換、Article Summary再生成、公開表示検証へ渡す取得結果を`schema.snapshot.article_read.v1`へ固定する。
+
+```text
+{
+  article_read_snapshot_id, schema_version,
+  tenant_id, site_id, article_ref, url_ref,
+  connection_profile_ref, read_route_ref, source_kind,
+  fetched_at, source_modified_at?,
+  public_state(published|draft|private|redirected|not_found|unknown),
+  title, meta?, heading_tree,
+  content_ref, content_hash, structure_hash, size_bytes,
+  availability{body, headings, public_state, freshness, reason_codes[]},
+  workspace_ref, expires_at, destroyed_at?,
+  correlation_id, provenance_ref
+}
+```
+
+- `content_ref`はSite／jobへscopeした暗号化一時objectだけを指し、本文全文をDB、event、log、Notification、Recommendationへ格納しない。
+- 本文変更を伴う`rewrite`／`article_replacement`では`availability.body / headings / public_state`がすべて利用可能で、`content_hash`と`expires_at`が有効なSnapshotを必須とする。不成立時は`read_connection_required`または`input_required`で保留する。
+- Article Summaryだけで候補説明はできるが、Article Read SnapshotなしにEdit Plan、Repair Ticketまたは記事置換Ticketを発行しない。
+- 取得経路の切替、source更新、hash変更、TTL切れで旧Snapshotを再利用しない。CMS保存値は編集入力、公開表示はSEO評価、Plugin Snapshotは変更通知という用途別正本を`source_kind`とprovenanceで区別する。
+- job完了、取消、期限切れ後は一時本文を破棄し、残すのはSnapshot ID、hash、取得時刻、availability、provenance、destroyed_atだけとする。
+
+根拠: `REQ-PRODUCT-04/20`、`REQ-BUS-02`、`REQ-LOGIC-02/12/13`、`REQ-INT-09`、`REQ-RWR-01〜06`。
+
 ## 0.0.4 Agent Office Conversation・Proposal Contract
 
 Office会話を質問と状態変更へ分け、変更案を`schema.office.proposal.v1`へ正規化する。
