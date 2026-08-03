@@ -64,6 +64,22 @@ const traceText = fs.readFileSync(tracePath, "utf8");
 const traceAcceptance = new Map();
 const coveredRequirements = new Set();
 const errors = [];
+
+function assertIncludes(relativePath, requiredFragments) {
+  const absolutePath = path.join(repoRoot, relativePath);
+  const text = fs.readFileSync(absolutePath, "utf8");
+  for (const fragment of requiredFragments) {
+    if (!text.includes(fragment)) fail(errors, `${relativePath}: missing current-policy fragment: ${fragment}`);
+  }
+}
+
+function assertExcludes(relativePath, forbiddenFragments) {
+  const absolutePath = path.join(repoRoot, relativePath);
+  const text = fs.readFileSync(absolutePath, "utf8");
+  for (const fragment of forbiddenFragments) {
+    if (text.includes(fragment)) fail(errors, `${relativePath}: stale operative fragment remains: ${fragment}`);
+  }
+}
 const tracePattern =
   /^- \[ \] (AC-L1-[A-Z0-9-]+): ([^\r\n]*?) ｜ 検証: ([^\r\n]*?) ｜ 正本: `([^`\r\n]+)`$/gm;
 
@@ -120,6 +136,41 @@ for (const id of traceAcceptance.keys()) {
 for (const reqId of reqDefinitions.keys()) {
   if (!coveredRequirements.has(reqId)) fail(errors, `${reqId}: no acceptance condition verifies this requirement`);
 }
+
+// ID consistency alone cannot detect a document that still states a superseded
+// product decision. Keep the small set of cross-cutting, already-decided
+// invariants executable here; historical prototype ledgers are intentionally
+// excluded because they preserve old values as migration evidence.
+assertIncludes("docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-business-requirements_v1.md", [
+  "Entry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜",
+  "Entry／Standardは月契約または年契約、Premium／Enterpriseは年契約",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
+  "schema.site.build_progress.v1",
+  "schema.plan.monthly.v1",
+  "schema.publication.decision.v1",
+  "schema.evaluation.intervention.v1",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
+  "Site導入",
+  "Keyword戦略Report",
+  "Recommendation Intake freeze",
+  "1・3・6か月",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-billing-credit-provider-requirements_v3.7.md", [
+  "月額付与クレジットは翌月まで繰越可能",
+  "最低契約6か月",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-development-unit-roadmap_v3.7.md", [
+  "初期=単一VPS",
+  "VPS段階はCompose相当",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md", [
+  "対象Role: Editor以上",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
+  "1サイト=1プランに伴い",
+]);
 
 if (errors.length) {
   console.error(`Requirements audit failed (${errors.length})`);
