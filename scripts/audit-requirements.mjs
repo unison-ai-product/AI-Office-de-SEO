@@ -499,6 +499,25 @@ for (const file of downstreamRoots.flatMap((root) => markdownFiles(root))) {
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const manifestArrayFields = [
   "canonical_paths",
+  "current_detail_paths",
+  "domain_paths",
+  "cross_cutting_paths",
+  "feature_summary_paths",
+  "l3_preparation_paths",
+  "gate_a_paths",
+  "prototype_paths",
+  "plan_paths",
+  "ui_support_paths",
+  "prototype_baseline_paths",
+  "audit_snapshot_paths",
+  "reference_paths",
+];
+const roleSeparatedManifestFields = [
+  "canonical_paths",
+  "current_detail_paths",
+  "domain_paths",
+  "cross_cutting_paths",
+  "feature_summary_paths",
   "l3_preparation_paths",
   "gate_a_paths",
   "prototype_paths",
@@ -520,6 +539,21 @@ for (const field of manifestArrayFields) {
       fail(errors, `manifest.${field}: missing path ${relativePath}`);
     }
   }
+}
+const manifestPathRoles = new Map();
+for (const field of roleSeparatedManifestFields) {
+  for (const relativePath of manifest[field] ?? []) {
+    const normalizedPath = relativePath.replaceAll("\\", "/");
+    const previousRole = manifestPathRoles.get(normalizedPath);
+    if (previousRole) {
+      fail(errors, `manifest: ${normalizedPath} is classified as both ${previousRole} and ${field}`);
+    } else {
+      manifestPathRoles.set(normalizedPath, field);
+    }
+  }
+}
+if (!manifest.prototype_policy || !/modification is prohibited/i.test(manifest.prototype_policy)) {
+  fail(errors, "manifest.prototype_policy: prototype modification prohibition is missing");
 }
 for (const field of manifestSingletonFields) {
   const relativePath = manifest[field];
@@ -577,9 +611,15 @@ const layerPlanChecks = [
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],
   ["/L2-domain/", "docs/plans/PLAN-L2-01-ai-office-de-seo-domain-model.md"],
 ];
+const planControlledPaths = [
+  ...(manifest.canonical_paths ?? []),
+  ...(manifest.current_detail_paths ?? []),
+  ...(manifest.domain_paths ?? []),
+  ...(manifest.cross_cutting_paths ?? []),
+];
 for (const [pathFragment, planPath] of layerPlanChecks) {
   const planText = fs.readFileSync(path.join(repoRoot, planPath), "utf8");
-  for (const artifactPath of manifest.canonical_paths.filter((item) => item.includes(pathFragment))) {
+  for (const artifactPath of planControlledPaths.filter((item) => item.includes(pathFragment))) {
     if (!planText.includes(artifactPath)) {
       fail(errors, `${planPath}: missing generated canonical artifact ${artifactPath}`);
     }

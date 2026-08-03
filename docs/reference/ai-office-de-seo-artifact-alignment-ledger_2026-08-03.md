@@ -16,6 +16,8 @@
 
 ## 2. 成果物群の分類
 
+`manifest.json`でもこの区分を機械可読に分離する。`canonical_paths`はL0・分類別L1・ロジック詳細だけを指し、旧L1詳細は`current_detail_paths`、横断判断は`cross_cutting_paths`、L2は`domain_paths`へ置く。配列間の重複は監査エラーとし、旧詳細や接続表を分類別要求の正本として誤読させない。
+
 | 成果物群 | 対象 | 状態 | 現行の役割／判定 |
 |---|---|---|---|
 | L0 | `L0-charter/ai-office-de-seo-charter_v3.7.md`、`ai-office-de-seo-business-requirements_v1.md` | current | SEO運用代行システム、法人・個人、価格階段、AWS、CMS非依存、Feature Object、提供責任を定義 |
