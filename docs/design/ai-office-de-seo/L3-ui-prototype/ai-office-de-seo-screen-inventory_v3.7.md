@@ -29,6 +29,36 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - データ契約: モックデータは Source Pack JSON（REQ-PACK-07）と schema.snapshot.*（AOS-L3-CONTRACT-SCHEMAS）に準拠する。プロト独自のデータ形を作らない。
 - 描画規約: テキスト・数値・表・グラフ・フォーム・ログ・ボタンはHTML/CSS。画像は背景・キャラ・部屋・装飾・看板枠のみ（REQ-NAV-05 / REQ-AOUI-03）。
 
+### 0.1 現行業務Lifecycleによる画面責務の上書き（2026-08-03）
+
+第一階層S1〜S7は再利用するが、旧プロトの画面起点ではなく、次の業務Lifecycleを画面間の正本とする。
+
+`Site導入 → 市場探索／既存データ取込 → Keyword分析・Cluster化 → 戦略／診断Report → 月次計画 → Recommendation → 採否 → Agent実行 → CMS下書き／公開 → 1・3・6か月評価 → 学習・再推薦`
+
+| Lifecycle | 主画面 | 画面責務 | 次へ渡す正本 |
+|---|---|---|---|
+| Site導入 | S7内Site構築Stepper | 新規／既存、Site・業界／業種・商品・顧客・地域・横断軸、CMS、GSC、Keyword uploadの成立状態を表示 | `SiteSetupContext`、connection availability |
+| 市場探索／既存取込 | S2構築中View | 新規はbig keyword方向確認、既存はGSC・upload・Site記事を統合。処理済み領域から段階開放 | market seed、Keyword Candidate、source provenance |
+| 分析・Cluster化 | S2 Keyword | 市場全体、主＋補助Keyword、intent、funnel、業界、商品、顧客、地域、AIO／広告、記事対応をCluster単位で表示 | `KeywordCluster`、market/share read model |
+| 戦略／診断Report | S2 Report tab / W1 | 新規Siteは市場・必要領域・カテゴリ提案・制作順、既存Siteは市場母集団に対する自社share・獲得・未獲得・記事問題・施策配分を表示 | version付きReport、ユーザー優先／保留／除外 |
+| 月次計画 | S1 Plan tab | 目的、重点領域、傾向配分、予算、週次枠を確認。自動／手動確定を分ける | `MonthlyPlan` version |
+| Recommendation | S1 Queue / S2・S5文脈表示 | 理由、対象Cluster、記事目的、CTA、内部link、依存、品質、credit、保護、availabilityを表示 | `schema.intake.recommendation.v1` |
+| Agent実行 | S3 / S4 / W3〜W5 | 新規、リライト、軽量Patch、Automationを別Workflowで表示し、同一correlationで成果と保留を追跡 | Ticket、Snapshot、Publication command |
+| CMS・公開 | S3確認 / S4予定 / W2・W4 | 最初の新規15記事、リライト、hard gate例外、解放済みAutomationを別条件で扱う | Publication result、公開／更新event |
+| 評価・学習 | S5 Evaluation / S6 Knowledge | SEO、CTA/CV、認知貢献、1/3/6か月、月次／累積、要監視、Site補正、匿名補正候補を表示 | Intervention result、Recommendation feedback |
+
+画面遷移中は`tenant_id / site_id / recommendation_id+version / intake_ref / correlation_id / target_ref / source view・filter`を保持する。S3でRecommendation表示値を読み直してIntakeを組み立ててはならない。
+
+### 0.2 旧プロト値の失効
+
+以下は過去のデモ実装記録であり、現行画面の設定値として使用しない。
+
+- 旧価格68,000／128,000／198,000／298,000円、プライム名称、旧Credit Pack、翌月繰越150%、追加credit 3か月。
+- 一律承認、Office監視専用、Claude優先、Owner/Admin/Editor/Viewerをそのまま顧客認可正本とする表現。
+- S3でkeyword/news/videoを再選択してRecommendation情報を再入力する導線。
+
+価格、契約、credit、Plan機能は`REQ-BILLING-01〜16`とversion付きPlan Configuration、認可は`REQ-ORG-03〜07`・`REQ-ACCESS-14〜16`を参照する。
+
 ## 1. 通常ビュー（Standard SaaS）第一階層7画面
 
 | # | 画面 | 主要コンポーネント（REQ-NAV-04の責務） | 主データ（モック契約） | プロト優先度 |

@@ -13,6 +13,81 @@ related: AOS-L1-USER-JOURNEY / AOS-L3-SCREEN-INVENTORY
 
 ユーザー行動要件（REQ-UJ-01〜09）から導出。ノードは画面台帳のID。**遷移図にない遷移をジャーニーが要求しない／ジャーニーにない行き止まりを作らない**（AC-UJ検証対象）。
 
+## 0. 現行Lifecycle正本（2026-08-03）
+
+以下を現行の最上位画面遷移とする。後続節の旧S3起点フローは、手動起動や既存プロトの履歴としてのみ使用し、本経路を置き換えない。
+
+```mermaid
+flowchart LR
+  A[S7 Site導入\n新規/既存] --> B{Site種別}
+  B -->|新規| C[S2 市場探索\nbig keyword方向確認]
+  B -->|既存| D[S2 GSC/Upload/CMS取込]
+  C --> E[S2 分析・Cluster化]
+  D --> E
+  E --> F{Report種別}
+  F -->|新規| G[S2 Keyword戦略Report]
+  F -->|既存| H[S2 Keyword・Site診断Report]
+  G --> I[S1 月次計画]
+  H --> I
+  I --> J[S1 Recommendation Queue]
+  J -->|採用| K[Recommendation Intake freeze]
+  J -->|保留/除外| J
+  K --> L{施策種別}
+  L -->|新規/リライト| M[S3 Agent Workflow]
+  L -->|予定/自動運用| N[S4 Automation]
+  L -->|CTA/内部link Patch| O[W2/W4 軽量施策確認]
+  L -->|観測| P[S5 要監視]
+  L -->|技術対応| Q[W10 ユーザー対応/Support]
+  M --> R[CMS下書き・承認/Automation]
+  N --> R
+  O --> R
+  R --> S[S5 公開・更新後評価]
+  S --> T[S6 Site学習/全体補正候補]
+  T --> I
+```
+
+### 0.1 新規Site導入
+
+```mermaid
+flowchart TD
+  A[Site設定・CMS接続] --> B[業界/業種・商品・顧客・地域・横断軸]
+  B --> C[big keyword候補]
+  C --> D{方向性確認}
+  D -->|除外/追加| C
+  D -->|開始| E[市場Keyword探索]
+  E --> F[Cluster分析・分類]
+  F --> G[戦略Reportを領域ごとに開放]
+  G --> H[月次計画・Recommendation]
+```
+
+### 0.2 既存Site導入
+
+```mermaid
+flowchart TD
+  A[Site設定] --> B[CMS/GSC接続またはKeyword upload]
+  B --> C[GSC・upload・記事・市場Keyword統合]
+  C --> D[Cluster分析・記事対応・Market/Share計算]
+  D --> E[Keyword・Site診断Report]
+  E --> F[月次計画・Recommendation]
+```
+
+### 0.3 Recommendationから評価まで
+
+```mermaid
+flowchart TD
+  A[Recommendation version] --> B[採用]
+  B --> C[schema.intake.recommendation.v1 freeze]
+  C --> D[Preflight\n権限/予算/接続/重複/保護/鮮度]
+  D -->|変化あり| E[held/superseded\n理由と解除条件]
+  D -->|成立| F[Workflow/Ticket]
+  F --> G[QA/限定Repair]
+  G --> H[CMS下書き/公開判定]
+  H --> I[公開・更新event]
+  I --> J[SEO/CTA-CV/認知評価\n1・3・6か月＋月次/累積]
+  J --> K[Site補正/匿名補正候補]
+  K --> L[再推薦/次月計画]
+```
+
 ## 1. 全体マップ（通常ビュー）
 
 サイドメニュー=第一階層7項目、ヘッダー=グローバル要素（REQ-NAV-02）。W系は呼び出し元文脈で開く（パネル/ドロワー、第三階層）。

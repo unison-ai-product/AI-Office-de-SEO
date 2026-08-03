@@ -13,6 +13,24 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 DCプロト `prototype/AI Office de SEO.dc.html`（単一ファイル・約8,900行/900KB）を本実装（L4）へ翻訳するための対応表。**プロト自体の共通化リファクタは行わない**（DC形式はストリーミング描画のためインラインstyle維持が既定。prototype/CLAUDE.md 方針9）。正本参照: トークン=Gate A-4（`gate-a-4-design-tokens_v1.md` / design-tokens.css）、画面責務=AOS-L3-SCREEN-INVENTORY、データ契約=AOS-L3-CONTRACT-SCHEMAS。
 
+## 0. 現行要求との差分（2026-08-03）
+
+本書の行番号、定数、state、vals関数は2026-07-08時点の実装資産台帳であり、現行要求の完成状態を意味しない。L4へ翻訳する前に次を追補する。
+
+| 差分 | 現在の実装 | 必要な変更 |
+|---|---|---|
+| Site導入 | S7の接続・設定部品 | 新規／既存の構築Stepper、big keyword方向確認、GSC/upload/CMS availability、段階開放 |
+| 戦略／診断Report | S1/S2/S5へ断片化 | 新規戦略Reportと既存診断ReportをW1共通枠で構成し、Market→Share→施策を一続きで表示 |
+| Recommendation Intake | `recVals`とS3 preset | `recommendation_id+version / intake_ref / correlation_id`をfixture正本にし、S3再入力を廃止 |
+| Workflow分岐 | 新規／リライト中心 | CTA Patch、内部link Patch、観測、技術エスカレーション、Automation変更を型付き分岐 |
+| 公開条件 | 旧full_auto／承認表現 | 15記事、解放後自動投稿、リライト承認、hard gate例外を別状態化 |
+| 評価Loop | S1/S5の実績表示 | 公開／更新event→1/3/6か月→SEO／CTA-CV／認知→学習→再推薦を相関表示 |
+| Office | 監視・詳細中心 | 会話、Proposal、影響・credit、条件／Task変更、共通Command/Eventへの接続 |
+| 設定・課金 | 旧価格・旧credit fixture | version付きPlan Configurationと現行Billing要求から生成 |
+| 権限 | `memberRoles`と旧Role | 基本区分＋業務Permission＋Site付与＋Automation委任へ置換 |
+
+既存のカード、Modal、Tab、Office scene、Agent asset、通知、Task進捗、詳細Panelは再利用可能である。旧fixtureと旧mutation handlerを本番Store/API設計の種として無条件に採用しない。
+
 ## 1. デザイントークン実測インベントリ（2026-07-08 実測・WCAG比は白背景基準）
 
 ### 1.1 カラー（Standard SaaS light）

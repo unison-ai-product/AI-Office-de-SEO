@@ -18,11 +18,15 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 ## 2. 検証したいこと（プロトの問い）
 
-1. 2モードが本当に「同じ詳細コンポーネント・同じ状態」で成立するか（REQ-AOUI-01。詳細コンポーネントの二重実装が発生しないか）。
-2. Agent Officeの「部屋→ペルソナ→選択メニュー→詳細1画面」の導線が、通常ビューより遅く・迷わせずに同じ操作へ到達できるか。
+1. Site導入から分析、Report、月次計画、Recommendation、Agent実行、CMS、評価、学習までが、再入力と行き止まりなしで一つの業務Lifecycleとして成立するか。
+2. 2モードが同じ業務entity・Command/Event・権限を使いながら、通常ビュー＝簡単操作、Agent Office＝詳細探索・会話・条件／Task変更として成立するか。
 3. 探索/おすすめの2軸が各画面で自然に同居するか（REQ-AOUI-05）。
 4. 状態機械の工程可視化（キャラ4状態）が、装飾でなく実状態の理解に寄与するか（REQ-AOUI-04 / Design.md アンチパターン「キャラを装飾で終わらせない」）。
 5. 事前計算中・欠損（GSC匿名化/切り捨て注記）・hard gate保留といった「正直な状態表示」がUIとして成立するか（REQ-SEC-06 / REQ-KGA-11 / REQ-AGENT-08）。
+6. Market全体とSite Shareを基線に、新規Site戦略Reportと既存Site診断Reportを区別して理解できるか。
+7. Recommendation採用時の全Contextが`schema.intake.recommendation.v1`へfreezeされ、S3・Office・Automationで再入力されないか。
+8. 最初の新規15記事、解放済み自動投稿、リライト承認、hard gate例外が、同じ「承認」表示へ潰れず理解できるか。
+9. 公開・更新後のSEO、CTA/CV、認知貢献、1/3/6か月、月次／累積評価が次のRecommendationへ接続するか。
 
 ## 3. 技術方針
 
@@ -52,6 +56,16 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 通常ビュー→Agent Officeの順は REQ-DUR-02（DU-15: 通常ビュー完成後にAgent Officeを乗せる）の思想に合わせる。
 
 ## 6. プロト受入観点（チェックリスト）
+
+- [ ] PT-LC-01: 新規Siteで「Site設定・CMS接続→業界等の入力→big keyword方向確認→市場探索→Cluster分析→戦略Report→月次計画→Recommendation」へ到達できる。
+- [ ] PT-LC-02: 既存Siteで「Site設定→CMS/GSC/Keyword upload→統合分析→市場Keyword母集団に対する自社Share→診断Report→月次計画→Recommendation」へ到達できる。
+- [ ] PT-LC-03: Recommendation採用時に`recommendation_id+version`、`intake_ref`、`correlation_id`が発行され、目的、Cluster、intent、記事目的、CTA、内部link、品質、予算、保護、availabilityがS3／S4／Officeへ再入力なしで渡る。
+- [ ] PT-LC-04: Recommendation typeごとに新規、リライト、CTA Patch、内部link Patch、観測、技術エスカレーション、Automation変更へ分岐し、すべてを記事生成へ流さない。
+- [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
+- [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
+- [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。
+- [ ] PT-LC-08: Planロック、データ不足、接続不足、権限不足、処理中、障害を別状態として表示し、同じ灰色ロックへ潰さない。
+- [ ] PT-LC-09: 旧価格、旧credit条件、Claude優先、旧Role、一律承認、Office監視専用の文言・fixtureが現行画面に存在しない。
 
 - [ ] PT-A: 通常/Agent Officeで同一の詳細コンポーネント・モックAPI・状態が使われている（コード上、詳細の二重実装がない）。｜ REQ-AOUI-01（AC-AOUI-01/04）
 - [ ] PT-B: 第一階層はREQ-NAV-01の7項目・正式ラベルで、内部用語が現れない。｜ REQ-NAV-01（AC-PRODUCT-02/03）
