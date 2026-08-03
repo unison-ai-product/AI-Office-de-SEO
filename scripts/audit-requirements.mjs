@@ -318,6 +318,7 @@ assertIncludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
   "ai-office-de-seo-recommendation-ui-validation_v1.md",
   "ai-office-de-seo-standard-office-ui-validation_v1.md",
   "ai-office-de-seo-site-onboarding-ui-validation_v1.md",
+  "ai-office-de-seo-keyword-report-ui-validation_v1.md",
 ]);
 assertExcludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
   "requires:\n    - PLAN-L3-01-ai-office-de-seo-implementation-design",
@@ -353,10 +354,12 @@ assertIncludes("docs/reference/ai-office-de-seo-prototype-modernization-register
   "SF-UI-03",
   "SF-UI-04",
   "SF-UI-05",
+  "SF-UI-06",
   "validated`とL1/L2反映なしにL3確定へ送らない",
   "AOS-PRE-L3-RECOMMENDATION-UI-VALIDATION",
   "AOS-PRE-L3-STANDARD-OFFICE-UI-VALIDATION",
   "AOS-PRE-L3-SITE-ONBOARDING-UI-VALIDATION",
+  "AOS-PRE-L3-KEYWORD-REPORT-UI-VALIDATION",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-recommendation-ui-validation_v1.md", [
   "lifecycle_stage: pre_l3_ui_validation",
@@ -410,6 +413,38 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-si
   "ONB-UI-01 新規・接続最小",
   "ONB-UI-15 CMS非対応",
   "ブラウザ操作前は`open`",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-keyword-market-share-connection-map_v1.md", [
+  "カテゴリー／テーマ戦略上の投影",
+  "CMS category、slug、階層と1対1を前提にしない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md", [
+  "Site固有のカテゴリー／テーマ戦略",
+  "公共ClusterやCMS categoryと1対1を前提にしない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md", [
+  "カテゴリー／テーマ戦略単位として扱う",
+  "カテゴリー／テーマ戦略とWordPress等のCMS categoryを1対1に固定せず",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-keyword-report-ui-validation_v1.md", [
+  "lifecycle_stage: pre_l3_ui_validation",
+  "Site Clusterは、どのカテゴリー／テーマ領域をSiteで持ち",
+  "Observed、Estimated、Article Shareを一つの「シェア率」へ合算しない",
+  "判断Story＋Cluster Explorer（第一検証案）",
+  "Cluster Matrix起点（比較案）",
+  "AIO観測不可を0%と表示せず",
+  "recommendation_feedback`をCluster分類、除外、優先度変更の正本にしない",
+  "KWR-UI-01 新規実績なし",
+  "KWR-UI-19 カテゴリー／テーマ配置",
+  "ブラウザ操作前は`open`",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
+  "採用/条件付き採用/保留/除外をversion付きRecommendation Decisionへ記録",
+  "feedbackは既読・UI分析補助に限定",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-keyword-gsc-article-map-requirements_v3.7.md", [
+  "対象Site Keyword／Cluster versionへのユーザー調整",
+  "recommendation_feedback`を分類・除外の正本にしない",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
   "PT-UX-01",

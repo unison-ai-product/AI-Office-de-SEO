@@ -22,7 +22,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 | Public Keyword Asset | 正規化Keyword、locale、地域、device、検索量、CPC、競争性、SERP feature、AIO／広告圧力、related edge、取得元・利用条件 | global | 再利用条件を満たす公共外部データだけ。大量・長期保持可 |
 | Public Market Cluster | 公共SERP／intentに基づくcluster version、代表語候補、member、類似根拠、観測期間 | global | locale・device・期間・計算versionごとに共有可 |
 | Site Keyword Universe | 公共asset参照、GSC Query、user upload、Site抽出語、商品・顧客候補、採用・除外、業界／横断軸 | tenant + Site | 顧客固有正本。globalへそのまま出さない |
-| Site Cluster Projection | Site目的に合わせたcluster、代表語、primary／secondary、記事割当、Market属性参照 | tenant + Site | Public clusterを参照できるが、Site固有境界・重み・割当を共有しない |
+| Site Cluster Projection | Siteがどのカテゴリー／テーマ領域を持つかというカテゴリー／テーマ戦略、代表語、primary／secondary、記事群・役割・内部link前後関係、Market属性参照 | tenant + Site | Public clusterを参照できるが、Site固有境界・重み・記事配置を共有しない。CMS categoryとは1対1を前提にしない |
 | Observed Query Share | GSC表示・click・順位・CTRと匿名化／切り捨て注記 | tenant + Site | 市場全体ではなく観測Share |
 | Estimated Search Share | SERP順位、推定CTR、競合traffic等による補助推定 | tenant + Site | 推定値、confidence、算式versionを明示 |
 | Article Share | cluster内で各記事が獲得するQuery、表示、click、CVの分布 | tenant + Site | Article Summary・Assignment・実績に接続 |
@@ -77,7 +77,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## 6. Cluster規則
 
 - 意味類似だけでcluster化しない。正規化、検索意図、SERP上位URL重複、上位ページ共通獲得語、co-landing、PAA、関連検索、記事type、時系列類似度を使用する。
-- 公共Clusterは市場の近似であり、Site Clusterは記事戦略上の投影である。Siteの商品・顧客・独自材料により分割・統合が異なり得る。
+- 公共Clusterは市場の近似であり、Site Clusterは「どのカテゴリー／テーマ領域をSiteで持ち、何の記事群をどの役割・順序・内部linkで配置するか」というカテゴリー／テーマ戦略上の投影である。Siteの商品・顧客・独自材料により分割・統合が異なり得る。
+- Site Clusterは論理的なカテゴリー／テーマ戦略であり、WordPress等のCMS category、slug、階層と1対1を前提にしない。現行CMS構造への記事割当と、将来の構造提案を別状態で保持し、本システムはCMS構造を自動変更しない。
 - Cluster状態はstable、mixed intent、volatile、split candidate、merge candidateを持つ。
 - 代表語の変更でClusterを作り直さない。primary／secondaryはSite Projection側で保持する。
 - 同一SERPの一時一致だけで統合せず、観測期間とconfidenceを持つ。

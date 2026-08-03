@@ -157,7 +157,7 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - `KeywordAssetPool`: 公共外部Sourceから独立取得したKeyword、locale／地域／device別Market観測、edge、provenance、利用条件を保持するglobal集約。tenant、Site、URL、顧客別順位・CVを持たない。
 - `PublicMarketCluster`: 公共SERP／intentから導出したversion付き市場cluster。代表語変更は同じIDの改版、分割・統合はlineageで表す。
 - `SiteKeywordUniverse`: 公共asset参照、GSC Query、user upload、Site抽出語、業界・商品・顧客候補、採否を統合するSite集約。顧客固有語を公共Poolへ自動昇格しない。
-- `SiteClusterProjection`: Site目的、業界／横断軸、記事成立性、Article Summary、Assignmentを反映したSite固有cluster。公共Clusterと1対1を前提にせず、primary／secondary、記事割当、ユーザー確定状態を持つ。
+- `SiteClusterProjection`: Site目的、業界／横断軸、記事成立性、Article Summary、Assignmentを反映したSite固有のカテゴリー／テーマ戦略。どのカテゴリー／テーマ領域を持つか、代表／補助Keyword、記事群の役割、配置順、内部link前後関係、現行CMS構造への割当、構造提案、ユーザー確定状態を持つ。公共ClusterやCMS categoryと1対1を前提にしない。
 - `MarketShareSnapshot`: Market属性、Observed Query Share、Estimated Search Share、Article Shareを別成分・別provenanceで保持する期間read model。
 - 不変条件: global IDとSite IDを別namespaceにする／公共改版でユーザー確定Site Clusterを上書きしない／MarketとShareを単一値へ潰さない／GSC Query集合を市場全体とみなさない。
 

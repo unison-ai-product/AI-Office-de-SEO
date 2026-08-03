@@ -65,6 +65,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Index Status | 公開URLのインデックス登録状況・技術ヘルスの監視（クォータ配下・決定論） | REQ-KGA-21 |
 | Monthly Plan | 月次目標・配分・参考レンジ予測（保証しない）・実績乖離の計画単位 | REQ-PRODUCT-17 |
 | Site Build Run | Site設定からKeyword分析・Report段階開放までの構築実行。新規／既存、入力成立、big keyword確認、coverageを追跡する | REQ-BUS-02〜05 |
+| Site Cluster／カテゴリー・テーマ戦略 | Siteが持つべきカテゴリー／テーマ領域と、その代表・補助Keyword、記事群の役割、制作順、内部link関係を束ねる戦略単位。CMS categoryとは1対1に固定せず、現行構造への記事割当と構造提案を分ける | REQ-BUS-02/04/05 / REQ-KRL-03 |
 | Keyword Strategy Report | 新規Siteの市場、適合、必要領域、優先Cluster、構造提案、制作順、月次配置を示すversion付きReport | REQ-BUS-04 |
 | Keyword Site Diagnosis Report | 既存SiteのMarket／Share、獲得・未獲得Keyword、記事・Query対応、保護、Drift、カニバリ、index、施策配分を示すversion付きReport | REQ-BUS-05 |
 | Weekly Execution Selection | 月次計画とRecommendationから、当週のcredit、Capacity、依存、保護、品質条件に収まる実行候補と順序をfreezeした単位 | REQ-BUS-07 / REQ-UJ-09 |
