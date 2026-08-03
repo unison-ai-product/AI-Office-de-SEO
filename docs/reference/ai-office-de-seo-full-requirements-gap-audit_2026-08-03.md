@@ -71,7 +71,7 @@
 15. 基本12＋technical_seo personaはAgent Office UI §4へ、担当業務、正本・Service、Proposal、Executor／Tool、Permission、設備の完全表を追加し、`PT-OFFICE-01`へ接続した。config fixtureと全persona操作試験は未完了。
 16. アイキャッチPatternは接続マップ、L2集約、L3 Pattern／Image Job schema、DDL、event、画面規則、`PT-IMAGE-01〜08`へ、version、variation、ロゴ、CMS size、cache、生成結果、Media、再生成creditを追加した。Editor実装、画像回帰評価、Provider／CMS Contract Testは未完了。
 17. 画面利用可否はUI Availability State Map、L3 Decision schema／event、画面共通規則、`PT-STATE-01〜06`へ、Scope、停止、障害、権限、Capability、Plan、接続、データ、credit、承認、処理中の優先と複合reasonを追加した。共通resolver実装と全画面fixture試験は未完了。
-18. 通知はevent型を持つが、誰へ出すかを固定担当者概念へ寄せず、権限・購読設定・通知Center・必須通知から解決する規則のプロト反映が不足。
+18. 通知受信者は固定担当者を必須にせず、権限・Site付与・購読設定・必須通知からServer側で解決する正本、Schema、DDL、Event、画面要求、PTまで接続済み。残件は実プロトのRecipient Resolver、設定画面、popup、fallback fixture実装。
 19. L3のAWS配置・観測・Runbook・自動復旧・bulkhead・circuit breakerは要求に対して骨格段階。
 20. 料金・利用枠・Capacity・追加容量・自動チャージの画面モックとPlan Configurationの対応が不足。
 

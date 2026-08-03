@@ -150,6 +150,12 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 - 通常ビュー、Office、API、worker、Agent tool、Automation、外部Adapter、内部管理面は同じ判定契約を使用する。
 - 不変条件: client申告Role、画面表示、Office入室、Feature Flag、Plan購入だけでは前段Scopeを拡張しない／入力欠落と未解決競合はdefault-deny／副作用直前に再判定する。
 
+### 4.10 NotificationDelivery / RecipientResolution（Notification）
+
+- RecipientResolutionはevent Scope、Resource可視性、必要操作、発行者、Membership、基本権限、業務Permission、Site付与、購読、必須Policyからrecipientを導出する。
+- NotificationDeliveryはrecipient×event／digest単位で、in-app正本、popup、email試行、状態、対象Resource、action結果を持つ。
+- 不変条件: 固定担当者を必須にしない／client指定recipientを信頼しない／通知受信で権限を付与しない／action requiredとcontinuityは最低in-appを完全OFFにしない／popup消去でCenter記録を消さない／readとactionedを分ける／顧客通知と内部alertを混在させない／適格者0人時はSite ownerまたはcontract holderへfallbackするが操作権限は拡張しない。
+
 ## 5. 主要ドメインイベント
 
 - External Intelligence: KeywordAssetObserved, PublicMarketClusterVersioned, PublicMarketClusterSplit, PublicMarketClusterMerged, FanoutExpanded, CompetitorStructureExtracted, FetchBatchThrottled。

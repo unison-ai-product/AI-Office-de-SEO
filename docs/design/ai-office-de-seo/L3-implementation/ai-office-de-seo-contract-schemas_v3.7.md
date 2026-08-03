@@ -223,6 +223,29 @@ schema.image.generation_job.v1 {
 
 根拠: `REQ-LOGIC-10`、`REQ-DATA-12`、`REQ-INT-07`、Featured Image Pattern接続マップ。
 
+## 0.0.7 Notification Recipient Decision Contract
+
+通知解決を`schema.notification.recipient_decision.v1`とする。
+
+```text
+{
+  decision_id, event_ref, tenant_id, site_id?, resource_ref?,
+  notification_class, required_action?, severity,
+  candidates[]{user_id, membership_ref, visible, actionable, subscription_ref?, excluded_reason?},
+  recipients[]{user_id, reason, channels[], delivery_mode, fallback},
+  mandatory_policy_ref?, dedupe_key, digest_key?,
+  unresolved_action, evaluated_at, policy_version
+}
+```
+
+- `notification_class`: `action_required / continuity / task_result / recommendation / system_notice / informational`。
+- recipientはサーバー側MembershipとAuthorizationから導出し、event payloadの任意宛先を採用しない。
+- action requiredでactionable recipientが0ならSite owner、契約・支払はcontract holderへfallbackし、`unresolved_action=true`を保持する。
+- 通知状態は`unread / read / acknowledged / actioned / archived`。readだけで業務eventを完了させない。
+- in-app Centerを先に作成し、popup／email失敗でCenter記録をrollbackしない。
+
+根拠: `REQ-SCREEN-19`、`REQ-PRODUCT-11/21`、Notification Recipient Routing Map。
+
 ## 0.1 Authorization Decision Contract
 
 すべての実行面で使用する認可入力・出力を`schema.authorization.decision.v1`として固定する。

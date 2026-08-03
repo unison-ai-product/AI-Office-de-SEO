@@ -101,6 +101,8 @@ CMSの変更発見、記事読取り、投稿・更新、Media、Editor、Previe
 
 初期リリースのアイキャッチPattern、Style Profile、variation、ロゴ、生成Job、CMS Media登録、再生成creditの接続は`ai-office-de-seo-featured-image-pattern-connection-map_v1.md`を正本とする。本文中画像等の後続機能を初期範囲へ混入させない。
 
+業務eventから通知受信者、popup／通知Center／email、購読、fallback、既読／対応済みを解決する規則は`ai-office-de-seo-notification-recipient-routing-map_v1.md`を正本とする。通知目的の固定担当者割当を要求しない。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

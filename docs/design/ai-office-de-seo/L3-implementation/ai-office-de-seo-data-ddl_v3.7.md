@@ -93,7 +93,8 @@ Agent Office会話は本文全文を業務正本へ保存せず、`office_conver
 根拠: REQ-BILL-09/10、REQ-ADM-06/09、REQ-DUR-04、REQ-SEC-02/10/13。検証: AC-BILL-06/07, AC-ADM-03/06, AC-SEC-06, AC-REL-01〜03。
 
 - TODO(L3): 安全不変条件（REQ-ADM-09）は config_registry の設定対象外であることをスキーマ/検証で強制する方法（許可キーのホワイトリスト等）。
-- 通知: notifications（tenant_id / site_id? / recipient_user_id / event_type / severity / payload_meta（本文全文・シークレット禁止）/ read_at / created_at）、notification_settings（user単位＋tenant既定の上書き、種別別ON/OFF・ダイジェスト頻度）、delivery_attempts（外部チャネル配信結果。in-app記録が正本）。根拠: REQ-PRODUCT-11（AC-NOTIF-01〜03）。TODO(L3): 保持期間・既読アーカイブ。
+- 通知受信者決定: notification_recipient_decisions（decision_id / tenant_id / site_id? / source_event_id / notification_class / required_action / resource_ref / policy_version / fallback_applied / resolved_at）、notification_recipient_candidates（decision_id / user_id / site_visible / permission_satisfied / subscribed / selected / exclusion_reason）。受信者はClient指定値を信用せず、Site付与・閲覧範囲・操作権限・購読設定をServer側で解決する。要対応通知で候補が0件の場合はSite owner、契約・課金は契約者へfallbackするが、新しい操作権限は付与しない。
+- 通知正本: notifications（notification_id / decision_id / tenant_id / site_id? / recipient_user_id / notification_class / event_type / severity / resource_ref / required_action / payload_meta（本文全文・シークレット禁止）/ dedupe_key / digest_group? / state(unread/read/acknowledged/actioned/archived) / read_at? / acknowledged_at? / actioned_at? / created_at）。notification_subscriptions（user_id / tenant_id / site_id? / notification_class / in_app_enabled / popup_enabled / email_enabled / delivery_mode(immediate/digest) / digest_frequency / updated_at）、notification_delivery_attempts（notification_id / channel / attempted_at / result / failure_class?）、mail_suppressions、notification_action_linksを持つ。in-app記録を正本とし、popup dismissやemail失敗で通知本体を消さない。必須通知はin-appを完全OFFにできず、顧客通知と開発・運用alertは別namespaceとする。根拠: REQ-PRODUCT-11（AC-NOTIF-01〜03）、通知受信者Routing Map v1。TODO(L3): 保持期間・既読アーカイブ。
 
 ## 8. グローバル信号ストア（Network Learning、REQ-PRODUCT-13）
 

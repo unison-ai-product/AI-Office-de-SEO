@@ -142,8 +142,14 @@ updated_at: 2026-07-05
 | patch.evaluated | patch_action_id, window(monthly/cumulative), result, availability | W,O | REQ-WPA-11/13, REQ-PRODUCT-19 |
 | notification.email_bounced | channel_ref, reason | O | REQ-PRODUCT-21 |
 | notification.email_suppressed | channel_ref, reason | N,O | REQ-PRODUCT-21 |
-| notification.dispatched | notification_id, channel | O | REQ-PRODUCT-11 |
+| notification.recipient_resolved | decision_id, notification_class, selected_recipient_refs, fallback_applied, policy_version | O,A | REQ-PRODUCT-11 |
+| notification.dispatched | notification_id, recipient_user_ref, channel, decision_ref | O | REQ-PRODUCT-11 |
+| notification.popup_presented | notification_id, recipient_user_ref | O | REQ-PRODUCT-11 |
 | notification.read | notification_id | O | REQ-PRODUCT-11 |
+| notification.acknowledged | notification_id, actor_ref | O,A | REQ-PRODUCT-11 |
+| notification.actioned | notification_id, actor_ref, resource_ref, result | O,A | REQ-PRODUCT-11 |
+| notification.digest_created | digest_ref, notification_refs, recipient_user_ref, channel | O | REQ-PRODUCT-11 |
+| notification.unresolved_action | decision_id, notification_class, fallback_attempted, reason | N,O,A | REQ-PRODUCT-11 |
 | platform.self_healed | action, target, flapping? | O,A | REQ-DUR-10 |
 | platform.maintenance_performed | action, target | O | REQ-DUR-10 |
 | platform.announcement_published | audience(all/plan/tenant), announce_ref | N,O,A | REQ-PRODUCT-16 |

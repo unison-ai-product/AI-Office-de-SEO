@@ -110,6 +110,13 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-IMAGE-06: 生成→採否→最適化→Media登録→featured割当を追跡し、Media失敗で本文成果を失わず再送できる。
 - [ ] PT-IMAGE-07: 同一入力の二重送信を防ぎ、ユーザー再生成は新credit、サービス障害再開は同一Job・追加課金なしになる。
 - [ ] PT-IMAGE-08: 技術的不成立／設定不一致のblockedと、構図・トーン等のadvisoryを分け、自動投稿をadvisoryだけで止めない。
+- [ ] PT-NOTIFY-01: 固定担当者未設定でも、Task完了・確認要求が対象Siteを閲覧できる該当ユーザーへpopup表示され、閉じた後もW7へ残る。
+- [ ] PT-NOTIFY-02: 受信者をClient入力で決めず、Site付与・閲覧範囲・操作権限・購読設定をServer側の同一policy versionで解決する。
+- [ ] PT-NOTIFY-03: 要対応通知の該当者が0件の場合はSite owner、契約・課金通知は契約者へfallbackし、fallback受信によって操作権限は増えない。
+- [ ] PT-NOTIFY-04: 任意通知は種別・channel・即時/ダイジェストを変更でき、必須通知はemailやpopupを止めてもin-app正本まで無効化できない。
+- [ ] PT-NOTIFY-05: popup dismiss、既読、確認済み、対応済みを別状態で保持し、既読にしただけで承認・障害対応が完了しない。
+- [ ] PT-NOTIFY-06: 同一eventの重複通知をdedupeし、ダイジェスト対象をまとめても要対応通知を埋没させない。
+- [ ] PT-NOTIFY-07: 通常ビューとOfficeが同じ通知・対応状態を表示し、内部Admin/Manager/Operator向け開発alertを顧客W7へ表示しない。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。
