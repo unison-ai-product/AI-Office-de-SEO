@@ -92,7 +92,7 @@ flowchart TD
   F --> G[QA/限定Repair]
   G --> H[CMS下書き/公開判定]
   H --> I[公開・更新event]
-  I --> J[SEO/CTA-CV/認知評価\n1・3・6か月＋月次/累積]
+  I --> J[介入別評価Lane\nSEO=1・3・6か月\nCTA-CV/内部link/認知=月次・累積]
   J --> K[Site補正/匿名補正候補]
   K --> L[再推薦/次月計画]
 ```

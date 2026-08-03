@@ -83,11 +83,12 @@ SEO業務Lifecycleと完了条件は `categories/business-requirements_v1.md`、
 
 対象権限: `記事制作`。分析条件の変更・評価確定は`サイト分析`を併用する。完了条件: 差分適用が承認され、改善前後比較の追跡が開始される。
 
-1. recommendation queueでリライト候補を選び、Query Drift、ArticleSummaryの不足・鮮度・意図ずれ、カニバリ、価値、保護状態を確認する（`REQ-PRODUCT-20/24`）
-2. 候補を採用し、対象範囲と根拠をEdit Planへ引き継いでリライト起動→CMS下書きと差分プレビュー（W2、`REQ-RWR-04`）。初期WordPress AdapterではWordPress下書きを使用する
-3. 部分リライトまたは全文再生成のリスク・復元可否を確認し、適用の確定/差し戻し（理由入力）→ ユーザー承認→公開記事へ反映（`REQ-WPA-04`）
-4. 反映1か月後に一次評価、3か月後に二次評価、6か月後に長期評価を行う（S5）。一次評価では早期悪化、計測異常、観測継続、復元候補を判断し、二次評価で中期効果、長期評価で持続性を確定する。内部リンク候補・オーファンもここで採用/却下する（`REQ-KGA-09`）
-5. リライトブリーフ（落としたクエリ・追加候補・競合見出し差分・AIO状況）を根拠に再構成する（`REQ-RWR-08`）。好調記事は保護フラグ・要因（CV・滞在・スクロール）を確認し、直接変更でなく波及リンク強化を優先する（`REQ-RWR-08`/`REQ-WPA-11`）
+1. Recommendation Queueでリライト候補を選び、Query Drift、ArticleSummaryの不足・鮮度・意図ずれ、カニバリ、価値、保護状態を確認する（`REQ-PRODUCT-20/24`）
+2. 候補を採用し、落としたQuery、追加候補、競合見出し差分、AIO状況、対象section、保持箇所をリライトBriefとEdit Planへ固定する。好調記事は保護フラグ・要因（CV・滞在・スクロール）を確認し、直接変更より波及link強化を優先する（`REQ-RWR-08`/`REQ-WPA-11`）
+3. Edit Planの範囲で部分リライトまたは全文再生成を実行し、CMS下書きと差分Previewへ送る（W2、`REQ-RWR-04`）。初期WordPress AdapterではWordPress下書きを使用する
+4. 変更リスク・復元availabilityを確認し、適用の確定／差し戻し（理由入力）→ユーザー承認→公開記事へ反映する（`REQ-WPA-04`）。外部反映確認後のPublication Factを評価起点とする
+5. 実質本文更新は`seo_content` LaneでFactの`effective_at`から1か月後に一次、3か月後に二次、6か月後に長期評価する（S5）。一次評価では早期悪化、計測異常、観測継続、復元候補、二次評価では中期効果、長期評価では持続性を判定する。同時にCTA／内部linkを変更した場合は別の月次／累積Laneへ登録し、SEO Laneをresetしない
+6. 評価結果から保護、再リライト、内部link、CTA、監視等の次Recommendationを生成する。内部link候補・オーファンの採否は評価工程内で暗黙実行せず、Recommendationとして通常の採否・承認へ戻す（`REQ-KGA-09`）
 
 ## 7. 例外・緊急ジャーニー  ［REQ-UJ-07］
 

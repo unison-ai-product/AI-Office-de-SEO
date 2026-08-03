@@ -16,7 +16,7 @@ updated_at: 2026-08-03
 |---|---|---|---|
 | Site全体・簡単表示 | S1 サマリー | 検索流入・表示・CV、AI Office公開／更新数、順位段階の分布、成果分類、月次／累積 | Cluster成果を絞り込んだS2へ |
 | Keyword Cluster・標準表示 | S2 戦略・診断Report／Cluster詳細／順位・要監視 | 主＋補助Keyword、検索intent、獲得Query、7日平均順位、流入、cluster充足、市場圧力、関連記事 | 記事成果を絞り込んだS5へ |
-| 記事・標準表示 | S5 流入・CV／施策評価 | 公開・更新source、獲得Keyword、順位段階、click・impression、直前ページCV、1・3・6カ月評価、外部変更 | 同記事の履歴・Recommendation・S3成果へ |
+| 記事・標準表示 | S5 流入・CV／施策評価 | 公開・更新source、獲得Keyword、順位段階、click・impression、直前ページCV、`seo_content`の1・3・6カ月、CTA／link／認知の月次・累積、外部変更、復元availability | 同記事の履歴・Recommendation・S3成果へ |
 | Office詳細分析 | A0〜A8の専門Workbench／Knowledge Graph | Site・Cluster・記事成果、根拠、比較軸、市場影響、Task、Recommendation、変更履歴を横断表示 | 条件・期間・比較軸を探索し、変更案を型付きProposal化。成果値はS1／S2／S5と同じProjectionを使用 |
 
 ## 2. 公開・更新実績
@@ -28,6 +28,17 @@ updated_at: 2026-08-03
 | `unknown_source` | event欠損、correlation不成立、接続切替中 | いずれにも算入しない | 「取得元確認中」として評価準備中へ送る |
 
 変更検知は `REQ-INT-05` とCMS Connection Routing MapのSite別primary経路を使用し、WordPress Thin Plugin署名Webhookが利用可能な場合は優先する。予約、CMS API受付、外部post ID取得だけではFactをconfirmedにしない。`unknown_source`は再照合期限までPublication Job、Delivery結果、外部post ID、version／hash、変更eventを再照合し、確定後に元分類を上書きせずattribution eventを追記する。期限後も不明ならunknownを維持し、AI Office実績または外部変更へ推測配分しない。外部変更のtitle、見出し、本文、CTA、内部link等の変更分類は `REQ-LOGIC-13` を使用する。実質変更は該当するSEO／CV評価の交絡要因、軽微変更は履歴のみとし、外部変更というsource分類だけで全評価を無効化しない。
+
+### 2.1 介入別Evaluation Lane
+
+| Lane | 起点 | 周期 | 主な表示 | 他Laneへの影響 |
+|---|---|---|---|---|
+| `seo_content` | 新規公開、title・主要見出し・検索意図へ影響する本文更新のconfirmed Publication Fact `effective_at` | 1／3／6か月 | 割当Keyword、順位段階、impression、click、市場補正、記事目的 | 旧SEO Laneを履歴として保持し、新Laneをsupersedesで接続 |
+| `cta_cv` | CTA／CVポイント変更のconfirmed Fact `effective_at` | 変更月・累積 | CTA遷移、CV到達、母数、記事目的、availability | SEO Laneをresetしない |
+| `internal_link` | link追加・変更のconfirmed Fact `effective_at` | 変更月・累積 | graph差分、遷移、link先への寄与、削除注意 | SEO Laneをresetしない |
+| `awareness` | 認知評価対象となる公開／施策Fact `effective_at` | 月次・累積 | Cluster充足、表示、指名・brand signal、関連page遷移 | 単一proxyから因果を断定しない |
+
+同じPublication Factが本文とCTA等を同時に変更した場合は、同じ記事に複数Laneを作り、各Laneの起点・周期・成果を混ぜない。実質的外部変更は影響Laneへconfounderとして表示し、AI Office介入Laneを新設しない。Recovery Backupの最長3か月は復元availabilityであり、6か月評価の保持期限ではない。Backup削除後も評価を継続し、復元不能を明示する。
 
 ## 3. 順位段階
 

@@ -68,7 +68,8 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Keyword Strategy Report | 新規Siteの市場、適合、必要領域、優先Cluster、構造提案、制作順、月次配置を示すversion付きReport | REQ-BUS-04 |
 | Keyword Site Diagnosis Report | 既存SiteのMarket／Share、獲得・未獲得Keyword、記事・Query対応、保護、Drift、カニバリ、index、施策配分を示すversion付きReport | REQ-BUS-05 |
 | Weekly Execution Selection | 月次計画とRecommendationから、当週のcredit、Capacity、依存、保護、品質条件に収まる実行候補と順序をfreezeした単位 | REQ-BUS-07 / REQ-UJ-09 |
-| Intervention Evaluation | 公開または実質的更新を起点に、1／3／6か月でKeyword順位、CV、認知、外部要因を評価する施策評価 | REQ-LOGIC-06〜09 |
+| Intervention Evaluation | confirmed Publication Factを起点に介入別Evaluation Laneを束ねる施策評価。`seo_content`は1／3／6か月、`cta_cv / internal_link / awareness`は変更月・累積で評価し、外部変更は交絡要因として分離する | REQ-LOGIC-06〜09, REQ-MEASURE-13/14 |
+| Evaluation Lane | SEO本文、CTA／CV、内部link、認知を別の起点・周期・指標で追跡する評価単位。記事へ単一の評価時計を置かず、別Laneの変更でSEO周期をresetしない | REQ-LOGIC-13, REQ-MEASURE-02/13/14 |
 
 ## 外部情報（External Intelligence）
 | 用語 | 定義 | 根拠 |

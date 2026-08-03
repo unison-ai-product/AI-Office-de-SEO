@@ -395,24 +395,41 @@
         },
         {
           "invariant_id": "INV-OUTCOME-002",
-          "statement": "公開または実質的更新を起点に1か月・3か月・6か月で評価し、公開後は新規記事という分類ではなく公開ページとして評価する。",
+          "statement": "公開後は新規記事ではなく公開ページとして扱い、介入別Evaluation Laneで評価する。seo_contentはconfirmed ai_office_publication Factのeffective_atから1・3・6か月、cta_cv・internal_link・awarenessは変更月と累積で評価し、SEO Laneをresetしない。外部変更は交絡要因、軽微変更は履歴とし、Recovery Backup最長3か月と6か月評価保持を分離する。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md",
-            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-rewrite-runtime-requirements_v3.7.md"
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-rewrite-runtime-requirements_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-lightweight-content-patch-connection-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md"
           ],
           "forbidden_patterns": [
             "(?:一次評価|二次評価|長期評価).{0,20}(?:2か月|4か月|12か月)",
-            "公開後.{0,30}新規記事として.{0,20}評価"
+            "公開後.{0,30}新規記事として.{0,20}評価",
+            "(?:CTA|内部link|内部リンク)(?:変更|Patch).{0,50}SEO(?:評価)?(?:周期|Lane).{0,20}(?:resetする|リセットする|再開する)",
+            "(?:CTA|内部link|内部リンク|認知).{0,50}(?:SEOと同じ|一律).{0,30}(?:1.?3.?6か月|1か月.*3か月.*6か月)",
+            "(?:Recovery Backup|バックアップ).{0,40}(?:6か月評価まで|6か月間保持|6か月保持)",
+            "外部変更.{0,50}(?:ai_office_publication|AI Office介入).{0,30}(?:Lane|評価Lane).{0,20}(?:作成|開始)",
+            "記事は(?:単一|一つ)の(?:評価時計|評価起点)を(?:持つ|使用する)"
           ],
           "bad_fixtures": [
             "一次評価は2か月、二次評価は4か月、長期評価は12か月とする。",
-            "公開後も新規記事として評価する。"
+            "公開後も新規記事として評価する。",
+            "CTA変更でSEO評価周期をリセットする。",
+            "CTAと認知はSEOと同じ1・3・6か月で一律評価する。",
+            "Recovery Backupは6か月評価まで6か月間保持する。",
+            "外部変更からAI Office介入の評価Laneを開始する。",
+            "記事は単一の評価時計を持つ。"
           ],
           "good_fixtures": [
-            "公開・更新から1か月後に一次、3か月後に二次、6か月後に長期評価する。",
-            "公開後は公開ページとして評価する。"
+            "seo_content LaneはPublication Factのeffective_atから1か月後に一次、3か月後に二次、6か月後に長期評価する。",
+            "CTAと内部linkは変更月・累積で評価し、SEO Laneをresetしない。",
+            "公開後は公開ページとして評価する。",
+            "Recovery Backup削除後も6か月評価を継続し、復元不可をavailabilityで示す。"
           ]
         }
       ]

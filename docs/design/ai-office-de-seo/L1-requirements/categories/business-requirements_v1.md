@@ -307,8 +307,8 @@ AI Office de SEOの業務は、単一の直線工程ではなく、次の5つの
 | キーワード・市場戦略 | 採否、手動追加 | 順位急変、市場変化 | 週次の市場・GSC差分、月次のAIO／AI回答面または各Source鮮度期限 | 調査・推薦更新Loop、要監視Loop |
 | 日常運用 | 採用、承認、保留対応 | 推薦、警告、公開、失敗 | 日次サマリー | 日次判断Loop |
 | 新規記事 | 採用、確認、承認 | Job状態、品質、公開 | 予約時刻 | 記事制作Workflow |
-| 公開ページの更新 | 採用、差分確認、承認、復元判断 | 公開、更新、Drift、悪化 | 公開・更新から1か月・3か月・6か月、バックアップ最長3か月 | 更新Workflow、段階評価Loop |
-| 観測・評価 | 評価確認 | 公開、遷移、CV、急変 | 日次取得、評価予定日 | 効果評価Loop |
+| 公開ページの実質更新 | 採用、差分確認、承認、復元判断 | confirmed Publication Fact、Drift、悪化 | SEO LaneはFactの`effective_at`から1か月・3か月・6か月。Recovery Backupは別availabilityで最長3か月 | 更新Workflow、SEO段階評価Loop |
+| CTA・内部link・認知の観測 | 評価確認 | Patch Fact、遷移、CV、link graph、認知proxy、急変 | 変更月と起点からの累積。既存SEO Laneはresetしない | 介入別評価Lane、次回Recommendation |
 | 例外・復旧 | 再認可、停止、再開 | 障害、失効、予算、品質 | 期限切れ、死活確認 | 例外Workflow、復旧Loop |
 | 内部運用 | 権限付与、切分け、対応 | 監視アラート | 稼働・原価・品質監視 | Incident Workflow |
 

@@ -135,9 +135,9 @@ updated_at: 2026-08-03
 | plan.monthly_closed | period, source_report_ref, target_delta, factors[] | N,O | REQ-PRODUCT-17 |
 | evaluation.intervention_due | evaluation_id, intervention_ref, article_ref, window | W,N,O | REQ-LOGIC-06 |
 | evaluation.intervention_completed | evaluation_id, intervention_ref, article_ref, window, outcome, next_action? | W,N,O | REQ-LOGIC-06/08, REQ-DATA-07 |
-| evaluation.intervention_registered | evaluation_id, intervention_ref, publication_fact_ref, baseline_ref, evaluation_origin_at, checkpoints(1_month/3_month/6_month), correlation_id | W,O,A | REQ-MEASURE-13/14 |
+| evaluation.intervention_registered | evaluation_id, intervention_ref, publication_fact_ref, lane_id, lane_type(seo_content/cta_cv/internal_link/awareness), evaluation_origin_at, cadence, checkpoints_or_windows[], baseline_ref, correlation_id | W,O,A | REQ-MEASURE-13/14 |
 | site.activated | activation_id, site_id, recommendation_ref, publication_fact_ref, activated_at, funnel_version | W,O,A | REQ-MEASURE-13 |
-| product.loop_completed | loop_completion_id, site_id, recommendation_ref, publication_fact_ref, evaluation_id, completed_at, metric_rule_version | O,A | REQ-MEASURE-13 |
+| product.loop_completed | loop_completion_id, site_id, recommendation_ref, publication_fact_ref, evaluation_id, seo_content_lane_ref, completed_at, metric_rule_version | O,A | REQ-MEASURE-13 |
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
 | automation.oscillation_detected | targets[] | N,O,A | REQ-PRODUCT-18 |
 | cms.connection_diagnosed | connection_profile_id, version, cms_kind, state, required_user_actions[] | W,N,O | REQ-INT-05/06/09 |

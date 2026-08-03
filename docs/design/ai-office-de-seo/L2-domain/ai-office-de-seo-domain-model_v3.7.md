@@ -92,7 +92,8 @@ UIはCommandを発行しEventからProjectionを更新する。UIが順位段階
 |---|---|---|---|
 | Tenancy & Access | 契約者・顧客組織・Membership・Site付与・基本権限・業務権限・認可判断・サンドボックス境界・アカウントライフサイクル・マスターテナント | ContractAccount, CustomerOrganization, Membership, Site(SiteSandboxContext), AuthorizationDecision | REQ-ORG-01〜12, REQ-ACCESS-01〜18 |
 | Content Index | URL正本・記事メタ（サマリー契約・意味索引）・期限付き記事読取・Site Keyword Universe・Site Cluster Projection・属性・アサイン台帳・起点候補・サイトトポロジー・導出事実/施策台帳 | UrlMaster, ArticleSummary, ArticleReadSnapshot, SiteKeywordUniverse, SiteClusterProjection(AssignmentLedger), SiteTopology, DerivedFacts(InterventionLedger) | REQ-DATA-02/07/10/11/15, REQ-KGA-01〜04/07/12/13/14/18/19 |
-| Search Performance | Site構築進捗・GSC実績・被覆・ドリフト・カニバリ・リライト候補・マッチカスケード・ロングテール昇格・市場圧力・動的キーワード戦略・ウォッチ/変動監視・インデックス状況・戦略／診断Report・月次／週次計画・Recommendation・公開後評価 | SiteBuildRun, GscDataMart, CoverageAssessment, RewriteCandidate, QueryMatch, KeywordMarketPressure, KeywordStrategyProfile, Watchlist, KeywordReport, MonthlyPlan, WeeklyExecutionSelection, Recommendation, InterventionEvaluation | REQ-BUS-02〜10, REQ-KGA-05/06/08/11/15/16/17/20/21/23, REQ-PRODUCT-05/17/24, REQ-KRL-01〜10, REQ-DATA-06 |
+| Search Performance | Site構築進捗・GSC実績・被覆・ドリフト・カニバリ・リライト候補・マッチカスケード・ロングテール昇格・市場圧力・動的キーワード戦略・ウォッチ/変動監視・インデックス状況・戦略／診断Report・月次／週次計画・Recommendation・成果評価へ渡す観測Projection | SiteBuildRun, GscDataMart, CoverageAssessment, RewriteCandidate, QueryMatch, KeywordMarketPressure, KeywordStrategyProfile, Watchlist, KeywordReport, MonthlyPlan, WeeklyExecutionSelection, Recommendation, OutcomeObservationProjection | REQ-BUS-02〜10, REQ-KGA-05/06/08/11/15/16/17/20/21/23, REQ-PRODUCT-05/17/24, REQ-KRL-01〜10, REQ-DATA-06 |
+| Customer Outcome | Publication Fact、GSC・CV・市場観測、記事目的を介入別評価Laneへ結合し、顧客成果、交絡、評価可能性、次Actionを判定 | CustomerOutcomeSnapshot, InterventionEvaluation, EvaluationLane | REQ-MEASURE-01〜14, REQ-LOGIC-06/08/09/13 |
 | External Intelligence | 公共Keyword Asset・Public Market Cluster、SERP/競合/Fanoutの取得・cache・batch・静穏窓スケジューリング | KeywordAssetPool, PublicMarketCluster, SourcePack, CompetitorStructure, FetchBatch | REQ-DATA-10, REQ-SRC-01〜10 |
 | Generation | Workflow状態機械・Ticket・Pack注入・執筆・QA/Repair・中断/再開・全体整合パス・実行冪等性・執筆技法レイヤ | GenerationJob, Ticket, PackCatalog, OutlineContract | REQ-AGENT-01〜11, REQ-PACK-01〜21 |
 | Quality | 品質ゲート・計測・few-shot・合否・コヒーレンス検査・ゴールデン評価・検品レンズ・AIらしさ検査・転生検証 | QualityGateEvaluation, GateRegistry, ReaderSegment | REQ-PACK-09/10/12/20/21, REQ-AGENT-08/11, REQ-ADM-10 |
@@ -185,9 +186,9 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 
 ### 4.3.4 InterventionEvaluation
 
-- ルート: InterventionEvaluation。制作時の「新規／リライト」ではなく、検証済みPublication Factの`effective_at`を評価起点とする。`ai_office_publication`は主介入、実質的`external_change`は交絡要因、`unknown_source`は帰属確認中として分離する。
-- 値: ArticlePurpose、SearchIntent、Keyword Cluster、CV Goal、1／3／6か月Checkpoint、SEO、CTA/CV、認知、外部市場調整、availability、Outcome、NextAction。
-- 不変条件: 割当Keyword集合が意図どおり順位を獲得したかを第一に評価する／CVなしだけを異常にしない／CTA変更でSEO周期をresetしない／急変を即時Recommendationにしない／直近1か月1,000 click未満の予測対象をデータ不足と分離する／Site補正が順位へ悪影響を及ぼす変更はユーザー承認を要求する。
+- ルート: InterventionEvaluation。記事へ単一時計を持たせず、制作時の「新規／リライト」ではなく、検証済みPublication Factの`effective_at`を起点とする介入別`EvaluationLane`を束ねる。`ai_office_publication`は主介入、実質的`external_change`は交絡要因、`unknown_source`は帰属確認中として分離する。
+- 値: ArticlePurpose、SearchIntent、Keyword Cluster、CV Goal、EvaluationLane（`seo_content / cta_cv / internal_link / awareness`）、Origin Fact、Cadence、Observation、Confounder、availability、Outcome、NextAction。
+- 不変条件: `seo_content`だけを1／3／6か月で評価する／CTA・内部link・認知は変更月と累積で評価しSEO Laneをresetしない／title・主要見出し・実質本文変更は旧評価を保持して新SEO Laneへ接続する／外部変更はAI Office Laneを作らず影響Laneの交絡へ付与する／割当Keyword集合が意図どおり順位を獲得したかを第一に評価する／CVなしだけを異常にしない／急変を即時Recommendationにしない／直近1か月1,000 click未満の予測対象をデータ不足と分離する／Site補正が順位へ悪影響を及ぼす変更はユーザー承認を要求する／Recovery Backup最長3か月と6か月評価保持を同一期限にしない。
 
 ### 4.4 RewriteJob / ArticleWorkspace（Rewrite）
 - ルート: RewriteJob（ArticleWorkspaceを内包）。
@@ -261,10 +262,11 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 
 - External Intelligence: KeywordAssetObserved, PublicMarketClusterVersioned, PublicMarketClusterSplit, PublicMarketClusterMerged, FanoutExpanded, CompetitorStructureExtracted, FetchBatchThrottled。
 - Content Index: SiteKeywordUniverseUpdated, SiteClusterProjectionUpdated, SiteClusterDependencyStaled, KeywordMapUpdated, ArticleSummaryUpserted。
-- Search Performance: SiteBuildStarted, SiteBuildStageReleased, BigKeywordDirectionConfirmed, KeywordReportVersioned, MonthlyPlanProposed, MonthlyPlanConfirmed, WeeklyExecutionSelected, GscDataIngested, CoverageAssessed, QueryDriftDetected, RewriteCandidateRaised, RecommendationProposed, RecommendationAccepted, RecommendationHeld, RecommendationExpired, RecommendationDispatched, InterventionEvaluationDue, InterventionEvaluated, RecommendationEvaluationStarted, RecommendationLearned。
+- Search Performance: SiteBuildStarted, SiteBuildStageReleased, BigKeywordDirectionConfirmed, KeywordReportVersioned, MonthlyPlanProposed, MonthlyPlanConfirmed, WeeklyExecutionSelected, GscDataIngested, CoverageAssessed, QueryDriftDetected, RewriteCandidateRaised, RecommendationProposed, RecommendationAccepted, RecommendationHeld, RecommendationExpired, RecommendationDispatched, OutcomeObservationProjected, RecommendationEvaluationStarted, RecommendationLearned。
+- Customer Outcome: InterventionEvaluationRegistered, EvaluationLaneScheduled, EvaluationLaneObserved, EvaluationConfounderRecorded, InterventionEvaluated。
 - Generation: GenerationJobStarted, OutlineContractFrozen, MeaningUnitDrafted, SemanticAssembled, QualityGateEvaluated(Passed/Failed), RepairRequested, PresentationAssembled。
 - Rewrite: RewriteJobStarted, PatchApplied, RewriteQualityFailed。
-- Publishing: PostEnvelopeSealed, CmsDraftCreated, PublicationDecisionRecorded, PublicationApproved, ContentPublished, ContentUpdated, PublicationFailed, CvRecorded。
+- Publishing: PostEnvelopeSealed, CmsDraftCreated, PublicationDecisionRecorded, PublicationApprovalConfirmed, PublicationJobScheduled, PublicationJobStarted, PublicationJobVerificationPending, PublicationFactRecorded, PublicationAttributionReconciled, PublicationJobFailed, CvRecorded。
 - Billing: CreditReserved, CreditCommitted, CreditReleased, MonthlyCreditGranted。
 - Provider: ProviderRouteDecided, ProviderHealthDegraded, CanaryRolledBack。
 - Config/Governance: ConfigVersionActivated, FeatureFlagToggled, KillSwitchEngaged。

@@ -542,29 +542,42 @@ CMSで検証できた公開／更新事実と帰属を`schema.publication.fact.v
 
 ## 0.0.10 公開・更新後評価Contract
 
-公開後の評価を`schema.evaluation.intervention.v1`とする。
+公開後の評価を`schema.evaluation.intervention.v1`とする。記事に単一の評価時計を持たせず、介入種別ごとの評価Laneを同じ台帳へ束ねる。
 
 ```text
 {
   evaluation_id, version, tenant_id, site_id, article_ref,
-  intervention_ref, publication_fact_ref, evaluation_origin_at,
-  article_change_history_ref,
+  article_change_history_ref, correlation_id,
   article_purpose, search_intents[], keyword_cluster_refs[], cv_goal_refs[],
-  checkpoints[]{window(1_month|3_month|6_month), due_at, state,
-    seo{acquired_keywords, ranked_keywords, primary_secondary_fit, position_distribution,
-      impressions, clicks, market_adjustment, aio_paid_adjustment, availability},
-    conversion{monthly, cumulative, transition_rate?, cv_count?, availability},
-    awareness{cluster_coverage, branded_signal?, recognition_contribution?, availability},
-    conversion_context{direct_cv?, previous_url_single_hop?, availability},
-    outcome, reasons[], next_action?},
-  reset_policy, latest_material_change_at?, correlation_id
+  lanes[]{
+    lane_id, lane_type(seo_content|cta_cv|internal_link|awareness),
+    intervention_ref, origin_publication_fact_ref, origin_at,
+    supersedes_lane_ref?, state, availability,
+    schedule{
+      cadence(one_three_six_month|monthly_and_cumulative),
+      checkpoints[]{window, due_at, state}
+    },
+    observations[]{window_start, window_end, source_freshness,
+      seo?{acquired_keywords, ranked_keywords, primary_secondary_fit,
+        position_distribution, impressions, clicks, market_adjustment,
+        aio_paid_adjustment, availability},
+      conversion?{monthly, cumulative, transition_rate?, cv_count?,
+        previous_url_single_hop?, availability},
+      internal_link?{graph_delta, transitions, destination_contribution?, availability},
+      awareness?{cluster_coverage, branded_signal?, recognition_contribution?, availability},
+      outcome, reasons[], next_action?},
+    confounders[]{change_ref, change_class, effective_at, affected_metrics[], rule_version}
+  }
 }
 ```
 
-- 評価起点は新規／リライトという制作時の呼称ではなく、検証済みPublication Factの`effective_at`とする。予約、CMS API受付、下書き作成、帰属確認中だけでは評価を開始しない。
+- 評価起点は新規／リライトという制作時の呼称ではなく、各Laneへ接続した検証済みPublication Factの`effective_at`とする。予約、CMS API受付、下書き作成、帰属確認中だけでは評価を開始しない。
 - `ai_office_publication`は施策評価の主介入、実質的な`external_change`は交絡要因、`unknown_source`は帰属確認中として扱う。外部変更だけからAI Office施策の評価を新規作成しない。
 - 成功の第一条件は、記事へ割り当てた主＋補助Keyword集合が意図どおり順位を獲得することとする。CV目的の記事はCV実績を追加評価するが、CVなしだけで異常としない。
-- CTA変更はSEO周期をresetせず、CTA/CV評価起点だけを更新する。title、主要見出し、本文の実質変更は記事変更履歴としてSEO評価起点を更新する。
+- `seo_content` Laneだけが1／3／6か月checkpointを持つ。title、主要見出し、検索意図へ影響する本文の実質変更は、旧Laneと結果を保持したまま新しい`seo_content` Laneを開始し、`supersedes_lane_ref`で接続する。
+- `cta_cv`、`internal_link`、`awareness` Laneは変更月と起点からの累積を評価する。CTAまたは内部linkだけの変更で`seo_content` Laneをreset・supersedeしない。本文変更にCTA変更も含まれる場合だけ、それぞれのLaneへ同じFactを別介入として接続する。
+- 実質的な外部変更は影響するLaneへconfounderを付与するが、AI Office介入の新Laneを作らず、既存評価結果を上書きしない。軽微変更は記事履歴だけへ残す。
+- Recovery Backupの最長3か月は復元可能期間であり、3か月・6か月の評価保持期間ではない。Backup削除後も履歴・集計・6か月評価を継続し、復元可能と表示しない。
 - 市場需要・表示回数の変化、AIO・広告出現率を外部要因として分離する。急変は即時施策へせず要監視へ送る。
 - Siteが直近1か月1,000 click未満の領域は予測値を作らず、予測可能記事とデータ不足記事を分離する。
 
@@ -681,7 +694,7 @@ L2 §5 のイベント（GenerationJobStarted / OutlineContractFrozen / QualityG
 
 - 共通: `{ event_id, event_type, occurred_at, tenant_id, site_id?, job_id?, actor, payload, schema_version }`。
 - 用途: Observability購読（REQ-SEC-13）、Agent Officeの活動可視化（REQ-AOUI-04。キャラ状態＝待機/作業/完了/エラーはこのイベントから導出）、監査。
-- payload Catalogは少なくとも次を固定する。`site.build_*={build_run_id,stage,stage_state,released_capabilities[],progress}`、`keyword.report_*={report_id,report_type,source_version,status}`、`plan.monthly_*={plan_id,period,version,status}`、`plan.weekly_execution_selected={selection_id,week,selected_item_refs[],deferred_item_refs[]}`、`recommendation.*={recommendation_id,version,state,reason_codes[]}`、`job/stage/ticket/snapshot.*={workflow_key,stage,ticket_id?,snapshot_id?,state,reason_code?}`、`quality.gate_*={snapshot_id,gate_key,verdict,hard_gate_block}`、`publication.decision_recorded={publication_decision_id,version,operation,decision,reasons[],correlation_id}`、`publication.job_*={publication_job_id,publication_decision_ref,state,idempotency_key,attempt_count?,external_command_ref?}`、`publication.fact_recorded={publication_fact_id,publication_job_ref?,effect_kind,attribution,external_post_ref,resulting_content_hash,effective_at,verified_at,verification_evidence_ref,correlation_id?}`、`publication.attribution_reconciled={prior_publication_fact_ref,new_publication_fact_ref,from_attribution,to_attribution,evidence_refs[],rule_version}`、`evaluation.intervention_*={evaluation_id,checkpoint_month,scope_ref,state,outcome?}`、`billing.credit_*={ledger_entry_id,lot_id?,amount,unit,state}`、`connection.*={connection_id,capability,state,reason_code?}`。payloadに本文、secret、Provider生responseを含めない。画面モックも同じevent typeとpayload versionを使用する。
+- payload Catalogは少なくとも次を固定する。`site.build_*={build_run_id,stage,stage_state,released_capabilities[],progress}`、`keyword.report_*={report_id,report_type,source_version,status}`、`plan.monthly_*={plan_id,period,version,status}`、`plan.weekly_execution_selected={selection_id,week,selected_item_refs[],deferred_item_refs[]}`、`recommendation.*={recommendation_id,version,state,reason_codes[]}`、`job/stage/ticket/snapshot.*={workflow_key,stage,ticket_id?,snapshot_id?,state,reason_code?}`、`quality.gate_*={snapshot_id,gate_key,verdict,hard_gate_block}`、`publication.decision_recorded={publication_decision_id,version,operation,decision,reasons[],correlation_id}`、`publication.job_*={publication_job_id,publication_decision_ref,state,idempotency_key,attempt_count?,external_command_ref?}`、`publication.fact_recorded={publication_fact_id,publication_job_ref?,effect_kind,attribution,external_post_ref,resulting_content_hash,effective_at,verified_at,verification_evidence_ref,correlation_id?}`、`publication.attribution_reconciled={prior_publication_fact_ref,new_publication_fact_ref,from_attribution,to_attribution,evidence_refs[],rule_version}`、`evaluation.intervention_*={evaluation_id,lane_id,lane_type,origin_publication_fact_ref,origin_at,cadence,window?,state,outcome?}`、`billing.credit_*={ledger_entry_id,lot_id?,amount,unit,state}`、`connection.*={connection_id,capability,state,reason_code?}`。payloadに本文、secret、Provider生responseを含めない。画面モックも同じevent typeとpayload versionを使用する。
 
 ### 5.1 Tracker ingressと集計契約
 

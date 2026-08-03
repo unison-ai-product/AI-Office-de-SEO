@@ -18,7 +18,7 @@ updated_at: 2026-08-03
 
 | 指標 | 算式・判定 | 主なデータ源 | 集計周期 | 除外・補足 |
 |---|---|---|---|---|
-| 運用Loop完了Site数（North Star） | 集計月内に `product.loop_completed` が1件以上あるdistinct `site_id` 数 | Recommendation version、採用event、`schema.publication.fact.v1`、Intervention Evaluation基準値・評価予定 | 月次。日次rolling値も内部表示 | `ai_office_publication` Fact後、評価基準値・`effective_at`起点・1/3/6カ月予定の登録をもって発火する。GSC取得開始、下書き、予約、API受付、外部変更、帰属確認中、閲覧だけは除外。同一Siteの複数Loopは1 Siteとして数える |
+| 運用Loop完了Site数（North Star） | 集計月内に `product.loop_completed` が1件以上あるdistinct `site_id` 数 | Recommendation version、採用event、`schema.publication.fact.v1`、`seo_content` Lane基準値・評価予定 | 月次。日次rolling値も内部表示 | 新規公開／実質本文更新の`ai_office_publication` Fact後、`seo_content` Laneへ評価基準値・`effective_at`起点・1/3/6カ月予定を登録して発火する。CTA・内部link・認知Laneは月次／累積で別管理し、同じ記事制作Loopを二重計上しない。GSC取得開始、下書き、予約、API受付、外部変更、帰属確認中、閲覧だけは除外。同一Siteの複数Loopは1 Siteとして数える |
 | Recommendation採用率 | `adopted` または `adopted_with_edit` となったRecommendation version数 ÷ 期間中にユーザー判断可能な状態で提示されたRecommendation version数 | Recommendation Queue、Decision Event | 週次・月次 | 提示前に失効・重複排除・自動取消されたversionは分母外。再計算versionは別versionとしてdecision eligibilityを持つ |
 | アップセルevent | Plan Upgradeの支払・Entitlement反映完了件数と、追加credit購入の支払・Lot発行完了件数を別系列で計上 | Subscription、Payment、Entitlement、Credit Lot、append-only ledger | 日次・月次 | Preview、購入画面閲覧、決済失敗は除外。件数と金額を混ぜず双方を表示する |
 | 継続稼働率 | 月初時点でActivation済みかつ有効契約に属するSiteのうち、月内に強いsignalが1件以上あるdistinct Site数 ÷ 同条件のdistinct Site数 | Recommendation採用、Publication Fact、Monthly Plan確定event、Entitlement | 月次 | 強いsignalは採用、検証済み公開／更新反映、月次計画確定のみ。予約・API受付・外部変更・帰属確認中、閲覧、ログイン、通知既読、施策評価確認は除外。当月Activation Siteはcohort別に表示し翌月から通常分母へ入れる |
@@ -54,6 +54,6 @@ Activationは運営側の契約獲得や画面利用ではなく、顧客がSEO�
 ## 6. 実装契約
 
 - 全eventは `tenant_id`、`site_id`、`occurred_at`、`event_id`、`source`、`correlation_id`、schema versionを持つ。契約eventは `contract_id`、Recommendationは `recommendation_id/version`、CMS反映は `publication_fact_id` を追加する。
-- `site.activated` と `product.loop_completed` は同一ではない。初回`ai_office_publication` FactでActivationへ到達し、そのFactに対する評価対象登録まで完了して初回Loop完了となる。
+- `site.activated` と `product.loop_completed` は同一ではない。初回`ai_office_publication` FactでActivationへ到達し、そのFactに対する`seo_content` Laneと1／3／6か月予定の登録まで完了して初回Loop完了となる。
 - 遅延eventはevent timeで再集計し、再送は `event_id` で冪等化する。欠損、遅延、分母0、接続解除は0へ丸めずavailabilityを表示する。
 - 一般ユーザー画面は到達段階、必要操作、稼働状況を平易に表示する。算式、重複排除、補正、内部eventは開発・管理Dashboardの責務とする。

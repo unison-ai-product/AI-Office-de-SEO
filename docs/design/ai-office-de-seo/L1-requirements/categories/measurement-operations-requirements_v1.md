@@ -108,7 +108,7 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 顧客側の成果指標は、顧客Siteの検索流入、獲得keywordと順位、公開・更新数、CV、cluster充足等、SEO代行の結果として顧客へ示す値であり、運営側指標へ混合しない。指標ごとの評価対象、基準期間、市場影響、availability、成果非保証、通常ビューとOfficeの表示契約は `REQ-MEASURE-14` を正本とする。通常ビューは要約と簡単なdrill down、Agent Officeは同じ成果Projectionを使う玄人向け詳細分析を提供する。
 
-運用Loopは `分析・Recommendation → 採用 → ai_office_publicationの検証済みPublication Fact → 評価対象登録` で構成する。Loop完了点は、Recommendation／Interventionへ相関したPublication Factを起点に、評価基準値、`effective_at`による評価起点、1カ月・3カ月・6カ月の評価予定が登録された時点とする。GSCデータ取得開始、Recommendation採用、CMS下書き、予約、API受付、外部変更、帰属確認中、評価画面の閲覧だけではLoop完了にしない。月内に1回以上Loopを完了したdistinct SiteをNorth Starへ1 Siteとして数え、同一Siteの複数完了件数は診断指標へ分離する。
+運用Loopは `分析・Recommendation → 採用 → ai_office_publicationの検証済みPublication Fact → 介入別評価Lane登録` で構成する。新規公開または実質本文更新のLoop完了点は、Recommendation／Interventionへ相関したPublication Factを起点に、SEO評価基準値、`effective_at`による`seo_content` Lane、1カ月・3カ月・6カ月の評価予定が登録された時点とする。CTA・内部link・認知施策は月次／累積Laneを登録するが、既存SEO Laneをresetせず、これだけで記事制作Loopを別完了として二重計上しない。GSCデータ取得開始、Recommendation採用、CMS下書き、予約、API受付、外部変更、帰属確認中、評価画面の閲覧だけではLoop完了にしない。月内に1回以上Loopを完了したdistinct SiteをNorth Starへ1 Siteとして数え、同一Siteの複数完了件数は診断指標へ分離する。
 
 Activationは顧客が初回価値を受け取った時点として、`Site設定完了 → CMS接続完了 → 分析・Recommendation提示 → 初回Recommendation採用に相関するai_office_publicationのPublication Fact` の4段階で計測し、第4段階をActivation到達とする。予約、下書き、API成功、`external_change`、`unknown_source`では到達させない。第3段階到達・第4段階未到達のSiteを最優先の改善対象として、件数、滞留時間、失敗工程、未完了理由を可視化する。分析・Recommendation提示だけをActivationとして扱わない。
 
@@ -146,5 +146,5 @@ CVは `REQ-WPA-05`、`REQ-INT-01/03` を優先し、自前JavaScript Trackerの�
 - [ ] AC-L1-MEASURE-10: capacity予測から対話API優先のscale・rate・batch制御を実行できる。
 - [ ] AC-L1-MEASURE-11: support事例を相関IDと解決versionへ接続し、要求・runbook・テストへ還流できる。
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。
-- [ ] AC-L1-MEASURE-13: Recommendation採用に相関する`ai_office_publication`のPublication FactでActivationへ到達し、同Factから評価基準値・起点・1／3／6カ月予定を登録した時だけLoop完了として月次distinct Siteを算出できる。予約・下書き・API受付・外部変更・帰属確認中を除外し、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。
-- [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示できる。Publication FactからAI Office実績・外部変更・帰属確認中を再現し、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。
+- [ ] AC-L1-MEASURE-13: Recommendation採用に相関する`ai_office_publication`のPublication FactでActivationへ到達し、新規公開／実質本文更新では同Factから`seo_content` Laneの評価基準値・`effective_at`起点・1／3／6カ月予定を登録した時だけLoop完了として月次distinct Siteを算出できる。CTA・内部link・認知は月次／累積Laneへ分離し、SEO Laneをresetせず、予約・下書き・API受付・外部変更・帰属確認中を除外する。強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。
+- [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示できる。Publication Factから`seo_content / cta_cv / internal_link / awareness`の別Lane、各起点・周期、AI Office実績・外部変更・帰属確認中、復元availabilityを再現し、CTA／内部linkだけでSEO Laneをresetしない。GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。

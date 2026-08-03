@@ -330,9 +330,14 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "PublicationJob.state=verified",
   "transactional outbox",
   "schema.evaluation.intervention.v1",
+  "lane_type(seo_content|cta_cv|internal_link|awareness)",
+  "記事に単一の評価時計を持たせず",
+  "Recovery Backupの最長3か月は復元可能期間",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
   "CMS種別には依存しない。初期の書込AdapterはWordPressを対象とする",
+  "Evaluation Lane",
+  "`seo_content`は1／3／6か月",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
   "Site導入",
@@ -455,6 +460,9 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-cu
   "上位化",
   "トップ確保",
   "直前ページからのCV到達",
+  "介入別Evaluation Lane",
+  "`cta_cv`",
+  "Recovery Backupの最長3か月は復元availability",
   "Plan差は成果判定機能の有無ではなく",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md", [
@@ -534,7 +542,13 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "publication_fact_projections",
   "Fact正本をSearch Performanceへ複製所有しない",
   "publication_facts（外部post、canonical URL、effect kind",
+  "evaluation_lanes",
+  "Search Performanceは観測Projectionを提供するだけ",
+  "Recovery Backupの最長3か月と評価保持を同一TTLへ結合しない",
   "共通table名・共通列・業務eventをWordPressへ固定しない",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md", [
+  "`wp_patch_jobs`（",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
   "wp.patch_conflict_detected",
@@ -545,6 +559,8 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-e
   "publication.job_verification_pending",
   "site.activated | activation_id",
   "product.loop_completed | loop_completion_id",
+  "seo_content_lane_ref",
+  "lane_type(seo_content/cta_cv/internal_link/awareness)",
   "patch.action_conflicted",
   '"principal_kind": {"enum": ["customer_user", "internal_user", "service", "ai_executor", "system"]}',
   '"acting_context"',
@@ -1005,7 +1021,7 @@ for (const requiredPhrase of [
   "月次プランニング（目的、重点領域、記事・施策配分、予算配分",
   "新規SiteのKeyword戦略レポートと既存SiteのKeyword・Site診断レポート",
   "重複する目標管理を置かない",
-  "1・3・6か月の施策評価",
+  "介入別Evaluation Laneによる施策評価",
   "CMS接続の基本設定",
 ]) {
   if (!navigation.includes(requiredPhrase)) {
@@ -1048,7 +1064,7 @@ for (const requiredPhrase of [
   "月次目的・記事／施策配分・予算配分・実績乖離はS1プランニングを正本",
   "S4に重複する目標管理タブを置かない",
   "戦略・診断レポート（新規Site戦略／既存Site診断を分離",
-  "施策評価（公開または実質更新を起点に1・3・6か月評価",
+  "施策評価（`seo_content`はconfirmed Publication Factの`effective_at`から1・3・6か月",
 ]) {
   if (!screenInventory.includes(requiredPhrase)) {
     fail(errors, `screen inventory: S1 planning / S4 automation boundary missing: ${requiredPhrase}`);
