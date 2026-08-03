@@ -4,8 +4,8 @@ title: AI Office de SEO Quality Gate実装・較正設計（L3スケルトン）
 version: 3.7
 layer: L3
 kind: design
-status: skeleton
-updated_at: 2026-07-05
+status: draft
+updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
 
@@ -27,7 +27,7 @@ REQ-PACK-09の各ゲートを検証実装へ、REQ-PACK-10の計測指標を計�
 | injected_link_or_hidden | 不自然アンカー・非表示要素の検出 | — | 出力段（slot封入前）での静的検査 |
 | site_reputation_fit | Domain Positioningとのトピック整合 | — | 整合度の計測方式 |
 
-hard不合格は自動公開を止め保留・人手へ（fail-close。検証: AC-QUALITY-02/05）。
+hard該当時は通常の自動公開経路を止め、同一の公開権限者による二段階確認と同意記録を要求する。確認後の公開操作はユーザー責任で許可し、システムが恒久的に公開不能へ固定しない（検証: AC-QUALITY-02/05）。
 
 ## 2. ゲート実装台帳（advisory / 修飾）
 
@@ -41,8 +41,8 @@ original_value / comprehensiveness / needs_met_intent / title_honesty / eeat_tru
 | argument_structure | claim_evidence / nuance_qualificationユニット整合・citation_ratio・飛躍/論点先取のLLM検査 | citation_ratio | 論証パターンの判定プロンプトとfew-shot（REQ-PACK-20 academicレンズ） |
 | human_voice | AI定型表現辞書の決定論検出（ai_phrase_density）＋参照アンカー対比（gate_tags付き手書き例示・style_color）のLLM検査 | quality.ai_phrase_density.max | 辞書初期構築（D-27）・対比プロンプト・誤検知較正（ゴールデン評価併用、REQ-PACK-09） |
 
-- 計測正本: competitor_term_coverage（目標≥80%・初期値）、Flesch 60〜70・受動態≤10%（可読性は読者層で調整）、original_element_count（最低1・YMYLは引き上げ）、citation_ratio、inter_unit_redundancy / term_consistency / ai_phrase_density（v1.1/v1.2追補、Gate A-5）。
-- TODO(L3): 日本語コンテンツにおける可読性指標の妥当性検証（Fleschは英語基準のため代替指標の要否を判断。要調整と明示されている前提を維持し、勝手に確定しない）。
+- 計測正本: competitor_term_coverage（目標≥80%・初期値）、日本語向け可読性指標（選定まではadvisory）、original_element_count（最低1・YMYLは引き上げ）、citation_ratio、inter_unit_redundancy / term_consistency / ai_phrase_density（v1.1/v1.2追補、Gate A-5）。
+- TODO(L3): 日本語可読性指標を検証・選定する。英語向けFlesch値を日本語記事の合否基準として使用しない。
 - TODO(L3): YMYL分類器（健康・安全/金融/行政・社会）の実装方式と誤分類時の安全側挙動（疑わしきはYMYL扱い）。
 
 検証: AC-QUALITY-04/06/07。

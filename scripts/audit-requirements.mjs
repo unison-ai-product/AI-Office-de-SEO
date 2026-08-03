@@ -5,6 +5,7 @@ const repoRoot = path.resolve(import.meta.dirname, "..");
 const designRoot = path.join(repoRoot, "docs", "design", "ai-office-de-seo");
 const l1Root = path.join(designRoot, "L1-requirements");
 const tracePath = path.join(l1Root, "ai-office-de-seo-acceptance-trace_v3.7.md");
+const manifestPath = path.join(repoRoot, "manifest.json");
 
 function markdownFiles(root) {
   const files = [];
@@ -171,6 +172,21 @@ assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-us
 assertExcludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
   "1サイト=1プランに伴い",
 ]);
+
+const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+for (const field of ["canonical_paths", "l3_preparation_paths", "gate_a_paths", "prototype_paths"]) {
+  for (const relativePath of manifest[field] ?? []) {
+    if (!fs.existsSync(path.join(repoRoot, relativePath))) {
+      fail(errors, `manifest.${field}: missing path ${relativePath}`);
+    }
+  }
+}
+for (const canonicalFile of [...canonicalSources, path.join(l1Root, "README.md")]) {
+  const relativePath = path.relative(repoRoot, canonicalFile).replaceAll("\\", "/");
+  if (!manifest.canonical_paths.includes(relativePath)) {
+    fail(errors, `manifest.canonical_paths: missing current canonical document ${relativePath}`);
+  }
+}
 
 if (errors.length) {
   console.error(`Requirements audit failed (${errors.length})`);

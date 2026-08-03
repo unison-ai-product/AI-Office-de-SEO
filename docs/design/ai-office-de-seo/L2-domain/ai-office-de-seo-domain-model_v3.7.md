@@ -5,7 +5,7 @@ version: 3.7
 layer: L2
 kind: design
 status: draft
-updated_at: 2026-07-30
+updated_at: 2026-08-03
 related_plan: PLAN-L2-01-ai-office-de-seo-domain-model
 ---
 
@@ -25,12 +25,12 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 |---|---|---|---|
 | Tenancy & Access | 契約者・顧客組織・Membership・Site付与・基本権限・業務権限・認可判断・サンドボックス境界・アカウントライフサイクル・マスターテナント | ContractAccount, CustomerOrganization, Membership, Site(SiteSandboxContext), AuthorizationDecision | REQ-ORG-01〜12, REQ-ACCESS-01〜18 |
 | Content Index | URL正本・記事メタ（サマリー契約・意味索引）・Site Keyword Universe・Site Cluster Projection・属性・アサイン台帳・起点候補・サイトトポロジー・導出事実/施策台帳 | UrlMaster, ArticleSummary, SiteKeywordUniverse, SiteClusterProjection(AssignmentLedger), SiteTopology, DerivedFacts(InterventionLedger) | REQ-DATA-02/07/10/11, REQ-KGA-01〜04/07/12/13/14/18/19 |
-| Search Performance | GSC実績・被覆・ドリフト・カニバリ・リライト候補・マッチカスケード・ロングテール昇格・市場圧力・動的キーワード戦略・ウォッチ/変動監視・インデックス状況・月次プランニング・Recommendation | GscDataMart, CoverageAssessment, RewriteCandidate, QueryMatch, KeywordMarketPressure, KeywordStrategyProfile, Watchlist, MonthlyPlan, Recommendation | REQ-KGA-05/06/08/11/15/16/17/20/21/23, REQ-PRODUCT-05/17/24, REQ-KRL-01〜10, REQ-DATA-06 |
+| Search Performance | Site構築進捗・GSC実績・被覆・ドリフト・カニバリ・リライト候補・マッチカスケード・ロングテール昇格・市場圧力・動的キーワード戦略・ウォッチ/変動監視・インデックス状況・戦略／診断Report・月次／週次計画・Recommendation・公開後評価 | SiteBuildRun, GscDataMart, CoverageAssessment, RewriteCandidate, QueryMatch, KeywordMarketPressure, KeywordStrategyProfile, Watchlist, KeywordReport, MonthlyPlan, WeeklyExecutionSelection, Recommendation, InterventionEvaluation | REQ-BUS-02〜10, REQ-KGA-05/06/08/11/15/16/17/20/21/23, REQ-PRODUCT-05/17/24, REQ-KRL-01〜10, REQ-DATA-06 |
 | External Intelligence | 公共Keyword Asset・Public Market Cluster、SERP/競合/Fanoutの取得・cache・batch・静穏窓スケジューリング | KeywordAssetPool, PublicMarketCluster, SourcePack, CompetitorStructure, FetchBatch | REQ-DATA-10, REQ-SRC-01〜10 |
 | Generation | Workflow状態機械・Ticket・Pack注入・執筆・QA/Repair・中断/再開・全体整合パス・実行冪等性・執筆技法レイヤ | GenerationJob, Ticket, PackCatalog, OutlineContract | REQ-AGENT-01〜11, REQ-PACK-01〜21 |
 | Quality | 品質ゲート・計測・few-shot・合否・コヒーレンス検査・ゴールデン評価・検品レンズ・AIらしさ検査・転生検証 | QualityGateEvaluation, GateRegistry, ReaderSegment | REQ-PACK-09/10/12/20/21, REQ-AGENT-08/11, REQ-ADM-10 |
 | Rewrite | Article-as-Code・パッチ・原因分析・好調保護/波及・フラッシュリライト(TDH) | RewriteJob(ArticleWorkspace) | REQ-RWR-01〜09 |
-| Publishing & Automation | WP能力・Dynamic Post Schema・予約・CV・エンゲージメント計測・部分パッチ・CVポイント台帳 | PublicationJob(PostEnvelope), AutomationPolicy, CvPointLedger | REQ-WPA-01〜13 |
+| Publishing & Automation | CMS能力・Dynamic Post Schema・下書き・公開判定・15記事解放・承認・予約・CV・エンゲージメント計測・部分パッチ・CVポイント台帳 | CmsConnectionProfile, PublicationJob(PostEnvelope), PublicationDecision, AutomationPolicy, CvPointLedger | REQ-WPA-01〜14, REQ-LOGIC-04/05 |
 | Billing & Credit | プラン・購読・クレジット台帳・見積・実行レーン(Batch) | CreditAccount(Ledger), Subscription | REQ-BILL-01〜08/11, REQ-SEC-04/12 |
 | Provider | プロバイダ登録・アダプタ・ルーティング | ProviderProfile, RoutingPolicy | REQ-BILL-04/09, REQ-AGENT-04 |
 | Config & Governance | 設定レジストリ・Flag・安全不変条件・資源/変更ガバナンス・ネットワーク学習の適用統制 | ConfigRegistry, FeatureFlag | REQ-ADM-09, REQ-BILL-10, REQ-DUR-04, REQ-PRODUCT-13/18 |
@@ -101,6 +101,19 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - 既存診断: 同じ市場基線にObserved／Estimated／Article Share、獲得／未獲得Keyword、記事・Query対応、保護、Drift、カニバリ、index、CTA／linkを接続する。
 - 不変条件: 単一Keywordを基本単位にしない／ObservedとEstimatedを合算しない／部分開放時にcoverageを隠さない／ユーザー調整後も旧versionと実行済み施策を保持／MonthlyPlanとRecommendationは使用Report versionを参照する。
 
+### 4.3.3 SiteBuildRun / MonthlyPlan / WeeklyExecutionSelection
+
+- `SiteBuildRun`: Site設定、新規／既存、CMS・GSC・Keyword uploadの入力成立、big keyword方向確認、分析Stage、coverage、段階開放、必要なユーザー操作を追跡する。
+- `MonthlyPlan`: 対象月、使用Report version、目的、重点Cluster、方向性配分、予算、週次枠、確定方式、仮定、availabilityを持つ。
+- `WeeklyExecutionSelection`: 月次計画とRecommendation集合から、credit、Capacity、依存、保護、品質に収まる当週候補と順序をfreezeする。
+- 不変条件: 新規Siteと既存Siteの入力条件を混同しない／部分完了を全体完了にしない／目的配分を達成保証にしない／月途中変更で実行済みを変更しない／ユーザー指定Taskを暗黙取消ししない／未実行Recommendationを単純繰越ししない。
+
+### 4.3.4 InterventionEvaluation
+
+- ルート: InterventionEvaluation。制作時の「新規／リライト」ではなく、公開または実質的更新eventを評価起点とする。
+- 値: ArticlePurpose、SearchIntent、Keyword Cluster、CV Goal、1／3／6か月Checkpoint、SEO、CTA/CV、認知、外部市場調整、availability、Outcome、NextAction。
+- 不変条件: 割当Keyword集合が意図どおり順位を獲得したかを第一に評価する／CVなしだけを異常にしない／CTA変更でSEO周期をresetしない／急変を即時Recommendationにしない／直近1か月1,000 click未満の予測対象をデータ不足と分離する／Site補正が順位へ悪影響を及ぼす変更はユーザー承認を要求する。
+
 ### 4.4 RewriteJob / ArticleWorkspace（Rewrite）
 - ルート: RewriteJob（ArticleWorkspaceを内包）。
 - 不変条件: パッチはEdit Plan宣言のsection_id内に限定（REQ-RWR-03）／未変更セクションのhashを保持（REQ-RWR-05）／ワークスペースは完了・承認・期限で破棄（REQ-RWR-02）／品質ゲートfail-close。
@@ -115,6 +128,8 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 ### 4.5 PublicationJob / PostEnvelope（Publishing）
 - ルート: PublicationJob（PostEnvelopeを内包）。
 - 不変条件: QA・権限・予算・接続・Automation Policyを副作用直前に再判定する／最初の新規15記事およびリライト・記事置換は所定の承認を要求する／解放済み新規記事はAutomation Policyの範囲で自動公開できる／hard gate例外は判定を残した二段階確認・版付き同意による手動公開だけを許可する／CMS能力にないslot/blockはfail-close（REQ-WPA-08）／最終HTML全文は恒久保存しない（REQ-WPA-09）。
+
+`PublicationDecision`はPublicationJobの副作用前判定を独立して記録する。15件count、Automation同意、リライト承認、hard gate二段階確認、現在の認可・予算・接続を入力にし、ready／blocked／approved／publishedを追跡する。15件countは公開成功eventから導出し、管理画面やClientから任意加算しない。
 
 ### 4.5.1 CmsConnectionProfile / ArticleReadProfile（Publishing & Integration）
 
@@ -169,10 +184,10 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 
 - External Intelligence: KeywordAssetObserved, PublicMarketClusterVersioned, PublicMarketClusterSplit, PublicMarketClusterMerged, FanoutExpanded, CompetitorStructureExtracted, FetchBatchThrottled。
 - Content Index: SiteKeywordUniverseUpdated, SiteClusterProjectionUpdated, SiteClusterDependencyStaled, KeywordMapUpdated, ArticleSummaryUpserted。
-- Search Performance: GscDataIngested, CoverageAssessed, QueryDriftDetected, RewriteCandidateRaised, RecommendationProposed, RecommendationAccepted, RecommendationHeld, RecommendationExpired, RecommendationDispatched, RecommendationEvaluationStarted, RecommendationLearned。
+- Search Performance: SiteBuildStarted, SiteBuildStageReleased, BigKeywordDirectionConfirmed, KeywordReportVersioned, MonthlyPlanProposed, MonthlyPlanConfirmed, WeeklyExecutionSelected, GscDataIngested, CoverageAssessed, QueryDriftDetected, RewriteCandidateRaised, RecommendationProposed, RecommendationAccepted, RecommendationHeld, RecommendationExpired, RecommendationDispatched, InterventionEvaluationDue, InterventionEvaluated, RecommendationEvaluationStarted, RecommendationLearned。
 - Generation: GenerationJobStarted, OutlineContractFrozen, MeaningUnitDrafted, QualityGateEvaluated(Passed/Failed), RepairRequested, ArticleAssembled。
 - Rewrite: RewriteJobStarted, PatchApplied, RewriteQualityFailed。
-- Publishing: PostEnvelopeSealed, ContentPublished, PublicationFailed, CvRecorded。
+- Publishing: PostEnvelopeSealed, PublicationDecisionRecorded, PublicationApproved, ContentPublished, ContentUpdated, PublicationFailed, CvRecorded。
 - Billing: CreditReserved, CreditCommitted, CreditReleased, MonthlyCreditGranted。
 - Provider: ProviderRouteDecided, ProviderHealthDegraded, CanaryRolledBack。
 - Config/Governance: ConfigVersionActivated, FeatureFlagToggled, KillSwitchEngaged。

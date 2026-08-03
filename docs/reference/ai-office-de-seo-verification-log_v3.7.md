@@ -42,7 +42,7 @@ updated_at: 2026-07-05
 - Generative AIレポートの提供範囲・API化: Beta段階提供のため、取得経路（UI/API/Bulk Export統合）は変わりうる。availability設計で吸収し、四半期ごとに再確認。
 - Prompt Cacheの価格・TTL仕様: プロバイダ側で変更実績があるため（TTL既定の変動報告あり）、原価前提の較正時に公式docsを再確認する運用とする（REQ-BILL-06の監視項目）。
 - URL検査系APIのクォータ実数・Google公式ランキング更新情報（Search Status等）の取得経路: **未検証**。REQ-KGA-20/21はクォータ配下・availability前提で設計済みのため実数はL3確認でCost Table/Configへ。
-- コンテナ実行基盤（VPS段階のCompose相当・クラウド段階のマネージド先）の選定（REQ-DUR-09）: **未確定**。L3選定。
+- AWS上の初期実行基盤、マネージドサービス境界、段階的スケール方式の選定（REQ-DUR-09）: **未確定**。VPS先行を前提にせずL3 ADRで選定する。
 - メール送信プロバイダ選定・MQ移行トリガ実数（REQ-PRODUCT-21/REQ-DUR-07）: **未確定**。L3選定・計測でCost Table/Configへ。
 - 埋め込みモデル・ベクトル索引方式の選定（REQ-PRODUCT-20）、テナント資源プロファイルとノード密度の実数（REQ-DUR-06）: **未計測**。L3の負荷試験・PoCで確定しConfig/Cost Tableへ。
 - News/YouTube観測の取得経路: 既存要求REQ-SRC-01の列挙（YouTube検索/動画情報/字幕、Googleニュース）の範囲内で設計し新規外部依存なし。エンドポイント可否・上限実数は契約確定時にCost Tableへ（REQ-KGA-18の前提）。

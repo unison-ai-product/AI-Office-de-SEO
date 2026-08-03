@@ -4,8 +4,8 @@ title: AI Office de SEO Config Registry初期値テンプレート（L3スケル
 version: 3.7
 layer: L3
 kind: design
-status: skeleton
-updated_at: 2026-07-30
+status: draft
+updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
 
@@ -23,7 +23,7 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | config_key | 初期値 | 出典 |
 |---|---|---|
 | quality.keyword_density.min / max | 0.5% / 3%（中庸1〜2%） | REQ-PACK-10 |
-| quality.flesch_reading_ease.target | 60〜70（読者層で調整） | REQ-PACK-10 |
+| quality.japanese_readability.mode | advisory（指標選定・人手較正完了までhard gateにしない） | REQ-PACK-10, D-11 |
 | quality.passive_ratio.max | 10% | REQ-PACK-10 |
 | quality.competitor_term_coverage.target | 80%（競合3件以上一致） | REQ-PACK-10 |
 | quality.original_element_count.min | 1（YMYL・激戦は引き上げ） | REQ-PACK-10 |
@@ -42,13 +42,17 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | kga.rewrite_window.primary / extended | 3か月 / 6か月 | REQ-KGA-08 |
 | kga.gsc_daily_retention | 16か月（GSC保持に整合） | REQ-KGA-08（v3.7.1確定） |
 | kga.realtime_retention | 1週間（日次より細かいデータのみ） | REQ-KGA-08 |
+| evaluation.checkpoints | 1か月 / 3か月 / 6か月 | REQ-LOGIC-06/08 |
+| prediction.unlock.clicks_per_28d | 1,000 click。判定不能な記事は個別にlocked | REQ-LOGIC-09 |
+| rewrite.backup.retention.max | 3か月。Site容量上限超過時は古いものから削除 | REQ-DATA-05, REQ-IRG-08 |
 
 ### 取得・バッチ（REQ-SRC-05/06/07、REQ-KGA-11）
 | config_key | 初期値 | 出典 |
 |---|---|---|
 | src.batch_priority | P0〜P5の定義 | REQ-SRC-05 |
 | src.serp_cache_ttl | 日次〜週次 | REQ-SRC-06 |
-| src.news_youtube_aio_ttl | 短TTL（TODO(L3): 具体値） | REQ-SRC-06 |
+| src.news_youtube_ttl | 短TTL（TODO(L3): Source別具体値） | REQ-SRC-06 |
+| observation.aio.full_cycle | 月次 | REQ-LOGIC-05, REQ-CAV-03 |
 | src.global_quota.* / fair_share.* / jitter.* | TODO(L3) | REQ-SRC-07（窓・同時実行・重みはL3較正と明示） |
 | kga.gsc.dimension_scope / priority | REQ-KGA-11 §11.2の設計 | REQ-KGA-11 |
 | kga.attribute.filter_weights / gap_matrix重み | TODO(L3) ※modifier/entity辞書・業界タクソノミ本体はCatalog（REQ-ADM-10管理・版固定）でありレジストリ対象は重み・しきい値のみ | REQ-KGA-13 |
@@ -62,7 +66,8 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | summary.要旨長上限 / embed.model_version・用途トグル | TODO(L3) | REQ-PRODUCT-20 |
 | sched.静穏窓既定 / 窓内オフセット方式 / ノード同時実行上限・キュー水位 | TODO(L3) | REQ-SRC-10 |
 | capacity.利用率しきい値（CPU/mem/DB接続/ストレージ/窓消化率） / 密度目標・移行トリガ | TODO(L3・負荷試験で実測） | REQ-DUR-06 |
-| recovery.rpo_target / rto_target / 演習周期・未実施アラート | TODO(L3・初期例示から実測で締める） | REQ-DUR-08 |
+| recovery.rpo_target / recovery.rto_target | 1時間 / 4時間（初期内部目標。復元演習で検証） | REQ-IRG-06, REQ-DUR-08 |
+| recovery.exercise_interval / overdue_alert | TODO(L3・運用設計で確定) | REQ-DUR-08 |
 | inbound.rate（API/ログイン/webhook別） / mail.送信レート・バウンス停止しきい値・リトライ上限 | TODO(L3) | REQ-SEC-15, REQ-PRODUCT-21 |
 | heal.フラッピング判定 / 保守周期（ログローテ・DBメンテ） / auth.step_up経過しきい値・招待トークン期限 | TODO(L3) | REQ-DUR-10, REQ-SEC-16 |
 | support.sla目安（severity×プラン） / 会話レート・上限 / チケット保持期間 | TODO(L3) | REQ-PRODUCT-22 |
@@ -113,7 +118,32 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 |---|---|---|
 | bill.cache_hit_rate.assumed / floor | TODO(L3)（運用データで較正と明示） | REQ-BILL-06 |
 | bill.reserve.miss_ceiling_factor | TODO(L3) | REQ-BILL-06 |
-| bill.plans / credit_packs / grade_factors | TODO(L3)（要求にハードコードしない） | REQ-BILL-10 |
+| pricing.plan.entry.monthly_fee_jpy_ex_tax | 39,800 | REQ-BILLING-01 |
+| pricing.plan.standard.monthly_fee_jpy_ex_tax | 98,000 | REQ-BILLING-01 |
+| pricing.plan.premium.monthly_fee_jpy_ex_tax | 198,000 | REQ-BILLING-01 |
+| pricing.plan.enterprise.monthly_fee_jpy_ex_tax | 398,000〜（個別見積） | REQ-BILLING-01 |
+| pricing.annual.system_fee_discount | 10%（creditは対象外） | REQ-BILLING-02 |
+| plan.entry.site_limit / user_limit | 1 / 3 | REQ-BILLING-01 |
+| plan.standard.site_limit / user_limit | 3 / 10 | REQ-BILLING-01 |
+| plan.premium.site_limit / user_limit | 5 / 30 | REQ-BILLING-01 |
+| plan.enterprise.site_limit / user_limit | 個別 | REQ-BILLING-01 |
+| entitlement.high_quality_generation | Standard以上。品質に応じcredit消費 | REQ-BILLING-01 |
+| entitlement.numeric_prediction | Standard以上かつdata condition成立 | REQ-BILLING-01, REQ-LOGIC-09 |
+| entitlement.dedicated_rewrite_backup | Premium以上 | REQ-BILLING-01, REQ-IRG-08 |
+| entitlement.generic_webhook_external_api | Premium以上 | REQ-BILLING-01, REQ-INT-09 |
+| credit.monthly_grant.expiry | 請求期間末 | REQ-BILLING-03 |
+| credit.purchased.expiry_max | 180日 | REQ-BILLING-03 |
+| payment.dunning.grace / retry_max | 14日 / 8回（初期値。決済実装時に再検証） | REQ-BILLING-10 |
+| trial.cumulative_customer_limit / duration | 10社 / 1〜3か月 | REQ-BILLING-15 |
+| bill.credit_products / quality_grade_factors / weekly_generation_limits | TODO(L3・実装後の実原価／負荷計測で確定) | REQ-BILLING-04, REQ-COST-01〜11 |
+
+### 公開・自動運用
+| config_key | 初期値 | 出典 |
+|---|---|---|
+| publication.new_article_approval_unlock_count | 15件（本システム作成・人間承認・公開成功した新規記事のみ） | REQ-LOGIC-04 |
+| publication.rewrite_requires_approval | true | REQ-LOGIC-05 |
+| publication.hard_gate_confirmation_steps | 2（同一権限者可＋版付き同意） | REQ-LOGIC-05 |
+| automation.default_enabled | false | REQ-LOGIC-04 |
 
 ### ループ・停止ガード（REQ-AGENT-06、REQ-ADM-04）
 | config_key | 初期値 | 出典 |

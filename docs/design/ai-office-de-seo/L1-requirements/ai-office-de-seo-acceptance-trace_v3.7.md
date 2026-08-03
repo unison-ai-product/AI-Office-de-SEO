@@ -116,7 +116,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-QUALITY-03: 生成物がscaled content abuse・偽の著者/経歴・無付加価値のコピー/言い換え・キーワード詰め込み等のLowest級スパム手法を用いない。 ｜ 検証: REQ-AGENT-08
 - [ ] AC-QUALITY-04: Quality Gateが具体的な`catalog.quality_gate.*`として定義され、各ゲートが生成物から機械判定可能な代理シグナルを持つ（hard: scaled_content_abuse/scraping_thin/keyword_stuffing/deceptive_claim/authorship_integrity/injected_link_or_hidden/site_reputation_fit、advisory: original_value/comprehensiveness/needs_met_intent/title_honesty/eeat_trust/first_hand_experience/production_quality/freshness_honesty/coherence_flow/argument_structure/human_voice、修飾: ymyl_bar/review_depth）。 ｜ 検証: REQ-PACK-09, REQ-AGENT-08
 - [ ] AC-QUALITY-05: hardゲート該当は自動公開を止め保留・人手判断へ回し、advisory不足はRepairループ入力とし、YMYL該当は基準を引き上げる。 ｜ 検証: REQ-PACK-09, REQ-AGENT-08, REQ-PRODUCT-09
-- [ ] AC-QUALITY-06: 各ゲートが機械判定可能な計測指標と初期しきい値を持つ（keyword密度0.5〜3%、Flesch 60〜70・受動態≤10%、競合推奨語カバー率≥80%、独自要素数、近似度、出典付与率等）。 ｜ 検証: REQ-PACK-10
+- [ ] AC-QUALITY-06: 各ゲートが機械判定可能な計測指標と初期しきい値を持つ（keyword密度、競合推奨語カバー率、独自要素数、近似度、出典付与率等）。日本語可読性は検証済み指標をConfig参照し、選定まではadvisoryとし、英語向けFlesch値を日本語記事の合否基準へ使用しない。 ｜ 検証: REQ-PACK-10
 - [ ] AC-QUALITY-07: 計測指標が第三者ヒューリスティック（公式ではない・要調整）であり順位保証でないことが明示され、hard/advisoryの確定と較正がL3に委ねられている。 ｜ 検証: REQ-PACK-10
 
 ## Pack / Schema

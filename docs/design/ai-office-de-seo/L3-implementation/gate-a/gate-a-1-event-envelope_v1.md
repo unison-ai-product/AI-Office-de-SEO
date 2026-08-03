@@ -2,10 +2,10 @@
 document_id: AOS-L3-GATE-A1-EVENT-ENVELOPE
 title: Gate A-1 イベント共通エンベロープ v1（凍結）
 layer: L3
-version: 1.4
+version: 1.5
 kind: contract
-status: frozen-v1.4
-updated_at: 2026-07-05
+status: frozen-v1.5
+updated_at: 2026-08-03
 ---
 
 # Gate A-1: イベント共通エンベロープ v1（凍結）
@@ -90,6 +90,9 @@ updated_at: 2026-07-05
 | site.cluster_dependency_staled | site_cluster_id, public_cluster_ref, reason | O | REQ-KRL-09 |
 | site.market_share_calculated | site_cluster_id, snapshot_id, period, observed_availability, estimated_availability | W,O | REQ-KRL-02/09 |
 | site.keyword_classification_corrected | target_ref, correction_kind, before_version, after_version | W,O,A | REQ-DATA-11, REQ-KRL-09 |
+| site.build_started | build_id, version, site_mode, input_states[] | W,O | REQ-BUS-02/03 |
+| site.build_stage_released | build_id, stage_key, coverage, available_capabilities[] | W,N,O | REQ-BUS-02/03, REQ-SCREEN-18 |
+| site.big_keyword_direction_confirmed | build_id, accepted_refs[], excluded_refs[], added_refs[] | W,O,A | REQ-BUS-02, REQ-SCREEN-02 |
 | report.keyword_section_available | report_id, version, report_type, section_key, coverage | W,N,O | REQ-BUS-02/04 |
 | report.keyword_ready | report_id, version, report_type, coverage, market_snapshot_ref | W,N,O | REQ-BUS-02/04 |
 | report.cluster_state_adjusted | report_id, version, cluster_ref, before_state, after_state, adjusted_by | W,O,A | REQ-BUS-04/05 |
@@ -103,9 +106,14 @@ updated_at: 2026-07-05
 | recommendation.no_action_recorded | recommendation_id, type(protect/observe/no_action), next_evaluation_at? | W,O | REQ-KRL-07/09 |
 | recommendation.superseded | recommendation_id, version, superseded_by_ref, cause, origin | W,O | REQ-KRL-09 |
 | task.conflict_detected | manual_task_ref, automatic_action_ref, target_ref, conflict_kind, suggested_order[] | W,N,O | REQ-KRL-09, REQ-LOGIC-03 |
+| plan.monthly_proposed | monthly_plan_id, version, target_month, source_report_ref, confirmation_mode | W,N,O | REQ-BUS-06/07, REQ-UJ-09 |
+| plan.monthly_confirmed | monthly_plan_id, version, confirmed_by?, confirmation_mode | W,N,O,A | REQ-BUS-06/07, REQ-UJ-09 |
+| plan.weekly_execution_selected | weekly_selection_id, version, monthly_plan_ref, selected_recommendation_refs[], execution_mode | W,N,O | REQ-BUS-07, REQ-UJ-09 |
 | recommendation.evaluation_started | recommendation_id, intervention_ref, evaluation_window | W,O | REQ-LOGIC-06, REQ-DATA-07 |
 | recommendation.learned | recommendation_id, result_class, site_calibration_version, global_candidate_ref? | W,O,A | REQ-KRL-10, REQ-DATA-10 |
 | plan.monthly_closed | period, source_report_ref, target_delta, factors[] | N,O | REQ-PRODUCT-17 |
+| evaluation.intervention_due | evaluation_id, intervention_ref, article_ref, window | W,N,O | REQ-LOGIC-06 |
+| evaluation.intervention_completed | evaluation_id, intervention_ref, article_ref, window, outcome, next_action? | W,N,O | REQ-LOGIC-06/08, REQ-DATA-07 |
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
 | automation.oscillation_detected | targets[] | N,O,A | REQ-PRODUCT-18 |
 | wp.patch_conflict_detected | url_hash, reason | N,O | REQ-WPA-12 |
@@ -173,11 +181,13 @@ updated_at: 2026-07-05
 | source.fetch_throttled | provider, deferred_to | N(繰延), O | REQ-SRC-07 |
 | publish.envelope_sealed | post_refs | W,O | REQ-WPA-09 |
 | publish.draft_created | post_refs | W,O | REQ-WPA-04 |
+| publish.decision_recorded | publication_decision_id, operation, decision, reasons[], correlation_id | W,O,A | REQ-LOGIC-04/05 |
 | publish.scheduled | schedule_at | W,O | REQ-WPA-04 |
 | publish.approval_requested | requester, schedule_at? | N,O | REQ-WPA-04 |
 | publish.approved | approver | N,O,A | REQ-WPA-04 |
 | publish.rejected | approver, reason | N,O,A | REQ-WPA-04 |
 | publish.published | wp_url | N,O | REQ-WPA-04 |
+| publish.updated | cms_ref, operation, resulting_hash, publication_decision_ref | N,O,A | REQ-LOGIC-05/06, REQ-WPA-04 |
 | publish.failed | reason | N,O | REQ-WPA-04 |
 | publish.cv_recorded | goal, date, count | O | REQ-WPA-05 |
 | billing.credit_reserved | amount, ledger_ref | O,A | REQ-BILL-07 |
@@ -220,5 +230,7 @@ v1.1改訂: 通知カタログ（REQ-PRODUCT-11）との突合で4種追加（ap
 v1.2改訂: 運営お知らせのイベント投入（REQ-PRODUCT-16のイベント由来原則との整合）で `platform.announcement_published` を追加（minor）。エンベロープ・既存typeは不変。
 
 v1.4改訂: Pack版のゴールデン評価・活性化後監視（REQ-ADM-10拡張）に伴い `config.pack_regression_detected` を追加（minor）。
+
+v1.5改訂: 現行SEO業務Lifecycleへの追随として、Site構築・段階開放・big keyword確認、月次計画・週次選択、公開判定、公開更新、1／3／6か月評価のevent typeを追加した。Envelopeと既存typeは変更しない。
 
 v1.3改訂（表記正規化・型不変）: カタログを **1 event_type = 1行** へ正規化した。旧版の複合行（例: `generation.gate_passed / gate_held`）は複数typeの省略表記であり、機械照合の契約としてregex `^[a-z]+\.[a-z_]+$` に行単位で適合しなかったため分割した。event_typeの集合・エンベロープ・payload意味論は不変（新規type追加なし）。分割時、旧複合行で共有されていた消費印・根拠は各行へ引き継ぎ、区別があったもの（N(held)/N(hard)等）は当該行にのみ付した。

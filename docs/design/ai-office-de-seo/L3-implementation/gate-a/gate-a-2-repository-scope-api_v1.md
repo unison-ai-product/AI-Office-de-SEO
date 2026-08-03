@@ -4,13 +4,13 @@ title: Gate A-2 Repository層スコープ強制API v1（凍結）
 layer: L3
 version: 1.0
 kind: contract
-status: frozen-v1
-updated_at: 2026-07-02
+status: current-draft
+updated_at: 2026-08-03
 ---
 
-# Gate A-2: Repository層スコープ強制API v1（凍結）
+# Gate A-2: Repository層スコープ強制API v1
 
-DU-01（フェーズ0）の土台。**形（シグネチャと不変条件）を凍結**し、実装言語の写像はClaude Codeが行う（下記はTypeScript風の規範形）。
+DU-01（フェーズ0）の土台。下記はTypeScript風の規範形であり、現行要求監査が完了した時点で実装契約として版固定する。実装言語や開発ツールは固定しない。
 
 ## 1. スコープ型（型でdefault-denyを表現）
 

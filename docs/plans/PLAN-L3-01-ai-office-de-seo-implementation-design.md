@@ -4,7 +4,7 @@ title: AI Office de SEO L3 実装設計 計画
 kind: design
 layer: L3
 status: draft
-updated_at: 2026-07-05
+updated_at: 2026-08-03
 generates:
   - artifact_path: docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-l3-decision-table_v3.7.md
     artifact_type: design_doc
@@ -38,3 +38,6 @@ L2ドメインモデル §7「L3への引き渡し」を成果物へ落とす: �
 - 各Quality Gateが計測実装・しきい値参照（Config Registry）・hard/advisory区分を持つこと（REQ-PACK-09/10）。
 - Config初期値がすべて「初期値・要調整」の出典REQ付きで登録され、安全不変条件（REQ-ADM-09）が設定対象外として明記されること。
 - 受入トレース: 各成果物セクションが検証対象のREQ-ID/AC-IDを明記すること。
+- Site設定→入力／探索→キーワード分析・分類→戦略／診断レポート→月次計画→週次選択→Recommendation→制作／更新→公開判断→1・3・6か月評価の状態とイベントが、L2・L3・画面遷移で一致すること。
+- 契約者／サイトオーナー／ユーザー、業務権限、Site付与、内部運営権限を旧Roleへ逆戻りさせないこと。
+- 価格、契約周期、利用量、公開条件、CMS接続条件をConfig／契約／画面表示で同じ正本から参照できること。

@@ -5,7 +5,7 @@ version: 3.7
 layer: L2
 kind: design
 status: draft
-updated_at: 2026-07-30
+updated_at: 2026-08-03
 related_plan: PLAN-L2-01-ai-office-de-seo-domain-model
 ---
 
@@ -19,7 +19,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Tenant | 契約単位。ID型論理分離で他テナントと越境不可 | REQ-PRODUCT-10 / REQ-SEC-07 |
 | Site | テナント配下のWordPressサイト。分析・生成の単位 | REQ-PRODUCT-02 |
 | SiteSandboxContext | ジョブ実行時に固定される `tenant_id`/`site_id`/`job_id` の境界。実行中に変更不可 | REQ-PRODUCT-02 / REQ-SEC-11 |
-| Role権限 | 操作可否を定める役割マトリクス | REQ-PRODUCT-08 / REQ-SEC-08 |
+| 基本権限・業務Permission・Site Assignment | 顧客認可の3要素。基本権限は契約者／サイトオーナー／ユーザー、業務Permissionは目標管理／キーワード・サイト戦略／記事制作／サイト分析、Site Assignmentは対象Siteを限定する | REQ-ORG-03〜07 / REQ-ACCESS-14〜18 |
 | User Order | ユーザー要望（soft/normal/strong）。SEO証跡・規制・境界を上書き不可 | REQ-PRODUCT-07 / REQ-PACK-02 |
 | Target Axis / Claim Axis | ユーザー自己サーブの戦略入力（誰向け・何を主張/避けるか）。Domain Positioningへ写像し、ゲート検証・影響帰属の対象 | REQ-PRODUCT-12 |
 | Master Tenant | 運営自身のドッグフーディング用内部テナント（特別扱いは課金のみ・ゲート/境界/監査は同一経路） | REQ-PRODUCT-23 |
@@ -61,6 +61,11 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Volatility Guard | SERP/アルゴ変動期間中にリライト・統合の重大判定を保留する判断ガード | REQ-KGA-20 |
 | Index Status | 公開URLのインデックス登録状況・技術ヘルスの監視（クォータ配下・決定論） | REQ-KGA-21 |
 | Monthly Plan | 月次目標・配分・参考レンジ予測（保証しない）・実績乖離の計画単位 | REQ-PRODUCT-17 |
+| Site Build Run | Site設定からKeyword分析・Report段階開放までの構築実行。新規／既存、入力成立、big keyword確認、coverageを追跡する | REQ-BUS-02〜05 |
+| Keyword Strategy Report | 新規Siteの市場、適合、必要領域、優先Cluster、構造提案、制作順、月次配置を示すversion付きReport | REQ-BUS-04 |
+| Keyword Site Diagnosis Report | 既存SiteのMarket／Share、獲得・未獲得Keyword、記事・Query対応、保護、Drift、カニバリ、index、施策配分を示すversion付きReport | REQ-BUS-05 |
+| Weekly Execution Selection | 月次計画とRecommendationから、当週のcredit、Capacity、依存、保護、品質条件に収まる実行候補と順序をfreezeした単位 | REQ-BUS-07 / REQ-UJ-09 |
+| Intervention Evaluation | 公開または実質的更新を起点に、1／3／6か月でKeyword順位、CV、認知、外部要因を評価する施策評価 | REQ-LOGIC-06〜09 |
 
 ## 外部情報（External Intelligence）
 | 用語 | 定義 | 根拠 |
@@ -133,6 +138,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Dynamic Post Schema | 生成物をWP slot/block/fieldへ封入する動的スキーマ | REQ-WPA-02 / REQ-WPA-09 |
 | Post Envelope | slot割当済みの投稿封入体（一時保存、最終HTMLは非保持） | REQ-WPA-09 |
 | Scheduled Action / Automation Policy | 予約投稿・自動化ポリシー（承認ゲート付き） | REQ-WPA-04 |
+| Publication Decision | CMS副作用前に、15記事解放、Automation同意、リライト承認、hard gate確認、権限・予算・接続を評価して記録する公開判定 | REQ-LOGIC-04/05 |
 | CV Event | コンバージョン計測イベント | REQ-WPA-05 |
 | Engagement計測 | 滞在・スクロールの個人非特定集計（任意有効化・相関補助） | REQ-WPA-11 |
 | Partial Patch（部分パッチ） | 公開済み記事へのブロック/要素レベル小粒更新（リビジョン保存・競合検知・分散適用） | REQ-WPA-12 |
