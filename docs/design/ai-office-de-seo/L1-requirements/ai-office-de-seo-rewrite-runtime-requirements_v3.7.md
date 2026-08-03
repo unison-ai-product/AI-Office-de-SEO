@@ -49,7 +49,7 @@ WP下書き送信後は引渡し済みSnapshotとして扱い、標準Workflow�
 
 ## 7. コスト・クレジット  ［REQ-RWR-07］
 
-リライトも実行前にPreflight Estimateを算出し、クレジットを予約、成功時commit・失敗時release（`REQ-SEC`, `REQ-BILL`）。モード（patch / full_regenerate）で消費係数が異なる。
+リライトも実行前にPreflight Estimateを算出してクレジットをreserveし、QA済み成果がOutput Vaultで利用可能になった`deliverable_provided`でcommit、提供前の未使用分をreleaseする（`REQ-SEC`, `REQ-BILL`）。CMS下書き・公開成否は生成creditのcommit条件にしない。モード（patch / full_regenerate）で消費係数が異なる。
 
 ## 8. 好調記事の保護と波及  ［REQ-RWR-08］
 

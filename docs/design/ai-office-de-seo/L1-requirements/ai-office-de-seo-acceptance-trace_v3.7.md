@@ -250,7 +250,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-UJ-02: 初期導入が、新規Siteの「Site設定・対象Site接続／Source診断→Big Keyword方向確認→分析・分類→Keyword戦略Report→Recommendation」と、既存Siteの「Site設定・対象Site確認→GSCまたはKeyword登録→取得可能記事との統合→分析・分類→Keyword診断Report→Recommendation」に分岐して到達できる。セルフ導入を標準とし、条件未達は空Recommendationを出さず不足入力へ戻す。分析開始とCMS書込Capabilityを同一Gateにせず、リライト対象は本文・見出し・公開状態を取得できた記事へ限定し、記事送信時は認証済みCMS REST API等のwrite Capabilityと下書き権限を再確認する。 ｜ 検証: REQ-UJ-02, REQ-BUS-02, REQ-SCREEN-01, REQ-INT-01/05
 - [ ] AC-UJ-03: 日常運用（S1/W7起点→承認・保留対応・おすすめ採否・アラート対処）が完結し、未対応ゼロの終端に到達できる。 ｜ 検証: REQ-UJ-03, REQ-AGENT-10
 - [ ] AC-UJ-04: キーワード戦略がMarket／Share分離→cluster分析→戦略／診断Report→月次目的・実行枠への施策配分→Recommendation Queue→採用Intakeの順に完結し、単一Keywordや生成本数だけへ縮退しない。分類修正は未実行候補だけを再計算し、採用情報は再入力なしでS3／Workflowへ引き継がれる。 ｜ 検証: REQ-UJ-04, REQ-BUS-04/05, REQ-KRL-01〜10, REQ-NAV-04, REQ-BILL-11
-- [ ] AC-UJ-05: 生成〜公開が「Recommendation／手動指定→Intake freeze→Preflight→任意Outline確認・見出し修正→Meaning Unit Writing→任意本文途中Preview・ユーザー編集保護→Semantic Assembly→Cohesionを含むQA・限定Repair→Presentation Assembly（装飾・アイキャッチ・CTA・内部link・CMS形式変換）→CMS下書き→承認／自動運用判定→公開→通知→評価」の順で到達できる。hard gate、予算超過、接続不足、差し戻しは対象Contextを保持した終端または復帰先を持つ。 ｜ 検証: REQ-UJ-05, REQ-AGENT-08〜11, REQ-SEC-12, REQ-INT-01/05
+- [ ] AC-UJ-05: 生成〜公開が「Recommendation／手動指定→Intake freeze→Preflight→任意Outline確認・見出し修正→Meaning Unit Writing→任意本文途中Preview・ユーザー編集保護→Semantic Assembly→Cohesionを含むQA・限定Repair→Presentation Assembly（装飾・アイキャッチ・CTA・内部link・CMS形式変換）→Generation Outcome（成果提供・Output Vault・生成credit確定）→CMS Delivery／下書き→承認／自動運用判定→公開→通知→評価」の順で到達できる。hard gate、予算超過、接続不足、差し戻しは対象Contextを保持した終端または復帰先を持ち、成果提供・CMS反映・公開結果を別状態で追跡する。 ｜ 検証: REQ-UJ-05, REQ-AGENT-08〜11, REQ-SEC-12, REQ-INT-01/05/10
 - [ ] AC-UJ-06: リライトが「候補→原因→記事取得確認→対象範囲freeze→起動→CMS下書き・差分→ユーザー承認→更新→1か月後の一次評価→3か月後の二次評価→6か月後の長期評価」の順で完結し、内部リンク候補の採否を含む。GSCまたはKeyword実績だけで本文変更を作らない。 ｜ 検証: REQ-UJ-06, REQ-RWR-04, REQ-KGA-09, REQ-INT-01/05
 - [ ] AC-UJ-07: 例外・緊急（再認可・Kill Switch作動/解除・支払い失敗復旧・解約オフボーディング・保留期限超過）がそれぞれ定義済み終端に到達する。 ｜ 検証: REQ-UJ-07, REQ-DUR-04, REQ-SEC-10
 - [ ] AC-UJ-08: 管理者運用（日次監視→較正、変更統制フロー、提案承認、障害対応、Adminが対象顧客・Site・操作・期限を指定したManagerの期限付き代理調査、権限失効）が管理コンソール遷移図のパスとして完結する。Operatorは顧客データへ入らず、内部actorを顧客本人へ書き換えない。 ｜ 検証: REQ-UJ-08, REQ-ADM-07, REQ-ADM-10, REQ-ACCESS-01〜03
@@ -330,7 +330,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-PACK-25: Pack Typeカタログが記事タイプ、見出しフロー、意味ユニット、品質ゲート、Prompt、Workflow、Ticket・Snapshot Schemaの7サブIDで宣言され、各型を個別に参照・検証できる。 ｜ 検証: REQ-PACK-11.1, REQ-PACK-11.2, REQ-PACK-11.3, REQ-PACK-11.4, REQ-PACK-11.5, REQ-PACK-11.6, REQ-PACK-11.7
 - [ ] AC-RWR-03: 差分プレビューが理由・対象・変更前後・各差分・Quality Gate結果・予想creditsを提示する。 ｜ 検証: REQ-RWR-04
 - [ ] AC-RWR-04: リライト対象/種別がGSC実績・カニバリから機械判定され、強い部分を残し弱い箇所だけ直す。 ｜ 検証: REQ-RWR-06
-- [ ] AC-RWR-05: リライトも実行前Preflightで予約し成功commit/失敗release、モード別消費係数を持つ。 ｜ 検証: REQ-RWR-07
+- [ ] AC-RWR-05: リライトも実行前Preflightでcreditをreserveし、QA済み成果がOutput Vaultで利用可能な`deliverable_provided`でcommit、提供前の未使用分をreleaseでき、CMS下書き・公開成否とは分離したモード別消費係数を持つ。 ｜ 検証: REQ-RWR-07
 - [ ] AC-SRC-03: 外部情報源がSource Packとして抽象化され、本文非保持でJSON取得される。 ｜ 検証: REQ-SRC-01
 - [ ] AC-SRC-04: 外部取得がCrawler Complianceに従う。 ｜ 検証: REQ-SRC-04
 - [ ] AC-SRC-05: 重い処理を画面表示時に走らせず、夜間バッチでtenant/site分散・checkpoint・budgetを持つ。 ｜ 検証: REQ-SRC-05
@@ -352,7 +352,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-NAV-07: ユーザー面の文言（ラベル・エラー/確認文言・空状態案内・通知テンプレ）がui.text.*レジストリの版activateのみで差し替わり（デプロイ不要）、未定義キーがベース文言へフォールバックして欠落が観測され、変数欠落がValidateで検出され、禁止語（内部用語・provider名）混入が機械検査され、法務文言が対象外として同意版管理に従う。レジストリから型付きアクセサが自動生成されて存在しないキー参照がビルドエラーになり、UIコードの日本語リテラルがCI lintで検出され、日本語→キーの逆引きが機能し（同一名前空間の完全一致重複はValidate警告）、管理面（REQ-ADM-11）と共通術語基盤で訳語が一致する。 ｜ 検証: REQ-NAV-09, REQ-ADM-10, REQ-PRODUCT-09
 - [ ] AC-PRODUCT-04: WordPress連携（プラグイン・データ交換ソケット）が定義される。 ｜ 検証: REQ-PRODUCT-06
 - [ ] AC-AGENT-15: 品質段階と工程に応じてversion付きProvider Routingが主モデル・補助モデル・fallbackを選択し、特定Providerへ固定せず、一般ユーザーにはモデル名でなく品質段階と予測クレジットを表示する。 ｜ 検証: REQ-AGENT-04
-- [ ] AC-AGENT-16: ジョブが保留系状態（手動停止/Kill Switch/予算待ち/hard gate/承認待ち）から、freeze済みversion・サンドボックス不変のままステージ境界checkpointで再開でき、完了済みステージを再課金せず、TTL失効後の再開はキャッシュ再ウォーム費が再Preflightに明示され、保留期限超過は自動キャンセル・通知される。 ｜ 検証: REQ-AGENT-10, REQ-PACK-04, REQ-SEC-12
+- [ ] AC-AGENT-16: ジョブが保留系状態（手動停止/Kill Switch/予算待ち/hard gate/承認待ち）から、freeze済みversion・サンドボックス不変のままステージ境界checkpointで再開でき、同一Jobの完了済みstage、限定Repair、Provider retry、cache再構築で新しい顧客reserve／commitを作らず、cache再ウォームは内部原価として計測され、保留期限超過は未使用reserveをreleaseして自動キャンセル・通知される。 ｜ 検証: REQ-AGENT-10, REQ-PACK-04, REQ-SEC-12
 - [ ] AC-AGENT-17: Outline Contract凍結時に用語ロックが確定して全Writing/Repairへ注入され、Section Briefが隣接ユニット文脈を含み、Assembly後にCohesion QA（coherence_flowゲート＋inter_unit_redundancy / term_consistencyのmetrics）が実行され、不合格は接続部の限定Repairへ回り（全文再生成しない）、指標がQA Snapshotに記録される。 ｜ 検証: REQ-AGENT-11, REQ-PACK-09, REQ-PACK-18
 - [ ] AC-AGENT-18: Orchestratorのクラッシュ・再実行が安全であり、Ticket発行がticket_id冪等キーでdedupeされ、記録済みSnapshotのあるTicketはLLM再呼び出しされず、reserve/commitがticket_id単位で冪等で、障害注入の負のテストでLLM費用・クレジットの二重計上が発生しない。 ｜ 検証: REQ-AGENT-10, REQ-BILL-07, REQ-SEC-02
 - [ ] AC-AGENT-19: 許可ツールの強制がプロンプト注入ではなくツール実行層のサーバー側default-denyで行われ、未許可ツール要求が実行されず監査に残り、外部由来のLLM導出成果（Brief/Outline等）がcontent_role=derivedとして指示位置に置かれず、instruction-in-data detectionが契約検証に含まれる。 ｜ 検証: REQ-AGENT-06, REQ-AGENT-07, REQ-SEC-13
@@ -372,7 +372,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-BILLING-01: 契約時のPrice Catalog versionから商品、価格、付与量、制限、適用期間と、人間代行・汎用AI・SEOツールとの比較範囲および算定根拠を再現できる。 ｜ 検証: REQ-BILLING-01 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-02: Entry・Standardの月契約、Premiumのセルフ年契約、Enterpriseの問い合わせ年契約および年契システム利用料10%割引を再現でき、内部契約と外部Subscriptionの状態差を検出して未検証Webhookで利用権限が直接変更されない。 ｜ 検証: REQ-BILLING-02 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-03: クレジットlotの付与元、期限、消費順、繰越・失効を契約versionどおりに再現できる。 ｜ 検証: REQ-BILLING-03 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
-- [ ] AC-L1-BILLING-04: 有償ジョブがreserve後に開始し、成功時commit、未使用時releaseされ、再試行で二重commitされない。 ｜ 検証: REQ-BILLING-04 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-04: 記事生成・リライトがreserve後に開始し、Output Vaultで`deliverable_provided`となった時だけ生成creditをcommitし、提供前の未使用分をreleaseでき、CMS接続待ち・送信再試行・公開成否で二重commitまたは生成creditの取消しが起きない。 ｜ 検証: REQ-BILLING-04 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-05: append-only ledgerから利用可能・予約・消費・失効・返還残高を再構築できる。 ｜ 検証: REQ-BILLING-05 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-06: Stripe Webhookの重複・順不同・再送を処理しても二重請求・二重付与が発生しない。 ｜ 検証: REQ-BILLING-06 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-07: invoice・支払・refundと内部ledgerの差異を自動検出し、根拠付きで解消できる。 ｜ 検証: REQ-BILLING-07 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
@@ -460,7 +460,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。 ｜ 検証: REQ-DESIGN-06 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。 ｜ 検証: REQ-DESIGN-07 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。 ｜ 検証: REQ-DESIGN-08 ｜ 正本: `categories/design-experience-requirements_v1.md`
-- [ ] AC-L1-DESIGN-09: 通常ビューのRecommendation中心の簡単操作から同じContextでOfficeの玄人向け詳細分析・運用へ移動でき、両Viewが同じProjection・認可・Domain Commandを共有し、Officeの定型操作でLLMを必須にしない。 ｜ 検証: REQ-DESIGN-09 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-09: SEO非専門者が通常ビューのRecommendation中心の簡単操作だけで主要業務を完了でき、詳しく確認・微調整したい場合は同じContextでOfficeの玄人向け詳細分析・運用へ段階的に移動できる。両Viewが同じProjection・認可・Domain Commandを共有し、Office利用や定型操作でLLMを必須にしない。 ｜ 検証: REQ-DESIGN-09 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-10: Officeを標準3D、簡略3D、軽量2Dへ切り替えても、同じTask状態・詳細・会話・操作を利用できる。 ｜ 検証: REQ-DESIGN-10 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-11: Officeでは実entityに基づくTask実行Loopと計測・評価・学習の詳細Graphを玄人向けに横断分析でき、選択式操作と型付きProposalから共通Commandへ接続できる。 ｜ 検証: REQ-DESIGN-11 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-12: 初期リリースがdesktop標準として成立し、後続mobile Chatへ通知・確認・説明・修正指示を追加してもdesktop業務の正本を分岐させない。 ｜ 検証: REQ-DESIGN-12 ｜ 正本: `categories/design-experience-requirements_v1.md`
@@ -509,7 +509,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - [ ] AC-L1-LOGIC-01: Siteごとに月次目的を単純選択し、未実行候補へ方向性としての施策配分が計算され、達成保証として表示されない。 ｜ 検証: REQ-LOGIC-01 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-02: 実績不足時に根拠のない数値を表示せず、unknownと再評価条件を返す。 ｜ 検証: REQ-LOGIC-02 ｜ 正本: `categories/logic-requirements_v1.md`
-- [ ] AC-L1-LOGIC-03: 推薦採用から公開・効果計測までイベント相関IDで追跡できる。 ｜ 検証: REQ-LOGIC-03 ｜ 正本: `categories/logic-requirements_v1.md`
+- [ ] AC-L1-LOGIC-03: 推薦採用からGeneration Outcome、CMS Delivery、公開・効果計測までを同一相関IDかつ別状態で追跡し、新規記事とリライトのどちらでも成果提供後のCMS障害を生成失敗へ戻さず再開できる。 ｜ 検証: REQ-LOGIC-03 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-04: 承認済み公開15記事、版付き同意、事前許可のいずれかが欠ける場合、または停止条件下で自動投稿が実行されない。 ｜ 検証: REQ-LOGIC-04 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-05: 急変対象が即時推薦されず要監視キューへ移り、ユーザー指定予定は継続し、システム予定は選択理由と現在順位により差し替えまたは続行される。 ｜ 検証: REQ-LOGIC-05 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-06: プライマリ＋セカンダリの割当クラスタへの順位付与を評価し、順位なしは自動修復せず診断内容をユーザーへエスカレーションし、CVなし単体を失敗とせず、十分な母数がある場合だけCVRを評価できる。 ｜ 検証: REQ-LOGIC-06 ｜ 正本: `categories/logic-requirements_v1.md`
@@ -585,7 +585,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-12: 文体の組合せと個別Site言い回し学習のON/OFFを設定でき、ON時だけサンプル記事10本を使用し、10本未満は暫定状態を確認できる。 ｜ 検証: REQ-SCREEN-12 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-13: 急変対象が通常推薦と分離され、1か月・3か月・6か月評価の状態と既存予定の継続を区別できる。 ｜ 検証: REQ-SCREEN-13 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。 ｜ 検証: REQ-SCREEN-14 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、CMS Deliveryの保留・再開・外部反映確認、追加見積を同一相関IDで確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、Generation Outcomeの成果提供・Output Vault期限・生成credit確定、CMS Deliveryの保留・再開・外部反映確認、公開／更新結果、追加見積を同一相関IDで区別して確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。 ｜ 検証: REQ-SCREEN-16 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。 ｜ 検証: REQ-SCREEN-17 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-18: 通常ビューでRecommendation中心の要約・簡単操作を行え、Agent Officeで同じProjectionを使う玄人向け詳細分析・設定・Task操作を行え、選択式操作は決定論Service、自由文は必要時だけLLMを使い、確認済み共通Commandの結果が両Viewへ同期される。 ｜ 検証: REQ-SCREEN-18 ｜ 正本: `categories/screen-operation-requirements_v1.md`
@@ -651,7 +651,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-KRL-11: 検索ボリュームと表示回数の変化から季節性・需要変化を分離し、AIO・リスティング出現率による自然検索面の縮小を記事固有の悪化へ直接帰属させない。 ｜ 検証: REQ-KRL-09 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-INT-08: SEO／AIクローラーを共通契約で用途別に観測し、初期の外形診断と後続の検証済みserver／edge log実測を混同せず、client-side Trackerなしでも取得状態を判定できる。 ｜ 検証: REQ-INT-08 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-INT-09: Siteごとに許可済みの複数Article読取り経路を共通Snapshotへ正規化し、完全性・鮮度・成功率・負荷・費用からprimary／standbyを選択して、差分対象だけを取得し、障害時にflappingなくfailoverできる。 ｜ 検証: REQ-INT-09 ｜ 正本: `categories/integration-requirements_v1.md`
-- [ ] AC-L1-INT-10: 生成完了とCMS Delivery成功を分離し、接続・権限・一時障害後も同一Deliveryとidempotency keyで再開して、再生成、二重credit、二重下書きを起こさず、外部反映確認後だけverifiedにできる。 ｜ 検証: REQ-INT-10 ｜ 正本: `categories/integration-requirements_v1.md`
+- [ ] AC-L1-INT-10: Generation OutcomeがQA済み成果、Output Vault、`deliverable_provided`、生成credit commitを一意に結び、CMS Deliveryがそれを参照して接続・権限・一時障害後も同一Deliveryとidempotency keyで再開できる。成果提供、CMS下書き、公開／更新を別状態として追跡し、再生成、二重reserve／commit、二重下書きを起こさず、外部反映確認後だけDeliveryをverifiedにできる。 ｜ 検証: REQ-INT-10 ｜ 正本: `categories/integration-requirements_v1.md`
 - [ ] AC-L1-LOGIC-12: Site・用途ごとに許可済みArticle読取り経路のprimary／standbyを同じPolicy入力から再現し、差分取得、負荷抑制、連続失敗時のfailover、回復時のflapping抑止、全経路不成立の案内を実行できる。 ｜ 検証: REQ-LOGIC-12 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-13: 公開記事の変更を機械比較でCTA・SEO評価・error・軽微変更へ分類し、必要な評価または診断だけを起動して、単発取得失敗を削除や成果悪化として扱わず、LLMを意味派生が必要な処理だけへ限定できる。 ｜ 検証: REQ-LOGIC-13 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先を既存QA・Placement・Automation・限定Repair Ticketへ接続し、CTA専用Agent・Writing Ticket・作業Packを増やさず実行できる。 ｜ 検証: REQ-LOGIC-14 ｜ 正本: `categories/logic-requirements_v1.md`

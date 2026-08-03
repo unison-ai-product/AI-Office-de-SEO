@@ -188,6 +188,7 @@ AI Office de SEOの業務は、単一の直線工程ではなく、次の5つの
 - 対応原典: `REQ-UJ-05`
 - 開始契機: recommendation採用、または権限者による手動起動。
 - 業務入力: 対象テーマ、プライマリ／セカンダリ、検索意図、問い、サイト内の役割、重複・アサイン確認、目的、根拠、対象顧客、記事タイプ、文体、CTA・内部リンク方針、品質段階、予算、公開条件。
+- Intake原則: Recommendation採用は表示済みContextを`schema.intake.recommendation.v1`へfreezeする。手動起動はRecommendation採用を偽装せず`schema.intake.manual.v1`へユーザー指定値と機械導出値のprovenanceを分けてfreezeする。両者は同じPreflightへ通し、手動起動のためだけに形式的Recommendationを作らない。
 - 業務工程:
   1. Recommendation採用または手動起動
   2. Intake Gateでアサイン競合、権限、予算、入力完全性、重複、保護、外部接続を確認

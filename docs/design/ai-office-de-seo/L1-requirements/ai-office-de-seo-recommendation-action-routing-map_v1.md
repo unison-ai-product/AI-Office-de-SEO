@@ -20,8 +20,8 @@ Keyword分析、記事診断、月次計画等から生じるRecommendationを�
 
 | canonical action | 判定側の別名 | class | 採用後の経路 | 副作用・終端 |
 |---|---|---|---|---|
-| `new_article` | `create_new` | agentic content | `workflow.new_article.v1` | CMS下書き、承認またはAutomation Policyに従う公開 |
-| `rewrite` | `rewrite` / `refresh` | agentic content | `workflow.rewrite.v1`。`refresh`は原因・変更範囲subtype | CMS下書き。ユーザー承認後に更新 |
+| `new_article` | `create_new` | agentic content | `workflow.new_article.v2` | Generation Outcome後、CMS Delivery、承認またはAutomation Policyに従う公開 |
+| `rewrite` | `rewrite` / `refresh` | agentic content | `workflow.rewrite.v2`。`refresh`は原因・変更範囲subtype | Generation Outcome後、CMS下書き。ユーザー承認後に更新 |
 | `cta_patch` | `cta_update` | lightweight patch | CTA/CV Pack→差分QA→承認→CMS Patch | SEO評価周期をリセットせず、CTA/CV評価起点だけ更新 |
 | `internal_link_patch` | `internal_link` | lightweight patch | Link Candidate batch→差分QA→承認→CMS Patch | 新規／リライト本文内の追加は当該Workflowへ内包可。既存公開記事への追加は承認制。削除は別確認 |
 | `request_input` | `request_input` | user input | 不足入力、理由、再開条件を通常ビュー／Officeへ提示 | 入力完了後に同Recommendationの後続versionを再判定 |
@@ -41,6 +41,8 @@ Actionは`recommendation_type`、細分は`recommendation_subtype`へ格納す�
 3. Agentを使うかはActionの意味で決める。調査、構成、執筆、QA、説明、変更案作成等、意味判断を要する工程はAgent Workflow／Executorを使用できる。hash比較、閾値判定、状態遷移、権限・予算・接続検査等の決定論処理をAgentへ置換しない。
 4. 軽量Patchは記事全文生成とは別Workflowとし、対象part、差分、検査、承認、CMS結果を追跡する。
 5. 観測、保護、no actionは記事生成Jobを発行しない。
+
+手動指定はRecommendationの採用履歴を捏造せず、`schema.intake.manual.v1`へ保存する。Recommendation IntakeとManual Intakeは同じPreflight、権限、予算、重複、カニバリ、保護、接続判定を使用するが、source IDとユーザー指定／機械導出のprovenanceを維持する。手動指定からRecommendation Itemを作るのは、後続の分析が独立した提案を生成した場合だけとし、起動のための形式的Recommendationを作らない。
 
 ## 4. 月次計画・手動指定・自動予定の競合規則
 

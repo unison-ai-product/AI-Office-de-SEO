@@ -96,7 +96,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | PackExtract | Executorへ渡す最小限のPack（構造+few-shot+制約、本文全文は渡さない） | REQ-PACK-15 |
 | Router / Injector | 選択キーを解決しsystem promptへ固定制約を強制注入する機構 | REQ-AGENT-07 |
 | Prompt Cache Layer | A:Global Runtime/B:Site Policy/C:Research&Outline/D:Task Dynamic | REQ-AGENT-03 |
-| Suspend / Resume | 保留系状態の統合とステージ境界checkpointからの再開（完了分再課金なし・再ウォーム費明示） | REQ-AGENT-10 |
+| Suspend / Resume | 保留系状態の統合とステージ境界checkpointからの再開。同一Jobの追加顧客課金はなく、cache再ウォームは内部原価として計測する | REQ-AGENT-10 |
 | Execution Lane | interactive / scheduled（Batch×1hキャッシュで割安）。ユーザーには「今すぐ/おまかせ」 | REQ-BILL-11 |
 | Meaning Unit（記述タイプ） | H2/H3でなく執筆の作業単位（主張+理由/具体例/比較等、39種（video_reference含む・拡張可能な初期集合）） | REQ-PACK-11 / REQ-PACK-18 |
 | Article Type / Heading Flow | 記事構成型／H2·H3内の意味ユニット並び（アウトライン層） | REQ-PACK-11 / REQ-PACK-13 |

@@ -151,9 +151,9 @@ Workflowは権限スコープを持つ。許可ツール・アクション（外
 
 主要Workflow（列挙）:
 
-- `workflow.new_article.v1`: Research & Outline → Meaning Unit Writing → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → CMS Draft
-- `workflow.rewrite.v1`: 採用済みRewrite Recommendation／Cause Analysis → Article Read Snapshot確認 → 対象Meaning Unit特定 → Edit Plan freeze → Repair Writingまたは承認付き記事置換 → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → CMS Draft → ユーザー承認。原因はQuery Driftに限定せず、順位・CTR、検索意図ずれ、情報不足・鮮度、競合差分、CTA／内部link、カニバリ、保護条件等の型付きreasonを受ける。GSCまたはKeyword実績だけでArticle Read Snapshotなしの本文変更へ進めない
-- `workflow.automation.v1`: CMS Capability・出力形式検証 → CMS下書き送信 → 承認／委任条件判定 → 予約・公開／更新 → CV・評価起点event
+- `workflow.new_article.v2`: Research & Outline → Meaning Unit Writing → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → Generation Outcome → CMS Delivery／Approval
+- `workflow.rewrite.v2`: 採用済みRewrite Recommendation／Cause Analysis → Article Read Snapshot確認 → 対象Meaning Unit特定 → Edit Plan freeze → Repair Writingまたは承認付き記事置換 → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → Generation Outcome → CMS Delivery → ユーザー承認。原因はQuery Driftに限定せず、順位・CTR、検索意図ずれ、情報不足・鮮度、競合差分、CTA／内部link、カニバリ、保護条件等の型付きreasonを受ける。GSCまたはKeyword実績だけでArticle Read Snapshotなしの本文変更へ進めず、成果提供と既存記事反映を同じ成功状態にしない
+- `workflow.automation.v1`: Generation Outcome参照 → CMS Capability・出力形式検証 → CMS下書き送信 → 承認／委任条件判定 → 予約・公開／更新 → CV・評価起点event
 
 ループ（反復）を一級の構文として持つ:
 
@@ -220,8 +220,8 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 8. Draft Writer（意味ユニット執筆）
 9. Self Evolution / Semantic Assembly（意味ユニットを本文へ結合し、限定的な接続改善を行う）
 10. Quality Gate（品質検査・fail-close）
-11. Assembly / Placement / CMS Draft（本文QA後に装飾、アイキャッチ、CTA・内部link配置、CMS形式変換・検証、下書き送信）
-12. Preview / Approval（人手承認）
+11. Presentation Assembly / Generation Outcome（本文QA後に装飾、アイキャッチ、CTA・内部link配置、CMS形式変換・検証、成果seal、Output Vault提供、生成credit確定）
+12. CMS Delivery / Preview / Approval（Generation Outcomeを参照した下書き送信・外部反映確認・Preview・人手承認）
 13. Cleanup（後処理・完了判定）
 
 遷移の強制ルール（ゲート）:
@@ -232,11 +232,11 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 - Sandbox Fix 後に `tenant_id`/`site_id` を変更しない。
 - Keyword Intent と SERP-TTPS Research の成果がないままOutlineへ進まない。
 - Outline Contract がないまま本文生成しない。Section Briefs がないまま本文生成しない。
-- 状態9でSemantic Assemblyを完了してから状態10のCohesionを含むQuality Gateを実行する。Quality Gateを通らない記事を状態11のPresentation Assembly／PlacementとCMS下書き送信へ進めない（fail-close）。工程11は`presentation_assemble → decorate → featured_image → placement → cms_validate → cms_deliver`の内部phaseを持ち、本文完成前に装飾を開始せず、CMS送信成功前にPreview／Approvalへ進めない。初期画像Scopeはアイキャッチ基盤に限定する。
+- 状態9でSemantic Assemblyを完了してから状態10のCohesionを含むQuality Gateを実行する。Quality Gateを通らない記事を状態11のPresentation Assembly／Generation Outcomeへ進めない（fail-close）。工程11は`presentation_assemble → decorate → featured_image → placement → cms_validate → deliverable_provided`の内部phaseを持ち、本文完成前に装飾を開始しない。Generation Outcome成立後に`generation.job_completed`を発行し、状態12は別AggregateのCMS Deliveryを開始する。CMS送信成功前にPreview／Approvalへ進めない。初期画像Scopeはアイキャッチ基盤に限定する。
 - Preview またはAutomationの公開条件成立なしに予約投稿しない。初期WordPress AdapterではCMS下書きの編集URL／Preview URLを利用し、共通WorkflowをWordPress固有画面へ固定しない。
 - 最初の15記事は完成記事への人間承認を必須とする。WordPress実表示Previewは確認手段であり、URLを開いた事実自体を条件にしない。Outline確認はSite設定で任意に有効化し、有効時は見出しを修正・freezeしてから再開する。
 - リライト・全文再生成はAutomation承認だけで公開記事へ直接反映せず、CMS下書きとユーザー承認を必須とする。初期WordPress AdapterではWordPress下書きを使用する。
-- Cleanup が完了しないジョブを完了扱いにしない。
+- `generation.job_completed`は生成成果提供の完了であり、CMS下書きまたは公開完了を意味しない。状態13のCleanupが完了するまでは親Workflow全体を完了扱いにせず、Generation Outcome、CMS Delivery、Publication Fact、親Workflow resultを別状態で保持する。
 
 工程ごとに引くPack/CatalogはLayer A/B/C/D（`REQ-AGENT-03`）と3スコープ（`REQ-PACK-14`）に従う。`rewrite_patch`（`rewrite` workflow）は別の状態機械として定義する（原因分析→対象特定→patch→QA→Repair Loop）。具体トポロジは各Workflowの個別設定（`REQ-AGENT-06`）で、`new_article_fast/standard/premium/custom_recipe` 等のモード差は工程の深度・モデル配分の違いとして表す（`custom_recipe` はユーザー自己サーブの定義機能ではなく、コンサルティング経由で開発管理者が登録する運用経路。`REQ-PRODUCT-12`）。
 
@@ -247,9 +247,9 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 - 保留系状態の統合: ユーザー手動の一時停止（本項で新設）、Kill Switch（`REQ-DUR-04`）、予算超過待ち（`REQ-SEC-12`）、hard gate保留（`REQ-AGENT-08`）、承認待ち（`REQ-WPA-04`）を、状態機械（`REQ-AGENT-09`）上の保留系状態として統一的に管理する。手動停止・再開は対象Siteが見え、該当Taskの`記事制作`等の業務Permissionを持つ利用者に限定し、操作時の現在policyで再判定する。
 - checkpoint＝ステージ境界・Snapshot粒度: freeze済み成果（Research Brief / Outline Contract / 完了済み意味ユニットSnapshot / QA結果）は保存済みのため、再開は最後に完了したステージの直後から行う。**完了済みステージを再実行・再課金しない。**
 - 再開時の不変条件: ジョブ開始時にfreezeしたWorkflow / Pack / Catalog / Config version（`REQ-PACK-04`）とSiteSandboxContextを維持したまま再開する。中断中にPack等が改版されても旧versionで再開し再現性を保つ。新versionを使いたい場合は新ジョブとする。
-- クレジット: 中断時に消費済み分をcommitし、未実行分のreserveは解放または保持（保持TTLは設定、`REQ-ADM-09`）。再開時は残ステージ分を再Preflight（`REQ-SEC-12`）して再予約する。
+- クレジット: 中断時点ではGeneration Outcomeが未成立であるため生成creditをcommitしない。元の見積とreserveを保留期限内で維持し、同一Jobのcheckpoint再開、限定Repair、Provider retry、cache再構築で新しい顧客reserve／commitを作らない。保留期限を超えたJobは自動cancelして未使用reserveをreleaseし、その後にユーザーが別成果を求める場合だけ新Job・新見積・新reserveとする。
 - 実行の冪等性（二重課金防止）: Orchestratorのクラッシュ・再起動を含む再実行は安全でなければならない。Ticket発行はat-least-once配信＋`ticket_id`冪等キーとし、同一TicketのSnapshot取り込みはdedupeする（後着は破棄・監査記録）。ステージ再実行時、記録済みSnapshotがあるTicketはLLM再呼び出しせず結果を再利用する。クレジットのreserve/commitは`ticket_id`単位で冪等とし（Stripe側の`idempotency_key`と同型、`REQ-BILL-07`）、Orchestrator障害でLLM費用・クレジットが二重計上されないことを負のテストで検証する。
-- キャッシュ再ウォーム費の明示: Prompt CacheはTTL（既定5分／延長1時間。検証ログ参照）で失効するため、TTL超過後の再開ではLayer B/C prefixの再書き込み費が発生する。**再開Preflightは再ウォーム費を見積に含めて提示する**（`REQ-AGENT-03`, `REQ-BILL-06`）。
+- キャッシュ再ウォーム原価: Prompt CacheのTTL失効後はLayer B/C prefixの再書き込み原価が発生し得るが、同一Jobのcheckpoint再開に対する追加顧客creditへ転嫁しない。内部原価、cache miss理由、再開原価として計測し、価格・見積Policyの将来versionへ反映する。現在Jobの見積、reserve、商品価格は変更しない（`REQ-AGENT-03`, `REQ-BILL-06`）。
 - 一時本文との関係: 中断中の一時本文・ワークスペース（`REQ-PRODUCT-04`, `REQ-RWR-02`）は保留期限内に限りTTLを延長して保持できる（上限は設定）。期限超過で破棄した場合、再開時は保存済みSnapshot・契約から該当ステージを再実行する。本文非保持の原則は変えない。
 - 保留期限: 中断ジョブの最大保留期間（設定・初期値要調整）を持ち、超過時は自動キャンセル（reserve解放・部分成果はSnapshotとして保持）とし、通知する（`REQ-PRODUCT-11`）。
 

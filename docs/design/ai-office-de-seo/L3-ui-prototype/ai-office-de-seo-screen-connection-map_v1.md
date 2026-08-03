@@ -151,7 +151,7 @@ Officeの部屋オプション（「何を見ますか？」メニュー等）�
 **気になる点**: `openWb('support', 'サポート')`がOfficeモードからの`goSupport`実行時に呼ばれるが、`WB_MAP`にも`ROOM_SCREEN`にも`support`エントリが無い。オーバーレイバー自体は出るが「SECTION 〜」の部屋ラベル行が空欄になる（見た目の不整合）。
 
 ### W5 ジョブ進捗モーダル（`state.jobDetail`）
-一時停止/再開（+3cr再見積）/キャンセル/「オフィスで見守る」(`goOfficeWatch`、部屋指定なし)。書面と一致。
+一時停止／再開／キャンセル／「オフィスで見守る」(`goOfficeWatch`、部屋指定なし)。旧`+3cr再見積`は現行要求と不一致であり、本実装へ移植しない。同一Job再開は追加顧客creditなし、cache再ウォームは内部原価として扱う。
 
 ### W6 ジョブ履歴（`screen:'jobhistory'`）
 種別/状態/期間フィルタ＋CSV。詳細モーダルから「サイトページ管理で見る」→`analytics/pages`、「この記事をリライト」→`content/rewrite`。書面と一致。

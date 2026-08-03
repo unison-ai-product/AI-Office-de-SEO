@@ -164,15 +164,27 @@
       "invariants": [
         {
           "invariant_id": "INV-PRODUCTION-001",
-          "statement": "採用Recommendationの目的・Cluster・Intent・CTA・内部Link・品質・予算をversion付きIntakeでProductionへ渡し、画面から再構築しない。",
+          "statement": "採用Recommendationはfreeze済みRecommendation Intake、手動指定は別のManual Intakeとして由来を保ち、同じPreflightへ通す。RecommendationのAction種別に応じてAgent Workflow以外も選び、画面から再構築しない。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-recommendation-action-routing-map_v1.md",
             "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md"
           ],
-          "forbidden_patterns": ["Recommendation(?:の正本)?は.{0,30}(?:画面表示|UI)(?:とする|である)"],
-          "bad_fixtures": ["Recommendationの正本はUIとする。"],
-          "good_fixtures": ["RecommendationIntakeをversion付きでProductionへ渡す。"]
+          "forbidden_patterns": [
+            "Recommendation(?:の正本)?は.{0,30}(?:画面表示|UI)(?:とする|である)",
+            "手動(?:指定|起動).{0,50}(?:Recommendation採用|recommendation_id).{0,30}(?:として保存|を必須)",
+            "(?:observe|protect|no_action|technical_escalation).{0,50}(?:記事生成Job|Agent Job).{0,20}(?:発行する|起動する|必須とする)"
+          ],
+          "bad_fixtures": [
+            "Recommendationの正本はUIとする。",
+            "手動起動はRecommendation採用として保存する。",
+            "no_actionでもAgent Jobを発行する。"
+          ],
+          "good_fixtures": [
+            "Recommendation Intakeをversion付きで正規Actionへ渡す。",
+            "手動指定はManual Intakeとして由来を分離し、同じPreflightへ通す。",
+            "observeとprotectは記事生成Jobを発行しない。"
+          ]
         }
       ]
     },
@@ -229,15 +241,35 @@
       "invariants": [
         {
           "invariant_id": "INV-COMMERCIAL-001",
-          "statement": "Creditはappend-only台帳でreserve／commit／releaseし、価格・枠・Planはversion付き設定から解決する。",
+          "statement": "Creditはappend-only台帳でreserve／commit／releaseし、記事生成creditはGeneration OutcomeがOutput Vaultでdeliverable_providedとなった時にcommitする。Generation Outcome、CMS Delivery、Publication Factは別Aggregate／Lifecycleとし、一つのsuccessへ丸めず、CMS送信・公開で再commitしない。価格・枠・Planはversion付き設定から解決する。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/billing-accounting-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/categories/cost-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-billing-credit-provider-requirements_v3.7.md"
           ],
-          "forbidden_patterns": ["Credit(?:残高|台帳).{0,40}(?:直接更新|上書き更新|UPDATE)"],
-          "bad_fixtures": ["Credit残高を直接更新する。"],
-          "good_fixtures": ["Creditはappend-only台帳のeventから残高を導出する。"]
+          "forbidden_patterns": [
+            "Credit(?:残高|台帳).{0,40}(?:直接更新|上書き更新|UPDATE)",
+            "生成credit.{0,50}(?:CMS下書き|公開成功|公開完了).{0,30}(?:時|後).{0,20}commit",
+            "(?:CMS再送|接続再開|Delivery再試行).{0,40}(?:新しい|別の|追加).{0,20}(?:reserve|commit)",
+            "(?:checkpoint再開|同一Job再開|cache再ウォーム).{0,50}(?:追加顧客creditを請求する|顧客へ再課金する|顧客creditを増額する)",
+            "presentation_assembly_placement_cms_draft",
+            "Generation OutcomeとCMS DeliveryとPublication Factは同じsuccessである"
+          ],
+          "bad_fixtures": [
+            "Credit残高を直接更新する。",
+            "生成creditは公開成功時にcommitする。",
+            "CMS再送では新しいcommitを作る。",
+            "checkpoint再開では追加顧客creditを請求する。",
+            "presentation_assembly_placement_cms_draft",
+            "Generation OutcomeとCMS DeliveryとPublication Factは同じsuccessである。"
+          ],
+          "good_fixtures": [
+            "Creditはappend-only台帳のeventから残高を導出する。",
+            "生成creditはOutput Vaultでdeliverable_providedとなった時にcommitし、CMS再送では再commitしない。",
+            "同一Jobのcheckpoint再開とcache再ウォームでは追加顧客creditを作らない。",
+            "Presentation Assembly、Generation Outcome、CMS Deliveryは別stageとして接続する。",
+            "Generation Outcome、CMS Delivery、Publication Factは別Lifecycleとして追跡する。"
+          ]
         }
       ]
     },
@@ -278,7 +310,7 @@
       "invariants": [
         {
           "invariant_id": "INV-OFFICE-001",
-          "statement": "通常ビューは簡単操作・要約、Agent Officeは玄人向けの詳細分析・詳細運用・Agent操作面とする。両Viewは同じProjection・認可・Domain Commandを使い、Office独自の業務正本を持たない。定型会話は選択式と決定論Serviceを優先する。",
+          "statement": "通常ビューはSEO非専門者がRecommendation中心で主要業務を完結できる簡単操作面、Agent Officeは同じ対象を専門的に確認・微調整する玄人向け詳細分析・運用面とする。Officeは詳細度と操作自由度を段階的に上げる上級導線であり必須経路にしない。両Viewは同じProjection・認可・Domain Commandを使い、Office独自の業務正本を持たない。定型会話は選択式と決定論Serviceを優先する。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
@@ -305,6 +337,7 @@
             "Agent Officeは成果分析の場ではなく、成果の短い要約と通常ビューへのLinkだけを表示する。"
           ],
           "good_fixtures": [
+            "通常ビューだけでRecommendationの採否と承認を完了でき、詳しく確認・微調整する場合だけ同じContextでOfficeへ移動する。",
             "Agent Officeは共通Projectionで詳細分析し、型付きProposalを共通Domain Commandへ渡して詳細運用できる。",
             "選択式ポップアップは決定論Serviceを使い、自由文の意味解釈だけLLMを利用する。"
           ]

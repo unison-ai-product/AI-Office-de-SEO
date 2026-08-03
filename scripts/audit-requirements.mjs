@@ -562,25 +562,27 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-pr
   "CMS edit／Preview URL（初期WordPress AdapterではWP下書きURL）",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
-  "Assembly / Placement / CMS Draft",
+  "Presentation Assembly / Generation Outcome",
   "Self Evolution / Semantic Assembly",
-  "Meaning Unit Writing → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → CMS Draft",
-  "CMS Capability・出力形式検証 → CMS下書き送信 → 承認／委任条件判定",
-  "presentation_assemble → decorate → featured_image → placement → cms_validate → cms_deliver",
+  "Meaning Unit Writing → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → Generation Outcome → CMS Delivery／Approval",
+  "Generation Outcome参照 → CMS Capability・出力形式検証 → CMS下書き送信 → 承認／委任条件判定",
+  "presentation_assemble → decorate → featured_image → placement → cms_validate → deliverable_provided",
   "共通WorkflowをWordPress固有画面へ固定しない",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
   "Meaning Unit Writing → QA → Repair Loop → Assembly",
   "WP下書き・投稿形式チェック・予約・公開/CVイベント",
+  "Assembly / Placement / CMS Draft",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
-  "presentation_assembly_placement_cms_draft",
+  "generation_outcome → cms_delivery_approval",
   "Meaning Unitの`semantic_assembly`",
   "初期画像Scopeはアイキャッチだけ",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md", [
   "`generation_stage_phases`",
-  "presentation_assemble / decorate / featured_image / placement / cms_validate / cms_deliver",
+  "presentation_assemble / decorate / featured_image / placement / cms_validate / deliverable_provided",
+  "cms_prepare / cms_deliver / cms_verify / preview / approval_or_automation",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-2-repository-scope-api_v1.md", [
   "resolveCustomerScope",

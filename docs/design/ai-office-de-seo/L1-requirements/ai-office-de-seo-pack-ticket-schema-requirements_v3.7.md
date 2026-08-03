@@ -77,8 +77,8 @@ H2/H3内の意味ユニットの並びを定義する。H2/H3を作業単位に�
 キーは `namespace.name.version` とし、namespaceは種別に対応する。
 
 ```txt
-workflow.new_article.v1
-workflow.rewrite.v1
+workflow.new_article.v2
+workflow.rewrite.v2
 prompt.domain_positioning.v1
 prompt.content_regulation.v1
 prompt.user_order.v1
@@ -92,6 +92,8 @@ source.competitor.top5_structure.v1
 schema.ticket.writing.v1
 schema.snapshot.qa.v1
 ```
+
+旧`workflow.new_article.v1`／`workflow.rewrite.v1`は履歴再生・移行専用aliasとし、新規IntakeのroutingまたはTicket発行へ使用しない。v2はGeneration OutcomeとCMS Delivery／Approvalを別stage・別Aggregate参照として保持する。
 
 namespace対応:
 

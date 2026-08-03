@@ -115,7 +115,7 @@ UIはCommandを発行しEventからProjectionを更新する。UIが順位段階
 - Generation ⇄ Quality: **Partnership**。Generationは品質ゲートを工程内で呼び、fail-closeで公開を止める（REQ-PACK-09, REQ-RWR-05）。
 - Search Performance → Generation / Rewrite / Publishing & Automation: **Customer/Supplier**。採用Recommendationをversion付きIntake Contractとして渡し、目的・Keyword Cluster・検索インテント・記事目的・CTA・内部リンク・品質・予算・保護条件を再入力させない。Generation側がRecommendationを画面表示から再構築することを禁止する。
 - Generation / Rewrite → Publishing & Automation: **Customer/Supplier**。Snapshot→PostEnvelope→CMS下書き。新規記事は最初の15記事まで完成記事承認を必須とし、解放後はAutomation Policyに従う。リライト・記事置換はCMS下書き後のユーザー承認を必須とする（REQ-LOGIC-04）。
-- Generation / Rewrite → Billing & Credit: **Customer/Supplier**。実行前にreserve、成功commit・失敗release（REQ-BILL-07, REQ-SEC-12）。
+- Generation / Rewrite → Billing & Credit: **Customer/Supplier**。実行前にreserveし、QA済み成果がsealされOutput Vaultから利用可能になった`deliverable_provided`で生成creditをcommitする。CMS送信・公開は別Lifecycleであり、接続待ち・再送で再commitしない。提供前の未使用分はreleaseする（REQ-BILL-07, REQ-SEC-12）。
 - Generation → Provider: **ACL**（Provider Adapter Contractがプロバイダ差異を吸収し、品質段階、必要Capability、原価、latency、health、契約条件からversion付きRouteを解決する。特定Provider優先をドメイン不変条件にしない。REQ-TECH-10、REQ-AGENT-04）。
 - Config & Governance → 全BC: **Conformist / Published Language**。価格・しきい値・Flagはレジストリから解決。安全不変条件は設定対象外（REQ-ADM-09）。
 - 全BC → Observability & Audit: **ドメインイベント購読**（消費・契約検証・監査を横断収集、REQ-SEC-13）。
@@ -165,7 +165,7 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - ルート: Recommendation。候補抽出時点から採用、実行、評価、再推薦まで同じ`recommendation_id`とversionで追跡する。
 - 値: RecommendationType、RecommendationSubtype、TargetRef、ObjectiveRef、KeywordClusterRef、SearchIntent、ArticlePurpose、ReasonEvidence、CtaPolicyRef、InternalLinkPlanRef、QualityTier、BudgetEstimate、ProtectionPolicy、Availability、Dependencies、ScoreComponents、Status。Typeは`new_article / rewrite / cta_patch / internal_link_patch / request_input / observe / protect / no_action / structure_change_proposal / technical_escalation / automation_change`を正規Catalogとする。
 - 状態: `candidate → proposed → accepted / held / excluded / expired → dispatched → executing → completed → evaluating → learned / superseded`。市場急変時は`watching`へ分岐し、通常推薦から隔離する。
-- 不変条件: 採用後はIntake Contractをfreezeし、Agent Workflowへ再入力なしで渡す／未実行Recommendationだけが目的・市場・分類変更による再計算対象／実行済みは履歴として保持／根拠、入力availability、予測credit、依存関係、保護条件を欠くものは実行可能にしない／手動起動もRecommendation由来と同じPreflight・重複・カニバリ・権限・予算判定へ通す／ユーザー指定Taskは維持し、衝突時は相談と依存順序を提示する／自動予定だけを再検証でheld、needs_review、supersededへ遷移させる／観測、保護、no action、ユーザーエスカレーションにAgent Jobを偽造しない。
+- 不変条件: 採用後はRecommendation Intakeをfreezeし、Action Routingが選ぶAgent Workflow／Patch／Policy／Domain Command／ユーザー対応へ再入力なしで渡す／未実行Recommendationだけが目的・市場・分類変更による再計算対象／実行済みは履歴として保持／根拠、入力availability、予測credit、依存関係、保護条件を欠くものは実行可能にしない／手動起動はManual Intakeとして由来を分離しつつ同じPreflight・重複・カニバリ・権限・予算判定へ通す／ユーザー指定Taskは維持し、衝突時は相談と依存順序を提示する／自動予定だけを再検証でheld、needs_review、supersededへ遷移させる／観測、保護、no action、ユーザーエスカレーションにAgent Jobを偽造しない。
 - リライト不変条件: `recommendation_type=rewrite`は、対象記事のArticleSummaryと、本文・見出し・公開状態を取得したArticle Read Snapshot、原因・根拠、取得時刻・hash・availabilityを参照する。GSCまたはKeyword実績だけの候補は`request_input`、`observe`または`technical_escalation`に留め、本文変更を伴うRewrite Intakeへdispatchしない。
 
 ### 4.3.2 KeywordStrategyReport / KeywordSiteDiagnosisReport

@@ -112,6 +112,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-IMAGE-05: CMS Capabilityが要求するfeatured media／thumbnail sizeだけを選択でき、本文中画像・SNS・広告sizeを初期対象として表示しない。
 - [ ] PT-IMAGE-06: 生成→採否→最適化→Media登録→featured割当を追跡し、Media失敗で本文成果を失わず再送できる。
 - [ ] PT-IMAGE-07: 同一入力の二重送信を防ぎ、ユーザー再生成は新credit、サービス障害再開は同一Job・追加課金なしになる。
+- [ ] PT-GEN-OUTCOME-01: 生成履歴でGeneration Outcome、CMS Delivery、Publication Resultを別状態として表示し、同一Job再開は`customer_credit_delta=0`、ユーザー希望の別成果は親Outcomeを参照する新Job・新見積として確認できる。
 - [ ] PT-IMAGE-08: 技術的不成立／設定不一致のblockedと、構図・トーン等のadvisoryを分け、自動投稿をadvisoryだけで止めない。
 - [ ] PT-NOTIFY-01: 固定担当者未設定でも、Task完了・確認要求が対象Siteを閲覧できる該当ユーザーへpopup表示され、閉じた後もW7へ残る。
 - [ ] PT-NOTIFY-02: 受信者をClient入力で決めず、Site付与・閲覧範囲・操作権限・購読設定をServer側の同一policy versionで解決する。
@@ -177,7 +178,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-P: 左サイドメニュー＋タブ構造で両面が実装され、S2の手動追加/一括インポート/シード展開登録、S3の起点選択、ADM-S8のPack/few-shot/辞書編集フロー、ADM-S2の価格改定フローが**実際に操作できる**（閲覧専用でない）。｜ REQ-NAV-02 / REQ-KGA-03 / REQ-ADM-10 / REQ-BILL-10（AC-NAV-05）
 - [ ] PT-O: 管理コンソールの各画面で内部キーが日本語ラベル＋キー併記になり、未登録キーに「ラベル未登録」印が出る。ADM-S4にレーン別コスト・バッチフォールバック監視が表示される。｜ REQ-ADM-11 / REQ-BILL-11（AC-ADM-10）
 - [ ] PT-N: 構成案プレビュー（W3相当）にoutline_contract由来のarticle_type_key/heading_flow_keyが表示され、「サンプル記事の型」（文体学習）と混同されない。QA結果はsnapshot.qa.v1のgatesをgate key対応つきで描画する。｜ REQ-PACK-11 / REQ-PACK-16 / Gate A-5
-- [ ] PT-M: W5で一時停止→再開のモック操作が、完了済みステージを再実行せず（job_suspended/resumedイベント同形）、再開時に再ウォーム費を含む再見積を提示し、S3のレーン選択（今すぐ/おまかせ）でPreflight見積額が切り替わる。｜ REQ-AGENT-10 / REQ-BILL-11（AC-AGENT-16, AC-BILL-11）
+- [ ] PT-M: W5で一時停止→再開のモック操作が、完了済みステージを再実行せず（job_suspended/resumedイベント同形）、同一Jobの再開では見積・reserve・顧客creditを増やさず、cache再ウォームは内部原価表示に限定する。S3のレーン選択（今すぐ/おまかせ）によるPreflight見積差はJob開始前だけに適用する。｜ REQ-AGENT-10 / REQ-BILL-11（AC-AGENT-16, AC-BILL-11）
 
 ## 7. 成果物
 

@@ -17,12 +17,14 @@ L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメイン�
 
 ## 0. Recommendation Intake Contract
 
-採用RecommendationからAgentic Workflowへ渡す正規入力を`schema.intake.recommendation.v1`とする。画面、Office、Executorが独自に入力を再構築してはならない。
+採用Recommendationから正規Actionへ渡すfreeze済み入力を`schema.intake.recommendation.v1`とする。ActionはAgent Workflowに限らず、軽量Patch、観測、保護Policy、Domain Command、ユーザー対応、終端を含む。画面、Office、Executorが独自に入力を再構築してはならない。
 
 ```text
 {
+  intake_id, intake_version,
   recommendation_id, recommendation_version,
   tenant_id, site_id, requested_by,
+  source_report_ref?, monthly_plan_ref?, weekly_selection_ref?,
   recommendation_type, recommendation_subtype?, target_ref,
   objective_ref, keyword_cluster_ref,
   search_intent, article_purpose,
@@ -31,7 +33,8 @@ L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメイン�
   quality_tier, budget_estimate,
   protection_policy, availability,
   dependencies[], score_components,
-  accepted_at, correlation_id
+  route{class, action_key, target_service, requires_agent_job},
+  accepted_at, frozen_at, contract_hash, correlation_id
 }
 ```
 
@@ -40,9 +43,25 @@ L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメイン�
 - `target_ref`: Keyword Cluster、記事、Site、CTA/CV Goal等の型付き参照を持つ。
 - `reason_evidence_refs[]`: 表示した推薦理由と実行入力が同じ根拠を指すための参照である。
 - `availability`: 入力Sourceの存在・鮮度・欠損理由を保持し、欠損値をLLMで補完しない。
+- `route`: Recommendation Action Routing Mapの正規Actionから決定論的に解決する。`observe / protect / no_action / request_input / structure_change_proposal / technical_escalation / automation_change`へ記事生成Jobを偽造しない。
 - 採用時にversionをfreezeする。実行前Preflightで権限、予算、接続、重複、カニバリ、保護、鮮度を再判定し、変化があれば元Recommendationを改変せず`held / superseded`へ遷移させる。
-- ユーザー手動起動も同Schemaへ正規化して由来を保持し、同じPreflightへ通す。
+- `contract_hash`確定後はfieldを更新しない。Preflightの再判定、保留、再開、route結果は別のExecution Decision／eventとして追記し、Intakeを現在値へ書き換えない。
+- ユーザー手動起動はRecommendation採用と偽装せず、次の`schema.intake.manual.v1`へ正規化し、同じPreflightへ通す。
 - ユーザー指定Taskは維持し、衝突時は依存・影響・推奨順序を提示する。自動予定だけを`needs_review / held / superseded`へ戻せる。月次計画変更は実行済み施策を変更しない。
+
+```text
+schema.intake.manual.v1 {
+  intake_id, intake_version, manual_request_id,
+  tenant_id, site_id, requested_by, requested_at,
+  action_key, target_ref, user_request_ref,
+  objective_ref, keyword_cluster_ref?, search_intent?, article_purpose?,
+  reason_evidence_refs[], cta_policy_ref?, internal_link_plan_ref?,
+  quality_tier, budget_estimate, protection_policy, availability,
+  dependencies[], route, frozen_at, contract_hash, correlation_id
+}
+```
+
+手動Intakeは、ユーザーが指定していない目的・Keyword・根拠を「Recommendation済み」として捏造しない。不足fieldは`input_required`、機械分析で導出したfieldはprovenance付きで提示し、ユーザー確認後にfreezeする。Ticketの`intakeRef`はRecommendation IntakeまたはManual Intakeの型付き参照を受ける。
 
 根拠: `REQ-KRL-08/09`、`REQ-DATA-06/07`、`REQ-LOGIC-03`、`REQ-SCREEN-09/15/18`、Agent要求マップ。
 
@@ -400,15 +419,39 @@ schema.image.generation_job.v1 {
 
 根拠: `REQ-BILLING-01〜16`、`REQ-NFR-15`、課金・Capacity画面接続マップ v1。
 
-## 0.0.8.1 CMS Delivery Contract
+## 0.0.8.1 Generation Outcome Contract
 
-Presentation Assembly完了後の成果保持、CMS write再診断、下書き作成、反映確認、再送または持ち出しを`schema.cms.delivery.v1`へ固定する。記事生成の完了とCMS送信成功を同じ状態にしない。
+QA済み生成成果の提供事実を`schema.generation.outcome.v1`へ固定する。これはCMS下書き、公開／更新結果ではなく、生成サービスが契約上の成果をユーザーへ利用可能にした事実の正本である。
+
+```text
+{
+  generation_outcome_id, version, tenant_id, site_id,
+  workflow_ref, intake_ref, recommendation_ref?, correlation_id,
+  presentation_snapshot_ref, content_hash,
+  output_vault_ref, output_vault_expires_at,
+  deliverable_provided_at, credit_commit_ref,
+  created_at
+}
+```
+
+- `presentation_snapshot_ref`のQA完了・seal、content hash一致、Output Vaultからの表示・copy・download可能性が成立した時だけ作成する。
+- 同一Intake／成果version／content hashに対して一意とし、再表示、download、CMS再送で新しいOutcomeまたはcredit commitを作らない。
+- ユーザーが別成果を求める再生成は、元Outcomeを`parent_generation_outcome_ref`で参照する新しいGeneration Job、見積、reserve、Outcomeとする。同一Jobの障害再試行、checkpoint再開、限定Repairを再生成へ付け替えない。
+- CMS未接続、送信失敗、承認待ち、公開失敗でもOutcomeを取消さない。保証期間内に製品側原因で成果を利用不能にした場合は、台帳を上書きせず調整eventの判断へ接続する。
+- 本Schemaへ本文、HTMLまたはblock payloadを格納せず、期限付きOutput Vault参照だけを保持する。
+
+根拠: `REQ-BILLING-04`、`REQ-INT-10`、`REQ-DATA-03`、`REQ-WPA-14`。
+
+## 0.0.8.2 CMS Delivery Contract
+
+Generation Outcome確定後のCMS write再診断、下書き作成、反映確認、再送または持ち出しを`schema.cms.delivery.v1`へ固定する。記事生成の完了とCMS送信成功を同じ状態にしない。生成成果提供、CMS下書き、公開／更新も同じ状態にしない。
 
 ```text
 {
   cms_delivery_id, version, tenant_id, site_id,
   workflow_ref, intake_ref?, recommendation_ref?, correlation_id,
   operation(new_draft|rewrite_draft|article_replacement_draft|lightweight_patch|media_upload),
+  generation_outcome_ref,
   presentation_snapshot_ref, post_envelope_ref?, content_hash,
   connection_profile_ref, connection_profile_version,
   write_route_ref?, write_capability_ref?, authorization_decision_ref?,
@@ -424,6 +467,7 @@ Presentation Assembly完了後の成果保持、CMS write再診断、下書き�
 ```
 
 - `prepared`到達時点で生成成果は完成しており、接続・権限不足を生成失敗へ変換しない。
+- `prepared`は、参照するGeneration Outcomeが成立し、同じcontent hashの成果をOutput Vaultから期限内に利用できる場合だけ到達する。生成credit確定はGeneration Outcomeの事実であり、Deliveryが再計算または再commitしない。
 - `connection_required / permission_required`ではPresentation SnapshotとPostEnvelopeをTTL付き一時領域へ保持し、再接続後に同じ`idempotency_key`で`resume_from`から再開する。再生成や二重creditを要求しない。
 - 下書き作成APIの成功だけで`verified`にせず、外部post参照、反映hash、必要なMedia参照を確認する。検証待ち・cache反映待ちと失敗を分ける。
 - 持ち出しは`carried_out`として履歴とRecommendation／Job相関を維持する。持ち出したことをCMS公開・更新成功として扱わない。
@@ -579,7 +623,7 @@ REQ-PACK-07の「主なJSON項目」列をJSON Schemaへ確定する。内部は
 ## 4. Workflow / Pack 型（REQ-PACK-11 の型確定）
 
 - workflow型: `{ workflow_key, flow_pack_keys[], stages[{stage, phase_bindings, transitions[{to, transition_bindings}], loop{converge, stop_guards[]}}], permissions[], bindings_ref }`。
-- `new_article_workflow.v1`の状態順は`intake_gate → sandbox_seal → keyword_intent → serp_research → site_strategy → outline_architect → section_brief → draft_writer → self_evolution → quality_gate → cms_draft → preview_approval → cleanup`とする。`self_evolution`は互換keyで、Meaning Unitの`semantic_assembly`と限定接続改善を担う。既存keyとの互換性のため`cms_draft`を維持するが、その意味は単純な送信処理ではなく`presentation_assembly_placement_cms_draft`であり、内部phaseを`presentation_assemble → decorate → featured_image → placement → cms_validate → cms_deliver`へ固定する。`intake_gate / sandbox_seal / quality_gate / preview_approval`を強制gateとし、各stateは`on_enter bindings`、成功遷移、保留遷移、失敗遷移、checkpoint、stop_guardsを持つ。Layer Aにはこのinstance全体をcanonical JSON＋hash＋versionで格納する。
+- `new_article_workflow.v2`の状態順は`intake_gate → sandbox_seal → keyword_intent → serp_research → site_strategy → outline_architect → section_brief → draft_writer → self_evolution → quality_gate → generation_outcome → cms_delivery_approval → cleanup`とする。`self_evolution`は互換keyで、Meaning Unitの`semantic_assembly`と限定接続改善を担う。`generation_outcome`のphaseは`presentation_assemble → decorate → featured_image → placement → cms_validate → deliverable_provided`、`cms_delivery_approval`のphaseは`cms_prepare → cms_deliver → cms_verify → preview → approval_or_automation`とする。`intake_gate / sandbox_seal / quality_gate / cms_delivery_approval`を強制gateとし、各stateは`on_enter bindings`、成功遷移、保留遷移、失敗遷移、checkpoint、stop_guardsを持つ。旧`new_article_workflow.v1`の`cms_draft / preview_approval`は履歴読取時だけ`generation_outcome / cms_delivery_approval`へ対応付けるmigration aliasとし、新規Jobへ発行しない。Layer Aにはこのinstance全体をcanonical JSON＋hash＋versionで格納する。
 
 - `quality_gate`の通過前に装飾・画像・CMS送信を開始しない。`cms_draft`は本文完成物を入力に、Site装飾設定、ユーザー選択した独自part、Featured Image Pattern、CTA／内部link Placement、CMS Capabilityを適用する。初期画像Scopeはアイキャッチだけとし、CMS検証と下書き作成結果を得てから`preview_approval`へ進む。
 - `catalog.article_type.v1`: `{ key, version, required_purpose_elements[], optional_purpose_elements[], allowed_heading_flows[], intent_constraints[], gate_keys[] }`。

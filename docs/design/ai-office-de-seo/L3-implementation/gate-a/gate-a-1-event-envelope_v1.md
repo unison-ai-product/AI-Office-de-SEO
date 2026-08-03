@@ -60,7 +60,7 @@ updated_at: 2026-08-03
 
 | event_type | payload要点 | 消費 | 根拠 |
 |---|---|---|---|
-| generation.job_started | workflow_key, mode, lane | W,O | REQ-AGENT-09 |
+| generation.job_started | workflow_key, mode, lane, start_kind(recommendation/manual/user_regeneration), parent_generation_outcome_ref?, estimate_ref, reservation_ref | W,O,A | REQ-AGENT-09/10, REQ-BILLING-04 |
 | generation.stage_entered | stage_id, state_index(1-13) | W,O | REQ-AGENT-09 |
 | generation.stage_completed | stage_id, snapshot_hash | W,O | REQ-AGENT-09 |
 | generation.stage_phase_entered | stage_id, phase_key, phase_index, phase_total | W,O | REQ-AGENT-09, REQ-WPA-09 |
@@ -73,11 +73,11 @@ updated_at: 2026-08-03
 | generation.repair_requested | unit_ids[], issue_refs[] | W,O | REQ-AGENT-02 |
 | generation.semantic_assembled | assembled_snapshot_ref, content_hash, unit_refs[], outline_contract_ref | W,O | REQ-AGENT-02/09/11, REQ-PACK-17/18 |
 | generation.presentation_assembled | presentation_snapshot_ref, semantic_snapshot_ref, decoration_profile_ref?, featured_image_ref?, placement_instruction_refs[], cms_format_key | W,O | REQ-AGENT-11, REQ-PACK-17, REQ-LOGIC-09/10 |
-| generation.job_suspended | cause(manual/kill_switch/budget/hard_gate/approval), hold_until | W,N,O,A | REQ-AGENT-10 |
-| generation.job_resumed | resumed_from_stage, rewarm_estimate | W,N,O | REQ-AGENT-10 |
-| generation.job_completed | result_ref | W,N,O | REQ-AGENT-01 |
-| generation.job_failed | reason | W,N,O | REQ-AGENT-01 |
-| generation.job_cancelled | cause | W,N,O | REQ-AGENT-10 |
+| generation.job_suspended | cause(manual/kill_switch/budget/hard_gate/approval), hold_until, reservation_ref, checkpoint_ref | W,N,O,A | REQ-AGENT-10 |
+| generation.job_resumed | resumed_from_stage, checkpoint_ref, reservation_ref, customer_credit_delta(0), internal_rewarm_cost_ref? | W,N,O,A | REQ-AGENT-10, REQ-BILLING-04 |
+| generation.job_completed | generation_outcome_id, deliverable_provided_at, credit_commit_ref | W,N,O,A | REQ-AGENT-01, REQ-BILLING-04 |
+| generation.job_failed | reason, generation_outcome_id(null), reserve_disposition(held/released), retryable, resume_from? | W,N,O,A | REQ-AGENT-01/10, REQ-BILLING-04 |
+| generation.job_cancelled | cause, generation_outcome_id?, reserve_disposition(unchanged/released) | W,N,O,A | REQ-AGENT-10, REQ-BILLING-04 |
 | rewrite.job_started | workflow_key(rewrite), target_url_hash | W,O | REQ-RWR-01 |
 | rewrite.patch_applied | section_id, operation | W,O | REQ-RWR-03 |
 | rewrite.quality_failed | failed_gates[] | W,O | REQ-RWR-05 |
@@ -141,7 +141,8 @@ updated_at: 2026-08-03
 | cms.read_route_selected | connection_profile_id, adapter_key, role, reason, policy_version | O,A | REQ-INT-09 |
 | cms.read_route_failed_over | connection_profile_id, from_adapter, to_adapter, error_class, cooldown_until | W,N,O,A | REQ-INT-09 |
 | cms.read_connection_required | connection_profile_id, failed_routes[], required_user_actions[] | W,N,O | REQ-INT-09 |
-| cms.delivery_prepared | cms_delivery_id, operation, presentation_snapshot_ref, post_envelope_ref, content_hash, connection_profile_version, idempotency_key, correlation_id | W,O | REQ-INT-10 |
+| generation.deliverable_provided | generation_outcome_id, intake_ref, presentation_snapshot_ref, content_hash, output_vault_ref, deliverable_provided_at, credit_commit_ref, correlation_id | W,O,A | REQ-BILLING-04, REQ-INT-10 |
+| cms.delivery_prepared | cms_delivery_id, generation_outcome_id, operation, presentation_snapshot_ref, post_envelope_ref, content_hash, connection_profile_version, idempotency_key, correlation_id | W,O | REQ-INT-10 |
 | cms.delivery_held | cms_delivery_id, state(connection_required/permission_required), reason_codes[], required_user_actions[], resume_from, retry_after? | W,N,O | REQ-INT-10 |
 | cms.delivery_resumed | cms_delivery_id, prior_state, resume_from, attempt_count, idempotency_key | W,O,A | REQ-INT-10 |
 | cms.delivery_failed | cms_delivery_id, failure_class, retryable, attempt_count, last_error_ref | W,N,O | REQ-INT-10 |

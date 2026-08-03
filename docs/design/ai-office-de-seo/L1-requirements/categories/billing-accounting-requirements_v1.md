@@ -106,6 +106,8 @@ Stripe等の決済・継続課金手数料は顧客請求へ都度上乗せす�
 
 有償ジョブは実行前に見積version、請求単位、最大請求額を確定し、利用可能残高からreserveする。成果の提供条件を満たした時だけcommitし、未使用予約はreleaseする。reserve不足時はProvider呼出し前に保留し、追加購入、品質変更または中止を選択可能にする。
 
+記事生成・リライトの「成果の提供条件」は、QA済みPresentation Snapshotがsealされ、同一content hashの成果がOutput Vaultから表示・copy・download可能になった`deliverable_provided`とする。CMS接続、下書き作成、承認、予約、公開・更新成功は生成creditのcommit条件にしない。CMS接続待ち、送信再試行、外部反映確認は同一成果・同一commitの後続処理であり、新しいreserve／commitを発生させない。成果提供前にサービス側原因で終端した未使用予約はreleaseし、提供済み成果が保証した保持期間内に製品側原因で利用不能となった場合は障害・保証要求から調整判断へ渡す。
+
 同一ジョブの限定Repair、サービス障害による再試行、checkpoint再開では新しいreserve・commitを作らない。ユーザーが別成果を求める再生成は新しいjob・見積・reserveとして扱う。
 
 ### REQ-BILLING-05 Append-only Ledger・残高導出
@@ -181,7 +183,7 @@ Upgradeは残期間差額を事前Previewし、支払成功を条件に、ユー
 - [ ] AC-L1-BILLING-01: 契約時のPrice Catalog versionから商品、価格、付与量、制限、適用期間と、人間代行・汎用AI・SEOツールとの比較範囲および算定根拠を再現できる。
 - [ ] AC-L1-BILLING-02: Entry・Standardの月契約、Premiumのセルフ年契約、Enterpriseの問い合わせ年契約および年契システム利用料10%割引を再現でき、内部契約と外部Subscriptionの状態差を検出して未検証Webhookで利用権限が直接変更されない。
 - [ ] AC-L1-BILLING-03: クレジットlotの付与元、期限、消費順、繰越・失効を契約versionどおりに再現できる。
-- [ ] AC-L1-BILLING-04: 有償ジョブがreserve後に開始し、成功時commit、未使用時releaseされ、再試行で二重commitされない。
+- [ ] AC-L1-BILLING-04: 記事生成・リライトがreserve後に開始し、Output Vaultで`deliverable_provided`となった時だけ生成creditをcommitし、提供前の未使用分をreleaseでき、CMS接続待ち・送信再試行・公開成否で二重commitまたは生成creditの取消しが起きない。
 - [ ] AC-L1-BILLING-05: append-only ledgerから利用可能・予約・消費・失効・返還残高を再構築できる。
 - [ ] AC-L1-BILLING-06: Stripe Webhookの重複・順不同・再送を処理しても二重請求・二重付与が発生しない。
 - [ ] AC-L1-BILLING-07: invoice・支払・refundと内部ledgerの差異を自動検出し、根拠付きで解消できる。

@@ -86,7 +86,7 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 
 ### 3.3 標準工程
 
-`Research & Outline → Meaning Unit Writing → Semantic Assembly → QA → 限定Repair Loop → Presentation Assembly／Placement → Automation → 承認／公開 → Cleanup`
+`Research & Outline → Meaning Unit Writing → Semantic Assembly → QA → 限定Repair Loop → Presentation Assembly／Placement → Generation Outcome → CMS Delivery／Automation → 承認／公開 → Cleanup`
 
 - Research BriefとOutline ContractをfreezeしてからWritingへ進む。
 - H2／H3ではなくMeaning UnitをWriting単位とする。
@@ -126,14 +126,14 @@ Packは顧客向けの「作業メニュー」や任意の小機能名ではな�
 | Setting／Support | 接続状態、契約、権限、通知、診断code | security_admin／support_agentが必要設定、影響、復旧方法を案内 | 承認済み設定command、support escalation |
 | Technical SEO | crawl／index／link graph／CWV等の機械診断 | technical_seoが影響、優先度、サイト側対応、記事側施策を説明 | 記事側施策だけ既存Recommendation／Workflowへ接続 |
 
-RecommendationはAgentへの任意追加情報ではなく、Agent Interaction／Advisory／ExecutionをつなぐIntake Contractである。採用時に対象、目的、keyword cluster、検索インテント、記事目的、根拠、CTA、内部link、品質、予算、保護、availabilityを再入力なしで引き継ぐ。
+Agentを使用するActionでは、Recommendationは任意追加情報ではなく、Agent Interaction／Advisory／ExecutionをつなぐIntake Contractである。採用時に対象、目的、keyword cluster、検索インテント、記事目的、根拠、CTA、内部link、品質、予算、保護、availabilityを再入力なしで引き継ぐ。観測、保護、no action、決定論的設定変更等はAction Routingに従いAgent Jobを発行しない。ユーザー手動起動はManual Intakeとして由来を分け、同じPreflightを使用する。
 
 ### 5.1 代表実行の既存接続
 
 | 業務 | 既存接続 | 新設してはいけないもの |
 |---|---|---|
-| 新規記事 | `workflow.new_article.v1` → Planning → Meaning Unit Writing → Semantic Assembly → QA → Repair → Presentation Assembly／Placement | 記事type別専用Agent |
-| リライト | `workflow.rewrite.v1` → 原因分析 → 対象Unit → Repair Writing → QA | 全文再生成専用Agent |
+| 新規記事 | `workflow.new_article.v2` → Planning → Meaning Unit Writing → Semantic Assembly → QA → Repair → Presentation Assembly／Placement → Generation Outcome → CMS Delivery／Approval | 記事type別専用Agent |
+| リライト | `workflow.rewrite.v2` → 原因分析 → 対象Unit → Repair Writing → QA → Generation Outcome → CMS Delivery／Approval | 全文再生成専用Agent |
 | CTA配置 | QA Ticket → `CTAPlacementInstruction`／`CmsPlacementInstruction` → Placement／Automation。初期WordPress AdapterだけがBlock命令へ変換 | CTA Writing Ticket、CTA専用Agent、CTA作業Pack、共通InstructionのWP固定 |
 | CTA接続文修正 | CTA QA → 対象箇所だけRepair Ticket | 記事全文Repair |
 | 内部link | Article Summary／link graph → internal_link_qa → 新規記事内配置または承認付き既存記事patch | link専用Executor |

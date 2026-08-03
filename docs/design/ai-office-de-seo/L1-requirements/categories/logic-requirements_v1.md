@@ -57,9 +57,9 @@ Recommendation種別ごとに入力成立条件を判定する。新規記事向
 
 記事生成の完了とCMS送信可能性を別状態として管理する。CMS下書き送信、既存記事更新、Media登録の直前に、`REQ-INT-05/10` の認証済み接続、対象content typeの書込み権限、必要なMedia権限、Compatibility Matrixを再検証する。不成立時は成果を失敗扱いにせず `connection_required` で保留し、再接続後に同一Deliveryを再開するかHTML／Markdown等を持ち出せる。初期WordPress AdapterではCore RESTと投稿type Capabilityを使用する。
 
-新規記事は `Intake Gate → Sandbox Fix → Keyword Intent → SERP Research → Site Strategy → Outline freeze → 任意Outline確認 → Section Brief → Meaning Unit Writing → Semantic Assembly → Quality Gate／限定Repair → Presentation Assembly → CMS Draft → Preview／Automation判定 → Cleanup` の順序を強制する。Outline確認設定がOFFなら停止せず、ONならユーザーの見出し修正・確定を待って再開する。本文途中確認がOFFならPresentation Assemblyまで連続実行し、ONなら本文Previewで停止して、見出し・本文の修正確定後にユーザー編集箇所を保護して再開する。
+新規記事は `Intake Gate → Sandbox Fix → Keyword Intent → SERP Research → Site Strategy → Outline freeze → 任意Outline確認 → Section Brief → Meaning Unit Writing → Semantic Assembly → Quality Gate／限定Repair → Presentation Assembly／Generation Outcome → CMS Delivery／Preview／Automation判定 → Cleanup` の順序を強制する。Outline確認設定がOFFなら停止せず、ONならユーザーの見出し修正・確定を待って再開する。本文途中確認がOFFならPresentation Assemblyまで連続実行し、ONなら本文Previewで停止して、見出し・本文の修正確定後にユーザー編集箇所を保護して再開する。Generation Outcome成立とCMS Delivery成功を同じ遷移にせず、前者の失敗だけを生成失敗、後者の失敗を成果提供済みの送信保留として扱う。
 
-リライトは別Workflowとして `原因分析 → 記事取得確認 → 対象特定 → Edit Plan freeze → 一時Workspace → 限定Patchまたは全文再生成 → Diff → Quality Gate／限定Repair → Presentation Assembly → CMS Draft → ユーザー承認 → 反映 → Cleanup` を強制する。リライトはAutomation Policyだけで公開記事へ直接反映しない。OutlineまたはEdit Planにない範囲を生成・変更せず、全文再生成を既定にしないが、高リスク表示と個別承認を伴う実行経路は持つ。
+リライトは別Workflowとして `原因分析 → 記事取得確認 → 対象特定 → Edit Plan freeze → 一時Workspace → 限定Patchまたは全文再生成 → Diff → Quality Gate／限定Repair → Presentation Assembly／Generation Outcome → CMS Delivery → ユーザー承認 → 反映 → Cleanup` を強制する。リライトはAutomation Policyだけで公開記事へ直接反映しない。OutlineまたはEdit Planにない範囲を生成・変更せず、全文再生成を既定にしないが、高リスク表示と個別承認を伴う実行経路は持つ。Generation Outcome成立後にCMS Deliveryが失敗しても生成失敗へ戻さず、同一成果・同一Deliveryを再送する。
 
 ### REQ-LOGIC-04 自動投稿判定
 
@@ -187,7 +187,7 @@ CTAの再利用対象はSite上で利用可能なpartとlink先に限定し、�
 
 - [ ] AC-L1-LOGIC-01: Siteごとに月次目的を単純選択し、未実行候補へ方向性としての施策配分が計算され、達成保証として表示されない。
 - [ ] AC-L1-LOGIC-02: 実績不足時に根拠のない数値を表示せず、unknownと再評価条件を返す。
-- [ ] AC-L1-LOGIC-03: 推薦採用から公開・効果計測までイベント相関IDで追跡できる。
+- [ ] AC-L1-LOGIC-03: 推薦採用からGeneration Outcome、CMS Delivery、公開・効果計測までを同一相関IDかつ別状態で追跡し、新規記事とリライトのどちらでも成果提供後のCMS障害を生成失敗へ戻さず再開できる。
 - [ ] AC-L1-LOGIC-04: 承認済み公開15記事、版付き同意、事前許可のいずれかが欠ける場合、または停止条件下で自動投稿が実行されない。
 - [ ] AC-L1-LOGIC-05: 急変対象が即時推薦されず要監視キューへ移り、ユーザー指定予定は継続し、システム予定は選択理由と現在順位により差し替えまたは続行される。
 - [ ] AC-L1-LOGIC-06: プライマリ＋セカンダリの割当クラスタへの順位付与を評価し、順位なしは自動修復せず診断内容をユーザーへエスカレーションし、CVなし単体を失敗とせず、十分な母数がある場合だけCVRを評価できる。

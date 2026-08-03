@@ -75,9 +75,9 @@ SEO業務Lifecycleと完了条件は `categories/business-requirements_v1.md`、
 3. 進捗確認（W5: 13状態。停止/再開/キャンセル可、`REQ-AGENT-10`）
 4. Outline確認を有効にしたSiteだけ構成で停止し、見出し修正・確定後にMeaning Unit Writingへ進む。OFF時は本文生成を継続する。本文途中停止を有効にした場合は本文Previewで見出し・本文を編集でき、確定したユーザー編集箇所を以後の限定Repairで保護する。OFF時はSemantic Assemblyまで継続する
 5. Semantic Assembly後にW3でCohesionを含むQuality Gateを実行し、不合格箇所だけを限定Repairする。hard gate該当時は判定を消さず、同一権限者による二段階確認と版付き同意、または差し戻しへ分岐する
-6. QA通過後にPresentation Assemblyで装飾、アイキャッチ、CTA、内部link配置、CMS形式変換を行い、CMS下書きへ送信する。完成記事の確認・承認はW4で行い、接続CMSの編集／Preview URLは任意の確認手段とする
+6. QA通過後にPresentation Assemblyで装飾、アイキャッチ、CTA、内部link配置、CMS形式変換を行い、Generation Outcomeとして成果提供・Output Vault期限・生成credit確定を記録する。続いて同じOutcomeを参照するCMS Deliveryで下書きを送信・外部確認し、完成記事の確認・承認はW4で行う。接続CMSの編集／Preview URLは任意の確認手段とする
 7. 公開/予約（S4）→ 完了通知（W7）→ 効果はS5で追跡
-- 分岐: 予算超過→追加承認（`REQ-SEC-12`）。TTL失効後の再開→再ウォーム費の再見積提示。
+- 分岐: 開始前の予算・credit不足は追加購入または品質・対象の変更へ戻す（`REQ-SEC-12`）。保留期限内の同一Job再開は追加顧客creditなし。期限超過Jobは自動cancel・未使用reserve release後、別成果を求める場合だけ新Jobとして再見積する。cache再ウォームは内部原価として計測し、現在Jobの価格へ追加しない。
 
 ## 6. リライト運用ジャーニー  ［REQ-UJ-06］
 

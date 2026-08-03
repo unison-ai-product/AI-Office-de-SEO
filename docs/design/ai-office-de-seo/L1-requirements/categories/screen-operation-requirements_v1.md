@@ -123,7 +123,7 @@ Site設定で「業界／業種」の2階層を複数選択し、優先順を並
 
 ### REQ-SCREEN-15 記事制作・リライト実行面
 
-新規記事の実行面は、Recommendation／手動起動、Intake結果、Preflight見積、Research Brief、Outline Contract、Section Brief、生成進捗、Quality Gate、限定Repair、CMS Delivery、CMS下書き、プレビュー、承認・Automation判定、公開結果を同一相関IDで追跡できる。初期WordPress AdapterではWordPress編集URL／Preview URLを表示する。
+新規記事の実行面は、Recommendation／手動起動、Intake結果、Preflight見積、Research Brief、Outline Contract、Section Brief、生成進捗、Quality Gate、限定Repair、Generation Outcome、CMS Delivery、CMS下書き、プレビュー、承認・Automation判定、公開結果を同一相関IDで追跡できる。Generation Outcomeでは成果提供日時、Presentation Snapshot、Output Vaultの利用期限、生成credit確定を表示し、CMS Deliveryでは接続待ち、送信、下書き、外部反映確認を表示する。生成成果提供済み、CMS下書き作成済み、公開／更新済みを一つの「完了」へ丸めない。初期WordPress AdapterではWordPress編集URL／Preview URLを表示する。
 
 リライト実行面は、原因、Article Read Snapshot、Edit Plan、対象section、許可operation、変更上限、保持対象、変更前後差分、title/meta、見出し、CTA、内部リンク、品質・保護結果、復元点、費用を表示する。変更対象外のsectionが維持されたことを確認できる。部分リライト・全文再生成ともCMS下書きまで送り、リスクと復元可否を確認してユーザーが更新を承認する。初期WordPress AdapterではWordPress下書きを使用する。全文再生成は高リスク操作として影響範囲と追加確認を伴って提供する。
 
@@ -179,7 +179,7 @@ soft limitでは削減・archive、処理延期、Plan変更、購入可能な�
 
 ### REQ-SCREEN-18 Agent Office専門分析・詳細運用
 
-通常ビューはRecommendationの採否、承認、基本設定、成果分析、Site／Cluster／記事drill downを少ない操作で完了する簡単操作面とする。各Taskから「Officeで詳しく操作」を選ぶと、対象Contextを維持して担当フロア、部屋、AgentまたはTask詳細Panelへ移動する。
+通常ビューはSEO非専門者がシステムのRecommendationに沿って、採否、承認、基本設定、成果確認、Site／Cluster／記事の要点確認を少ない操作で完了する簡単操作面とする。専門的に確かめたい、根拠を見たい、条件を少し変えたい場合は、各Recommendation、分析結果またはTaskから「Officeで詳しく見る・調整する」を選び、対象Contextを維持して担当フロア、部屋、AgentまたはTask詳細Panelへ移動する。通常ビューだけでも主要業務は完結し、Officeは詳細度と操作自由度を段階的に上げる上級導線とする。
 
 Agent Officeでは、担当Agent、実行中Task、工程、待機、判断待ち、完了、失敗、再開、消費Creditを実eventから表示する。Agent、エレベーター、部屋、設備からKeyword、Cluster、記事、Recommendation、成果、設定、Taskを玄人向けに詳細分析・操作できる。定型指示は選択式ポップアップと決定論Service、自由文は必要な場合だけLLMで型付きProposalへ変換する。影響・Credit・認可確認後に共通Commandへ渡し、結果を両Viewへ同期する。Office専用の業務正本、権限、変更Command、成果計算を作らない。
 
@@ -219,7 +219,7 @@ Task完了、ユーザー確認待ち、承認期限、停止、失敗、再開�
 - [ ] AC-L1-SCREEN-12: 文体の組合せと個別Site言い回し学習のON/OFFを設定でき、ON時だけサンプル記事10本を使用し、10本未満は暫定状態を確認できる。
 - [ ] AC-L1-SCREEN-13: 急変対象が通常推薦と分離され、1か月・3か月・6か月評価の状態と既存予定の継続を区別できる。
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。
-- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、CMS Deliveryの保留・再開・外部反映確認、追加見積を同一相関IDで確認できる。
+- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、Generation Outcomeの成果提供・Output Vault期限・生成credit確定、CMS Deliveryの保留・再開・外部反映確認、公開／更新結果、追加見積を同一相関IDで区別して確認できる。
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。
 - [ ] AC-L1-SCREEN-18: 通常ビューでRecommendation中心の要約・簡単操作を行え、Agent Officeで同じProjectionを使う玄人向け詳細分析・設定・Task操作を行え、選択式操作は決定論Service、自由文は必要時だけLLMを使い、確認済み共通Commandの結果が両Viewへ同期される。

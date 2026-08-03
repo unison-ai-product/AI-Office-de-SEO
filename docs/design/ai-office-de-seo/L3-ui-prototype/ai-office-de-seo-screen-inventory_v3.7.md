@@ -44,7 +44,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 | 月次計画 | S1 Plan tab | 目的、重点領域、傾向配分、予算、週次枠を確認。自動／手動確定を分ける | `MonthlyPlan` version |
 | Recommendation | S1 Queue / S2・S5文脈表示 | 理由、対象Cluster、記事目的、CTA、内部link、依存、品質、credit、保護、availabilityを表示 | `schema.intake.recommendation.v1` |
 | Agent実行 | S3 / S4 / W3〜W5 | 新規、リライト、軽量Patch、Automationを別Workflowで表示する。リライト／記事置換はArticle Read Snapshotの取得可否を入口条件とし、同一correlationで成果と保留を追跡 | Ticket、`schema.snapshot.article_read.v1`、Workflow Snapshot |
-| CMS・公開 | S3確認 / S4予定 / W2・W4 | 生成完了とCMS送信を分離し、CMS Deliveryの準備・接続待ち・送信・下書き作成・外部検証・再送・持ち出しを表示する。検証済み下書き以降で、最初の新規15記事、リライト、hard gate例外、解放済みAutomationを別条件で扱う | `schema.cms.delivery.v1`、Publication result、公開／更新event |
+| 成果・CMS・公開 | S3確認 / S4予定 / W2・W4 | Generation Outcomeの成果提供・Output Vault期限・生成credit確定、CMS Deliveryの準備・接続待ち・送信・下書き作成・外部検証・再送・持ち出し、Publicationの公開／更新結果を別状態で表示する。検証済み下書き以降で、最初の新規15記事、リライト、hard gate例外、解放済みAutomationを別条件で扱う | `schema.generation.outcome.v1`、`schema.cms.delivery.v1`、Publication result、公開／更新event |
 | 評価・学習 | S5 Evaluation / S6 Knowledge | SEO、CTA/CV、認知貢献、1/3/6か月、月次／累積、要監視、Site補正、匿名補正候補を表示 | Intervention result、Recommendation feedback |
 
 画面遷移中は`tenant_id / site_id / recommendation_id+version / intake_ref / correlation_id / target_ref / source view・filter`を保持する。S3でRecommendation表示値を読み直してIntakeを組み立ててはならない。
@@ -137,7 +137,7 @@ S3の現行状態には、リライト／記事置換時の`schema.snapshot.arti
 | W4 | 承認キュー | 承認対象: 投稿予約・差分適用・リンク再調整／波及の小リライト・TDHフラッシュ・CVポイント差し替え。個別／一括承認・差し戻し（理由入力）。承認操作は顧客の基本権限だけで決めず、記事制作Permission、Site付与、CMS write、Plan、予算、対象操作を副作用直前に判定する | REQ-WPA-04 / Authorization Operation Matrix |
 
 CTA／内部link軽量Patchでは、候補一覧、対象記事とpart、記事目的、検索intent、before／after、推奨理由、実行可能状態、個別／一括採否、承認Batchを表示する。承認後も候補ごとの`scheduled / applying / applied / failed / conflict / measuring / evaluated`を保持し、一部失敗をBatch全体の成功として表示しない。CTA評価は月次／累積の遷移率・CV到達・母数・記事目的、内部link評価はlink graph・遷移・リンク先記事への寄与を表示し、本文SEO評価周期と別起点にする。Officeへの遷移は同じ`patch_action_id`を使用する。
-| W5 | ジョブ進捗 | 状態機械の現工程表示（13状態＝実務工程9＋強制ゲート4、REQ-AGENT-09）、一時停止/再開・**キャンセル**操作（checkpoint再開・再ウォーム費の再見積提示、REQ-AGENT-10）。**実績見込みが見積を10%超える場合の追加実行前の承認UI（BR-CRD-005）・障害/生成失敗時の100%返還表示（BR-CRD-006）**。モックイベントで駆動 | REQ-AGENT-09 / REQ-AOUI-04 |
+| W5 | ジョブ進捗 | 状態機械の現工程表示（13状態＝実務工程9＋強制ゲート4、REQ-AGENT-09）、一時停止／再開・**キャンセル**操作。同一Jobのcheckpoint再開は見積・顧客creditを増やさず、cache再ウォームは内部原価としてのみ記録する。固定商品範囲を超える別成果・再生成は開始前に新Jobの見積と確認を表示し、成果未提供かつ製品側原因で終端した場合だけ未使用reserveのrelease／調整状態を表示する。モックイベントで駆動 | REQ-AGENT-09 / REQ-AGENT-10 / REQ-BILLING-04 / REQ-AOUI-04 |
 | W6 | ジョブ履歴 | 生成・リライト・QA・投稿予約のジョブ履歴一覧（結果・消費クレジット・保留理由。**種別・状態・期間フィルタ・CSVエクスポート（REQ-PRODUCT-14）**。本文は表示しない） | REQ-PRODUCT-04（保持対象=ジョブ履歴）/ REQ-SEC-02 |
 | W7 | 通知・アラートセンター（in-app正本） | REQ-PRODUCT-11のイベントカタログ全種（承認依頼・hard gate保留・ジョブ失敗/保留・カニバリ・重複ジョブ・残高低下・支払い失敗・再認可要求・Kill Switch・プラグイン更新・繰り延べ）の一覧。運営お知らせ種別の表示（REQ-PRODUCT-16）・未読/既読/確認済み/対応済み管理・種別フィルター・**通知から対象画面への遷移**。完了・確認要求はWeb popupにも出し、閉じてもCenterの正本を消さない。受信者は固定担当者を必須にせず、Site付与・閲覧範囲・操作権限・通知設定からServer解決し、要対応で該当者不在ならSite owner、契約・課金なら契約者へfallbackする。設定では種別別ON/OFF、即時/ダイジェスト、popup/emailを変更できるが、必須通知のin-appは完全OFF不可。通常ビューとOfficeは同じ通知状態を使い、開発側alertは顧客W7へ混在させない。通知本文に本文全文・シークレットを含めない | REQ-PRODUCT-11（AC-NOTIF-01/02） |
 | W8 | 緊急停止・自動運用制御 | 最初の新規15記事承認後の自動運用同意、許可operation、Site、予算、自動チャージ上限、品質、公開頻度、停止条件を設定する。変更予算、クールダウン、振動検知、保留候補、Kill Switchを表示する。設定・解除は契約者またはサイトオーナーで、対応業務Permission、Site付与、step-up、同意versionを満たす者に限定する | REQ-WPA-04 / REQ-DUR-04 / REQ-PRODUCT-08 / Authorization Operation Matrix |

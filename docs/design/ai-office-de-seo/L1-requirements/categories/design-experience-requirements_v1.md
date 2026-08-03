@@ -67,7 +67,7 @@ Agent Officeは「仕事をしている様子」を伝える体験層であり�
 
 ### REQ-DESIGN-09 通常ビューと仮想Officeの役割
 
-初回ログインと日常業務の正規入口は通常ビューとし、Recommendationの採否、承認、基本設定、費用確認、成果分析を少ない操作で完了できる簡単操作面とする。Agent Officeは担当AgentがTaskを実行する様子を監視しながら、根拠探索、条件・方針調整、Task変更、Agent指示を会話と型付きProposalで行う詳細運用面とする。
+初回ログインと日常業務の正規入口は通常ビューとし、SEOに詳しくないユーザーでも、システムが優先順位を付けたRecommendationを起点に、採否、承認、基本設定、費用確認、成果確認を少ない操作で完了できる簡単操作面とする。Agent Officeは「Recommendationを自分でも専門的に確かめたい、理由を掘り下げたい、条件や進め方を少し調整したい」ユーザーの上級導線であり、担当AgentがTaskを実行する様子を見ながら、同じ対象の根拠探索、比較分析、条件・方針調整、Task変更、Agent指示を選択式操作と型付きProposalで行う詳細運用面とする。Office利用を通常業務の必須条件にはしない。
 
 通常ビューが推薦Keywordを提示する場合、採否と主要根拠を分かりやすく表示する。Agent OfficeではKeyword一覧、Cluster、採用・除外根拠、優先度成分、業界・目的・実績との関係を玄人向けに詳細分析し、条件変更案を作成できる。記事制作、リライト、計測、評価、Knowledgeも同じ原則で、通常ビューはRecommendation中心の簡単操作、Officeは詳細分析・調整を担う。
 
@@ -111,7 +111,7 @@ mobile対応は初期リリースの必須範囲外とする。後続versionで�
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。
 - [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。
-- [ ] AC-L1-DESIGN-09: 通常ビューのRecommendation中心の簡単操作から同じContextでOfficeの玄人向け詳細分析・運用へ移動でき、両Viewが同じProjection・認可・Domain Commandを共有し、Officeの定型操作でLLMを必須にしない。
+- [ ] AC-L1-DESIGN-09: SEO非専門者が通常ビューのRecommendation中心の簡単操作だけで主要業務を完了でき、詳しく確認・微調整したい場合は同じContextでOfficeの玄人向け詳細分析・運用へ段階的に移動できる。両Viewが同じProjection・認可・Domain Commandを共有し、Office利用や定型操作でLLMを必須にしない。
 - [ ] AC-L1-DESIGN-10: Officeを標準3D、簡略3D、軽量2Dへ切り替えても、同じTask状態・詳細・会話・操作を利用できる。
 - [ ] AC-L1-DESIGN-11: Officeでは実entityに基づくTask実行Loopと計測・評価・学習の詳細Graphを玄人向けに横断分析でき、選択式操作と型付きProposalから共通Commandへ接続できる。
 - [ ] AC-L1-DESIGN-12: 初期リリースがdesktop標準として成立し、後続mobile Chatへ通知・確認・説明・修正指示を追加してもdesktop業務の正本を分岐させない。
