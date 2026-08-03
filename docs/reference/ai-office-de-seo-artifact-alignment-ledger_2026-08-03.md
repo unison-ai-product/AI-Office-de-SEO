@@ -52,5 +52,6 @@
 - 現行価格、契約周期、認可、AWS、CMS非依存、公開責任、15記事解放、月次／週次計画、1・3・6か月評価、FAQチャット、通常／Office同期を意味監査へ追加した。
 - 画面遷移は新規Site／既存Siteの導入からRecommendation、制作・更新、CMS、公開判断、評価まで追従済みである。
 - プロト本体は未編集であり、意図どおり`prototype_follow_up`に留めている。
-- 次の監査対象は、L3の`TODO(L3)`／`partial`／`missing`が追従漏れかtrue_openかの判別、旧L1詳細本文に残る旧Role・旧提供方針、Gate Aと画面補助文書の参照整合である。
-
+- L3 Contract SchemasではTicket、未達Snapshot、Source欠損表現、13状態Workflow、Catalog型、Event payload、検証対応表を既存要求から補完した。DDLでは認可、URL、Snapshot／PostEnvelope一時保存、状態遷移、Config allowlistを補完した。
+- 残る物理partition／圧縮／BigQuery境界、通知保持、k匿名・標本しきい値は、要求追従漏れではなく負荷・費用・法務・実データによる`DD-09/10`、`OC-08`として未確定台帳へ移した。
+- 次の監査対象は、旧L1詳細本文に残る旧提供方針、L3 Quality／Configの未決分類、Gate Aと画面補助文書の参照整合である。

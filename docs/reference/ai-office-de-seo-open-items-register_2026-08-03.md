@@ -38,6 +38,8 @@
 | DD-06 | Site／Feature Object／Providerのqueue partitionとbulkhead | 非同期基盤 | 障害注入・capacity test |
 | DD-07 | Office ProposalのDomain Command adapter | Office変更操作 | 通常ビューとの同一結果Contract Test |
 | DD-08 | Featured Image Pattern Editorと画像回帰検査 | 画像生成 | UI操作・Provider・CMS Media試験 |
+| DD-09 | GSC日次実績、Keyword Market Pool、global signalsのpartition・圧縮・rollup・BigQuery併用境界 | Data Mart／共有資産 | 想定件数を使った負荷・費用・復元比較ADR |
+| DD-10 | 通知の保持期間、既読archive、Support会話TTL | 通知／Support | 法務・support運用・保存費用を使ったRetention Policy |
 
 ## 5. Operational calibration
 
@@ -50,6 +52,7 @@
 | OC-05 | Quality／Repair／Routing | Gate fail、Repair収束、人手評価、原価 | Catalog／Routing Policy |
 | OC-06 | Recommendation／評価閾値 | 1/3/6か月、月次／累積、季節性、AIO／広告影響 | Logic Config／Site補正 |
 | OC-07 | Keyword Market Pool更新頻度・購入原価 | source鮮度、利用率、重複、API費 | Source Policy／Cost Table |
+| OC-08 | k匿名しきい値、segment最小標本、prior縮小重み | 再識別risk、標本安定性、補正精度 | Network Learning Policy／Config Registry |
 
 ## 6. Post-release concept
 
@@ -80,4 +83,3 @@
 - `post_release_concept`を初期画面で利用可能に見せない。
 - `operational_calibration`は計測不能ならLaunch可としない。
 - `migration_debt`は旧値を有効化する理由にならない。
-

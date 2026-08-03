@@ -1,6 +1,6 @@
 ---
 document_id: AOS-L3-DATA-DDL
-title: AI Office de SEO データDDL設計（L3スケルトン） v3.7
+title: AI Office de SEO データDDL設計 v3.7
 version: 3.7
 layer: L3
 kind: design
@@ -9,9 +9,9 @@ updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
 
-# AI Office de SEO データDDL設計（L3スケルトン）
+# AI Office de SEO データDDL設計
 
-L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作業台。本書はスケルトンであり、`TODO(L3)` を埋めて `status: draft → review → fixed` へ進める。
+L2の各集約（AOS-L2-DOMAIN-MODEL §4）をPostgreSQLの論理DDLへ写像する設計正本。列挙済みのtable、key、制約、保存禁止、履歴原則をmigrationへ落とし、物理partition、index、保持実数は負荷試験と運用較正を経てversion固定する。
 
 ## 0. 全テーブル共通の不変条件（先に固定・変更不可）
 
@@ -32,16 +32,19 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 - `internal_role_assignments`は顧客Membershipと別namespace・別付与経路を持つ。Managerの顧客代理権限は`delegated_access_grants`へ対象、operation、期限、付与者を保存する。
 - `authorization_decision_audit`は全readを無制限保存せず、拒否、step-up、approval、重要副作用、代理・break-glass、policy差分を有界に記録する。append-only監査eventとの参照を持つ。
 
-- TODO(L3): 各テーブルの列・型・一意制約、代表契約者1名制約、最後の契約者取消防止、Site Assignment空集合の意味、Permission bundle migration、権限変更時session失効を確定する。
-- TODO(L3): OAuthトークンの暗号化列（KMS参照）と `secret_refs` 分離（REQ-SEC-09）。
+- 主キーはUUID、境界外部キーは必ず`tenant_id`を含む複合参照とし、別tenantのIDだけでは参照を成立させない。`memberships`は`unique(organization_id,user_id)`、`membership_business_permissions`は`unique(membership_id,bundle_key,bundle_version)`、Site付与は`unique(membership_id,site_id)`とする。
+- `customer_organizations.representative_contract_holder_membership_id`を必須参照とし、同一組織の有効な`contract_holder`だけを設定可能にする。契約者は複数可だが、有効な最後の契約者の取消・退会はreplacement指定を伴わなければ拒否する。
+- Site Assignmentは行0件=`all_sites`、1件以上=`listed_sites`と解決する。意味をNULLやbooleanへ重複保存せず、認可Decisionに解決結果を記録する。全件削除は範囲拡大になるためstep-up、影響確認、監査を要求する。
+- Permission bundle改版は新versionを追記し、Membershipの参照をmigration eventで切り替える。権限、Site付与、Membership、委任の変更時は`authorization_epoch`を進め、旧epochのsession／tokenによる新規副作用を拒否する。
+- OAuth／CMS／GSC／Stripe等の資格情報は`secret_refs(secret_ref,tenant_id,provider,purpose,kms_key_ref,ciphertext_ref,version,status,rotated_at,expires_at?)`へ分離する。業務tableは`secret_ref`だけを持ち、復号値、access token、refresh token、API keyを列・log・eventへ保存しない。
 
 ## 2. Content Index（UrlMaster / ArticleSummary / KeywordMap 集約）
 
 対象: url_master（raw_url / canonical_url / canonical_url_hash / wp_post_id / gsc_page_url / redirect_target_url / url_alias_type）、url_alias_history、article_summaries（title / meta / h1 / headings_tree / word_count / article_type / digest / topics / intent / audience / funnel_stage / questions / claims / unit_types / entities / keyword_groups / tier / categories / tags / cta_types / outbound_topics / linkable_topics / freshness / gaps / quality / completeness / confidence / content_hash / summary_schema_version / analyzer_version / analyzed_at / published_at / modified_at / last_synced_at）、keywords（raw / normalized_keyword / keyword_group_id / intent / priority / target_url_hash）、same_serps_clusters、article_map。
 根拠: REQ-PRODUCT-03/04、REQ-KGA-02/07/12、REQ-SEC-11。検証: AC-DATA-04/05, AC-KGA-01/02/14。
 
-- TODO(L3): 一意キー `tenant_id + site_id + canonical_url_hash` と、内部ID（照会=URL・管理=ID、REQ-PRODUCT-03）の二重キー構造。重複検出はアラート（ハードロックしない）。
-- TODO(L3): カニバリ判定に使う被覆・分散の導出列/ビュー（REQ-KGA-07。しきい値はConfig Registry参照）。
+- `url_master`は内部UUIDを主キー、`unique(tenant_id,site_id,canonical_url_hash)`を現在URLの一意制約とする。alias／redirect履歴は別tableへappendし、raw URLの表記差を別Articleとして作らない。取込候補の重複はstagingで検出・通知し、既存正本へ自動統合またはhard lockしない。
+- カニバリ判定は`article_keyword_distribution_v`（cluster×articleのimpressions、clicks、position、coverage、SERP overlap、期間、calculation_version）と`cluster_competition_v`を導出viewとして持つ。判定値は保存された事実ではなくConfig version付きassessmentへ記録する。
 - keyword_attributes（intent / commercial / target_fit / industry_fit / ymyl_adjacent / locality / freshness。決定論付与・辞書version参照。REQ-KGA-13）、keyword_assignments（keyword_group_id一意・status・primary記事は内部ID参照・履歴。REQ-KGA-14。検証: AC-KGA-17/18）、gsc_query_matches（query正規化形 / keyword_group_id / method / confidence / matched_at / 辞書version。未マッチは明示行。夜間バッチで再計算。REQ-KGA-15。検証: AC-KGA-19）、topology_nodes/edges（tier=pillar/cluster/leaf・category/tags・リンク再調整キュー。REQ-KGA-19）、keyword_watchlists（しきい値・通知設定。REQ-KGA-20）、engagement_daily（url_hash×日次のdwell/scroll分位。個人非特定。REQ-WPA-11）、index_status（state/issue/checked_at。REQ-KGA-21）、site_build_runs / site_build_stage_progress / site_build_input_conditions / big_keyword_reviews（Site導入、新規／既存、入力成立、段階開放。`schema.site.build_progress.v1`）、monthly_plans / monthly_plan_allocations / weekly_execution_selections（目標・配分・予算・週次枠・確定方式・Report version・未実行再評価。`schema.plan.monthly.v1`／`schema.plan.weekly_selection.v1`）、derived_facts（fact_key/value/observed_at/confidence/source_ref・サイズ上限・月次ロールアップ。REQ-PRODUCT-19）、intervention_ledger / intervention_evaluations / intervention_evaluation_checkpoints（公開・更新eventを起点に1/3/6か月、SEO・CV・認知、月次／累積、外部要因、availabilityを保持。`schema.evaluation.intervention.v1`）、automation_change_budget（日次/週次消費・クールダウン・振動検知状態。REQ-PRODUCT-18）、cv_points / cv_assignments（カタログ・記事割当・有効期間。REQ-WPA-13）、lightweight_patch_actions（patch_action_id・type・対象article/part・before_hash・提案ref・記事目的・intent・CV/link先・Recommendation/Intake/correlation・承認batch・CMS job・計測policy・状態）、patch_approval_batches（batch_id・action refs・承認者・結果）、wp_patch_jobs（patch_action_id・対象・操作・リビジョン参照・CMS応答・反映確認・競合/再試行/ロールバック状態。REQ-WPA-12）、patch_measurements（patch_action_id・月次/累積・availability・評価起点・結果）、article_summaries（契約準拠・content_hash差分更新・配列/短文上限・解析品質・直前有効版参照。本文列を作らない。REQ-PRODUCT-20）、summary_embeddings（対象ref・model_version・vector。実装方式はL3。REQ-PRODUCT-20）、tenant_schedule（timezone・静穏窓・割当オフセット。REQ-SRC-10）、mail_suppressions（宛先hash・理由・停止/再有効化。REQ-PRODUCT-21）、invitation_tokens（期限・単回・失効。REQ-SEC-16）、tenants.kind（internal/customer区分・開発者アカウント配下の所有参照。REQ-PRODUCT-23）、showcase_consents / showcase_cases（許諾範囲・撤回状態・転用スナップショット。REQ-PRODUCT-23）、support_tickets / support_messages（チケット・会話・AI要約・文脈参照。記事本文/プロンプト全文の列を作らない。保持期間Config。REQ-PRODUCT-22）、longtail_clusters（中核トークン / modifierパターン / 集計clicks・impressions / 昇格状態 / 親グループ参照。REQ-KGA-16）、keyword_value_scores（value_score / demand / realizable_ctr / aio_pressure / paid_pressure / domain_credibility_fit / serp_features / intent_cv / fit / availability / confidence / baseline_version。REQ-KGA-17。検証: AC-KGA-21）、keyword_strategy_profiles（site_id / profile / site_necessity_weight / traffic_weight / conversion_weight / valid_from / version。REQ-KGA-23）、keyword_dynamic_priorities（keyword_group_id / strategic_need / attainable_value / urgency / confidence / cost / risk / dynamic_priority / reason_components / recalculated_at / expires_at。REQ-KGA-23）。
 
 - ArticleSummaryの配列・短文は件数/文字数上限をConfigで持つ。検索頻度の高いintent、tier、freshness、quality、content_hashは索引可能な小さい列とし、可変インベントリは上限つきJSONへ分離する。巨大JSON、本文断片、全世代コピーを作らない。
@@ -62,8 +65,8 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 対象: generation_jobs（freeze済み workflow/pack/catalog/config version、SiteSandboxContext、intake_ref、correlation_id）、tickets（キーのみ・本文非内包・intake_ref）、snapshots_meta（snapshot_hash・schema_key・returnTo・結果参照）、outline_contracts、qa_results（schema.snapshot.qa.v1 準拠のgates/metrics/ymyl/hard_gate_block）、rewrite_jobs / edit_plans / patch_audit（patch_id / section_id / operation / reason / quality result / cost / approved_by）。
 根拠: REQ-PACK-01/04、REQ-AGENT-09、REQ-RWR-02/03/05、REQ-SEC-02。検証: AC-PACK-01/02, AC-AGENT-14, AC-RWR-01/02。
 
-- TODO(L3): Snapshot本体は本文を含む場合があるため一時領域（TTL）に置き、テーブルはメタ・hashのみ（REQ-SEC-11）。
-- TODO(L3): 状態機械の状態カラム（13状態＝実務工程9＋強制ゲート4、REQ-AGENT-09）と遷移履歴。
+- Snapshot本文・組立本文・PostEnvelope本文は暗号化一時objectへ置き、`snapshots_meta`は`content_ref/content_hash/size/created_at/expires_at/deleted_at`だけを保持する。TTL延長は保留policyの上限内に限定し、完了・取消・期限切れを削除queueへ送る。恒久DBへ本文列を追加しない。
+- `generation_jobs.current_state`は`intake_gate / sandbox_seal / keyword_intent / serp_research / site_strategy / outline_architect / section_brief / draft_writer / self_evolution / quality_gate / cms_draft / preview_approval / cleanup`へ制約する。`job_state_transitions`は`from_state,to_state,event_id,reason_code,checkpoint_ref,occurred_at`をappend-onlyで保持し、遷移表にない更新を拒否する。保留理由はstateを増殖させず`job_holds`へ種別・解除条件・期限を保存する。
 - 冪等性: tickets.ticket_idを冪等キーとし、snapshots_metaにticket_id一意制約（重複取り込みのdedupe）、usage_credit_ledgerのreserve/commitはticket_id参照で冪等（REQ-AGENT-10。検証: AC-AGENT-18）。
 - golden_eval_sets / golden_eval_runs（改版時の品質回帰評価: タスク定義参照・対象version・gateスコア・比較デルタ。REQ-ADM-10。検証: AC-ADM-11）。
 
@@ -78,7 +81,7 @@ Agent Office会話は本文全文を業務正本へ保存せず、`office_conver
 画像は`image_style_profiles`（site、version、Style Feature、provenance）、`featured_image_patterns`（pattern_id+version、status、default、canvas、variation、logo policy、supersedes）、`featured_image_regions / slots / references`、`image_generation_jobs`（freeze済みPattern／Profile／記事slot／CMS size／route／prompt／予算、idempotency、状態、correlation）、`image_generation_outputs`（hash、検査、advisory、採否。原画像blobを恒久列へ置かない）、`image_media_registrations`（CMS Media ID／URL、派生size、状態）、`image_analysis_cache`（content/perceptual hash、model/prompt version、Style Feature、期限）、`image_usage_costs`へ分離する。Pattern編集履歴とImage Jobを同じ表へ混ぜず、ユーザー再生成は新Job、障害再開は同Job transitionとして記録する。
 根拠: REQ-WPA-02/04/08/09、REQ-AOUI-05、REQ-SEC-11。検証: AC-WPA-08, AC-AUTO-01/02, AC-AOUI-03。
 
-- TODO(L3): PostEnvelopeSnapshot は一時保存（最終HTML/ブロック全文は恒久保存しない）。
+- `post_envelope_snapshots`は暗号化一時objectの`content_ref`、hash、schema、CMS capability snapshot、slot assignment、TTLだけを保持し、最終HTML／block全文をDBへ保存しない。CMS応答後は外部投稿ID、編集／Preview URL、Media参照、validation、反映確認だけを`publication_jobs`へ残す。
 
 ## 6. Billing & Credit（CreditAccount 集約）
 
@@ -92,7 +95,7 @@ Agent Office会話は本文全文を業務正本へ保存せず、`office_conver
 対象: llm_provider_profiles / provider_adapter_registry / model_catalog / capability_matrix / cost_tables / routing_policies(+versions) / health_checks、config_registry（version / effective_from / effective_to / status、グローバル→プラン→テナント/サイト上書き）、feature_flags / kill_switches、usage_traces（REQ-SEC-02の記録項目）、audit_logs、pack_catalog_definitions（`prompt.*` / `catalog.*`（writing_method / review_lens / reader_segment含む）/ `workflow.*` の版管理正本・ADM-10統制）、few_shot_entries（gate_tags / segment_refs / human_authored / reference_anchor）、ai_phrase_dictionary(+versions)。
 根拠: REQ-BILL-09/10、REQ-ADM-06/09、REQ-DUR-04、REQ-SEC-02/10/13。検証: AC-BILL-06/07, AC-ADM-03/06, AC-SEC-06, AC-REL-01〜03。
 
-- TODO(L3): 安全不変条件（REQ-ADM-09）は config_registry の設定対象外であることをスキーマ/検証で強制する方法（許可キーのホワイトリスト等）。
+- Configは`config_key_catalog`へ登録されたkeyだけを保存できる外部キー制約とし、Catalogは`value_schema、allowed_scopes、sensitivity、requires_approval、mutable`を持つ。`mutable=false`の安全不変条件は値tableへのINSERT／UPDATEをDB triggerと管理APIの双方で拒否する。未知keyの自由追加、顧客Scopeからの上位Scope拡張、schema不一致を許可しない。
 - 通知受信者決定: notification_recipient_decisions（decision_id / tenant_id / site_id? / source_event_id / notification_class / required_action / resource_ref / policy_version / fallback_applied / resolved_at）、notification_recipient_candidates（decision_id / user_id / site_visible / permission_satisfied / subscribed / selected / exclusion_reason）。受信者はClient指定値を信用せず、Site付与・閲覧範囲・操作権限・購読設定をServer側で解決する。要対応通知で候補が0件の場合はSite owner、契約・課金は契約者へfallbackするが、新しい操作権限は付与しない。
 - 通知正本: notifications（notification_id / decision_id / tenant_id / site_id? / recipient_user_id / notification_class / event_type / severity / resource_ref / required_action / payload_meta（本文全文・シークレット禁止）/ dedupe_key / digest_group? / state(unread/read/acknowledged/actioned/archived) / read_at? / acknowledged_at? / actioned_at? / created_at）。notification_subscriptions（user_id / tenant_id / site_id? / notification_class / in_app_enabled / popup_enabled / email_enabled / delivery_mode(immediate/digest) / digest_frequency / updated_at）、notification_delivery_attempts（notification_id / channel / attempted_at / result / failure_class?）、mail_suppressions、notification_action_linksを持つ。in-app記録を正本とし、popup dismissやemail失敗で通知本体を消さない。必須通知はin-appを完全OFFにできず、顧客通知と開発・運用alertは別namespaceとする。根拠: REQ-PRODUCT-11（AC-NOTIF-01〜03）、通知受信者Routing Map v1。TODO(L3): 保持期間・既読アーカイブ。
 - Office会話: office_conversation_sessions（tenant/site/persona/user/task?、開始・終了、状態）、office_session_summaries（`schema.office.session_summary.v1`準拠、短い要約、未解決事項、Proposal／確定Command参照、retention class、期限、削除状態）を持つ。生messageは一律の恒久Site記憶にせず、必要な場合だけsession TTL領域またはSupport Ticketの保持Policyへ分離する。Summaryは業務設定、Derived Fact、権限、公開状態の正本にしない。
