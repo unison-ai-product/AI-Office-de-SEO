@@ -12,6 +12,7 @@
 | `baseline` | 旧プロト・旧契約の事実を保存する移行用資料。現行要求の根拠にしない |
 | `prototype_follow_up` | 要求・設計は確定済みで、プロト実装だけが未追従 |
 | `true_open` | 既存判断から導出できず、設計・実測・外部検証・事業判断が本当に必要 |
+| `current_with_migration` | 有効な詳細を含むが、同じ文書内にsupersededな旧判断も履歴として残る。Migration Mapを介さず現行判断に使用しない |
 
 ## 2. 成果物群の分類
 
@@ -21,7 +22,7 @@
 | L1分類正本 | `L1-requirements/categories/*.md` 16分類 | current | 分類ごとの要求本文とACの正本。READMEの責務分離に従う |
 | L1ロジック詳細 | `L1-requirements/logic/*.md` 5文書 | current | 動的Recommendation、Summary、不足、品質・Repair、Crawler／AI可視性の判定詳細 |
 | L1横断判断 | `requirements-decision-summary`、authorization、recommendation、keyword、report、patch、CMS、availability、image、notification、billingの各map | current | 会話で確定した横断判断と分類正本の接続境界 |
-| 旧L1詳細要求 | product、navigation、agent runtime、Pack/Ticket、Keyword/GSC/Article、DataForSEO、WP、billing/provider、security/observability、rewrite、Agent Office、Admin、User Journey | current | 詳細仕様を保持するが、分類正本と矛盾する旧Role・旧価格・旧責務は移行mapを介して解決する。本文中の旧表現は順次除去対象 |
+| 旧L1詳細要求 | product、navigation、agent runtime、Pack/Ticket、Keyword/GSC/Article、DataForSEO、WP、billing/provider、security/observability、rewrite、Agent Office、Admin、User Journey | current_with_migration | Agent／Pack等の有効な詳細を保持する一方、分類正本と矛盾する旧Role・旧価格・旧責務はMigration Mapを介して解決する。旧IDだけから新しい横断判断を作らない |
 | 受入トレース | `ai-office-de-seo-acceptance-trace_v3.7.md` | current | 443 REQとcanonical ACを横断追跡する。旧ACの意味も現行判断へ更新する |
 | 開発ロードマップ | `ai-office-de-seo-development-unit-roadmap_v3.7.md` | current | 現行SEO業務Lifecycleと商用成立条件に基づく構築順。コンサル必須・FAQ外出しの旧前提は廃止 |
 | L2 | domain model、glossary | current | Site Build、Keyword Report、月次／週次計画、Recommendation、Publication Decision、評価、認可を集約・用語へ写像 |
@@ -55,4 +56,30 @@
 - プロト本体は未編集であり、意図どおり`prototype_follow_up`に留めている。
 - L3 Contract SchemasではTicket、未達Snapshot、Source欠損表現、13状態Workflow、Catalog型、Event payload、検証対応表を既存要求から補完した。DDLでは認可、URL、Snapshot／PostEnvelope一時保存、状態遷移、Config allowlistを補完した。
 - 残る物理partition／圧縮／BigQuery境界、通知保持、k匿名・標本しきい値は、要求追従漏れではなく負荷・費用・法務・実データによる`DD-09/10`、`OC-08`として未確定台帳へ移した。
-- 次の監査対象は、旧L1詳細本文に残る旧提供方針、L3 Quality／Configの未決分類、Gate Aと画面補助文書の参照整合である。
+- 旧監査資料は履歴bannerを持ち、Officeの固定6部屋／固定Agent数を現行仕様として使用しない。UI Partsはframework非依存、Gate Aは現行要求境界を明示した。
+- L3 Decision Table 35件はOpen Items Registerへ全件分類し、Configの`TODO(L3)` key familyも確定証拠と改版先へ接続した。
+- L2／L3で旧IDを参照する文書には現行要求境界を必須化し、Site定義をCMS非依存へ修正した。
+
+## 5. 主要決定の縦方向追従証拠
+
+| 決定領域 | L1正本 | L2／L3証拠 | 画面／受入証拠 | 判定 |
+|---|---|---|---|---|
+| 製品・価格・契約 | BILLING-01〜03、BUS | Config pricing／Plan、Billing schema／DDL | S7、Feature List、Trace | aligned |
+| 法人・個人と顧客組織 | ORG-01〜10 | Membership、Organization、Site Assignment | S7組織・Site、Screen Flow導入 | aligned |
+| 3基本権限＋4業務権限 | ORG-03〜05、ACCESS-14〜16 | Authorization Decision、DDL、Repository scope | Authorization Matrix、Screen Flow §8 | aligned |
+| 内部Admin／Manager／Operator分離 | ACCESS-01〜03、PAC-01 | internal role、期限付き代理、audit | Admin Inventory、顧客面→管理面遷移禁止 | aligned |
+| 新規／既存Site Lifecycle | BUS-02〜08、SCREEN-01 | SiteBuildRun、KeywordReport、MonthlyPlan | Screen Flow §0・§5・§8 | aligned |
+| Keyword Market／Site Share | KRL、KPD、KGA詳細 | Market／Share aggregate、Source schema、DDL | 戦略／診断Report、Office drilldown | aligned |
+| Recommendation Intake | LOGIC-01〜03、BUS-08 | recommendation／intake schema、event、DDL | Queue→freeze→Preflight遷移 | aligned |
+| Article Summary・本文非恒久保持 | DATA-03〜06、ASUM | Summary schema、一時PostEnvelope、TTL | 記事遍歴・Recommendation表示 | aligned |
+| 新規15記事と自動投稿 | LOGIC-04、ORG-06 | Publication Decision、Automation delegation | Dashboard進捗、CMS下書き→公開分岐 | aligned |
+| リライト・全文再生成 | LOGIC-05〜07、BUS-09 | Rewrite Ticket、Diff、backup／Revision contract | 下書き、差分、承認、安心保証 | aligned |
+| 公開／更新後評価 | LOGIC-08〜10、KRL | InterventionEvaluation、evaluation event | 1・3・6か月、月次／累積、要監視 | aligned |
+| CMS非依存・WP初期Adapter | INT-01・05・06、TECH | Publication Contract、CMS Connection Profile | Capability、縮退、再接続、持ち出し | aligned |
+| 軽量計測 | MEASURE-01〜04、INT-03 | Tracker event、集約、本文／form非取得 | ページ表示・遷移・CTA・thanks | aligned |
+| 通常／Office | DESIGN-01・09〜11、SCREEN-18・19 | 共通Command／Event、Office Proposal | Context保持・双方向遷移 | aligned |
+| AWS・性能・障害封じ込め | NFR-01〜15、TECH-19、IRG | AWS Operations Map、bulkhead、RPO／RTO | 状態表示、Support、Admin運用面 | aligned（実証はtrue_open） |
+| Feature Object拡張 | TECH-01〜09、GROWTH | Registry、Manifest、Execution Context、slot | App／Pack導線、Office拡張 | aligned（第三者Storeはpost-release） |
+| AI表示性／Crawler | CAV、INT-08、MEASURE-12 | availability、観測schema構想 | 未提供を0件・測定済みと誤表示しない | aligned（提供技術はpost-release） |
+
+`aligned`は要求・設計・画面の意味が一致したことを表し、実装済み、外部審査済み、負荷試験済みを意味しない。それらはOpen Items RegisterのLaunch blocker／Design decision／Operational calibrationで別管理する。

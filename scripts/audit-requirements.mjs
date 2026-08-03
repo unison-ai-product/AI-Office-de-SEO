@@ -146,6 +146,51 @@ assertIncludes("docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-busines
   "Entry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜",
   "Entry／Standardは月契約または年契約、Premium／Enterpriseは年契約",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/customer-organization-governance-requirements_v1.md", [
+  "`基本権限`: 契約者、サイトオーナー、ユーザーの3種類",
+  "`目標管理`",
+  "`キーワード・サイト戦略`",
+  "`記事制作`",
+  "`サイト分析`",
+  "指定がないMembershipは契約組織内の現在および将来の全Site",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md", [
+  "新規Site経路",
+  "既存Site経路",
+  "既存Site診断レポート: 市場全体とclusterを起点",
+  "新規記事が15件に達するまでは個別承認",
+  "1か月後の一次評価、3か月後の二次評価、6か月後の長期評価",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md", [
+  "既存記事とリライトを15件へ算入しない",
+  "公開記事への更新はユーザー承認を必須",
+  "同一権限者が対象、警告、未解消項目、責任境界を二段階で確認",
+  "急変を検知した場合、その変化だけを根拠として新規記事またはリライトを即時推薦してはならない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/integration-requirements_v1.md", [
+  "CMS非依存のPublication Contract",
+  "WordPressは初期Adapter",
+  "ページ表示、遷移元・遷移先、明示CTA・button識別子、指定サンクスページ到達",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/billing-accounting-requirements_v1.md", [
+  "| Entry | 39,800円 | 43,780円 |",
+  "| Premium | 198,000円 | 217,800円 | セルフ申込・年契約のみ |",
+  "追加購入分は購入から180日を上限",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
+  "初回ログインと日常業務の正規入口は通常ビュー",
+  "Agent Officeは名称どおり",
+  "詳細運用面",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/non-functional-requirements_v1.md", [
+  "本番配置はAWSを前提",
+  "単一task、単一AZ、特定の実行形へ不可逆に密結合しない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md", [
+  "Entryの自動投稿はロック対象にせず",
+  "Entryの数値予測は上位機能Preview",
+  "開発管理画面または開発者Consoleとして扱わない",
+]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
   "schema.site.build_progress.v1",
   "schema.plan.monthly.v1",
