@@ -695,6 +695,23 @@ const lifecycleLogic = fs.readFileSync(lifecycleLogicPath, "utf8");
 if (/リライトRecommendationはGSC連携またはWordPress連携を必要とする/.test(lifecycleLogic)) {
   fail(errors, "logic requirements: stale rewrite entry condition allows GSC without article content retrieval");
 }
+const businessLifecyclePath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
+);
+const businessLifecycle = fs.readFileSync(businessLifecyclePath, "utf8");
+if (/リライト候補の生成はGSC連携またはWordPress連携の少なくとも一方/.test(businessLifecycle)) {
+  fail(errors, "business requirements: stale rewrite entry condition allows GSC without article retrieval");
+}
+for (const requiredPhrase of [
+  "対象記事の本文・見出し・公開状態を取得できることを必須",
+  "GSCまたはKeyword実績だけでは本文変更を伴うリライトRecommendationを生成しない",
+  "CMS引渡し",
+]) {
+  if (!businessLifecycle.includes(requiredPhrase)) {
+    fail(errors, `business requirements: current lifecycle phrase missing: ${requiredPhrase}`);
+  }
+}
 for (const requiredPhrase of [
   "対象記事の本文・見出し・公開状態を取得できること",
   "GSCまたはKeyword実績だけでは本文変更を伴うRecommendationを成立させない",
