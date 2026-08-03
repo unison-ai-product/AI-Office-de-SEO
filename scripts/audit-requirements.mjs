@@ -381,6 +381,14 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "Recommendation Intakeまたは手動指定を共通Preflightへ渡す",
   "接続中CMSの保存値を編集・更新の外部正本",
   "他CMSへ固定した共通画面名・列・状態を作らない",
+  "任意の本文途中Preview・ユーザー編集保護",
+  "Semantic Assembly / Cohesionを含むQA・限定Repair / Presentation Assembly",
+  "CMS接続Capability",
+  "cms_capability_snapshot",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
+  "| S4 | オートメーション | WP接続",
+  "| wp_capability_snapshot、approval_requests",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-requirements_v3.7.md", [
   "CMS edit／Preview URL（初期WordPress AdapterではWP下書きURL）",
