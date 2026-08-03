@@ -21,7 +21,71 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 - Supporting（中核を支える）: External Intelligence / Publishing & Automation / Provider / Config & Governance。
 - Generic（汎用・置換可能）: Tenancy & Access / Billing & Credit（Stripe）/ Observability & Audit / Experience(UI) / Notification / Support / Platform Operations。
 
-## 2. 境界づけられたコンテキスト（Bounded Context）
+### 1.1 要求所有の原則
+
+要求の所有境界は `ai-office-de-seo-domain-invariant-registry_v1.json` を機械可読な正本とする。各 `REQ-*` は必ず1つの境界づけられたコンテキストだけが所有し、他コンテキストは公開ContractまたはDomain Eventを通じて参照する。画面分類、文書分類、実装サービス、Officeの部屋をドメイン境界として扱わない。
+
+| 要求所有コンテキスト | Aggregate Root | 所有する要求群 | 業務上の責務 |
+|---|---|---|---|
+| Customer Account & Access | ContractAccount | ORG, ACCESS, PRODUCTの認可詳細 | 契約者、顧客組織、Site付与、基本権限、業務権限、認可 |
+| Site Onboarding & Strategy | SiteOperatingCycle | BUS, UJ, PRODUCTの導入・月次運用詳細 | Site設定、新規／既存導入、月次計画、週次実行、評価Loop |
+| Keyword Market Intelligence | SiteKeywordPortfolio | KGA, KRL, KPD, SRC, CAV, PRODUCTのNetwork Learning詳細 | Keyword市場、Site Share、Cluster、診断、外部検索情報、AI検索観測 |
+| Content Knowledge | SiteContentIndex | DATA, ASUM, PRODUCTの記事索引詳細 | URL、記事Summary、記事遍歴、内部Link、Site構造の検索用正本 |
+| Recommendation Planning | RecommendationPortfolio | LOGIC, PRODUCTの自動運用統制 | 目的・制約・費用・保護条件から施策候補を選択し、状態遷移を管理 |
+| Content Production | ContentProductionJob | AGENT, PACK, CQR, RWR, PRODUCTの執筆設定詳細 | 新規記事、リライト、Research、Outline、Writing、QA、Repair |
+| CMS Publication | CmsDelivery | WPA, INT, PRODUCTのCMS詳細 | CMS接続、下書き送信、承認後反映、外部変更通知、CV集計入力 |
+| Customer Outcome | CustomerOutcomeSnapshot | MEASUREの顧客計測・成果要求 | 顧客Siteの成果、施策評価、市場影響、運営指標との分離 |
+| Commercial Entitlement | SubscriptionAccount | BILL, BILLING, COST, UPSELL | Plan、契約、Credit、原価、利用権、追加購入、アップセル |
+| Platform Control & Reliability | PlatformControlPolicy | PAC, ADM, IRG, SEC, NFR, DUR, TECH, MEASUREの運用要求, PRODUCTの運営詳細 | 運営管理、障害、保証、セキュリティ、可用性、技術基盤 |
+| Agent Execution Experience | AgentTaskProjection | SCREEN, DESIGN, AOUI, NAV, PRODUCTの通知・検索・出力詳細 | 通常ビューの業務操作とOfficeの実行監視を同じ業務状態から投影 |
+
+Conversion MeasurementとPublication Attributionは独立した要求所有コンテキストではなく、CMS PublicationからCustomer Outcomeへ渡す明示的な下位モデルである。これにより、CVの保存制約とAI Office経由／外部変更の帰属規則を局所的な不変条件として検証する。
+
+### 1.2 SEO業務Lifecycle
+
+```text
+Site設定・接続
+  → Keyword市場／既存実績の構築
+  → 戦略・診断Report
+  → 月次計画
+  → Recommendation
+  → 週次選択
+  → 新規記事／リライト制作
+  → CMS下書き・承認・反映
+  → GSC／CV／市場観測
+  → 1・3・6か月評価
+  → 次回計画・Recommendation補正
+```
+
+各段階は前段の画面表示を読み直して状態を再構築せず、次の公開Contractを渡す。
+
+| 上流 → 下流 | Contract | 必須情報 |
+|---|---|---|
+| Onboarding → Keyword Intelligence | SiteAnalysisIntake | Site、業界／業種、地域、商品、顧客、横断軸、GSC／登録Keywordの可用性 |
+| Keyword Intelligence → Strategy | KeywordPortfolioSnapshot | Cluster、主従Keyword、市場、Share、検索Intent、記事対応、信頼度、version |
+| Strategy → Recommendation | MonthlyStrategy | 目的、重点領域、記事配分、予算配分、保護対象、期間、version |
+| Recommendation → Production | RecommendationIntake | 施策、Cluster、記事目的、Intent、CTA、内部Link、品質、予算、根拠、version |
+| Production → CMS Publication | ContentDeliveryPackage | 成果物、差分、装飾、画像参照、QA結果、承認条件、idempotency key |
+| CMS Publication → Customer Outcome | PublicationFact | AI Office経由／外部変更、URL、公開／更新時刻、変更種別、記事version |
+| Measurement → Strategy | InterventionOutcome | Keyword段階、CV、認知寄与、市場影響、評価可否、観測窓、version |
+
+### 1.3 CommandとDomain Event
+
+| Aggregate | 主Command | 主Domain Event |
+|---|---|---|
+| SiteOperatingCycle | ConfigureSite, StartAnalysis, ConfirmMonthlyPlan, SelectWeeklyWork | SiteConfigured, AnalysisStarted, MonthlyPlanConfirmed, WeeklyWorkSelected |
+| SiteKeywordPortfolio | AddSeedKeyword, ConfirmDirection, ReclassifyCluster | KeywordDirectionConfirmed, PortfolioBuilt, ClusterReclassified |
+| RecommendationPortfolio | GenerateRecommendations, AcceptRecommendation, HoldRecommendation | RecommendationProposed, RecommendationAccepted, RecommendationHeld |
+| ContentProductionJob | StartProduction, ReviseOutline, ResumeRepair | ProductionStarted, OutlineFrozen, ContentQualified, ProductionSuspended |
+| CmsDelivery | SendDraft, ApproveDelivery, ApplyUpdate | DraftDelivered, PublicationReflected, ExternalChangeObserved |
+| CustomerOutcomeSnapshot | RecordObservation, EvaluateIntervention | OutcomeObserved, InterventionEvaluated |
+| SubscriptionAccount | ReserveCredit, CommitCredit, ChangePlan | CreditReserved, CreditCommitted, EntitlementChanged |
+
+UIはCommandを発行しEventからProjectionを更新する。UIが順位段階、市場影響、公開成否、Credit残高、権限を独自計算してはならない。Agent Officeは `AgentTaskProjection` を監視表示するだけで、成果分析、設定、承認またはRecommendation変更のCommandを所有しない。
+
+## 2. 内部能力コンポーネント（要求所有境界の内部分解）
+
+以下は既存L2の実装能力分解であり、1.1の要求所有コンテキストと同格の要求正本ではない。複数の内部能力が同じ要求所有コンテキストに属する場合がある。
 
 | BC | 責務 | 主な集約 | 根拠REQ |
 |---|---|---|---|

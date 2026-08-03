@@ -93,12 +93,36 @@ const invariantRegistryPath = path.join(
 const invariantRegistry = JSON.parse(fs.readFileSync(invariantRegistryPath, "utf8"));
 const boundedContextKeys = new Set();
 const invariantIds = new Set();
+const requirementPrefixOwners = new Map();
+const requirementIdOwners = new Map();
 for (const context of invariantRegistry.bounded_contexts) {
   if (boundedContextKeys.has(context.context_key)) {
     fail(errors, `domain invariant registry: duplicate bounded context ${context.context_key}`);
   }
   boundedContextKeys.add(context.context_key);
   if (!context.aggregate_root) fail(errors, `domain invariant registry: ${context.context_key} has no aggregate root`);
+  for (const prefix of context.owned_requirement_prefixes ?? []) {
+    if (requirementPrefixOwners.has(prefix)) {
+      fail(
+        errors,
+        `domain invariant registry: REQ-${prefix}-* is owned by both ${requirementPrefixOwners.get(prefix)} and ${context.context_key}`,
+      );
+    } else {
+      requirementPrefixOwners.set(prefix, context.context_key);
+    }
+  }
+  for (const reqId of context.owned_requirement_ids ?? []) {
+    if (!reqDefinitions.has(reqId)) {
+      fail(errors, `domain invariant registry: ${context.context_key} owns undefined requirement ${reqId}`);
+    } else if (requirementIdOwners.has(reqId)) {
+      fail(
+        errors,
+        `domain invariant registry: ${reqId} is owned by both ${requirementIdOwners.get(reqId)} and ${context.context_key}`,
+      );
+    } else {
+      requirementIdOwners.set(reqId, context.context_key);
+    }
+  }
   for (const reqId of context.owner_requirements ?? []) {
     if (!reqDefinitions.has(reqId)) {
       fail(errors, `domain invariant registry: ${context.context_key} references undefined owner ${reqId}`);
@@ -117,6 +141,21 @@ for (const context of invariantRegistry.bounded_contexts) {
         fail(errors, `domain invariant registry: ${invariant.invariant_id} missing source ${relativePath}`);
       }
     }
+  }
+}
+for (const reqId of reqDefinitions.keys()) {
+  const prefix = reqId.match(/^REQ-([A-Z0-9]+)-/)?.[1];
+  const exactOwner = requirementIdOwners.get(reqId);
+  const prefixOwner = prefix ? requirementPrefixOwners.get(prefix) : undefined;
+  if (exactOwner && prefixOwner && exactOwner !== prefixOwner) {
+    fail(errors, `domain invariant registry: ${reqId} has conflicting exact and prefix owners`);
+  } else if (!exactOwner && !prefixOwner) {
+    fail(errors, `domain invariant registry: ${reqId} has no owning bounded context`);
+  }
+}
+for (const [prefix, contextKey] of requirementPrefixOwners) {
+  if (![...reqDefinitions.keys()].some((reqId) => reqId.startsWith(`REQ-${prefix}-`))) {
+    fail(errors, `domain invariant registry: ${contextKey} owns unused prefix REQ-${prefix}-*`);
   }
 }
 const semanticPolicyRules = invariantRegistry.bounded_contexts.flatMap((context) =>
@@ -468,8 +507,8 @@ assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
   "日常判断の簡単操作面",
-  "詳細探索・対話・詳細運用面",
-  "監視専用でも独立業務システムでもなく",
+  "Agent・Task・工程の実行監視面",
+  "業務正本、認可、Command、成果計算をOfficeへ複製しない",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
   "全操作・意思決定はこちら",

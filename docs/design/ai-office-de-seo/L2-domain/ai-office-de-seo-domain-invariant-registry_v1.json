@@ -3,9 +3,210 @@
   "updated_at": "2026-08-03",
   "bounded_contexts": [
     {
+      "context_key": "customer_account_access",
+      "context_name": "Customer Account & Access",
+      "aggregate_root": "ContractAccount",
+      "owned_requirement_prefixes": ["ORG", "ACCESS"],
+      "owned_requirement_ids": ["REQ-PRODUCT-02", "REQ-PRODUCT-08", "REQ-PRODUCT-10"],
+      "owner_requirements": ["REQ-ORG-01", "REQ-ACCESS-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-ACCESS-001",
+          "statement": "顧客権限は契約者・管理者・利用者の基本権限と業務権限を分離し、顧客面と内部管理面を同一Session／Routeにしない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/customer-organization-governance-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/security-access-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-authorization-operation-matrix_v1.md"
+          ],
+          "forbidden_patterns": ["顧客(?:User|利用者).{0,50}内部(?:Admin|管理者).{0,30}(同じSession|同一Session|切り替え)"],
+          "bad_fixtures": ["顧客利用者は内部管理者へ同じSessionで切り替える。"],
+          "good_fixtures": ["顧客面と内部管理面はSession、Route、APIを分離する。"]
+        }
+      ]
+    },
+    {
+      "context_key": "site_onboarding_strategy",
+      "context_name": "Site Onboarding & Strategy",
+      "aggregate_root": "SiteOperatingCycle",
+      "owned_requirement_prefixes": ["BUS", "UJ"],
+      "owned_requirement_ids": ["REQ-PRODUCT-01", "REQ-PRODUCT-05", "REQ-PRODUCT-09", "REQ-PRODUCT-17", "REQ-PRODUCT-24"],
+      "owner_requirements": ["REQ-BUS-01", "REQ-UJ-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-LIFECYCLE-001",
+          "statement": "新規記事RecommendationはSite接続とKeyword登録後、リライトRecommendationは加えてCMSまたは記事取込成立後に開始する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md"
+          ],
+          "forbidden_patterns": ["(?:Site接続|Keyword登録|キーワード登録).{0,30}(?:前|なし).{0,40}Recommendation.{0,20}(?:生成|表示|開始)"],
+          "bad_fixtures": ["Site接続前でもRecommendationを生成する。"],
+          "good_fixtures": ["Site接続とKeyword登録の成立後にRecommendationを開始する。"]
+        }
+      ]
+    },
+    {
+      "context_key": "keyword_market_intelligence",
+      "context_name": "Keyword Market Intelligence",
+      "aggregate_root": "SiteKeywordPortfolio",
+      "owned_requirement_prefixes": ["KGA", "KRL", "KPD", "SRC", "CAV"],
+      "owned_requirement_ids": ["REQ-PRODUCT-13"],
+      "owner_requirements": ["REQ-KGA-01", "REQ-KRL-01", "REQ-KPD-01", "REQ-SRC-01", "REQ-CAV-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-KEYWORD-001",
+          "statement": "Keyword Clusterを市場の評価単位、記事と実QueryをSite Shareの評価単位とし、単語単位だけで戦略を確定しない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-keyword-market-share-connection-map_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/logic/keyword-portfolio-diagnostics-logic-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/logic/keyword-dynamic-recommendation-logic-requirements_v1.md"
+          ],
+          "forbidden_patterns": ["(?:単一Keyword|単一キーワード|単語単位).{0,40}(?:だけ|のみ).{0,30}(?:戦略|Recommendation|評価).{0,20}(?:確定|決定)"] ,
+          "bad_fixtures": ["単一キーワードだけで戦略を確定する。"],
+          "good_fixtures": ["Keyword Clusterを市場、記事とQueryをSite Shareとして評価する。"]
+        }
+      ]
+    },
+    {
+      "context_key": "content_knowledge",
+      "context_name": "Content Knowledge",
+      "aggregate_root": "SiteContentIndex",
+      "owned_requirement_prefixes": ["DATA", "ASUM"],
+      "owned_requirement_ids": ["REQ-PRODUCT-03", "REQ-PRODUCT-04", "REQ-PRODUCT-19", "REQ-PRODUCT-20"],
+      "owner_requirements": ["REQ-DATA-01", "REQ-ASUM-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-CONTENT-001",
+          "statement": "記事本文は解析後に恒久保持せず、見出し・要点・event地点・Keyword／順位／CV遍歴をArticle Summaryとして保持する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/data-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/logic/article-summary-completeness-logic-requirements_v1.md"
+          ],
+          "forbidden_patterns": ["記事本文.{0,40}(?:恒久|無期限|永続).{0,20}(?:保存|保持)"],
+          "bad_fixtures": ["記事本文を恒久保存する。"],
+          "good_fixtures": ["記事本文は解析後に破棄し、Article Summaryと遍歴を保持する。"]
+        }
+      ]
+    },
+    {
+      "context_key": "recommendation_planning",
+      "context_name": "Recommendation Planning",
+      "aggregate_root": "RecommendationPortfolio",
+      "owned_requirement_prefixes": ["LOGIC"],
+      "owned_requirement_ids": ["REQ-PRODUCT-18"],
+      "owner_requirements": ["REQ-LOGIC-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-RECOMMEND-001",
+          "statement": "急変時は即時推薦せず要監視へ送り、月次計画と週次増分選択から実行候補を決める。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/logic/keyword-dynamic-recommendation-logic-requirements_v1.md"
+          ],
+          "forbidden_patterns": ["急変.{0,30}(?:即時|直ちに).{0,20}(?:推薦|実行)(?:する|へ進める)"] ,
+          "bad_fixtures": ["急変を検知したら即時推薦する。"],
+          "good_fixtures": ["急変を検知したら要監視へ送り、観測を継続する。"]
+        }
+      ]
+    },
+    {
+      "context_key": "content_production",
+      "context_name": "Content Production",
+      "aggregate_root": "ContentProductionJob",
+      "owned_requirement_prefixes": ["AGENT", "PACK", "CQR", "RWR"],
+      "owned_requirement_ids": ["REQ-PRODUCT-07", "REQ-PRODUCT-12"],
+      "owner_requirements": ["REQ-AGENT-01", "REQ-PACK-01", "REQ-CQR-01", "REQ-RWR-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-PRODUCTION-001",
+          "statement": "採用Recommendationの目的・Cluster・Intent・CTA・内部Link・品質・予算をversion付きIntakeでProductionへ渡し、画面から再構築しない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-recommendation-action-routing-map_v1.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md"
+          ],
+          "forbidden_patterns": ["Recommendation(?:の正本)?は.{0,30}(?:画面表示|UI)(?:とする|である)"],
+          "bad_fixtures": ["Recommendationの正本はUIとする。"],
+          "good_fixtures": ["RecommendationIntakeをversion付きでProductionへ渡す。"]
+        }
+      ]
+    },
+    {
+      "context_key": "cms_publication",
+      "context_name": "CMS Publication",
+      "aggregate_root": "CmsDelivery",
+      "owned_requirement_prefixes": ["WPA", "INT"],
+      "owned_requirement_ids": ["REQ-PRODUCT-06"],
+      "owner_requirements": ["REQ-WPA-01", "REQ-INT-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-CMS-001",
+          "statement": "CMS反映はAdapter経由とし、新規記事は解放条件、リライトはユーザー承認を満たしてから実行する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/integration-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-wp-automation-dynamic-post-requirements_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-cms-connection-routing-map_v1.md"
+          ],
+          "forbidden_patterns": ["リライト.{0,40}(?:承認なし|無承認).{0,30}(?:公開|更新|反映)"],
+          "bad_fixtures": ["リライトを承認なしでCMSへ更新する。"],
+          "good_fixtures": ["リライトはCMS下書きへ送り、ユーザー承認後に更新する。"]
+        }
+      ]
+    },
+    {
+      "context_key": "commercial_entitlement",
+      "context_name": "Commercial Entitlement",
+      "aggregate_root": "SubscriptionAccount",
+      "owned_requirement_prefixes": ["BILL", "BILLING", "COST", "UPSELL"],
+      "owner_requirements": ["REQ-BILL-01", "REQ-BILLING-01", "REQ-COST-01", "REQ-UPSELL-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-COMMERCIAL-001",
+          "statement": "Creditはappend-only台帳でreserve／commit／releaseし、価格・枠・Planはversion付き設定から解決する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/billing-accounting-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/cost-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-billing-credit-provider-requirements_v3.7.md"
+          ],
+          "forbidden_patterns": ["Credit(?:残高|台帳).{0,40}(?:直接更新|上書き更新|UPDATE)"],
+          "bad_fixtures": ["Credit残高を直接更新する。"],
+          "good_fixtures": ["Creditはappend-only台帳のeventから残高を導出する。"]
+        }
+      ]
+    },
+    {
+      "context_key": "platform_control_reliability",
+      "context_name": "Platform Control & Reliability",
+      "aggregate_root": "PlatformControlPolicy",
+      "owned_requirement_prefixes": ["PAC", "ADM", "IRG", "SEC", "NFR", "DUR", "TECH"],
+      "owned_requirement_ids": [
+        "REQ-MEASURE-05", "REQ-MEASURE-06", "REQ-MEASURE-07", "REQ-MEASURE-08", "REQ-MEASURE-09",
+        "REQ-MEASURE-10", "REQ-MEASURE-11", "REQ-MEASURE-13",
+        "REQ-PRODUCT-16", "REQ-PRODUCT-21", "REQ-PRODUCT-22", "REQ-PRODUCT-23"
+      ],
+      "owner_requirements": ["REQ-PAC-01", "REQ-ADM-01", "REQ-IRG-01", "REQ-SEC-01", "REQ-NFR-01", "REQ-DUR-01", "REQ-TECH-01"],
+      "invariants": [
+        {
+          "invariant_id": "INV-PLATFORM-001",
+          "statement": "顧客機能と内部管理機能を分離し、障害を機能境界へ封じ込め、顧客本文や秘密情報を監査logへ残さない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/platform-administration-control-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/security-access-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/non-functional-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/technical-architecture-requirements_v1.md"
+          ],
+          "forbidden_patterns": ["(?:記事本文|API.?key|秘密情報).{0,30}(?:監査log|監査ログ).{0,20}(?:保存|記録)"],
+          "bad_fixtures": ["記事本文を監査ログへ保存する。"],
+          "good_fixtures": ["監査logは参照IDとhashを記録し、記事本文を含めない。"]
+        }
+      ]
+    },
+    {
       "context_key": "agent_execution_experience",
       "context_name": "Agent Execution Experience",
       "aggregate_root": "AgentTaskProjection",
+      "owned_requirement_prefixes": ["SCREEN", "DESIGN", "AOUI", "NAV"],
+      "owned_requirement_ids": ["REQ-PRODUCT-11", "REQ-PRODUCT-14", "REQ-PRODUCT-15"],
       "owner_requirements": ["REQ-SCREEN-18", "REQ-DESIGN-09", "REQ-AOUI-01"],
       "invariants": [
         {
@@ -18,6 +219,9 @@
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md",
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-development-unit-roadmap_v3.7.md",
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-requirements-decision-summary_v1.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md",
             "docs/reference/FEATURE-LIST.md"
           ],
           "forbidden_patterns": [
@@ -41,6 +245,10 @@
       "context_key": "customer_outcome",
       "context_name": "Customer Outcome",
       "aggregate_root": "CustomerOutcomeSnapshot",
+      "owned_requirement_prefixes": [],
+      "owned_requirement_ids": [
+        "REQ-MEASURE-01", "REQ-MEASURE-02", "REQ-MEASURE-03", "REQ-MEASURE-04", "REQ-MEASURE-12", "REQ-MEASURE-14"
+      ],
       "owner_requirements": ["REQ-MEASURE-14", "REQ-LOGIC-06"],
       "invariants": [
         {

@@ -12,6 +12,8 @@ generates:
     artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-invariant-registry_v1.json
     artifact_type: schema
+  - artifact_path: docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-requirement-context-map_v1.md
+    artifact_type: design_doc
 dependencies:
   parent: PLAN-L1-01-ai-office-de-seo-requirements
   requires: []
