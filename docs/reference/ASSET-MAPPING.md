@@ -1,5 +1,7 @@
 # アセット マッピング表（WebP・名称統一）
 
+> **プロトタイプbaseline**: 本書は既存画像assetの実測・名称対応表であり、現行の画面責務、Officeの部屋数・ペルソナ数、業務フロー、デザイン要求の正本ではない。再利用可否は現行Screen Inventory、Agent Office UI要求、Design Experience要求、Prototype Modernization Registerから判断する。
+
 全アセットを可逆WebP（透過保持）へ変換し名称を統一。サイズ: 99328KB → 67686KB（32%削減）。
 
 凡例: 確度=確定（内容から特定）/ 暫定（現物確認で確定）/ 参照（数値入り・実装しない）/ superseded（重複・不使用）。

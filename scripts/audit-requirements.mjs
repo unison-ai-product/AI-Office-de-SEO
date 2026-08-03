@@ -613,6 +613,13 @@ for (const relativePath of manifest.audit_snapshot_paths ?? []) {
     fail(errors, `${relativePath}: audit snapshot lacks a history/current-truth boundary banner`);
   }
 }
+for (const relativePath of manifest.prototype_baseline_paths ?? []) {
+  if (!relativePath.endsWith(".md")) continue;
+  const content = fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
+  if (!/プロトタイプbaseline/.test(content) || !/正本ではない/.test(content)) {
+    fail(errors, `${relativePath}: prototype baseline lacks a current-requirement boundary banner`);
+  }
+}
 const manifestPathRoles = new Map();
 for (const field of roleSeparatedManifestFields) {
   for (const relativePath of manifest[field] ?? []) {
