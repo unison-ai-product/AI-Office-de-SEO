@@ -94,7 +94,7 @@ Feature ProviderがMCP等の動的Discoveryを利用する場合も、接続先�
 
 すべての画面、API、job、Agent tool、外部Adapter、管理操作は、共通の認可判定契約 `AuthorizationDecision(principal, action, resource, context)` を使用する。判定入力は少なくとも次を持つ。
 
-- `principal`: customer user、internal operator、service、AI executorの種別と認証済みID
+- `principal`: customer user、internal user（Admin／Manager／Operator）、service、AI executorの種別、認証済みID、内部Role
 - `action`: read、create、update、delete、execute、approve、publish、connect、purchase、export、delegate_access等のPermission
 - `resource`: tenant、organization node、Site、記事、Keyword、Recommendation、Task、connection、credit、billing、secret等のIDと所有境界
 - `context`: active tenant／organization／Site、Membership、Site Assignment、基本権限、業務タグ、Plan Entitlement、認証強度、代理権限、job、環境

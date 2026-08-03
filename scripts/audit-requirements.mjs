@@ -462,6 +462,13 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-ac
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/security-access-requirements_v1.md", [
   "REQ-ACCESS-11 監査・期限付き代理アクセス表示",
   "export、delegate_access等のPermission",
+  "internal user（Admin／Manager／Operator）",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
+  "日本市場の法人・個人向け業務SaaS",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
+  "初期リリースは法人向け業務SaaS",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-admin-console-requirements_v3.7.md", [
   "Platform AdminがManagerへ対象顧客、Site、許可operation、理由、有効期限を指定",

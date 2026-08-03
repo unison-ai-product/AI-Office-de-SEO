@@ -45,7 +45,7 @@ Recommendationは結論だけでなく、目的、対象、主要根拠、優先
 
 ### REQ-DESIGN-04 Desktop First・Accessibility
 
-初期リリースは法人向け業務SaaSとしてdesktopを標準利用環境とし、通常ビューとAgent Officeの主要業務をdesktopで成立させる。狭幅表示で閲覧不能や重要情報の欠落を起こさないが、mobileでの記事編集、画像Pattern Editor、全業務完結を初期受入条件にしない。keyboard操作、可視focus、contrast、label、error関連付け、screen reader名称、reduced motionを共通componentと受入試験へ含める。基準値は `REQ-NFR-11` を参照する。
+初期リリースは日本市場の法人・個人向け業務SaaSとしてdesktopを標準利用環境とし、通常ビューとAgent Officeの主要業務をdesktopで成立させる。狭幅表示で閲覧不能や重要情報の欠落を起こさないが、mobileでの記事編集、画像Pattern Editor、全業務完結を初期受入条件にしない。keyboard操作、可視focus、contrast、label、error関連付け、screen reader名称、reduced motionを共通componentと受入試験へ含める。基準値は `REQ-NFR-11` を参照する。
 
 ### REQ-DESIGN-05 待機・進行Feedback
 
