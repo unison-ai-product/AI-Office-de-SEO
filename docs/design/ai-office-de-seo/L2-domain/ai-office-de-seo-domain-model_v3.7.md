@@ -91,6 +91,14 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 - 状態: `candidate → proposed → accepted / held / excluded / expired → dispatched → executing → completed → evaluating → learned / superseded`。市場急変時は`watching`へ分岐し、通常推薦から隔離する。
 - 不変条件: 採用後はIntake Contractをfreezeし、Agent Workflowへ再入力なしで渡す／未実行Recommendationだけが目的・市場・分類変更による再計算対象／実行済みは履歴として保持／根拠、入力availability、予測credit、依存関係、保護条件を欠くものは実行可能にしない／手動起動もRecommendation由来と同じPreflight・重複・カニバリ・権限・予算判定へ通す／ユーザー指定Taskは維持し、衝突時は相談と依存順序を提示する／自動予定だけを再検証でheld、needs_review、supersededへ遷移させる／観測、保護、no action、ユーザーエスカレーションにAgent Jobを偽造しない。
 
+### 4.3.2 KeywordStrategyReport / KeywordSiteDiagnosisReport
+
+- ルート: KeywordReport。`report_type=new_site_strategy / existing_site_diagnosis`で同一識別基盤を使うが、章・判定目的・入力availabilityを分ける。
+- 値: ReportId、Version、SiteRef、SourceAvailability、Coverage、MarketSnapshotRef、SiteClusterRefs、CalculationVersion、Sections、UserAdjustments、Status。
+- 新規戦略: 市場、適合、優先Cluster、Site必要性、流入／CV機会、構造提案、制作順、月次配置を扱い、実績不在を障害にしない。
+- 既存診断: 同じ市場基線にObserved／Estimated／Article Share、獲得／未獲得Keyword、記事・Query対応、保護、Drift、カニバリ、index、CTA／linkを接続する。
+- 不変条件: 単一Keywordを基本単位にしない／ObservedとEstimatedを合算しない／部分開放時にcoverageを隠さない／ユーザー調整後も旧versionと実行済み施策を保持／MonthlyPlanとRecommendationは使用Report versionを参照する。
+
 ### 4.4 RewriteJob / ArticleWorkspace（Rewrite）
 - ルート: RewriteJob（ArticleWorkspaceを内包）。
 - 不変条件: パッチはEdit Plan宣言のsection_id内に限定（REQ-RWR-03）／未変更セクションのhashを保持（REQ-RWR-05）／ワークスペースは完了・承認・期限で破棄（REQ-RWR-02）／品質ゲートfail-close。

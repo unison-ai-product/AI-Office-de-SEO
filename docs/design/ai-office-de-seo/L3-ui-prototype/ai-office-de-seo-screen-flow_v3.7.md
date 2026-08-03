@@ -88,6 +88,23 @@ flowchart TD
   K --> L[再推薦/次月計画]
 ```
 
+### 0.4 Reportから月次計画・Recommendation
+
+```mermaid
+flowchart TD
+  A[Keyword分析・Cluster] --> B{Site種別}
+  B -->|新規| C[Keyword戦略Report\n市場・適合・構造・制作順]
+  B -->|既存| D[Keyword・Site診断Report\nMarket/Share・Keyword・記事/Query・診断]
+  C --> E[Cluster単位\n優先/通常/保留/除外]
+  D --> E
+  E --> F[影響差分\n未実行推薦・配分・credit]
+  F --> G[Report version確定]
+  G --> H[MonthlyPlan\nsource_report_ref]
+  H --> I[Recommendation\nsource_report_ref]
+  I -->|詳細| J[Market/Share/Keyword/記事/根拠]
+  J -->|深掘り| K[Office Keyword room\n同一Context]
+```
+
 ## 1. 全体マップ（通常ビュー）
 
 サイドメニュー=第一階層7項目、ヘッダー=グローバル要素（REQ-NAV-02）。W系は呼び出し元文脈で開く（パネル/ドロワー、第三階層）。

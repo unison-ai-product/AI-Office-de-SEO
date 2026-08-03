@@ -72,6 +72,12 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-PATCH-03: 一括承認したPatchの一部が失敗または競合しても、成功・失敗・再試行が候補単位で表示され、Batch全体を成功にしない。
 - [ ] PT-PATCH-04: CMS応答成功後に反映確認できなければappliedにせず、接続、Capability、競合、rate limit等の原因を表示する。
 - [ ] PT-PATCH-05: CTA／内部link変更でSEO評価周期を無条件にリセットせず、介入別の月次／累積評価から次のRecommendationへ戻せる。
+- [ ] PT-REPORT-01: 新規Site戦略Reportが市場、Site適合、優先Cluster、構造提案、制作順、月次配置を持ち、実績不在を異常表示しない。
+- [ ] PT-REPORT-02: 既存Site診断Reportが市場Keyword母集団からObserved／Estimated／Article Share、獲得／未獲得Keyword、記事・Query、保護・改善・index・Drift・カニバリ・CTA／linkへ掘れる。
+- [ ] PT-REPORT-03: 新規戦略と既存診断が別fixture・別章立てで、同じ記事一覧のラベル違いになっていない。
+- [ ] PT-REPORT-04: Cluster単位の優先／通常／保留／除外変更前に、未実行推薦、月次配分、予測creditへの影響を表示し、実行済み施策を変更しない。
+- [ ] PT-REPORT-05: 部分分析Reportがcoverageと未分析領域を表示し、分析済みClusterから段階利用できる。
+- [ ] PT-REPORT-06: Reportから月次計画、Recommendation、Market／Share詳細、Officeへ`report_id+version`とCluster Contextを保持して往復できる。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。

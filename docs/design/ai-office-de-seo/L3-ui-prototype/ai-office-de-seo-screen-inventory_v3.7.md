@@ -83,6 +83,17 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 データ・ロジック接続は`ai-office-de-seo-keyword-market-share-connection-map_v1.md`を正本とする。
 
+### 0.5 Keyword戦略／診断Report
+
+- S2 Report tabは`新規Site戦略`と`既存Site診断`を別fixture・別章立てで持つ。Site種別から既定を決め、記事実績のない新規Siteへ順位・click・CVの異常カードを出さない。
+- 新規戦略は市場概要、業界／商品／顧客／ファネル分布、Site適合、優先Cluster、Siteに必要な情報、流入／CV領域、AIO・広告・競争性、構造提案、制作順、月次配置を表示する。
+- 既存診断は同じMarket基線から、Cluster別Observed／Estimated／Article Share、獲得／未獲得Keyword、主＋補助Keyword、担当記事、Query、保護、Drift、カニバリ、index、CTA／内部link、外部要因、施策配分を表示する。記事一覧だけを診断Reportと呼ばない。
+- Cluster cardの通常操作は`優先 / 通常 / 保留 / 除外`とし、影響する未実行Recommendation、月次配分、予測credit差分を確認後に反映する。個別Keywordと式は詳細／Officeへ送る。
+- 大規模Siteは`partially_available`として分析済み領域を開放し、coverage、未分析領域、次回開放見込みを表示する。
+- `月次計画を作成`と`Recommendationを見る`は`report_id + version`、Cluster filterを保持する。
+
+Report情報設計は`ai-office-de-seo-keyword-report-connection-map_v1.md`を正本とする。
+
 ## 1. 通常ビュー（Standard SaaS）第一階層7画面
 
 | # | 画面 | 主要コンポーネント（REQ-NAV-04の責務） | 主データ（モック契約） | プロト優先度 |

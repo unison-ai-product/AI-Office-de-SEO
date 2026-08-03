@@ -78,6 +78,31 @@ schema.patch.result.v1 {
 
 根拠: `REQ-WPA-12/13`、`REQ-KGA-09/19`、`REQ-RWR-08/09`、軽量Patch接続マップ。
 
+## 0.0.2 Keyword Report Contract
+
+新規戦略と既存診断の共通Envelopeを`schema.report.keyword.v1`とする。
+
+```text
+{
+  report_id, version, report_type, tenant_id, site_id,
+  status, analysis_period?, generated_at,
+  market_snapshot_ref, site_cluster_refs[],
+  source_availability[], coverage,
+  calculation_versions[], sections[],
+  user_adjustments[]{cluster_ref, state, reason?, adjusted_by, adjusted_at},
+  supersedes_ref?, next_actions[]{kind, target_ref, available}
+}
+```
+
+- `report_type`: `new_site_strategy / existing_site_diagnosis`。
+- `status`: `draft / partially_available / ready / user_adjusted / superseded`。
+- 新規戦略のsectionsはmarket overview、distribution、site fit、priority cluster、structure proposal、production order、monthly allocationを必須とする。
+- 既存診断のsectionsはmarket baseline、cluster share、acquired／unacquired keyword、asset state、diagnostics、external factors、action mix、monthly orderを必須とする。
+- `coverage`は分析済みCluster／記事／Queryと未分析範囲を分ける。partialをcompleteとして表示しない。
+- MonthlyPlanとRecommendationは`source_report_ref=report_id+version`を保持し、画面からReportを再解釈しない。
+
+根拠: `REQ-BUS-02/04/05/06`、`REQ-SCREEN-02/09/18`、Keyword Report接続マップ。
+
 ## 0.1 Authorization Decision Contract
 
 すべての実行面で使用する認可入力・出力を`schema.authorization.decision.v1`として固定する。

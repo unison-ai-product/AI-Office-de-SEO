@@ -93,6 +93,8 @@ Recommendation Actionの正規名、判定側alias、Agentic Workflow／軽量Pa
 
 CTA・内部linkの既存公開記事向け軽量施策は`ai-office-de-seo-lightweight-content-patch-connection-map_v1.md`を接続正本とし、候補、承認Batch、対象part、CMS結果、部分失敗、月次／累積評価を同じ`patch_action_id`で追跡する。
 
+新規SiteのKeyword戦略Reportと既存SiteのKeyword・Site診断Reportは`ai-office-de-seo-keyword-report-connection-map_v1.md`を情報設計と業務接続の正本とする。両者を同じ記事一覧や同じ章立てへ縮退させない。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

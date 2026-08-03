@@ -62,7 +62,7 @@
 6. Keyword Market Poolの所有、公共／Site ID、Public Cluster／Site Projection、Market／Share、更新、業界補正、Site補正、ユーザー修正学習の接続マップ、L2集約、L3 Source／DDL／event、プロト受入を2026-08-03に追加した。公共Sourceの購入原価・更新SLO・実装試験は未完了。
 7. Recommendation TypeはAction Routing Map、L2集約、L3 Intake／DDL／event、`PT-REC-01〜04`へ正規Catalogとaliasを追加した。各Workflow、Patch、ユーザー対応の実装・契約試験は未完了。
 8. MonthlyPlan、Recommendation、手動指定Taskは、ユーザー指定維持、自動予定再検証、依存順序相談、version／supersede規則をAction Routing Mapと`PT-REC-05/06`へ集約した。実装・同時更新試験は未完了。
-9. 新規Site戦略Reportと既存Site診断Reportの画面情報設計が不足。既存Siteも市場Keyword母集団に対する自社shareを基線にする必要がある。
+9. 新規Site戦略Reportと既存Site診断Reportは、別の業務目的・章・入力availability・操作をKeyword Report接続マップ、L2集約、L3 schema／DDL／event、画面要件、`PT-REPORT-01〜06`へ追加した。実モック画面の作成と操作試験は未完了。
 10. CTA/CVは軽量Patch接続マップ、L2集約、L3 action/result schema、DDL、event、`PT-PATCH-01/05`へ、記事目的、直接CV、認知貢献、月次／累積評価を追加した。実装と母数・判定閾値の較正は未完了。
 11. 内部linkはcandidate lifecycle、承認Batch、候補単位の部分失敗、CMS反映確認、再評価を軽量Patch接続マップと`PT-PATCH-02〜05`へ追加した。実装・CMS別Contract Testは未完了。
 12. CMS読取り経路の自動選択はL1にあるが、Siteごとの選択結果、health、切替履歴、料金／Plan制御のL2集約がない。

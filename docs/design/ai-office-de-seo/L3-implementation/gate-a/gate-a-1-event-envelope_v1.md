@@ -88,6 +88,10 @@ updated_at: 2026-07-05
 | site.cluster_dependency_staled | site_cluster_id, public_cluster_ref, reason | O | REQ-KRL-09 |
 | site.market_share_calculated | site_cluster_id, snapshot_id, period, observed_availability, estimated_availability | W,O | REQ-KRL-02/09 |
 | site.keyword_classification_corrected | target_ref, correction_kind, before_version, after_version | W,O,A | REQ-DATA-11, REQ-KRL-09 |
+| report.keyword_section_available | report_id, version, report_type, section_key, coverage | W,N,O | REQ-BUS-02/04 |
+| report.keyword_ready | report_id, version, report_type, coverage, market_snapshot_ref | W,N,O | REQ-BUS-02/04 |
+| report.cluster_state_adjusted | report_id, version, cluster_ref, before_state, after_state, adjusted_by | W,O,A | REQ-BUS-04/05 |
+| report.superseded | report_id, version, superseded_by_ref, cause | W,O | REQ-BUS-05/06 |
 | recommendation.proposed | recommendation_id, version, type, subtype?, target_ref, origin, availability | W,O | REQ-KRL-08, REQ-DATA-06 |
 | recommendation.accepted | recommendation_id, version, intake_ref, correlation_id | W,O,A | REQ-LOGIC-03, REQ-SCREEN-09 |
 | recommendation.held | recommendation_id, version, reason, release_condition | W,N,O | REQ-KRL-07/09 |
@@ -99,7 +103,7 @@ updated_at: 2026-07-05
 | task.conflict_detected | manual_task_ref, automatic_action_ref, target_ref, conflict_kind, suggested_order[] | W,N,O | REQ-KRL-09, REQ-LOGIC-03 |
 | recommendation.evaluation_started | recommendation_id, intervention_ref, evaluation_window | W,O | REQ-LOGIC-06, REQ-DATA-07 |
 | recommendation.learned | recommendation_id, result_class, site_calibration_version, global_candidate_ref? | W,O,A | REQ-KRL-10, REQ-DATA-10 |
-| plan.monthly_closed | period, target_delta, factors[] | N,O | REQ-PRODUCT-17 |
+| plan.monthly_closed | period, source_report_ref, target_delta, factors[] | N,O | REQ-PRODUCT-17 |
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
 | automation.oscillation_detected | targets[] | N,O,A | REQ-PRODUCT-18 |
 | wp.patch_conflict_detected | url_hash, reason | N,O | REQ-WPA-12 |

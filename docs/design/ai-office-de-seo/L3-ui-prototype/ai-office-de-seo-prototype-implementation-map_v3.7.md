@@ -20,7 +20,7 @@ DCプロト `prototype/AI Office de SEO.dc.html`（単一ファイル・約8,900
 | 差分 | 現在の実装 | 必要な変更 |
 |---|---|---|
 | Site導入 | S7の接続・設定部品 | 新規／既存の構築Stepper、big keyword方向確認、GSC/upload/CMS availability、段階開放 |
-| 戦略／診断Report | S1/S2/S5へ断片化 | 新規戦略Reportと既存診断ReportをW1共通枠で構成し、Market→Share→施策を一続きで表示 |
+| 戦略／診断Report | S1/S2/S5へ断片化 | `fixture.report.new_site_strategy.v1`と`fixture.report.existing_site_diagnosis.v1`を別章立てで作る。共通のCluster card、Market／Share drilldown、coverage、優先／通常／保留／除外、影響差分、`report_id+version`遷移を実装し、Market→Share→施策を一続きで表示 |
 | Recommendation Intake | `recVals`とS3 preset | `recommendation_id+version / intake_ref / correlation_id`をfixture正本にし、S3再入力を廃止 |
 | Workflow分岐 | 新規／リライト中心 | CTA Patch、内部link Patch、観測、技術エスカレーション、Automation変更を型付き分岐 |
 | 公開条件 | 旧full_auto／承認表現 | 15記事、解放後自動投稿、リライト承認、hard gate例外を別状態化 |
