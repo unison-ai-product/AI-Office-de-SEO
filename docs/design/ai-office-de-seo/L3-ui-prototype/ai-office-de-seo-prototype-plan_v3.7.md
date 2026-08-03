@@ -104,6 +104,9 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-OFFICE-04: Proposal確定時と副作用直前に同じ認可契約を使い、persona／部屋／Office入室でPermissionが拡張されない。
 - [ ] PT-OFFICE-05: base version競合時に古いProposalを適用せず、supersededまたは再確認へ遷移する。
 - [ ] PT-OFFICE-06: Officeの変更結果が通常ビューへ、通常ビューの採否・承認・設定結果がOffice設備・Agent・Knowledge Graphへ同じeventから反映される。
+- [ ] PT-UX-01: 通常ビューのRecommendationを採用すると、Decision＋Intake成立、実行準備、見積・不足、実行開始を初心者向けの段階名で確認できる。採用clickだけでJob開始や完了へ飛ばず、不足がない場合は不要な確認を増やさない2案以上を比較する。
+- [ ] PT-UX-02: OfficeでKeyword、Recommendation、記事、Taskの同じ対象を開き、許可された軽微調整は選択式、影響を伴う変更は型付きProposal＋影響・Credit・権限確認として完結できる。通常ビューへ戻らないと変更できない案を不採用fixtureにする。
+- [ ] PT-UX-03: 通常→Office→通常でSite、Recommendation／Cluster／記事／Task、一覧位置を保持し、初心者向け要約と玄人向け詳細の段階開示を比較する。3D、2D縮退、reduced motionでも操作対象を失わない。
 - [ ] PT-OFFICE-07: Proposalを適用前に取消でき、適用後は対象Domainが提供するrollback／復元だけを表示し、存在しないrollbackを約束しない。
 - [ ] PT-OFFICE-08: Office会話はpersona種別を保持し、一般会話はSession Summary、記事指示はTask/User Order、SupportはSupport Ticket、Executor成果はSnapshotへ分離する。無修飾の「Agent会話履歴」へ統合しない。
 - [ ] PT-OFFICE-09: Session Summaryを次回会話で確認・削除できるが、Summary削除で確定済みCommandやTask履歴を消さず、Summary文から設定・権限・公開状態・学習Factを暗黙更新しない。

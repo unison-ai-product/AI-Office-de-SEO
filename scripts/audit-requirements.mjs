@@ -337,6 +337,25 @@ assertIncludes("docs/reference/ai-office-de-seo-artifact-alignment-ledger_2026-0
   "L1→L2→画面検証→L1/L2差分反映→L3確定",
   "L3確定前に要求差分を発見",
 ]);
+assertIncludes("docs/reference/ai-office-de-seo-prototype-modernization-register_2026-08-03.md", [
+  "pre-L3実装突合",
+  "visual_unverified",
+  "PROTO-21",
+  "PROTO-22",
+  "PROTO-23",
+  "PROTO-24",
+  "PROTO-25",
+  "SF-UI-01",
+  "SF-UI-02",
+  "SF-UI-03",
+  "SF-UI-04",
+  "validated`とL1/L2反映なしにL3確定へ送らない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
+  "PT-UX-01",
+  "PT-UX-02",
+  "PT-UX-03",
+]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
   "非公開Output Vault stagingのupload",
   "同一DB transactionで成立した後だけ`generation.job_completed`",
@@ -1257,6 +1276,24 @@ const screenInventoryPath = path.join(
   "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md",
 );
 const screenInventory = fs.readFileSync(screenInventoryPath, "utf8");
+const prototypeSource = fs.readFileSync(path.join(repoRoot, "prototype/AI Office de SEO.dc.html"), "utf8");
+const modernizationRegister = fs.readFileSync(
+  path.join(repoRoot, "docs/reference/ai-office-de-seo-prototype-modernization-register_2026-08-03.md"),
+  "utf8",
+);
+const knownPrototypeDrift = [
+  [/選ぶ・決めるはこの通常ビューで/, "PROTO-22"],
+  [/役割分担どおり実行はしない/, "PROTO-22"],
+  [/recFbSet\(id, v\)/, "PROTO-21"],
+  [/'目標管理': \{ screen: 'automation', auTab: 'goal' \}/, "PROTO-23"],
+  [/明日のおすすめで再提案されます/, "PROTO-24"],
+  [/実行前に必ずプレビューと見積が出ます/, "PROTO-25"],
+];
+for (const [pattern, findingId] of knownPrototypeDrift) {
+  if (pattern.test(prototypeSource) && !modernizationRegister.includes(findingId)) {
+    fail(errors, `prototype semantic drift ${findingId}: implementation evidence is not registered`);
+  }
+}
 for (const requiredPhrase of [
   "成果を利用可能にしました",
   "非公開staging upload、QA seal、hash検証だけを成果提供やJob完了として顧客へ表示しない",

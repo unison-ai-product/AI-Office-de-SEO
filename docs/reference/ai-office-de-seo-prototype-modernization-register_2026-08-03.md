@@ -6,6 +6,12 @@
 
 本台帳は「画面を作り直す理由」と「再利用する部分」を分離し、見た目の全面作り直しではなく、業務正本と操作を現行化するための改修順を示す。
 
+### 1.1 2026-08-03 pre-L3実装突合
+
+`prototype/AI Office de SEO.dc.html`を実装行から再突合した。ブラウザ接続先がない環境での確認であるため、以下は文言、handler、state、遷移の証拠であり、見た目、クリック可能領域、scroll、animation、体感速度の実機評価ではない。視覚・操作実測は別途`visual_unverified`として残し、ソース確認だけで完了にしない。
+
+確認できた再利用資産は、通常ビューの「今日のおすすめ」、対象別の「オフィスで詳しく見る」、Officeの部屋・詳細ページ、Keyword／記事の分析カード、通常／Officeで共有するlocal stateである。一方、Officeの役割説明、採用処理、Workbench遷移、Tour、S4責務は現行L1/L2へ追従していない。
+
 ## 2. P0 — 現行要求と正面衝突
 
 | ID | 実コード証拠 | 問題 | 必要な改修 | 接続正本 |
@@ -18,6 +24,8 @@
 | PROTO-06 | Content起点が手動Keyword選択中心 | Site導入→Report→月次計画→Recommendation→IntakeのLifecycleが見えない | Recommendation Queueを既定入口にし、採用時にfreeze済みIntakeを表示／引継ぐ | Action Routing Map、PT-REC |
 | PROTO-07 | 新規／既存Site導入、戦略Report／診断Reportが画面として未成立 | GSCや市場母集団なしで推薦が出るように見える | 新規／既存の導入step、source availability、自動構築、Report、段階開放を追加 | Keyword Report Map、PT-REPORT／MARKET |
 | PROTO-08 | 一律の承認fixture中心 | 新規15記事、解放後自動投稿、リライト承認、hard gate二段階確認の差が出ない | lifecycle別fixtureと承認条件、同意、残数、解放状態を表示 | PT-LC-05/06 |
+| PROTO-21 | `recFbSet`／`recVals`が`adopted / later / rejected`をlocal stateへ直接保存し、Officeからも同じhandlerを呼ぶ | 現行の`accepted / accepted_with_edit / held / excluded`、Decision Eligibility version、Decision＋Intake原子性、影響・Credit・認可確認を通らない | Recommendation versionを対象に型付きDecision／Proposalを作り、`accepted*`時はIntakeと同時成立。Officeも共通Commandを使う | INV-RECOMMEND-001、REQ-SCREEN-18 |
+| PROTO-22 | Tour・Office入口・コメント・NEXT ACTIONが「選ぶ・決めるは通常ビュー」「Officeは実行状況の確認」「役割分担どおり実行はしない」を繰り返す | PROTO-04/05が一部文言でなく、案内・実装思想・CTA全体へ残存している | Tour、入口copy、Office詳細CTA、menu、Workbenchを一括更新し、Office内の詳細分析・許可操作・Proposalを正規導線にする | REQ-DESIGN-09、REQ-SCREEN-18、INV-OFFICE-001 |
 
 ## 3. P1 — 操作と状態が未接続
 
@@ -31,6 +39,9 @@
 | PROTO-14 | CMSはWordPress接続の単一状態 | read／write／Media／Editor／Preview／Revision／CapacityをCapability表示し、縮退と反映確認を分ける | CMS Routing Map |
 | PROTO-15 | アイキャッチPattern Editorなし | Pattern、variation、ロゴsafe area、wireframe、見積、生成、Media割当を追加 | Featured Image Pattern Map |
 | PROTO-16 | 評価は順位・click中心の固定story | 公開／更新起点、1/3/6か月、SEO、CTA/CV、認知、要監視、月次／累積を分離 | Business Lifecycle、Evaluation events |
+| PROTO-23 | `WB_MAP`に`目標管理 → automation / goal`が残る | 月次目的・KPI・記事／予算配分の正本をS1プランニングとし、S4に目標管理を重複させない現行境界と衝突 | Officeの目標・配分操作はS1 Planning Contextへ接続し、S4は承認・予約・自動運用・予算上限・Kill Switchに限定 | Screen Inventory §5、REQ-BUS-06 |
+| PROTO-24 | `later`が常に「明日のおすすめで再提案」と表示される | `held`の解除、Eligibility再評価、市場・順位・費用・目的の再判定を固定翌日へ丸める | 保留理由、再評価条件、次回確認予定を表示し、再提示時は同一または新Eligibility versionを明示 | Recommendation Portfolio、INV-RECOMMEND-001 |
+| PROTO-25 | Recommendation Tourは「実行前に必ずプレビューと見積」と説明するが、`recVals.*Adopt`はlocal state変更後に画面遷移するだけ | Recommendation Decision、Intake、Execution Admission、見積、reserve、実行開始の段階が操作として検証できない | 通常ビューで`採用 → 実行準備 → 不足解消／見積確認 → 実行開始`を初心者向けに段階表示し、Officeでは同じAdmission証拠を詳しく表示 | REQ-SCREEN-02/03、INV-ADMISSION-001 |
 
 ## 4. P2 — 体験強化
 
@@ -43,6 +54,19 @@
 
 ## 5. 改修順序
 
+### 5.1 画面で検証してからL1/L2へ戻す項目
+
+次の項目はL3で先に決めない。操作可能なfixtureを2案以上作り、SEO非専門者と詳細操作利用者の双方で意味が通るかを比較してからL1/L2へ戻す。
+
+| Finding | 画面検証する問い | 固定しないもの | 還流先 |
+|---|---|---|---|
+| SF-UI-01 | 通常ビューのRecommendation採用後、どこまで自動で進み、どの不足時だけユーザーを止めると迷わないか | Modal数、step数、CTA配置 | REQ-SCREEN-02/03、Recommendation／Admission境界 |
+| SF-UI-02 | Officeで「少し触る」際、Keyword優先度、対象外、目的、配分、記事条件、Task順序のどこまでをinline選択にし、どこから型付きProposal確認にするか | object別adjustable field、Panel構成 | REQ-DESIGN-09、REQ-SCREEN-18、Office Proposal |
+| SF-UI-03 | 通常→Office→通常の往復で、Site、Recommendation、Cluster、記事、Task、一覧位置のどこまで保持すれば連続作業として理解できるか | URL／state実装、breadcrumb形 | REQ-DESIGN-09、REQ-SCREEN-18 |
+| SF-UI-04 | Officeの専門情報を、初心者が少し覗く段階と玄人が深く操作する段階へどう段階開示するか | 3D配置、カード密度、初期展開 | REQ-DESIGN-09、REQ-AOUI-01/04 |
+
+視覚検証ではdesktop標準viewport、狭幅、reduced motion、2D縮退を確認し、通常ビューの優先判断が埋もれないこと、Officeの詳細操作が演出に隠れないこと、往復時に対象を見失わないことを記録する。ブラウザ未接続のソース監査だけでこれらを`resolved`にしない。
+
 1. fixture正本化: Price、Plan、Entitlement、Authorization、Site、Report、Recommendation、Intake。
 2. 共通resolver: Availability、Recipient、Authorization、CMS Capability。
 3. 通常ビューLifecycle: 導入、Report、月次計画、Recommendation、実行、評価。
@@ -52,4 +76,4 @@
 
 ## 6. 受入方法
 
-見た目の目視だけで完了判定しない。`PT-LC / MIG / AUTH / MARKET / REPORT / REC / PATCH / CMS / OFFICE / STATE / NOTIFY / BILLUI / AWS / IMAGE`のfixtureを操作し、通常ビューとOfficeが同じ業務entity、Command、Event、状態を使用することを確認する。
+見た目の目視だけでも、ソース文言・handlerの静的確認だけでも完了判定しない。`PT-LC / MIG / AUTH / MARKET / REPORT / REC / PATCH / CMS / OFFICE / STATE / NOTIFY / BILLUI / AWS / IMAGE / UX`のfixtureを操作し、通常ビューとOfficeが同じ業務entity、Command、Event、状態を使用することを確認する。各findingは`open / prototyped / validated / reflected_to_l1_l2 / ready_for_l3 / resolved`で管理し、`validated`とL1/L2反映なしにL3確定へ送らない。
