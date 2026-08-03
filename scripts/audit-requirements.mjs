@@ -197,17 +197,46 @@ assertExcludes("docs/reference/FEATURE-LIST.md", [
 ]);
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
-for (const field of ["canonical_paths", "l3_preparation_paths", "gate_a_paths", "prototype_paths"]) {
+const manifestArrayFields = [
+  "canonical_paths",
+  "l3_preparation_paths",
+  "gate_a_paths",
+  "prototype_paths",
+  "plan_paths",
+  "ui_support_paths",
+  "prototype_baseline_paths",
+  "audit_snapshot_paths",
+  "reference_paths",
+];
+const manifestSingletonFields = [
+  "verification_log",
+  "alignment_ledger",
+  "open_items_register",
+  "prototype_modernization_register",
+];
+for (const field of manifestArrayFields) {
   for (const relativePath of manifest[field] ?? []) {
     if (!fs.existsSync(path.join(repoRoot, relativePath))) {
       fail(errors, `manifest.${field}: missing path ${relativePath}`);
     }
   }
 }
-for (const field of ["verification_log", "alignment_ledger"]) {
+for (const field of manifestSingletonFields) {
   const relativePath = manifest[field];
   if (!relativePath || !fs.existsSync(path.join(repoRoot, relativePath))) {
     fail(errors, `manifest.${field}: missing path ${relativePath ?? "(unset)"}`);
+  }
+}
+const classifiedMarkdown = new Set(
+  [
+    ...manifestArrayFields.flatMap((field) => manifest[field] ?? []),
+    ...manifestSingletonFields.map((field) => manifest[field]).filter(Boolean),
+  ].map((item) => item.replaceAll("\\", "/")),
+);
+for (const markdownFile of markdownFiles(path.join(repoRoot, "docs"))) {
+  const relativePath = path.relative(repoRoot, markdownFile).replaceAll("\\", "/");
+  if (!classifiedMarkdown.has(relativePath)) {
+    fail(errors, `manifest: unclassified Markdown artifact ${relativePath}`);
   }
 }
 for (const relativePath of manifest.gate_a_paths ?? []) {

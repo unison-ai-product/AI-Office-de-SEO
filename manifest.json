@@ -1,6 +1,6 @@
 {
   "product_name": "AI Office de SEO",
-  "version": "3.7.51",
+  "version": "3.7.52",
   "generated_at": "2026-08-03",
   "scope": "L0 charter, current categorized L1 requirements and logic, legacy-detail migration maps, L2 domain model, L3 contracts/DDL/config/events, and screen design; prototype implementation is follow-up only",
   "legacy_implementation_included": false,
@@ -100,6 +100,34 @@
   ],
   "verification_log": "docs/reference/ai-office-de-seo-verification-log_v3.7.md",
   "alignment_ledger": "docs/reference/ai-office-de-seo-artifact-alignment-ledger_2026-08-03.md",
+  "open_items_register": "docs/reference/ai-office-de-seo-open-items-register_2026-08-03.md",
+  "prototype_modernization_register": "docs/reference/ai-office-de-seo-prototype-modernization-register_2026-08-03.md",
+  "plan_paths": [
+    "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md",
+    "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md",
+    "docs/plans/PLAN-L2-01-ai-office-de-seo-domain-model.md",
+    "docs/plans/PLAN-L3-01-ai-office-de-seo-implementation-design.md",
+    "docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md"
+  ],
+  "ui_support_paths": [
+    "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-implementation-map_v3.7.md",
+    "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md"
+  ],
+  "prototype_baseline_paths": [
+    "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md",
+    "docs/reference/ASSET-MAPPING.md"
+  ],
+  "audit_snapshot_paths": [
+    "docs/reference/ai-office-de-seo-agent-function-audit_2026-08-03.md",
+    "docs/reference/ai-office-de-seo-claude-review-resolution_2026-08-03.md",
+    "docs/reference/ai-office-de-seo-content-consistency-audit_2026-07-09.md",
+    "docs/reference/ai-office-de-seo-full-requirements-gap-audit_2026-08-03.md",
+    "docs/reference/ai-office-de-seo-requirements-review_2026-07-31.md",
+    "docs/reference/ai-office-de-seo-view-sync-audit_2026-07-09.md"
+  ],
+  "reference_paths": [
+    "docs/reference/ai-office-de-seo-reference-notes_v3.7.md"
+  ],
   "gate_a_paths": [
     "docs/design/ai-office-de-seo/L3-implementation/gate-a/GATE-A-README.md",
     "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md",

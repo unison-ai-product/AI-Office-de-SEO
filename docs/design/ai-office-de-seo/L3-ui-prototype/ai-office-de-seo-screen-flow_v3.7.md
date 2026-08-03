@@ -1,10 +1,10 @@
 ---
 document_id: AOS-L3-SCREEN-FLOW
-title: AI Office de SEO 画面遷移図 v3.7
-version: 3.7
+title: AI Office de SEO 画面遷移図 v3.8
+version: 3.8
 layer: L3
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 related: AOS-L1-USER-JOURNEY / AOS-L3-SCREEN-INVENTORY
 ---
@@ -299,7 +299,35 @@ flowchart TD
 
 補足: 各Sノードは第二階層タブ（画面台帳§5）を持ち、通知・引き継ぎはタブへ直リンクする（2遷移以内の前提）。
 
-## 8. 検証規約
+## 8. 正規遷移契約マトリクス
+
+図だけでは入口条件、認可、失敗時の復帰先を検証できないため、以下を画面遷移の受入正本とする。基本権限は `契約者 / サイトオーナー / ユーザー`、SEO業務の変更能力は `目標管理 / キーワード・サイト戦略 / 記事制作 / サイト分析` の業務権限で判定する。基本権限だけを理由にSEO業務操作を許可しない。Site AssignmentがないMembershipは全Site、指定があるMembershipは指定Siteだけを対象とする。閲覧可能な結果と、設定・状態を変更できる操作を分ける。
+
+| 遷移 | 開始条件 | 変更操作に必要な権限 | 成功時 | 不成立・失敗時と復帰先 | 要求正本 |
+|---|---|---|---|---|---|
+| 登録・同意 → 顧客組織／Site作成 | 有効な顧客Session、必須同意 | 初回契約者。既存組織へのSite追加は契約者または対象範囲のサイトオーナー | Site設定へ | 同意不足、Plan上限、権限不足を同画面に表示し、入力を保持 | REQ-UJ-02 / REQ-ORG-01〜04 / REQ-ACCESS-08 |
+| Site設定 → CMS接続診断 | Site基本情報、対象URL | 契約者またはサイトオーナー | 新規／既存の入力分岐へ | 認証、REST Capability、投稿・Media Scopeの不足を分離表示。分析設定は保持し、再認証後に同じSiteへ戻す | REQ-BUS-02 / REQ-INT-01・05 / REQ-SCREEN-01 |
+| 新規Site → big keyword方向確認 | Site接続、業界／業種等の探索入力。未設定分類は推定可 | 候補閲覧は全員、追加・除外・方向確定はキーワード・サイト戦略 | 市場探索・Cluster分析へ | 候補不足時は探索条件と追加入力へ戻す。空Recommendationへ進めない | REQ-BUS-02・03 / REQ-SCREEN-01 / REQ-KRL-01 |
+| 既存Site → Keyword統合 | GSCまたはKeyword upload。記事対応・リライトにはCMS記事取得も必要 | 接続設定は契約者またはサイトオーナー、Keyword追加・分類修正はキーワード・サイト戦略 | Market／Share・Cluster分析へ | Source別availabilityを表示し、利用できるSourceだけで部分処理。リライト不成立でも新規施策を止めない | REQ-BUS-02〜04 / REQ-DATA-06 / REQ-SCREEN-05 |
+| 分析 → 戦略／診断Report | 分析対象Keywordが1 Cluster以上成立 | 閲覧は全員、分析条件・評価設定変更はサイト分析、Cluster優先度等の変更はキーワード・サイト戦略 | 領域単位でReportを開放 | 未完了領域は処理中／不足／staleを表示し、完了領域の閲覧を妨げない | REQ-BUS-04・05 / REQ-SCREEN-04・05 |
+| Report → 月次計画 | Report versionが存在 | 目的・KPI・月次方針確定は目標管理。予算設定・配賦は契約者またはサイトオーナー | source_report_ref付きMonthlyPlan案へ | Report変更時は未実行分への影響差分を表示し、確定済み・実行済み履歴を保持 | REQ-BUS-06 / REQ-ORG-03・05 / REQ-UJ-09 |
+| 月次計画 → 週次実行予定 | 計画確定または自動確定期限到達 | 手動確定・方針変更は目標管理。予算変更は契約者またはサイトオーナー | 今週の実行予定へ | credit、Capacity、依存、保護、品質不足を項目別に保留し、月次計画へ戻して再計算可能 | REQ-BUS-06・07 / REQ-SCREEN-01 |
+| Recommendation → Intake | version、根拠、入力availability、予測credit、依存、保護条件が成立 | 戦略的な採否・除外はキーワード・サイト戦略。個別記事の実行採否は記事制作 | freeze済みIntakeとPreflightへ | 不足入力、重複、カニバリ、予算、権限、接続を理由付きでheld。対象設定または元Recommendationへ戻す | REQ-BUS-08 / REQ-LOGIC-01〜03 / REQ-SCREEN-02・03 |
+| Intake → Agent Workflow | Preflight成立 | 新規・リライト・Patch実行は記事制作 | Task History／生成進捗へ | Preflight後の外部変化は古い条件で実行せずheld／supersededとし、Recommendation Contextを保って復帰 | REQ-AGENT-* / REQ-SCREEN-15 / REQ-ACCESS-16 |
+| Outline → 本文・QA・装飾 | Outline Contract成立 | 記事制作。途中確認ONの場合のみ確認操作 | CMS送信前成果へ | 差し戻しは対象stageへ戻り、ユーザー編集箇所を保護。再生成時は追加credit条件を表示 | REQ-SCREEN-15 / REQ-LOGIC-05〜07 |
+| 成果 → CMS下書き | CMS write Capabilityと副作用直前の再認可 | 記事制作 | WordPress等の編集URL／Previewへ | REST切断、Scope不足、互換性低下では生成成果を保持し、再接続・再送・持ち出しへ分岐 | REQ-INT-01・05 / REQ-SCREEN-16 |
+| CMS下書き → 公開・更新 | 新規15件ルール、承認設定、自動運用委任、hard gate、対象種別の条件成立 | 記事制作。自動運用設定は契約者またはサイトオーナー＋該当業務権限・step-up | 公開／更新eventと評価起点へ | 新規15件未達は完成記事承認へ。リライト・記事置換は原則承認へ。hard gateは同一権限者の二段階確認＋同意へ | REQ-ORG-05・06 / REQ-WPA-04 / REQ-ACCESS-08・16 |
+| 公開・更新 → 評価 → 次回計画 | 公開または実質的更新event | 閲覧は全員、分析条件・評価確定はサイト分析、補正採用や方針変更は対応する業務権限 | 1・3・6か月評価、月次／累積結果、次回Recommendationへ | データ不足は成功・悪化を確定せず観測継続。急変は即時推薦せず要監視へ | REQ-BUS-09・10 / REQ-SCREEN-13 / REQ-KRL-05〜10 |
+| 通常ビュー ⇄ Office | 同じtenant、Site、対象ID、versionへの閲覧権限 | 閲覧は共通。変更は通常ビューと同じ基本権限・業務権限 | 同一Command／Eventを両Viewへ反映 | Office独自状態や権限迂回を作らず、拒否理由と通常ビューの解消先を表示 | REQ-SCREEN-08〜11・18・19 / REQ-ACCESS-01・14〜16 |
+| 顧客面 → 内部管理面 | 遷移不可 | なし | なし | URL／API直接指定もdefault-deny。内部支援は管理面で期限付き代理権限を開始し、代理操作表示を維持 | REQ-ACCESS-01〜03 / REQ-SCREEN-07 |
+
+### 8.1 遷移状態の共通表現
+
+各遷移は `ready / input_required / permission_required / entitlement_required / connection_required / processing / partially_available / awaiting_approval / held / failed_retryable / unavailable` を返す。画面はこの状態から計算せず、Server判定の理由、解消操作、復帰先を表示する。`input_required` や `connection_required` を機能全体の利用不可へ拡大せず、成立している閲覧、分析、生成、持ち出しを継続する。
+
+遷移Contextには `tenant_id`、`site_id`、`source_screen`、`source_tab`、`source_filter`、対象ID、対象version、`correlation_id` を含める。通知、Dashboard、Office、Task Historyから遷移しても同一Contextを復元し、別Siteまたは旧versionへ黙って移動しない。
+
+## 9. 検証規約
 
 - 各ジャーニー（REQ-UJ-02〜09）のステップ列は本図のパスとして到達可能であること（AC-UJ-02〜09）。
 - 終端のないノード（行き止まり）を作らない（REQ-UJ-01）。空状態・完了状態の次アクションは画面台帳§0に従う。
@@ -307,3 +335,4 @@ flowchart TD
 - 遷移ごとに `source screen/tab/filter`、`tenant_id`、`site_id`、対象IDとversion、`correlation_id` を保持し、戻る操作で起点Contextを復元する。
 - 入口条件を満たさない場合は別画面へ黙って迂回させず、同一Contextで `権限 / Plan / credit・予算 / CMS・GSC等の接続 / データ / 承認 / 処理中 / 障害` を分離表示し、解消画面と復帰先を示す。
 - `screen-inventory` は画面責務、`screen-flow` は正規遷移、`screen-connection-map` は既存プロト実測と追随差分を正本とし、同じ目的で競合する遷移定義を複製しない。
+- §8の各行について、許可ケース、業務権限なし、Site範囲外、接続切断、Plan／credit不足、処理中、再試行、戻る操作を受入試験化する。画面非表示だけで認可試験を代替しない。
