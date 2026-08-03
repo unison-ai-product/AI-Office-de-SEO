@@ -821,6 +821,19 @@ for (const currentEvent of [
 if (/^\| generation\.article_assembled \||^\| publish\.draft_created \|/m.test(eventCatalog)) {
   fail(errors, "event catalog: legacy assembly/draft aliases remain active event rows");
 }
+const agentRuntimePath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md",
+);
+const agentRuntime = fs.readFileSync(agentRuntimePath, "utf8");
+if (/workflow\.rewrite\.v1`: GSC Query Drift／Cause Analysis/.test(agentRuntime)) {
+  fail(errors, "agent runtime: rewrite workflow remains incorrectly fixed to GSC Query Drift");
+}
+for (const requiredPhrase of ["Article Read Snapshot確認", "Edit Plan freeze", "ユーザー承認"]) {
+  if (!agentRuntime.includes(requiredPhrase)) {
+    fail(errors, `agent runtime: current rewrite workflow element missing: ${requiredPhrase}`);
+  }
+}
 const layerPlanChecks = [
   ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],

@@ -152,7 +152,7 @@ Workflowは権限スコープを持つ。許可ツール・アクション（外
 主要Workflow（列挙）:
 
 - `workflow.new_article.v1`: Research & Outline → Meaning Unit Writing → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → CMS Draft
-- `workflow.rewrite.v1`: GSC Query Drift／Cause Analysis → 対象Meaning Unit特定 → Repair Writing → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → CMS Draft
+- `workflow.rewrite.v1`: 採用済みRewrite Recommendation／Cause Analysis → Article Read Snapshot確認 → 対象Meaning Unit特定 → Edit Plan freeze → Repair Writingまたは承認付き記事置換 → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → CMS Draft → ユーザー承認。原因はQuery Driftに限定せず、順位・CTR、検索意図ずれ、情報不足・鮮度、競合差分、CTA／内部link、カニバリ、保護条件等の型付きreasonを受ける。GSCまたはKeyword実績だけでArticle Read Snapshotなしの本文変更へ進めない
 - `workflow.automation.v1`: CMS Capability・出力形式検証 → CMS下書き送信 → 承認／委任条件判定 → 予約・公開／更新 → CV・評価起点event
 
 ループ（反復）を一級の構文として持つ:

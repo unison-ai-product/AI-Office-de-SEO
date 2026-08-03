@@ -45,7 +45,7 @@ WP下書き送信後は引渡し済みSnapshotとして扱い、標準Workflow�
 
 ## 6. リライト原因分析  ［REQ-RWR-06］
 
-リライト対象と種別は、GSC実績（弱いクエリ・CTR・順位・CV導線）とカニバリ（`REQ-KGA-07`）から機械判定する（`REQ-KGA-08`）。Original Article Structure Pack（既存記事の構造）と Rewrite Cause Analysis Pack（原因）から、対象セクションと Rewrite Type を決める。強い部分は残し、弱い箇所だけ直す。
+リライト対象と種別は、採用済みRewrite Recommendationの型付きreason（GSC実績、順位・CTR・CV導線、Query Drift、検索意図ずれ、情報不足・鮮度、競合差分、カニバリ、CTA／内部link、保護条件等）から機械判定とCause Analysisを組み合わせて決める（`REQ-KGA-08`）。対象記事の本文・見出し・公開状態を取得したArticle Read Snapshot、Original Article Structure Pack（既存記事の構造）、Rewrite Cause Analysis Pack（原因）が揃うまで本文変更を開始しない。強い部分は残し、弱い箇所だけ直す。
 
 ## 7. コスト・クレジット  ［REQ-RWR-07］
 
