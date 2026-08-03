@@ -44,7 +44,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-SANDBOX-01: AIジョブはtenant_id/site_id/job_idに固定される。 ｜ 検証: REQ-PRODUCT-02, REQ-SEC-01
 - [ ] AC-SANDBOX-02: AIツールは任意site_idを受け取らない。 ｜ 検証: REQ-PRODUCT-02, REQ-SEC-01
 - [ ] AC-SANDBOX-03: 別サイトのGSCデータを参照できない。 ｜ 検証: REQ-SEC-01
-- [ ] AC-SANDBOX-04: 別サイトのWP下書きへ送れない。 ｜ 検証: REQ-SEC-01
+- [ ] AC-SANDBOX-04: 別サイトのCMS下書きへ送れず、初期WordPress Adapterでも別Siteのpostへ到達できない。 ｜ 検証: REQ-SEC-01
 
 ## Tenant / Account
 
@@ -124,7 +124,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-PACK-01: TicketはworkflowKey、promptPackKeys、sourceNeedKeys、schemaKeys、userPromptを持つ。 ｜ 検証: REQ-PACK-01
 - [ ] AC-PACK-02: Pack versionはジョブ開始時に固定される。 ｜ 検証: REQ-PACK-04
 - [ ] AC-PACK-03: TableはJSON正本で返される。 ｜ 検証: REQ-PACK-05
-- [ ] AC-PACK-04: 投稿形式チェックを通してWP下書きへ進める。 ｜ 検証: REQ-WPA-02
+- [ ] AC-PACK-04: CMS投稿形式チェックを通して下書きDeliveryへ進め、初期WordPress AdapterではDynamic Post Schemaに適合するWordPress下書きを作成できる。 ｜ 検証: REQ-WPA-02, REQ-INT-10
 - [ ] AC-PACK-05: Executorは直テーブルにアクセスせず、Source Need→Source Pack→Source Extract（JSON）でのみデータを受け取り、成果はSnapshotとして返す。 ｜ 検証: REQ-PACK-06, REQ-AGENT-05
 - [ ] AC-PACK-06: 各Packが種別（Prompt Pack / Source Pack / Catalog）・キー名前空間・versionで一意に引け、サイト方針データは取得→注入の2段で扱われる。 ｜ 検証: REQ-PACK-01, REQ-PACK-02, REQ-PACK-04
 - [ ] AC-PACK-07: 主要な内部データが Source Pack キーで JSON 取得でき、site_idスコープで解決される。 ｜ 検証: REQ-PACK-07, REQ-SEC-07
@@ -585,7 +585,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-12: 文体の組合せと個別Site言い回し学習のON/OFFを設定でき、ON時だけサンプル記事10本を使用し、10本未満は暫定状態を確認できる。 ｜ 検証: REQ-SCREEN-12 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-13: 急変対象が通常推薦と分離され、1か月・3か月・6か月評価の状態と既存予定の継続を区別できる。 ｜ 検証: REQ-SCREEN-13 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。 ｜ 検証: REQ-SCREEN-14 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、保留理由、WordPress反映、再開・追加見積を同一相関IDで確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、CMS Deliveryの保留・再開・外部反映確認、追加見積を同一相関IDで確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。 ｜ 検証: REQ-SCREEN-16 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。 ｜ 検証: REQ-SCREEN-17 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-18: 通常ビューの詳細をOfficeで同一権限・業務正本のまま操作でき、Agentの会話指示を影響・費用確認付き変更案として確定し、結果を両画面へ同期できる。 ｜ 検証: REQ-SCREEN-18 ｜ 正本: `categories/screen-operation-requirements_v1.md`
@@ -632,7 +632,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-TECH-16: 相関IDからAPI、ジョブ、外部連携、AI実行を追跡できる。 ｜ 検証: REQ-TECH-16 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-17: 具体的な技術選定と例外にADRまたは期限付き記録がある。 ｜ 検証: REQ-TECH-17 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-18: 技術的禁止事項を自動検査またはレビューゲートで検出できる。 ｜ 検証: REQ-TECH-18 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
-- [ ] AC-L1-TECH-19: AWS上の代表E2Eで相関IDがAPI、queue、worker、Provider、WordPress結果まで維持され、DLQから原因確認と安全なredriveができる。 ｜ 検証: REQ-TECH-19 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
+- [ ] AC-L1-TECH-19: AWS上の代表E2Eで相関IDがAPI、queue、worker、Provider、CMS Adapter結果まで維持され、初期WordPress Adapterを含むDLQから原因確認と安全なredriveができる。 ｜ 検証: REQ-TECH-19 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 
 ## 26. 詳細ロジック受入トレース
 

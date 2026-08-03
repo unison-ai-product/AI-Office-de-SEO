@@ -121,15 +121,15 @@ Site設定で「業界／業種」の2階層を複数選択し、優先順を並
 
 ### REQ-SCREEN-15 記事制作・リライト実行面
 
-新規記事の実行面は、Recommendation／手動起動、Intake結果、Preflight見積、Research Brief、Outline Contract、Section Brief、生成進捗、Quality Gate、限定Repair、WordPress下書き、プレビュー、承認・Automation判定、公開結果を同一相関IDで追跡できる。
+新規記事の実行面は、Recommendation／手動起動、Intake結果、Preflight見積、Research Brief、Outline Contract、Section Brief、生成進捗、Quality Gate、限定Repair、CMS Delivery、CMS下書き、プレビュー、承認・Automation判定、公開結果を同一相関IDで追跡できる。初期WordPress AdapterではWordPress編集URL／Preview URLを表示する。
 
-リライト実行面は、原因、Edit Plan、対象section、許可operation、変更上限、保持対象、変更前後差分、title/meta、見出し、CTA、内部リンク、品質・保護結果、復元点、費用を表示する。変更対象外のsectionが維持されたことを確認できる。部分リライト・全文再生成ともWordPress下書きへ送り、リスクと復元可否を確認してユーザーが更新を承認する。全文再生成は高リスク操作として影響範囲と追加確認を伴って提供する。
+リライト実行面は、原因、Article Read Snapshot、Edit Plan、対象section、許可operation、変更上限、保持対象、変更前後差分、title/meta、見出し、CTA、内部リンク、品質・保護結果、復元点、費用を表示する。変更対象外のsectionが維持されたことを確認できる。部分リライト・全文再生成ともCMS下書きまで送り、リスクと復元可否を確認してユーザーが更新を承認する。初期WordPress AdapterではWordPress下書きを使用する。全文再生成は高リスク操作として影響範囲と追加確認を伴って提供する。
 
 専用バックアップが利用できない場合はWordPressリビジョンへの依存と復元制約を表示し、上位プランのバックアップ・拡張保持を「安心保証」として提示できる。ただし順位、流入、CV等の成果保証と誤認させない。
 
-AI Office内でユーザーが本文・見出しを修正した場合はその変更を保護し、変更箇所を再QAする。記事装飾は本文生成と分離して最終プレビュー前に実行する。装飾済みWordPress下書きのPreview URLを正規プレビューとして表示し、埋込みが認証・CSP等で利用できない場合はWordPressの新規タブで開く。
+AI Office内でユーザーが本文・見出しを修正した場合はその変更を保護し、変更箇所を再QAする。記事装飾は本文生成と分離して最終プレビュー前に実行する。CMS Adapterが返す検証済みPreview URLを正規プレビューとして表示し、初期WordPress Adapterで埋込みが認証・CSP等により利用できない場合はWordPressの新規タブで開く。
 
-標準WorkflowではWordPress送信後の本文をAI Officeから編集・上書きしない。WordPress内編集オプション、AI生成版との差分表示、変更履歴の取得は後続機能として表示上も分離し、初期リリースの必須画面に含めない。
+標準WorkflowではCMS Delivery後の本文をAI Officeから編集・上書きしない。WordPress内編集オプション、AI生成版との差分表示、変更履歴の取得は後続機能として表示上も分離し、初期リリースの必須画面に含めない。
 
 装飾設定では、Siteから検出したテーマ、標準・独自ブロック、ショートコード、CSS classを候補として表示し、Preview、依存関係、利用可否を確認してユーザーが採用対象を選択できる。未選択または互換性未確認の独自パーツを自動使用しない。
 
@@ -217,7 +217,7 @@ Task完了、ユーザー確認待ち、承認期限、停止、失敗、再開�
 - [ ] AC-L1-SCREEN-12: 文体の組合せと個別Site言い回し学習のON/OFFを設定でき、ON時だけサンプル記事10本を使用し、10本未満は暫定状態を確認できる。
 - [ ] AC-L1-SCREEN-13: 急変対象が通常推薦と分離され、1か月・3か月・6か月評価の状態と既存予定の継続を区別できる。
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。
-- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、保留理由、WordPress反映、再開・追加見積を同一相関IDで確認できる。
+- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、CMS Deliveryの保留・再開・外部反映確認、追加見積を同一相関IDで確認できる。
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。
 - [ ] AC-L1-SCREEN-18: 通常ビューの詳細をOfficeで同一権限・業務正本のまま操作でき、Agentの会話指示を影響・費用確認付き変更案として確定し、結果を両画面へ同期できる。

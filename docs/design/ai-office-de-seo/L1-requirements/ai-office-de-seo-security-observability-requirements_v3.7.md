@@ -88,7 +88,7 @@ Prompt CacheとToken Trackerは必須。
 ## 5. 受入検証  ［REQ-SEC-05］
 
 - 別サイトのGSCデータをAIが参照できない。
-- 別サイトのWP下書きに送れない。
+- 別サイトのCMS下書きへ送れない。初期WordPress Adapterでも別Siteのpostへ到達できない。
 - 記事本文が恒久保存されない。
 - 競合本文が恒久保存されない。
 - 表はJSON正本から投稿形式へ変換される。
