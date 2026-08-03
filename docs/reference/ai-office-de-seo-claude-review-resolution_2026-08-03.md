@@ -1,5 +1,7 @@
 # Claude要求レビュー解消表（2026-08-03）
 
+> **履歴スナップショット**: 本書はClaudeレビュー各指摘への解消証拠を記録した時点の監査資料であり、現在の要求件数、未確定事項、正本関係、実装状態を単独で判定する資料ではない。現在値はmanifest、Artifact Alignment Ledger、Open Items Register、要求監査結果および各正本文書を参照する。
+
 ## 1. 対象
 
 16分類の成熟度、AC衝突・横断Trace、課金、デザイン、WordPress重複、ロジック分割、セキュリティ、計測運用、移行方針を指摘したClaudeレビューへの回答を記録する。元レビュー本文は会話・レビュー資料へ残し、本書は現行worktreeの解消状態を示す。
@@ -42,4 +44,3 @@
 - AWS IaC、障害注入、復元演習。
 - Stripe test mode、Ledger reconciliation、auto-charge試験。
 - Open Items RegisterのLaunch blocker解消。
-

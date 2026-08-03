@@ -607,6 +607,12 @@ for (const field of manifestArrayFields) {
     }
   }
 }
+for (const relativePath of manifest.audit_snapshot_paths ?? []) {
+  const content = fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
+  if (!/(?:履歴|監査時点)スナップショット/.test(content)) {
+    fail(errors, `${relativePath}: audit snapshot lacks a history/current-truth boundary banner`);
+  }
+}
 const manifestPathRoles = new Map();
 for (const field of roleSeparatedManifestFields) {
   for (const relativePath of manifest[field] ?? []) {

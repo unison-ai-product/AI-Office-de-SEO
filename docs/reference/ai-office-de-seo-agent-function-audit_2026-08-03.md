@@ -1,5 +1,7 @@
 # AI Office de SEO Agent機能監査（2026-08-03）
 
+> **履歴スナップショット**: 本書はAgent要求を再発見・接続した監査時点の記録であり、現行のAgent数、工程、画面、権限、Workflow契約の正本ではない。現在値はAgent Requirements Map、Agent Runtime要求、Agent Office UI要求、分類別L1、L3 Contract Schemas、画面台帳・画面遷移図を参照する。
+
 ## 1. 監査目的
 
 旧Agent要求、Pack/Ticket要求、Agent Office要求、画面台帳・遷移・接続マップ、プロトタイプ実装資料および画面アセットを突合し、Agentが関与する製品機能とAgentic Workflowの境界を再確認した。
