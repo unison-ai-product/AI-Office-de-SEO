@@ -4,14 +4,14 @@ title: AI Office de SEO Config Registry初期値台帳 v3.7
 version: 3.7
 layer: L3
 kind: design
-status: draft
+status: current-draft
 updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
 
 # AI Office de SEO Config Registry初期値台帳
 
-要求書に「初期値・要調整」として散在する数値を、設定レジストリの初期値として一元登録する台帳（REQ-BILL-10 / REQ-ADM-09。検証: AC-BILL-07, AC-ADM-06）。値はすべて既定値であり、レジストリの値が優先する。スコープ上書き: グローバル → プラン → テナント/サイト。
+要求書に「初期値・要調整」として散在する数値を、設定レジストリの初期値として一元登録する台帳である。現行の設定管理正本は`REQ-PAC-07`、Plan／価格は`REQ-BILLING-*`、旧`REQ-BILL-10 / REQ-ADM-09`は詳細移行参照とする。確定済み値は既定値として登録し、`TODO(L3)`は値が未確定であることを明示する占位値であって実行時に受理しない。スコープ上書き: グローバル → プラン → テナント/サイト。
 
 ## 1. 登録形式
 
@@ -160,6 +160,26 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 |---|---|---|
 | link.contextual_per_1000_words | 2〜5本（公式ではない・要調整） | REQ-KGA-09 |
 | link.click_depth.max / publish_inbound_links | 3クリック / 2〜3記事 | REQ-KGA-09 |
+
+## 2.1 未確定keyの横断分類
+
+`TODO(L3)`を要求欠落と運用較正で混同しないため、key familyごとの解消先を固定する。実行環境は`TODO(L3)`、空文字、単位不明値を`active`として登録できない。
+
+| key family | Open Items／L3 Decision | 確定証拠 |
+|---|---|---|
+| `quality.*`, `pack.*`, `eval.*`, `agent.repair_loop.*` | DD-11〜13、D-11、D-25〜27、OC-05 | 日本語golden set、human評価、precision／recall、Repair収束、原価 |
+| `src.*`, `kga.attribute.*`, `kga.match.*`, `kga.longtail.*`, `fanout.*` | D-05、D-12、D-13、D-17、OC-07 | Provider契約、quota、正解set、鮮度、API原価 |
+| `kga.topology.*`, `kga.watch.*`, `kga.value.*`, `kga.strategy.*`, `recommendation.*` | OC-06、OC-07 | 1・3・6か月実績、季節性、Market／Share、説明可能性、誤推薦率 |
+| `auto.*`, `wpa.*`, `rwr.*`, `cvp.*`, `sched.*` | LB-01、OC-04、OC-06 | CMS負荷、週次上限、変更結果、停止・再開試験 |
+| `summary.*`, `facts.*`, `embed.*`, `retention.*` | DD-09、DD-10、D-10、D-14 | 保存量、推薦精度、検索latency、費用、復元試験 |
+| `capacity.*`, `perf.*`, `adm.retry_*`, `circuit_breaker` | LB-01、DD-05、DD-06、OC-04、D-08、D-20 | 負荷・障害注入・P95/P99・queue age・費用 |
+| `recovery.*`, `heal.*` | LB-04、D-21、OC-04 | Restore演習、RPO／RTO、flapping試験 |
+| `inbound.*`, `mail.*`, `support.*`, `notif.*`, `auth.*` | D-07、DD-10、D-16、D-31、OC-04 | abuse試験、delivery／bounce、Support運用、Retention、法務review |
+| `net.*`, `master.*`, `showcase.*` | OC-08、D-16、D-34 | 再識別risk、標本安定性、同意・撤回、marketing review |
+| `bill.*`, `pricing.*`, `plan.*`, `credit.*`, `payment.*`, `trial.*` | LB-01〜03、LB-07、D-15、D-32、OC-01〜03 | 実Job原価、Stripe test、ledger照合、法務・価格承認 |
+| `product.export.*`, `announce.*`, `cust.*` | D-16、D-31、OC-04 | Plan policy、法務、画面性能、Support運用 |
+
+個別値が確定したら、対応するDecision／Open Itemの証拠を残し、同じ変更で`TODO(L3)`を値・単位・scope・effective_fromへ置換する。要求本文へ実測値を逆流させず、Policyとして必要な意味だけを要求へ残す。
 
 ## 3. 安全不変条件（設定対象外・本レジストリに含めない）
 

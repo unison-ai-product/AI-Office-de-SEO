@@ -182,6 +182,8 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "<domain>.<subject>.<property>[.<qualifier>]",
   "pack.writing_method.modifier_max | 2",
   "pack.sim.article_qa.enabled | false",
+  "## 2.1 未確定keyの横断分類",
+  "実行環境は`TODO(L3)`、空文字、単位不明値を`active`として登録できない",
 ]);
 assertIncludes("docs/reference/FEATURE-LIST.md", [
   "現在は443 REQを監査対象",
@@ -208,6 +210,9 @@ assertIncludes("docs/reference/ai-office-de-seo-reference-notes_v3.7.md", [
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md", [
   "本実装（React）のコンポーネント分割の正本",
   "そのままReactコンポーネント名にする",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
+  "full_auto有効化の確認UI（Owner/Admin限定",
 ]);
 assertExcludes("docs/reference/FEATURE-LIST.md", [
   "全135 REQ",
