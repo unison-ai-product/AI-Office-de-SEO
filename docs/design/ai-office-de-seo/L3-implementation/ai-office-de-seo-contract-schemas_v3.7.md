@@ -163,6 +163,30 @@ Office会話を質問と状態変更へ分け、変更案を`schema.office.propo
 
 根拠: `REQ-AOUI-01/04/07`、`REQ-AGENT-06/09`、`REQ-SCREEN-15`、Agent要求マップ。
 
+## 0.0.5 UI Availability Decision Contract
+
+利用可否を`schema.ui.availability.v1`とする。
+
+```text
+{
+  decision_id, tenant_id, site_id?, principal_ref?, resource_ref, operation?,
+  state, primary_reason,
+  reasons[]{class, code, source_ref, resolvable_by, retry_at?},
+  available_capabilities[], unavailable_capabilities[],
+  coverage?, progress?, entitlement_ref?, authorization_decision_ref?,
+  actions[]{kind, label_key, target_ref?},
+  evaluated_at, policy_version, expires_at?
+}
+```
+
+- `state`: `blocked / degraded / preview / partial / pending / ready`。
+- primary reasonの優先順はUI Availability State Mapへ従うが、全reasonsを保持する。
+- `out_of_scope`は対象存在を漏らすpayloadを返さない。
+- incidentをPlan lock、permission denialをcredit不足、connection不足をdata不足へ正規化しない。
+- 通常ビュー、Office、API action、worker Preflightが同じdecisionまたは同じ入力Policyを使用する。
+
+根拠: `REQ-SCREEN-01/03/15/18`、`REQ-ACCESS-14〜16`、UI Availability State Map。
+
 ## 0.1 Authorization Decision Contract
 
 すべての実行面で使用する認可入力・出力を`schema.authorization.decision.v1`として固定する。

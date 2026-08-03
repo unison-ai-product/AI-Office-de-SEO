@@ -97,6 +97,8 @@ CTA・内部linkの既存公開記事向け軽量施策は`ai-office-de-seo-ligh
 
 CMSの変更発見、記事読取り、投稿・更新、Media、Editor、Preview、Revision、反映確認、計測、Capacityは`ai-office-de-seo-cms-connection-routing-map_v1.md`を接続正本とする。ユーザーに内部経路やfallbackを選択させず、読取り成功を書込み許可へ流用しない。
 
+権限、Plan、接続、データ、credit、承認、処理中、障害等の画面利用可否と表示優先順位は`ai-office-de-seo-ui-availability-state-map_v1.md`を正本とする。各画面で独自のロック理由や優先順を作らない。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

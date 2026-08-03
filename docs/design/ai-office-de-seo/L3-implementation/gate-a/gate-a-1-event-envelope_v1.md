@@ -123,6 +123,7 @@ updated_at: 2026-07-05
 | office.proposal_failed | proposal_id, command_ref?, error_class, retryable | W,N,O | REQ-AOUI-01 |
 | office.proposal_cancelled | proposal_id, cancelled_by, reason | W,O,A | REQ-AOUI-01 |
 | office.proposal_superseded | proposal_id, version, current_base_version, replacement_ref? | W,O | REQ-AOUI-01 |
+| ui.availability_changed | resource_ref, operation?, before_state, after_state, primary_reason, reason_codes[] | W,N,O | REQ-SCREEN-01/03/15 |
 | patch.candidate_proposed | patch_action_id, type, target_article_ref, target_part_ref, recommendation_ref? | W,O | REQ-WPA-12/13, REQ-KGA-09 |
 | patch.batch_approved | approval_batch_ref, patch_action_refs[], approved_by | W,O,A | REQ-WPA-12, REQ-PRODUCT-08 |
 | patch.action_scheduled | patch_action_id, cms_job_ref, scheduled_at | W,O | REQ-WPA-12 |

@@ -71,6 +71,8 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 操作別の正本は`ai-office-de-seo-authorization-operation-matrix_v1.md`とする。
 
+画面利用可否は`ai-office-de-seo-ui-availability-state-map_v1.md`へ従う。障害をPlanロック、権限不足をcredit不足、接続不足をデータ不足として表示しない。複数理由は保持し、最初に解消可能な理由を主表示する。一覧、詳細、Modal、Office設備、会話Proposalで同じAvailability Decisionを使う。
+
 ### 0.4 Keyword Market・Site Share表示
 
 - S2はClusterを基本行とし、`Market / 自社Share / 記事配分 / 戦略 / Recommendation`を同じ対象Contextで横断できるようにする。
