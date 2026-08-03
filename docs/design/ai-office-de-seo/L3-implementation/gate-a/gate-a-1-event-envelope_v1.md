@@ -71,7 +71,8 @@ updated_at: 2026-08-03
 | generation.meaning_unit_drafted | unit_id, purpose_element | W,O | REQ-AGENT-02 |
 | generation.qa_evaluated | verdict, hard_gate_block, failed_gates[] | W,N(hard),O | REQ-PACK-09 |
 | generation.repair_requested | unit_ids[], issue_refs[] | W,O | REQ-AGENT-02 |
-| generation.article_assembled | content_hash | W,O | REQ-WPA-09 |
+| generation.semantic_assembled | assembled_snapshot_ref, content_hash, unit_refs[], outline_contract_ref | W,O | REQ-AGENT-02/09/11, REQ-PACK-17/18 |
+| generation.presentation_assembled | presentation_snapshot_ref, semantic_snapshot_ref, decoration_profile_ref?, featured_image_ref?, placement_instruction_refs[], cms_format_key | W,O | REQ-AGENT-11, REQ-PACK-17, REQ-LOGIC-09/10 |
 | generation.job_suspended | cause(manual/kill_switch/budget/hard_gate/approval), hold_until | W,N,O,A | REQ-AGENT-10 |
 | generation.job_resumed | resumed_from_stage, rewarm_estimate | W,N,O | REQ-AGENT-10 |
 | generation.job_completed | result_ref | W,N,O | REQ-AGENT-01 |
@@ -196,7 +197,7 @@ updated_at: 2026-08-03
 | source.competitor_structure_extracted | keyword | O | REQ-SRC-03 |
 | source.fetch_throttled | provider, deferred_to | N(繰延), O | REQ-SRC-07 |
 | publish.envelope_sealed | post_refs | W,O | REQ-WPA-09 |
-| publish.draft_created | post_refs | W,O | REQ-WPA-04 |
+| cms.draft_created | cms_job_ref, cms_adapter_key, external_post_refs[], edit_url?, preview_url?, resulting_hash, correlation_id | W,O | REQ-INT-05/06, REQ-WPA-04, REQ-SCREEN-15 |
 | publish.decision_recorded | publication_decision_id, operation, decision, reasons[], correlation_id | W,O,A | REQ-LOGIC-04/05 |
 | publish.scheduled | schedule_at | W,O | REQ-WPA-04 |
 | publish.approval_requested | requester, schedule_at? | N,O | REQ-WPA-04 |
@@ -210,6 +211,8 @@ updated_at: 2026-08-03
 | billing.credit_committed | amount, ledger_ref | O,A | REQ-BILL-07 |
 | billing.credit_released | amount, ledger_ref | O,A | REQ-BILL-07 |
 | billing.monthly_granted | amount | N,O,A | REQ-BILL-08 |
+
+移行規則: 旧`generation.article_assembled`は`generation.semantic_assembled`、旧`publish.draft_created`は`cms.draft_created`へ読み替えるmigration aliasであり、新規producerは発行しない。装飾・アイキャッチ・CTA／内部link配置・CMS形式化の完了をSemantic Assemblyへ混在させず、`generation.presentation_assembled`で表す。
 | billing.balance_low | threshold | N,O,A | REQ-BILL-02 |
 | billing.subscription_state_changed | from, to | N,O,A | REQ-BILL-08 |
 | billing.batch_lane_fallback | job_id, delta_estimate | N,O | REQ-BILL-11 |

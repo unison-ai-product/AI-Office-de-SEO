@@ -809,6 +809,18 @@ const eventCatalog = fs.readFileSync(eventCatalogPath, "utf8");
 if (!/search\.rewrite_candidate_raised \|[^\r\n]+article_read_snapshot_ref[^\r\n]+input_availability/.test(eventCatalog)) {
   fail(errors, "event catalog: rewrite candidate event lacks article retrieval and availability evidence");
 }
+for (const currentEvent of [
+  "generation.semantic_assembled",
+  "generation.presentation_assembled",
+  "cms.draft_created",
+]) {
+  if (!eventCatalog.includes(`| ${currentEvent} |`)) {
+    fail(errors, `event catalog: current workflow event missing: ${currentEvent}`);
+  }
+}
+if (/^\| generation\.article_assembled \||^\| publish\.draft_created \|/m.test(eventCatalog)) {
+  fail(errors, "event catalog: legacy assembly/draft aliases remain active event rows");
+}
 const layerPlanChecks = [
   ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],

@@ -188,9 +188,9 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - External Intelligence: KeywordAssetObserved, PublicMarketClusterVersioned, PublicMarketClusterSplit, PublicMarketClusterMerged, FanoutExpanded, CompetitorStructureExtracted, FetchBatchThrottled。
 - Content Index: SiteKeywordUniverseUpdated, SiteClusterProjectionUpdated, SiteClusterDependencyStaled, KeywordMapUpdated, ArticleSummaryUpserted。
 - Search Performance: SiteBuildStarted, SiteBuildStageReleased, BigKeywordDirectionConfirmed, KeywordReportVersioned, MonthlyPlanProposed, MonthlyPlanConfirmed, WeeklyExecutionSelected, GscDataIngested, CoverageAssessed, QueryDriftDetected, RewriteCandidateRaised, RecommendationProposed, RecommendationAccepted, RecommendationHeld, RecommendationExpired, RecommendationDispatched, InterventionEvaluationDue, InterventionEvaluated, RecommendationEvaluationStarted, RecommendationLearned。
-- Generation: GenerationJobStarted, OutlineContractFrozen, MeaningUnitDrafted, QualityGateEvaluated(Passed/Failed), RepairRequested, ArticleAssembled。
+- Generation: GenerationJobStarted, OutlineContractFrozen, MeaningUnitDrafted, SemanticAssembled, QualityGateEvaluated(Passed/Failed), RepairRequested, PresentationAssembled。
 - Rewrite: RewriteJobStarted, PatchApplied, RewriteQualityFailed。
-- Publishing: PostEnvelopeSealed, PublicationDecisionRecorded, PublicationApproved, ContentPublished, ContentUpdated, PublicationFailed, CvRecorded。
+- Publishing: PostEnvelopeSealed, CmsDraftCreated, PublicationDecisionRecorded, PublicationApproved, ContentPublished, ContentUpdated, PublicationFailed, CvRecorded。
 - Billing: CreditReserved, CreditCommitted, CreditReleased, MonthlyCreditGranted。
 - Provider: ProviderRouteDecided, ProviderHealthDegraded, CanaryRolledBack。
 - Config/Governance: ConfigVersionActivated, FeatureFlagToggled, KillSwitchEngaged。
