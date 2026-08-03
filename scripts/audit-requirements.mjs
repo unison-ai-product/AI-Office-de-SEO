@@ -295,12 +295,32 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/billing-
   "| Entry | 39,800円 | 43,780円 |",
   "| Premium | 198,000円 | 217,800円 | セルフ申込・年契約のみ |",
   "追加購入分は購入から180日を上限",
+  "ユーザー非公開のOutput Vault staging",
+  "read-after-write",
+  "同一DB transactionで確定",
+  "提供済み事実、Generation Outcome、commitを取消す理由ではなく",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
   "初回ログインと日常業務の正規入口は通常ビュー",
   "玄人向けの詳細分析",
   "選択式ポップアップと決定論Service",
   "必要な場合だけLLMを呼ぶ",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
+  "非公開Output Vault stagingのupload",
+  "同一DB transactionで成立した後だけ`generation.job_completed`",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md", [
+  "`output_vault_provisions`",
+  "Outcome確定前にユーザー取得用署名URLを発行しない",
+  "同一transactionで作成",
+  "`output_vault_availability`",
+  "期限削除でOutcomeまたはcommit Ledgerをupdate／deleteせず",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
+  "PT-GEN-OUTCOME-02",
+  "PT-GEN-OUTCOME-03",
+  "PT-GEN-OUTCOME-04",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
   "Office独自の業務正本",
@@ -1098,7 +1118,8 @@ for (const requiredPhrase of [
   "Report → 月次計画",
   "Recommendation → Intake",
   "Intake → Execution Admission → 正規Action",
-  "成果 → CMS下書き",
+  "QA済みPresentation → Generation Outcome",
+  "Generation Outcome → CMS下書き",
   "CMS下書き → 公開・更新",
   "Publication Fact → 評価 → 次回計画",
 ]) {
@@ -1175,6 +1196,15 @@ const screenInventoryPath = path.join(
   "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md",
 );
 const screenInventory = fs.readFileSync(screenInventoryPath, "utf8");
+for (const requiredPhrase of [
+  "成果を利用可能にしました",
+  "非公開staging upload、QA seal、hash検証だけを成果提供やJob完了として顧客へ表示しない",
+  "通常ビューは期限と必要操作、OfficeはProvision証拠、Outcome／commit相関、Delivery影響、Incidentを詳しく表示",
+]) {
+  if (!screenInventory.includes(requiredPhrase)) {
+    fail(errors, `screen inventory: Generation Outcome display boundary missing: ${requiredPhrase}`);
+  }
+}
 if (!/## 1\. 旧詳細コンポーネント棚卸し（互換baseline・現行責務の正本ではない）/.test(screenInventory)) {
   fail(errors, "screen inventory: legacy detailed component table lacks a noncanonical boundary");
 }
@@ -1242,6 +1272,27 @@ for (const currentEvent of [
     fail(errors, `event catalog: current workflow event missing: ${currentEvent}`);
   }
 }
+for (const currentEvent of [
+  "generation.output_vault_provision_verified",
+  "generation.deliverable_provided",
+  "generation.output_vault_expiring",
+  "generation.output_vault_expired",
+  "generation.output_vault_deleted",
+  "generation.output_vault_access_failed",
+]) {
+  if (!eventCatalog.includes(`| ${currentEvent} |`)) {
+    fail(errors, `event catalog: Generation Outcome event missing: ${currentEvent}`);
+  }
+}
+for (const requiredPhrase of [
+  "同じDB transaction／outbox batchで作成",
+  "Provision検証だけでは発行しない",
+  "v1.10改訂",
+]) {
+  if (!eventCatalog.includes(requiredPhrase)) {
+    fail(errors, `event catalog: atomic Generation Outcome rule missing: ${requiredPhrase}`);
+  }
+}
 if (/^\| generation\.article_assembled \||^\| publish\.draft_created \|/m.test(eventCatalog)) {
   fail(errors, "event catalog: legacy assembly/draft aliases remain active event rows");
 }
@@ -1263,6 +1314,18 @@ const contractSchemasPath = path.join(
   "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
 );
 const contractSchemas = fs.readFileSync(contractSchemasPath, "utf8");
+for (const requiredPhrase of [
+  "schema.generation.outcome.v1",
+  "vault_provision_ref",
+  "vault_verification_ref",
+  "credit_commit_ref",
+  "schema.output_vault.availability.v1",
+  "read-after-write検証",
+]) {
+  if (!contractSchemas.includes(requiredPhrase)) {
+    fail(errors, `contract schemas: atomic Generation Outcome contract missing: ${requiredPhrase}`);
+  }
+}
 for (const requiredPhrase of [
   "schema.snapshot.article_read.v1",
   "public_state(published|draft|private|redirected|not_found|unknown)",

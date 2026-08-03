@@ -121,6 +121,9 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-IMAGE-06: 生成→採否→最適化→Media登録→featured割当を追跡し、Media失敗で本文成果を失わず再送できる。
 - [ ] PT-IMAGE-07: 同一入力の二重送信を防ぎ、ユーザー再生成は新credit、サービス障害再開は同一Job・追加課金なしになる。
 - [ ] PT-GEN-OUTCOME-01: 生成履歴でGeneration Outcome、CMS Delivery、Publication Decision、Publication Job、Publication Factを別状態として表示し、同一Job再開は`customer_credit_delta=0`、ユーザー希望の別成果は親Outcomeを参照する新Job・新見積として確認できる。
+- [ ] PT-GEN-OUTCOME-02: 非公開Vault stagingの検証成功だけでは成果提供・Job完了・commitを表示せず、Outcome、Ledger commit、deliverable／commit outboxが同時成立した後だけ表示・copy・downloadできる。transaction失敗fixtureはOutcome／commitなしでstaging cleanupになる。
+- [ ] PT-GEN-OUTCOME-03: Output Vaultのavailable／expiring／expired／deleted／unavailable_incidentをOutcome providedと別表示し、期限削除でGeneration失敗、commit取消し、自動再生成へ戻さない。期限前通知から未完了CMS Deliveryへ遷移できる。
+- [ ] PT-GEN-OUTCOME-04: Vault提供後のCMS失敗、CMS成功後の公開保留、公開Fact成立を別fixtureにし、いずれもGeneration Outcomeとcredit commitを重複作成しない。
 - [ ] PT-IMAGE-08: 技術的不成立／設定不一致のblockedと、構図・トーン等のadvisoryを分け、自動投稿をadvisoryだけで止めない。
 - [ ] PT-NOTIFY-01: 固定担当者未設定でも、Task完了・確認要求が対象Siteを閲覧できる該当ユーザーへpopup表示され、閉じた後もW7へ残る。
 - [ ] PT-NOTIFY-02: 受信者をClient入力で決めず、Site付与・閲覧範囲・操作権限・購読設定をServer側の同一policy versionで解決する。

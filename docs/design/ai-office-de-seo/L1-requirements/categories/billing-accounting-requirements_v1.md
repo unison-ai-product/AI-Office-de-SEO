@@ -108,6 +108,10 @@ Stripe等の決済・継続課金手数料は顧客請求へ都度上乗せす�
 
 記事生成・リライトの「成果の提供条件」は、QA済みPresentation Snapshotがsealされ、同一content hashの成果がOutput Vaultから表示・copy・download可能になった`deliverable_provided`とする。CMS接続、下書き作成、承認、予約、公開・更新成功は生成creditのcommit条件にしない。CMS接続待ち、送信再試行、外部反映確認は同一成果・同一commitの後続処理であり、新しいreserve／commitを発生させない。成果提供前にサービス側原因で終端した未使用予約はreleaseし、提供済み成果が保証した保持期間内に製品側原因で利用不能となった場合は障害・保証要求から調整判断へ渡す。
 
+成果payloadは最初にユーザー非公開のOutput Vault stagingへ暗号化保存し、QA seal、content hash、size、read-after-writeを検証する。検証後、Generation Outcome作成、reserveを参照するcommit Ledger event、`generation.deliverable_provided`／`billing.credit_committed`のtransactional outboxを同一DB transactionで確定する。Vaultの表示・copy・download APIは、commit参照を持つ確定Outcomeとtenant／Site認可がある場合だけpayloadを返す。transaction失敗時はOutcomeもcommitも成立させず、非公開staging objectをcleanupする。Objectを先に公開して未課金成果を作ることも、commitを先行して利用不能な成果を作ることも禁止する。
+
+Output Vault期限到達後はpayloadを削除して削除証跡とOutcome metadataを残す。これは提供済み事実、Generation Outcome、commitを取消す理由ではなく、CMS再送可能期間の終了である。期限前通知と未完了Deliveryの状態を表示し、期限後に同じ成果を自動再生成しない。保証保持期間内の製品側利用不能はIncident／保証判断からappend-only adjustmentへ接続し、Outcomeや元Ledgerを更新しない。
+
 同一ジョブの限定Repair、サービス障害による再試行、checkpoint再開では新しいreserve・commitを作らない。ユーザーが別成果を求める再生成は新しいjob・見積・reserveとして扱う。
 
 ### REQ-BILLING-05 Append-only Ledger・残高導出
@@ -183,7 +187,7 @@ Upgradeは残期間差額を事前Previewし、支払成功を条件に、ユー
 - [ ] AC-L1-BILLING-01: 契約時のPrice Catalog versionから商品、価格、付与量、制限、適用期間と、人間代行・汎用AI・SEOツールとの比較範囲および算定根拠を再現できる。
 - [ ] AC-L1-BILLING-02: Entry・Standardの月契約、Premiumのセルフ年契約、Enterpriseの問い合わせ年契約および年契システム利用料10%割引を再現でき、内部契約と外部Subscriptionの状態差を検出して未検証Webhookで利用権限が直接変更されない。
 - [ ] AC-L1-BILLING-03: クレジットlotの付与元、期限、消費順、繰越・失効を契約versionどおりに再現できる。
-- [ ] AC-L1-BILLING-04: 記事生成・リライトがreserve後に開始し、Output Vaultで`deliverable_provided`となった時だけ生成creditをcommitし、提供前の未使用分をreleaseでき、CMS接続待ち・送信再試行・公開成否で二重commitまたは生成creditの取消しが起きない。
+- [ ] AC-L1-BILLING-04: 記事生成・リライトがreserve後に開始し、非公開staging成果のQA seal・hash・read検証後、Generation Outcome、commit Ledger、deliverable outboxを同一transactionで確定してからOutput Vaultで利用可能にできる。失敗時はOutcome／commitなしでstagingを削除し、提供前の未使用分をreleaseする。CMS接続待ち・送信再試行・公開成否・Vault期限削除で二重commitまたは提供済みcommitの取消しが起きない。
 - [ ] AC-L1-BILLING-05: append-only ledgerから利用可能・予約・消費・失効・返還残高を再構築できる。
 - [ ] AC-L1-BILLING-06: Stripe Webhookの重複・順不同・再送を処理しても二重請求・二重付与が発生しない。
 - [ ] AC-L1-BILLING-07: invoice・支払・refundと内部ledgerの差異を自動検出し、根拠付きで解消できる。

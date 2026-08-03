@@ -134,6 +134,13 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - 値: WorkflowKey, PackExtract, MeaningUnitPlan, StageState。
 - 不変条件: 作成時に `tenant_id`/`site_id`/`job_id` と Workflow/Pack/Catalog/Config version を freeze（REQ-PACK-04）／実行中にsite変更不可／工程順序は状態機械が強制しゲートを飛ばさない（REQ-AGENT-09）／Ticketは本文を内包しない（REQ-PACK-01）／H2/H3を直接執筆単位にしない（REQ-PACK-18）。
 
+### 4.1.1 GenerationOutcome / OutputVaultProvision（Generation）
+
+- `OutputVaultProvision`はQA済みPresentation Snapshotの非公開staging、seal、content hash、size、read-after-write検証を追跡する準備単位であり、ユーザーへの成果提供Factではない。
+- `GenerationOutcome`は成果を利用可能にした不変Factである。検証済みProvisionと未消費Reservationを入力に、Outcome、Credit commit Ledger、deliverable／commit outboxを同じDB transactionで作成し、Outcome成立後だけVault Access Serviceがtenant／Site認可済みの表示・copy・downloadを許可する。失敗時はOutcome／commitなしでProvisionをcleanupする。
+- `generation.job_completed`はGeneration Outcome成立後に導出する。QA完了、Presentation seal、Vault upload、CMS送信、下書き、公開のいずれか単独をJob完了または成果提供へ読み替えない。
+- Output Vault availabilityはOutcomeと別Projectionである。既定保持期限後にpayloadを削除してもOutcome／commitは取消さず、再送可能期間終了として扱う。保証期間内の製品側access failureはIncident／append-only adjustment候補へ接続し、OutcomeやLedgerを上書きしない。
+
 ### 4.2 QualityGateEvaluation（Quality）
 - ルート: QA Snapshot（schema.snapshot.qa.v1）。
 - 値: GateVerdict{gate_key, kind, verdict, score, evidence}, Metrics。

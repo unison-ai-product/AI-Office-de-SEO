@@ -254,6 +254,38 @@
             "手動指定はManual Intakeとして由来を分離し、同じPreflightへ通す。",
             "observeとprotectは記事生成Jobを発行しない。"
           ]
+        },
+        {
+          "invariant_id": "INV-GENOUT-001",
+          "statement": "Generation Outcomeは、非公開Output Vault stagingのseal・hash・size・read-after-write検証と未消費Reservationを前提に、Outcome、Credit commit Ledger、deliverable／commit outboxを同一DB transactionで成立させる。staging uploadやQA sealだけを成果提供・Job完了にせず、Vault期限切れ・削除や後続CMS失敗は成立済みOutcomeとcommitを取り消さない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/billing-accounting-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/data-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md"
+          ],
+          "forbidden_patterns": [
+            "(?:staging upload|stagingへのupload|QA seal)(?:だけ|のみ).{0,40}(?:成果提供|Job完了|credit commit)",
+            "Vault検証前.{0,40}(?:Credit commit|credit commit|commit Ledger)",
+            "Outcomeなし.{0,30}(?:Credit commit|commit Ledger)|(?:Credit commit|commit Ledger)なし.{0,30}Outcome",
+            "Vault(?:期限切れ|削除).{0,40}(?:commitを取り消す|Generation失敗|自動再生成)",
+            "CMS(?:送信|公開|更新)失敗.{0,40}(?:Outcomeを再作成|creditを再commit|commitを取り消す)"
+          ],
+          "bad_fixtures": [
+            "staging uploadだけで成果提供とJob完了にする。",
+            "Vault検証前にCredit commitする。",
+            "Outcomeなしでcommit Ledgerを残す。",
+            "Vault期限切れでcommitを取り消す。",
+            "CMS送信失敗でOutcomeを再作成する。"
+          ],
+          "good_fixtures": [
+            "検証済みProvisionを前提にOutcome、Credit commit、outboxを同一DB transactionで確定する。",
+            "transaction失敗時はOutcomeとcommitを残さず、孤立stagingをcleanupする。",
+            "Vault期限切れは一時保管とCMS再送のavailabilityだけを終了し、Outcome providedとcommitを維持する。",
+            "後続CMS失敗は同じOutcomeを参照して再送し、再commitしない。"
+          ]
         }
       ]
     },

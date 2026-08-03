@@ -504,17 +504,28 @@ QA済み生成成果の提供事実を`schema.generation.outcome.v1`へ固定す
   generation_outcome_id, version, tenant_id, site_id,
   workflow_ref, intake_ref, recommendation_ref?, correlation_id,
   presentation_snapshot_ref, content_hash,
-  output_vault_ref, output_vault_expires_at,
-  deliverable_provided_at, credit_commit_ref,
+  vault_provision_ref, output_vault_ref, output_vault_expires_at,
+  vault_verification_ref, deliverable_provided_at,
+  reservation_ref, credit_commit_ref, outcome_state(provided),
   created_at
 }
 ```
 
-- `presentation_snapshot_ref`のQA完了・seal、content hash一致、Output Vaultからの表示・copy・download可能性が成立した時だけ作成する。
+- `presentation_snapshot_ref`のQA完了・seal、content hash一致、非公開staging objectのsize／read-after-write検証、未消費reserveが成立した後だけProvisionを`verified`にする。staging objectはGeneration Outcome確定前にユーザー向けURL、copy、downloadへ公開しない。
+- `generation_outcomes`、Reservationを参照するcommit Ledger row、`generation.deliverable_provided`と`billing.credit_committed`のoutbox rowを同一DB transactionで作成する。Outcome API／Vault Access Serviceは`outcome_state=provided`かつ`credit_commit_ref`一致を確認した場合だけpayloadを返す。transactionが失敗した場合はOutcome／commit／提供eventを残さず、orphan staging objectを期限cleanupする。
 - 同一Intake／成果version／content hashに対して一意とし、再表示、download、CMS再送で新しいOutcomeまたはcredit commitを作らない。
 - ユーザーが別成果を求める再生成は、元Outcomeを`parent_generation_outcome_ref`で参照する新しいGeneration Job、見積、reserve、Outcomeとする。同一Jobの障害再試行、checkpoint再開、限定Repairを再生成へ付け替えない。
 - CMS未接続、送信失敗、承認待ち、公開失敗でもOutcomeを取消さない。保証期間内に製品側原因で成果を利用不能にした場合は、台帳を上書きせず調整eventの判断へ接続する。
 - 本Schemaへ本文、HTMLまたはblock payloadを格納せず、期限付きOutput Vault参照だけを保持する。
+- Output Vault期限削除後もOutcomeは`provided`の不変Factとして保持し、別の`schema.output_vault.availability.v1`で`available / expiring / expired / deletion_pending / deleted / unavailable_incident`を表す。`expired / deleted`をGeneration失敗、commit取消しまたは自動再生成へ変換しない。
+
+```text
+schema.output_vault.availability.v1 {
+  output_vault_ref, generation_outcome_ref, tenant_id, site_id,
+  state, expires_at, deletion_due_at?, deleted_at?, deletion_evidence_ref?,
+  access_incident_ref?, pending_delivery_refs[], last_verified_at, version
+}
+```
 
 根拠: `REQ-BILLING-04`、`REQ-INT-10`、`REQ-DATA-03`、`REQ-WPA-14`。
 

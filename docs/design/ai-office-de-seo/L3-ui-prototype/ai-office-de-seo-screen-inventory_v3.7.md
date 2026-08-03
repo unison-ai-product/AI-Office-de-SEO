@@ -106,6 +106,7 @@ Report情報設計は`ai-office-de-seo-keyword-report-connection-map_v1.md`を�
 - `recommendation_feedback`は既読、click、UI改善等の分析補助に限り、Presentation、Decision、Intake、採用率の正本にしない。自動運用は`自動採用`と委任Policyを表示し、人間が採用した表示へ置き換えない。
 - 採用後のExecution AdmissionはRecommendation Decisionと分ける。通常ビューでは`実行準備中 / 入力が必要 / Creditが必要 / 接続確認 / 実行待ち / 実行開始`と必要操作を簡潔に示し、Officeではcheck別証拠version、見積、reserve、Capacity、可変Gate、return contextを詳しく表示する。Preflight保留を「Recommendationが不採用になった」と表示しない。
 - Recommendation上の予測credit、Admissionの固定顧客credit／予約上限、Ledgerのreserved、成果提供時のcommitted、未使用release、内部実原価を同じ値へ丸めない。画面はServerのAdmission／Ledger Projectionを表示し、ClientまたはLLMが実行可能性・残高を再計算しない。
+- Generation Outcomeでは`成果を利用可能にしました`、Output Vault期限、committed creditを表示する。非公開staging upload、QA seal、hash検証だけを成果提供やJob完了として顧客へ表示しない。Vault期限状態はOutcome提供Factと分け、期限切れは`成果の一時保管期間が終了・CMS再送不可`と表示し、生成失敗・返金済み・自動再生成と表現しない。通常ビューは期限と必要操作、OfficeはProvision証拠、Outcome／commit相関、Delivery影響、Incidentを詳しく表示する。
 
 ### 0.6 CMS接続状態
 

@@ -232,7 +232,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 - Sandbox Fix 後に `tenant_id`/`site_id` を変更しない。
 - Keyword Intent と SERP-TTPS Research の成果がないままOutlineへ進まない。
 - Outline Contract がないまま本文生成しない。Section Briefs がないまま本文生成しない。
-- 状態9でSemantic Assemblyを完了してから状態10のCohesionを含むQuality Gateを実行する。Quality Gateを通らない記事を状態11のPresentation Assembly／Generation Outcomeへ進めない（fail-close）。工程11は`presentation_assemble → decorate → featured_image → placement → cms_validate → deliverable_provided`の内部phaseを持ち、本文完成前に装飾を開始しない。Generation Outcome成立後に`generation.job_completed`を発行し、状態12は別AggregateのCMS Deliveryを開始する。CMS送信成功前にPreview／Approvalへ進めない。初期画像Scopeはアイキャッチ基盤に限定する。
+- 状態9でSemantic Assemblyを完了してから状態10のCohesionを含むQuality Gateを実行する。Quality Gateを通らない記事を状態11のPresentation Assembly／Generation Outcomeへ進めない（fail-close）。工程11は`presentation_assemble → decorate → featured_image → placement → cms_validate → deliverable_provided`の内部phaseを持ち、本文完成前に装飾を開始しない。非公開Output Vault stagingのupload、QA seal、hash／size／read-after-write検証はProvision準備であり、まだ成果提供・Job完了・credit commitではない。検証済みProvisionと未消費Reservationを前提に、Generation Outcome、commit Ledger、deliverable／commit outboxが同一DB transactionで成立した後だけ`generation.job_completed`を発行し、状態12は別AggregateのCMS Deliveryを開始する。CMS送信成功前にPreview／Approvalへ進めない。初期画像Scopeはアイキャッチ基盤に限定する。
 - Preview またはAutomationの公開条件成立なしに予約投稿しない。初期WordPress AdapterではCMS下書きの編集URL／Preview URLを利用し、共通WorkflowをWordPress固有画面へ固定しない。
 - 最初の15記事は完成記事への人間承認を必須とする。WordPress実表示Previewは確認手段であり、URLを開いた事実自体を条件にしない。Outline確認はSite設定で任意に有効化し、有効時は見出しを修正・freezeしてから再開する。
 - リライト・全文再生成はAutomation承認だけで公開記事へ直接反映せず、CMS下書きとユーザー承認を必須とする。初期WordPress AdapterではWordPress下書きを使用する。

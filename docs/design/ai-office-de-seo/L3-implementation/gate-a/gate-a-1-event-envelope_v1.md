@@ -2,7 +2,7 @@
 document_id: AOS-L3-GATE-A1-EVENT-ENVELOPE
 title: Gate A-1 イベント共通エンベロープ v1
 layer: L3
-version: 1.9
+version: 1.10
 kind: contract
 status: current-draft
 updated_at: 2026-08-03
@@ -75,7 +75,7 @@ updated_at: 2026-08-03
 | generation.presentation_assembled | presentation_snapshot_ref, semantic_snapshot_ref, decoration_profile_ref?, featured_image_ref?, placement_instruction_refs[], cms_format_key | W,O | REQ-AGENT-11, REQ-PACK-17, REQ-LOGIC-09/10 |
 | generation.job_suspended | cause(manual/kill_switch/budget/hard_gate/approval), hold_until, reservation_ref, checkpoint_ref | W,N,O,A | REQ-AGENT-10 |
 | generation.job_resumed | resumed_from_stage, checkpoint_ref, reservation_ref, customer_credit_delta(0), internal_rewarm_cost_ref? | W,N,O,A | REQ-AGENT-10, REQ-BILLING-04 |
-| generation.job_completed | generation_outcome_id, deliverable_provided_at, credit_commit_ref | W,N,O,A | REQ-AGENT-01, REQ-BILLING-04 |
+| generation.job_completed | generation_outcome_id, deliverable_event_ref, credit_commit_event_ref, completed_at | W,N,O,A | REQ-AGENT-01, REQ-BILLING-04 |
 | generation.job_failed | reason, generation_outcome_id(null), reserve_disposition(held/released), retryable, resume_from? | W,N,O,A | REQ-AGENT-01/10, REQ-BILLING-04 |
 | generation.job_cancelled | cause, generation_outcome_id?, reserve_disposition(unchanged/released) | W,N,O,A | REQ-AGENT-10, REQ-BILLING-04 |
 | workflow.run_completed | workflow_run_id, workflow_key, completion_kind(publication_job_handoff/carried_out/cancelled/failed_terminal), generation_outcome_ref?, cms_delivery_ref?, publication_job_ref?, correlation_id | W,O,A | REQ-AGENT-09/10 |
@@ -157,7 +157,12 @@ updated_at: 2026-08-03
 | cms.read_route_selected | connection_profile_id, adapter_key, role, reason, policy_version | O,A | REQ-INT-09 |
 | cms.read_route_failed_over | connection_profile_id, from_adapter, to_adapter, error_class, cooldown_until | W,N,O,A | REQ-INT-09 |
 | cms.read_connection_required | connection_profile_id, failed_routes[], required_user_actions[] | W,N,O | REQ-INT-09 |
-| generation.deliverable_provided | generation_outcome_id, intake_ref, presentation_snapshot_ref, content_hash, output_vault_ref, deliverable_provided_at, credit_commit_ref, correlation_id | W,O,A | REQ-BILLING-04, REQ-INT-10 |
+| generation.output_vault_provision_verified | vault_provision_id, generation_job_ref, presentation_snapshot_ref, content_hash, size, qa_seal_ref, read_verification_ref, verified_at | O,A | REQ-BILLING-04, REQ-DATA-03 |
+| generation.deliverable_provided | generation_outcome_id, intake_ref, presentation_snapshot_ref, content_hash, output_vault_ref, output_vault_expires_at, reservation_ref, credit_commit_ref, credit_commit_event_ref, deliverable_provided_at, correlation_id | W,N,O,A | REQ-BILLING-04, REQ-INT-10 |
+| generation.output_vault_expiring | generation_outcome_id, output_vault_ref, expires_at, pending_delivery_refs[], remaining_duration | W,N,O | REQ-WPA-14, REQ-PRODUCT-11 |
+| generation.output_vault_expired | generation_outcome_id, output_vault_ref, expired_at, pending_delivery_refs[], outcome_remains_provided(true), commit_reversed(false) | W,N,O,A | REQ-WPA-14, REQ-BILLING-04 |
+| generation.output_vault_deleted | generation_outcome_id, output_vault_ref, deleted_at, deletion_evidence_ref, metadata_retained | O,A | REQ-WPA-14, REQ-DATA-03 |
+| generation.output_vault_access_failed | generation_outcome_id, output_vault_ref, failure_class, within_guaranteed_period, incident_ref, adjustment_candidate_ref? | W,N,O,A | REQ-WPA-14, REQ-IRG-07 |
 | cms.delivery_prepared | cms_delivery_id, generation_outcome_id, operation, presentation_snapshot_ref, post_envelope_ref, content_hash, connection_profile_version, idempotency_key, correlation_id | W,O | REQ-INT-10 |
 | cms.delivery_held | cms_delivery_id, state(connection_required/permission_required), reason_codes[], required_user_actions[], resume_from, retry_after? | W,N,O | REQ-INT-10 |
 | cms.delivery_resumed | cms_delivery_id, prior_state, resume_from, attempt_count, idempotency_key | W,O,A | REQ-INT-10 |
@@ -278,6 +283,8 @@ updated_at: 2026-08-03
 
 `execution.admission_ready`は、有償Actionでは同じAdmission／estimate versionの`billing.credit_reserved`を参照する場合だけ発行する。非課金Actionは`billing_mode=non_billable`とし`reservation_ref`を禁止する。`execution.admission_consumed`とAction dispatch eventは同じtransactional outboxで一度だけ作成し、未consume、期限切れ、heldのAdmissionからProvider呼出し・外部write・Job／Patch開始を行わない。Admission再評価は新versionとし、古いReservationの処分を`held / expired / superseded`側で明示する。同一Jobのretry／checkpoint再開から新しいAdmissionまたはreserve eventを発行しない。
 
+`generation.output_vault_provision_verified`は非公開stagingの検証事実であり、成果提供またはcommitを意味しない。`generation.deliverable_provided`、対応する`billing.credit_committed`、Generation Outcome rowは同じDB transaction／outbox batchで作成し、双方のevent IDとLedger／Outcome参照を相互に保持する。`generation.job_completed`はこの提供eventから導出し、Provision検証だけでは発行しない。Vault期限・削除eventはOutcomeの提供Factとcommitを巻き戻さず、保証期間内のaccess failureだけをIncident／adjustment候補へ接続する。
+
 v1.1改訂: 通知カタログ（REQ-PRODUCT-11）との突合で4種追加（approval_requested / webhook_failed / reconciliation_mismatch / cache_hit_floor_breached）。凍結規則どおりevent_type追加はminorでありエンベロープ・既存typeは不変。
 
 v1.2改訂: 運営お知らせのイベント投入（REQ-PRODUCT-16のイベント由来原則との整合）で `platform.announcement_published` を追加（minor）。エンベロープ・既存typeは不変。
@@ -293,5 +300,7 @@ v1.7改訂: Site導入の4段階Capabilityをscope付きmilestone／change event
 v1.8改訂: Recommendationの内部提案、判断可能な提示、手動／自動判断、Intake、正規Action dispatchを分離した。旧`recommendation.accepted`はmigration aliasとし、全ActionをAgent Workflowへ偽装しないpayloadへ変更した。
 
 v1.9改訂: freeze済みIntakeとAction dispatchの間にscope・version付きExecution Admissionを追加し、Preflight、Credit Reservation、Admission consume、Action開始を別事実として再構築可能にした。Credit eventをTicket非依存のbilling subjectへ一般化した。
+
+v1.10改訂: 非公開Vault Provision、Generation Outcome／deliverable提供、Credit commitの原子的確定、Job完了、Vault期限・削除・保証期間内access failureを別eventとして追加した。
 
 v1.3改訂（表記正規化・型不変）: カタログを **1 event_type = 1行** へ正規化した。旧版の複合行（例: `generation.gate_passed / gate_held`）は複数typeの省略表記であり、機械照合の契約としてregex `^[a-z]+\.[a-z_]+$` に行単位で適合しなかったため分割した。event_typeの集合・エンベロープ・payload意味論は不変（新規type追加なし）。分割時、旧複合行で共有されていた消費印・根拠は各行へ引き継ぎ、区別があったもの（N(held)/N(hard)等）は当該行にのみ付した。
