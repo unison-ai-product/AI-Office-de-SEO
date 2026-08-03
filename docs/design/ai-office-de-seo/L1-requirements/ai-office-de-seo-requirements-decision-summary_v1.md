@@ -4,7 +4,7 @@ title: AI Office de SEO 要求決定サマリー v1.0
 version: 1.0
 layer: L1
 kind: requirements_decision_summary
-status: draft
+status: current-draft
 updated_at: 2026-07-30
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
@@ -254,7 +254,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## 15. 未確定事項
 
-次は要求の欠落ではなく、今後の判断または設計較正が必要な項目である。
+次は会話で特に確認した商用・運用較正項目の要約であり、未確定事項の全件台帳ではない。要求の欠落、実装前判断、Launch blocker、運用較正、後続構想の全件は `docs/reference/ai-office-de-seo-open-items-register_2026-08-03.md`、ownerと期限を持つL3個別判断は `../L3-implementation/ai-office-de-seo-l3-decision-table_v3.7.md` を正本とする。ここにないことを「確定済み」の根拠にしない。
 
 1. プラン別利用枠、品質別クレジット単価、バックアップ容量・保持量。
    - 計測方法: 品質別Preflight見積、実績credit、Provider原価、週次利用率、追加購入率、backup使用量、復元件数を商品・tenant・Site単位で集計する。

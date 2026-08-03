@@ -239,6 +239,11 @@ assertIncludes("docs/reference/FEATURE-LIST.md", [
   "Agent Officeは監視専用ではなく",
   "Entry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-requirements-decision-summary_v1.md", [
+  "未確定事項の全件台帳ではない",
+  "ai-office-de-seo-open-items-register_2026-08-03.md",
+  "ここにないことを「確定済み」の根拠にしない",
+]);
 assertIncludes("docs/reference/ai-office-de-seo-content-consistency-audit_2026-07-09.md", [
   "履歴スナップショット",
 ]);
