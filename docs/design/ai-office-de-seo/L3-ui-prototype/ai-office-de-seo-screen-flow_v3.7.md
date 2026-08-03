@@ -189,8 +189,12 @@ flowchart TD
   J -->|通過| L[Presentation Assembly<br/>装飾・アイキャッチ・CTA/内部link配置]
   K -->|公開継続| L
   K -->|修正| F
-  L --> M[CMS下書き送信<br/>編集URL/Preview URL]
-  M --> N{公開条件}
+  L --> M{CMS write再診断}
+  M -->|成立| M1[CMS下書き送信<br/>編集URL/Preview URL]
+  M -->|不成立| M2[connection_required<br/>成果保持・再接続/再送/持ち出し]
+  M2 -->|再接続| M
+  M2 -->|持ち出し| M3[HTML/Markdown等を取得<br/>Recommendation/Job履歴は維持]
+  M1 --> N{公開条件}
   N -->|新規15件未満| O[完成記事の承認必須]
   N -->|新規15件到達＋自動運用有効| P[S4 予約/公開]
   N -->|リライト/記事置換| Q[差分確認・承認必須]

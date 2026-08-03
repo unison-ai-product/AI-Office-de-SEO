@@ -49,7 +49,7 @@ updated_at: 2026-07-30
 
 実績がなく数値を妥当に算出できない目的・候補は、擬似精密なスコアを生成せず `unknown`、参考情報、ルール一致、必要データ、再評価条件を示す。実績蓄積後に数値評価へ移行できる開放的な出力契約を持つ。
 
-Recommendation種別ごとに入力成立条件を判定する。新規記事向けキーワードRecommendationはGSC連携またはユーザー登録キーワードを必要とし、リライトRecommendationはGSC連携またはWordPress連携を必要とする。必要入力がない場合は推測だけでRecommendation Itemを作成せず、`input_required` と不足入力、設定画面、再判定条件を返す。新規Siteの市場キーワード探索は、Site連携と業界／業種、商品・サービス、対象顧客等の探索条件からキーワード候補を生成した後、その候補を登録キーワード相当の入力として分析・分類する。
+Recommendation種別ごとに入力成立条件を判定する。新規記事向けキーワードRecommendationは、GSC連携、ユーザー登録キーワード、または新規Siteの市場キーワード探索で分析対象Clusterが成立していることを必要とする。リライトRecommendationは、既存SiteのGSCまたは登録キーワード等の分析入力に加え、CMS read、記事data取込、または許可された公開取得によって対象記事の本文・見出し・公開状態を取得できることを必要とする。GSCまたはKeyword実績だけでは本文変更を伴うRecommendationを成立させない。必要入力がない場合は推測だけでRecommendation Itemを作成せず、`input_required` または `read_connection_required` と不足入力、設定画面、再判定条件を返す。新規Siteの市場キーワード探索は、Site接続と業界／業種、商品・サービス、対象顧客等の探索条件からキーワード候補を生成した後、その候補を登録キーワード相当の入力として分析・分類する。
 
 ### REQ-LOGIC-03 イベント駆動連鎖
 
@@ -57,9 +57,9 @@ Recommendation種別ごとに入力成立条件を判定する。新規記事向
 
 記事生成の完了とCMS送信可能性を別状態として管理する。WordPress下書き送信、既存記事更新、Media登録の直前に、`REQ-INT-05` の認証済みREST接続、対象投稿タイプの書込み権限、必要なMedia権限、Compatibility Matrixを再検証する。不成立時は成果を失敗扱いにせず `connection_required` で保留し、再接続後の送信再開またはHTML／Markdown等の持ち出しを許可する。
 
-新規記事は `Intake Gate → Sandbox Fix → Keyword Intent → SERP Research → Site Strategy → Outline freeze → 任意Outline確認 → Section Brief → Meaning Unit Writing → Quality Gate／限定Repair → WP Draft → Preview／Automation判定 → Cleanup` の順序を強制する。Outline確認設定がOFFなら停止せず、ONならユーザーの見出し修正・確定を待って再開する。
+新規記事は `Intake Gate → Sandbox Fix → Keyword Intent → SERP Research → Site Strategy → Outline freeze → 任意Outline確認 → Section Brief → Meaning Unit Writing → Semantic Assembly → Quality Gate／限定Repair → Presentation Assembly → CMS Draft → Preview／Automation判定 → Cleanup` の順序を強制する。Outline確認設定がOFFなら停止せず、ONならユーザーの見出し修正・確定を待って再開する。本文途中確認がOFFならPresentation Assemblyまで連続実行し、ONなら本文Previewで停止して、見出し・本文の修正確定後にユーザー編集箇所を保護して再開する。
 
-リライトは別Workflowとして `原因分析 → 対象特定 → Edit Plan freeze → 一時Workspace → 限定Patchまたは全文再生成 → Diff → Quality Gate／限定Repair → WP Draft → ユーザー承認 → 反映 → Cleanup` を強制する。リライトはAutomation Policyだけで公開記事へ直接反映しない。OutlineまたはEdit Planにない範囲を生成・変更せず、全文再生成を既定にしないが、高リスク表示と個別承認を伴う実行経路は持つ。
+リライトは別Workflowとして `原因分析 → 記事取得確認 → 対象特定 → Edit Plan freeze → 一時Workspace → 限定Patchまたは全文再生成 → Diff → Quality Gate／限定Repair → Presentation Assembly → CMS Draft → ユーザー承認 → 反映 → Cleanup` を強制する。リライトはAutomation Policyだけで公開記事へ直接反映しない。OutlineまたはEdit Planにない範囲を生成・変更せず、全文再生成を既定にしないが、高リスク表示と個別承認を伴う実行経路は持つ。
 
 ### REQ-LOGIC-04 自動投稿判定
 

@@ -686,6 +686,41 @@ for (const canonicalFile of [...canonicalSources, path.join(l1Root, "README.md")
     fail(errors, `manifest.canonical_paths: missing current canonical document ${relativePath}`);
   }
 }
+
+const lifecycleLogicPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
+);
+const lifecycleLogic = fs.readFileSync(lifecycleLogicPath, "utf8");
+if (/リライトRecommendationはGSC連携またはWordPress連携を必要とする/.test(lifecycleLogic)) {
+  fail(errors, "logic requirements: stale rewrite entry condition allows GSC without article content retrieval");
+}
+for (const requiredPhrase of [
+  "対象記事の本文・見出し・公開状態を取得できること",
+  "GSCまたはKeyword実績だけでは本文変更を伴うRecommendationを成立させない",
+  "Semantic Assembly",
+  "Presentation Assembly",
+]) {
+  if (!lifecycleLogic.includes(requiredPhrase)) {
+    fail(errors, `logic requirements: current lifecycle phrase missing: ${requiredPhrase}`);
+  }
+}
+
+const screenFlowPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md",
+);
+const screenFlow = fs.readFileSync(screenFlowPath, "utf8");
+for (const requiredPhrase of [
+  "CMS write再診断",
+  "connection_required",
+  "成果保持・再接続/再送/持ち出し",
+  "本文・見出し・公開状態を取得できる経路",
+]) {
+  if (!screenFlow.includes(requiredPhrase)) {
+    fail(errors, `screen flow: current transition phrase missing: ${requiredPhrase}`);
+  }
+}
 const layerPlanChecks = [
   ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],
