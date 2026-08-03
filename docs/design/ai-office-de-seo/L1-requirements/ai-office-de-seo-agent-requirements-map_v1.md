@@ -5,7 +5,7 @@ version: 1.0
 layer: L1
 kind: requirements_map
 status: draft
-updated_at: 2026-07-31
+updated_at: 2026-08-03
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
 

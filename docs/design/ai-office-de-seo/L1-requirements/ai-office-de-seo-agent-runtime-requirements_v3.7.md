@@ -5,7 +5,7 @@ version: 3.7
 layer: L1
 kind: design
 status: draft
-updated_at: 2026-07-05
+updated_at: 2026-08-03
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
 

@@ -5,7 +5,7 @@ version: 3.7
 layer: L1
 kind: design
 status: draft
-updated_at: 2026-07-30
+updated_at: 2026-08-03
 related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ---
 
@@ -36,7 +36,7 @@ Agent Officeは通常ビューの単純な複製でも監視専用画面でも�
 
 Agent Officeは部門（部屋）とエージェント（キャラ）で構成する。UIアセットは、部屋カード（keyword_research / content_creation / automation / traffic_report / knowledge / settings / technical_seo。初期構成の部屋7室は`REQ-AOUI-07`）と、ユーザー向けペルソナ（基本12: planner / keyword_researcher / analyst / traffic_reporter / content_writer / link_architect / qa_checker / publish_manager / automation_operator / knowledge_trainer / security_admin / support_agent、拡張1: technical_seo＝07 テクニカルSEO室担当。以降のペルソナ追加はconfig駆動、`REQ-AOUI-07`）を提供する。
 
-実装方針（アセットバンドル）: キャラ・部屋・背景・アイコン・吹き出し・選択メニュー・進捗線は画像（SVG正本＋透過PNG）。日本語テキスト・表・グラフ・ボタン・フォーム・ログ・課金フィールドは画像化せず React/HTML/CSS で描画する。reference_screens は参照であり実装素材にしない。
+実装方針（アセットバンドル）: キャラ・部屋・背景・アイコン・吹き出し・選択メニュー・進捗線は画像（SVG正本＋透過PNG）。日本語テキスト・表・グラフ・ボタン・フォーム・Task History・課金フィールドは画像化せず、アクセシブルなWeb UIとして描画する。製品要求はReact等の特定フレームワークへ固定せず、採用技術はGate A-4と実装計画で決める。reference_screens は参照であり実装素材にしない。
 
 ## 4. ペルソナ⇄内部エージェント/工程マッピング  ［REQ-AOUI-04］
 

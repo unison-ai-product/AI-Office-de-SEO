@@ -78,6 +78,7 @@
 | CMS非依存・WP初期Adapter | INT-01・05・06、TECH | Publication Contract、CMS Connection Profile | Capability、縮退、再接続、持ち出し | aligned |
 | 軽量計測 | MEASURE-01〜04、INT-03 | Tracker event、集約、本文／form非取得 | ページ表示・遷移・CTA・thanks | aligned |
 | 通常／Office | DESIGN-01・09〜11、SCREEN-18・19 | 共通Command／Event、Office Proposal | Context保持・双方向遷移 | aligned |
+| Agent／Officeペルソナ／実行責務 | AGENT-01〜11、PACK-01〜21、AOUI-01〜07、Agent Requirements Map | 共通Office Conversation Runtime、6実行責務、Ticket／Snapshot、persona別Service・Proposal mapping | 初期7部屋・13ペルソナはconfig baseline。ペルソナ数、Executor責務数、LLM同時呼出数を分離 | aligned（業務能力mappingは現行、プロト反映は後工程） |
 | AWS・性能・障害封じ込め | NFR-01〜15、TECH-19、IRG | AWS Operations Map、bulkhead、RPO／RTO | 状態表示、Support、Admin運用面 | aligned（実証はtrue_open） |
 | Feature Object拡張 | TECH-01〜09、GROWTH | Registry、Manifest、Execution Context、slot | App／Pack導線、Office拡張 | aligned（第三者Storeはpost-release） |
 | AI表示性／Crawler | CAV、INT-08、MEASURE-12 | availability、観測schema構想 | 未提供を0件・測定済みと誤表示しない | aligned（提供技術はpost-release） |

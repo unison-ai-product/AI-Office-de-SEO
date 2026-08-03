@@ -206,6 +206,14 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "Recommendation Intake freeze",
   "1・3・6か月",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
+  "新規記事の自動公開設定",
+  "新規記事15件まで解放進捗",
+  "同一権限者の二段階確認＋版付き同意",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
+  "公開前承認「必須・変更不可」→既定OFFの任意設定",
+]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-billing-credit-provider-requirements_v3.7.md", [
   "月額付与クレジットは翌月まで繰越可能",
   "最低契約6か月",
@@ -260,12 +268,65 @@ assertIncludes("docs/reference/ai-office-de-seo-reference-notes_v3.7.md", [
   "数を合わせるためにAgentや部屋を作らない",
   "Agent Officeの部屋数は固定しない",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md", [
+  "6名称は責務Catalogであり、LLM Agentの体数ではない",
+  "13ペルソナを13個の常駐LLMまたは13種類の専用modelとして実装しない",
+  "キャラクターとExecutorの1対1表を別途作らない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md", [
+  "全ペルソナ共通のOffice Conversation Runtime",
+  "初期構成（確定）: 部屋7",
+  "製品要求はReact等の特定フレームワークへ固定せず",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
+  "これはLLM Agentの個体数、model数、常駐process数またはOfficeペルソナ数を表す一覧ではない",
+  "同じExecutor種別を複数Ticketが並列利用できる",
+]);
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md", [
   "本実装（React）のコンポーネント分割の正本",
   "そのままReactコンポーネント名にする",
 ]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md", [
+  "React/HTML/CSS で描画する",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md", [
+  "通常ビューでは省略する根拠、条件、一覧、配分",
+  "製品要求はReact等の特定フレームワークへ固定せず",
+  "初期リリースはdesktop標準",
+  "後続versionではAgent Office Chatをmobileの主導線",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md", [
+  "セルフ導入を標準",
+  "新規Site経路: 業界／業種",
+  "既存Site経路: GSCを接続するかKeyword",
+  "認証済みREST APIと対象投稿typeの下書き作成権限",
+  "再入力させずIntakeへ渡す",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-user-journey-requirements_v3.7.md", [
+  "Site運用責任者（コンサル同席",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
+  "導入完了<br/>Recommendationの採否判断へ",
+  "最初の新規15記事の承認と自動運用解放は導入完了条件ではなく",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-acceptance-trace_v3.7.md", [
+  "同意→接続→サンプル学習→戦略入力→マップ→初回生成→承認公開",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md", [
+  "React/HTML/CSSコンポーネントで描画する",
+  "モバイルでは閲覧＋簡易承認に限定してよい",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-handoff-gate_v3.7.md", [
+  "未確定事項の全件索引は **Open Items Register** を正本",
+  "要求整理を停止する意味ではなく",
+]);
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
   "full_auto有効化の確認UI（Owner/Admin限定",
+  "閲覧系のモバイル表示が動作し",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
+  "初期mobile業務対応を誤表示しない",
+  "後続のAgent Office Chatは初期プロト受入から分離する",
 ]);
 assertExcludes("docs/reference/FEATURE-LIST.md", [
   "全135 REQ",

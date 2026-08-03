@@ -247,7 +247,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## User Journeys
 
 - [ ] AC-UJ-01: 行動原則（主要行動は第一階層から2遷移以内・通知から対処2遷移以内・行き止まり禁止＝次アクション提示・文脈引き継ぎ・非同期・破壊操作の確認/未保存保護/権限外は原則非表示）が全画面・全ジャーニーに適用される。 ｜ 検証: REQ-UJ-01, REQ-NAV-02, REQ-PRODUCT-11
-- [ ] AC-UJ-02: 初期導入（同意→接続→サンプル学習→戦略入力→マップ→初回生成→承認公開）が遷移図のパスとして到達可能で、接続失敗の再認可分岐とGSC遅延の明示を含む。 ｜ 検証: REQ-UJ-02, REQ-PRODUCT-09, REQ-SEC-09
+- [ ] AC-UJ-02: 初期導入が、新規Siteの「Site設定・CMS接続→Big Keyword方向確認→分析・分類→Keyword戦略Report→Recommendation」と、既存Siteの「Site設定→GSCまたはKeyword登録→統合・分析・分類→Keyword診断Report→Recommendation」に分岐して到達できる。セルフ導入を標準とし、条件未達は空Recommendationを出さず不足入力へ戻し、記事送信時は認証済みCMS REST APIと下書き権限を再確認する。 ｜ 検証: REQ-UJ-02, REQ-BUS-02, REQ-SCREEN-01, REQ-INT-01/05
 - [ ] AC-UJ-03: 日常運用（S1/W7起点→承認・保留対応・おすすめ採否・アラート対処）が完結し、未対応ゼロの終端に到達できる。 ｜ 検証: REQ-UJ-03, REQ-AGENT-10
 - [ ] AC-UJ-04: キーワード戦略（フィルタ→ギャップ→補充→候補採否→生成起動/一括投入）が完結し、採用分がS3へプリセット引き継ぎされる。 ｜ 検証: REQ-UJ-04, REQ-NAV-04, REQ-BILL-11
 - [ ] AC-UJ-05: 生成〜公開（起点→レーン→Preflight→進捗→構成/QA→保留対応→承認→公開→通知→追跡）が遷移図どおり到達可能で、hard gate保留と予算超過の分岐が終端を持つ。 ｜ 検証: REQ-UJ-05, REQ-AGENT-08, REQ-SEC-12
@@ -262,7 +262,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-SEARCH-01: グローバル検索がヘッダー常設でテナント内のキーワード・記事メタ・ジョブ・通知・設定を横断検索し、結果がRole可視性に従い、本文全文が対象外である。 ｜ 検証: REQ-PRODUCT-15, REQ-SEC-08
 - [ ] AC-ANNOUNCE-01: 運営お知らせが対象選択（全体/プラン/テナント）つきで配信・通知センター表示され、作成・配信が監査に残り、公開ステータスページへの導線がユーザーUIに常設される。 ｜ 検証: REQ-PRODUCT-16, REQ-PRODUCT-11, REQ-ADM-07
 - [ ] AC-AUTH-01: 認証層がIdP追加・2FAを後付けできる抽象化を持ち、初期Googleログインのまま拡張点が確保され、提供時の強制可否がテナントポリシー制御である。 ｜ 検証: REQ-SEC-14, REQ-SEC-08
-- [ ] AC-RESP-01: 閲覧系画面がモバイル/タブレットで閲覧可能で、操作系はデスクトップ最適、Agent Officeはモバイルで通常ビューへ誘導し、ブレークポイントがトークン管理である。 ｜ 検証: REQ-NAV-06
+- [ ] AC-RESP-01: 初期リリースはdesktop標準として主要業務が完結し、mobile業務機能を初期受入へ混入させない。後続のAgent Office Chatが通知、確認、簡易説明、修正指示、Task状態を提供しても業務正本を分岐させず、長文編集・詳細設定・画像Pattern・複雑なGraphはdesktopへ引き継げる。 ｜ 検証: REQ-NAV-06, REQ-DESIGN-12
 - [ ] AC-INTL-01: UI文言がハードコードされず外部化され、通貨・日付・数値のロケール処理が分離され、日本語のみの初期状態から実装変更なしで言語追加できる。 ｜ 検証: REQ-NAV-07, REQ-ADM-11
 
 ## Network Learning
@@ -275,7 +275,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## Customization
 
 - [ ] AC-CUST-01: ユーザー自己サーブのカスタマイズがレギュレーション調整 / User Order / 戦略入力（ターゲット軸・主張軸）に限定され、生system prompt編集・few-shot自作登録・レシピ自作定義・Pack本文直接編集・Quality Gate無効化は提供されず、全Tierが固定制約を上書きできない注入経路に乗る。 ｜ 検証: REQ-PRODUCT-12, REQ-AGENT-07, REQ-ADM-09
-- [ ] AC-CUST-02: ターゲット軸・主張軸が構造化フィールドでDomain Positioning（audience/target_axes/allowed_claims/avoided_claims）へ写像され、登録時の静的Validateで差し戻され、実行時は主張がclaim_evidence/deceptive_claim/ymyl_bar等で検証されて根拠を伴えない主張はhardで保留になる（ユーザー指定でもhard緩和不可）。文体は「です・ます調／だ・である調」と文語体／口語体を指定し、個別Siteの言い回し学習は任意ON/OFF、構造カスタムはコンサル→REQ-ADM-10経由でテナント/サイトスコープ登録される。 ｜ 検証: REQ-PRODUCT-12, REQ-PACK-09, REQ-PACK-16, REQ-ADM-10
+- [ ] AC-CUST-02: ターゲット軸・主張軸が構造化フィールドでDomain Positioning（audience/target_axes/allowed_claims/avoided_claims）へ写像され、登録時の静的Validateで差し戻され、実行時は主張がclaim_evidence/deceptive_claim/ymyl_bar等で検証されて根拠を伴えない主張はhardで保留になる。hard判定自体は緩和・合格化せず、同一権限者の二段階確認、未解消項目の表示、版付き同意書、例外記録を通した手動公開だけを許可する。文体は「です・ます調／だ・である調」と文語体／口語体を指定し、個別Siteの言い回し学習は任意ON/OFF、構造カスタムはコンサル→REQ-ADM-10経由でテナント/サイトスコープ登録される。 ｜ 検証: REQ-PRODUCT-12, REQ-PACK-09, REQ-PACK-16, REQ-AGENT-08, REQ-ADM-10
 - [ ] AC-CUST-03: 注入されたUser Order・主張軸・ターゲット軸のキーが観測ログとQA結果に紐づき、ゲート不合格時にどの指定が影響したかが提示され、見直し導線がある。 ｜ 検証: REQ-PRODUCT-12, REQ-SEC-02
 
 ## Migrated Domains (v3.6→v3.7)
