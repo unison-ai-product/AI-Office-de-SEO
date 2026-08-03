@@ -125,6 +125,8 @@ Site設定で「業界／業種」の2階層を複数選択し、優先順を並
 
 新規記事の実行面は、Recommendation／手動起動、Intake結果、Preflight見積、Research Brief、Outline Contract、Section Brief、生成進捗、Quality Gate、限定Repair、Generation Outcome、CMS Delivery、CMS下書き、プレビュー、Publication Decision、承認、Publication Job、Publication Fact、評価対象登録を同一相関IDで追跡できる。Generation Outcomeでは成果提供日時、Presentation Snapshot、Output Vaultの利用期限、生成credit確定、CMS Deliveryでは接続待ち、送信、下書き、外部反映確認、Publication Decisionでは判定versionと理由、Publication Jobでは予約・実行・再試行、Publication Factでは検証済み公開／更新・帰属を表示する。生成成果提供済み、CMS下書き作成済み、予約済み、API受付済み、公開／更新確認済み、評価登録済みを一つの「完了」へ丸めない。初期WordPress AdapterではWordPress編集URL／Preview URLを表示する。
 
+Publication Factは通常ビューで`公開／更新の反映を確認しました`、外部反映日、帰属、評価開始状態を表示する。予約、Command、API受付、Webhook受信、検証終了を反映日として表示しない。外部の正確な発生時刻が取得できず最初の確認時刻を使う場合は`確認できた時刻（推定）`と明示する。Agent Officeでは同じFactの時刻Source、精度、Source観測時刻、clock skew、reconciliation、Activation／15記事count／Evaluation Lane／Loop派生状態を確認できる。時刻Sourceの選択や内部再照合経路を一般ユーザーの設定項目にしない。
+
 リライト実行面は、原因、Article Read Snapshot、Edit Plan、対象section、許可operation、変更上限、保持対象、変更前後差分、title/meta、見出し、CTA、内部リンク、品質・保護結果、復元点、費用を表示する。変更対象外のsectionが維持されたことを確認できる。部分リライト・全文再生成ともCMS下書きまで送り、リスクと復元可否を確認してユーザーが更新を承認する。初期WordPress AdapterではWordPress下書きを使用する。全文再生成は高リスク操作として影響範囲と追加確認を伴って提供する。
 
 専用バックアップが利用できない場合はWordPressリビジョンへの依存と復元制約を表示し、上位プランのバックアップ・拡張保持を「安心保証」として提示できる。ただし順位、流入、CV等の成果保証と誤認させない。
@@ -221,7 +223,7 @@ Task完了、ユーザー確認待ち、承認期限、停止、失敗、再開�
 - [ ] AC-L1-SCREEN-12: 文体の組合せと個別Site言い回し学習のON/OFFを設定でき、ON時だけサンプル記事10本を使用し、10本未満は暫定状態を確認できる。
 - [ ] AC-L1-SCREEN-13: 急変対象が通常推薦と分離され、1か月・3か月・6か月評価の状態と既存予定の継続を区別できる。
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。
-- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、Generation Outcome、CMS Delivery、Publication Decision、承認、Publication Job、Publication Fact、評価対象登録、追加見積を同一相関IDで区別して確認でき、予約・API受付・外部変更・帰属確認中を公開成功またはAI Office実績として表示しない。
+- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、Generation Outcome、CMS Delivery、Publication Decision、承認、Publication Job、Publication Fact、評価対象登録、追加見積を同一相関IDで区別して確認でき、予約・API受付・外部変更・帰属確認中を公開成功またはAI Office実績として表示しない。通常ビューは外部反映日または`確認できた時刻（推定）`を平易に示し、Officeは同じFactの時刻Source・精度・reconciliation・派生状態を詳しく示すが、一般ユーザーへ内部Source選択を要求しない。
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。
 - [ ] AC-L1-SCREEN-18: 通常ビューでRecommendation中心の要約・簡単操作を行え、Agent Officeで同じProjectionを使う玄人向け詳細分析・設定・Task操作を行え、選択式操作は決定論Service、自由文は必要時だけLLMを使い、確認済み共通Commandの結果が両Viewへ同期される。

@@ -620,6 +620,41 @@
             "ActivationとLoop完了は条件を満たすai_office_publication Factから導出する。",
             "外部の実質変更は実績から除外し該当評価の交絡要因へ含め、軽微変更は履歴だけへ残す。"
           ]
+        },
+        {
+          "invariant_id": "INV-PUBTIME-001",
+          "statement": "Publication Factのeffective_atはSource・精度・clock skew検証を持つ外部反映時刻とし、予約・Command・API受付・受信・検証終了時刻を代用しない。Activation、15記事membership、Evaluation Lane、Loop Completionは条件適合Factから粒度別に一度だけ派生し、派生失敗でFactを巻き戻さない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-business-metrics-map_v1.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md"
+          ],
+          "forbidden_patterns": [
+            "(?:予約時刻|Command送信時刻|API受付時刻|Webhook受信時刻|検証終了時刻).{0,30}(?:effective_at|評価起点)(?:とする|へ使用する|に代入する)",
+            "(?:Publication Fact|Fact).{0,40}(?:Source|精度).{0,20}(?:不要|保存しない)",
+            "Webhook再送.{0,40}(?:Activation|15記事|Evaluation Lane|Loop完了).{0,20}(?:再発火|加算|新規作成)",
+            "派生(?:処理|Consumer)失敗.{0,40}(?:Publication Fact|Fact).{0,20}(?:取消(?!さず|さない)|削除(?!せず|しない)|巻き戻す)",
+            "unknown_source.{0,40}(?:Activation|15記事count|評価起点).{0,20}(?:へ使用|に算入|を開始)",
+            "遅延(?:Fact|確定).{0,40}(?:Activation|Loop)(?: event)?の.{0,20}(?:occurred_at|発生時刻).{0,20}(?:backdate|遡及|過去へ)"
+          ],
+          "bad_fixtures": [
+            "予約時刻をeffective_atとする。",
+            "Publication Factは時刻Sourceと精度を保存しない。",
+            "Webhook再送ごとにActivationを再発火する。",
+            "派生Consumer失敗でPublication Factを巻き戻す。",
+            "unknown_sourceを15記事countに算入する。",
+            "遅延確定でActivation eventのoccurred_atを過去へbackdateする。"
+          ],
+          "good_fixtures": [
+            "effective_atは外部反映時刻をSource・精度・clock skew検証付きで保持する。",
+            "同一Factの再送はSite Activationを一度だけ導出する。",
+            "Evaluation LaneはFact・Intervention version・lane typeで一意にする。",
+            "派生Consumer失敗はFactを保持して再開する。",
+            "遅延確定Factは元のeffective_atからcheckpointをcatch upし、event発生時刻は現在の事実を記録する。"
+          ]
         }
       ]
     }

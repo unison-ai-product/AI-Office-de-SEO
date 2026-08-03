@@ -608,7 +608,10 @@ CMSで検証できた公開／更新事実と帰属を`schema.publication.fact.v
   publication_job_ref?, publication_decision_ref?, cms_delivery_ref?,
   recommendation_ref?, intervention_ref?, correlation_id?,
   external_post_ref, canonical_url_ref, resulting_content_hash,
-  cms_status, effective_at, verified_at, verification_evidence_ref,
+  cms_status, effective_at,
+  effective_time{source(signed_cms_event|verified_cms_value|first_confirmed_observation),
+    precision(exact|estimated), source_observed_at, clock_skew_checked, rule_version},
+  verified_at, verification_evidence_ref,
   approval_evidence_ref?, source_observation_refs[], rule_version,
   reconciliation{state(confirmed|pending), retry_until?, missing_sources[]}
 }
@@ -617,8 +620,10 @@ CMSで検証できた公開／更新事実と帰属を`schema.publication.fact.v
 - Decisionは副作用前入力に対する不変versionであり、公開結果、失敗、外部post参照を後書きしない。条件変化または承認成立時は新versionを作る。
 - Jobは予約確定、実行、反映検証を追跡する。予約から実行までに認可、Automation同意、hard gate、Kill Switch、接続、対象hash、公開時間等が変化した場合は副作用直前にDecisionの新versionを作り、古いDecision参照のまま実行しない。`scheduled`、CMS API受付、外部post ID取得だけを`verified`または公開成功としない。同じ副作用は同一idempotency keyで再開する。
 - Factは公開表示またはCMS状態の外部検証後だけ作る。AI Office Command／Decision／Delivery／Jobとcontent hashが相関した場合だけ`ai_office_publication`とし、相関なしは`external_change`、証拠不足は`unknown_source / pending`とする。時刻の近さだけで帰属を推定しない。
+- `effective_at`は外部で公開／更新が有効になった時刻であり、署名済みCMS event、再読取で確認したCMS値、最初の一致hash観測時刻の順で選ぶ。予約、Command、API受付、Webhook受信、検証終了時刻を代用しない。最初の観測時刻を使う場合は`precision=estimated`とし、許容外の未来値、Decision／Jobより不合理に古い値、Source不一致は`reconciliation=pending`へ保留する。保存はUTCとし、表示だけSite timezoneへ変換する。
 - `PublicationJob.state=verified`と`publication.fact_recorded`は同じ外部検証結果からtransactional outboxで接続し、JobだけverifiedのままFactが欠落しないよう再送・照合する。同じSite、外部post、effect kind、resulting content hash、effective time、verification evidenceからFactを冪等化し、Webhook再送やpolling重複で15記事count・Activation・実績を二重計上しない。
 - `unknown_source`は再照合できるが、既存Factを上書きせず新versionまたはreconciliation eventで確定する。`external_change`と`unknown_source`を15件解放、Activation、AI Office公開実績へ算入しない。
+- Site Activationは`unique(site_id)`、承認済み新規15記事countは`unique(site_id,publication_fact_id)`、Evaluation Laneは`unique(publication_fact_id,intervention_version,lane_type)`で導出する。Loop完了はFact、baseline、Lane、必要checkpointとoutboxを同一transactionで一意確定する。派生Consumer失敗時はPublication Factを取消さず再処理し、遅延確定Factは元の`effective_at`から到来済みcheckpointをcatch upする一方、Activation／Loop eventの発生時刻をbackdateしない。
 
 - 最初の15件へ数えるのは、本システムで新規作成し、完成記事の人間承認証拠を持ち、`effect_kind=new_publish / attribution=ai_office_publication / reconciliation=confirmed`のPublication Factが成立した記事だけとする。予約、下書き、API受付、外部変更、帰属確認中、既存記事、外部記事、リライトは除外する。
 - 15件到達後も、権限者の版付き同意、対象範囲、予算、品質、公開時間、停止条件が成立した場合だけ新規記事の自動投稿を許可する。

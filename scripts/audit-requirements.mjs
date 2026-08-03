@@ -316,11 +316,33 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "同一transactionで作成",
   "`output_vault_availability`",
   "期限削除でOutcomeまたはcommit Ledgerをupdate／deleteせず",
+  "`effective_time_source`",
+  "予約、Command、API受付、Webhook受信、検証終了時刻からの代入を禁止",
+  "`site_activations`",
+  "`approved_new_article_fact_memberships`",
+  "`product_loop_completions`",
+  "派生Consumerの失敗・再送はFactを更新せず",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
   "PT-GEN-OUTCOME-02",
   "PT-GEN-OUTCOME-03",
   "PT-GEN-OUTCOME-04",
+  "PT-PUB-01",
+  "PT-PUB-02",
+  "PT-PUB-03",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md", [
+  "署名検証済みCMS変更eventの発生時刻",
+  "最初の確認済み観測時刻を`estimated`",
+  "`site.activated`はSiteごとに最初の条件適合Factから一度だけ",
+  "`Publication Fact × Intervention version × lane type`",
+  "派生処理失敗はFactを巻き戻さず再開",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md", [
+  "下書き作成を「公開」とは呼ばない",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md", [
+  "WordPressへ「登録（公開）」",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md", [
   "Office独自の業務正本",
@@ -337,6 +359,14 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-o
   "Agent Office専門分析・詳細運用",
   "選択式ポップアップを先に表示",
   "玄人向けに詳細分析・操作できる",
+  "公開／更新の反映を確認しました",
+  "確認できた時刻（推定）",
+  "時刻Sourceの選択や内部再照合経路を一般ユーザーの設定項目にしない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-business-metrics-map_v1.md", [
+  "Publication Factの`effective_at`は外部反映時刻",
+  "`Fact × Intervention version × lane type`",
+  "派生失敗時はFactを巻き戻さず再開",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md", [
   "`schema.execution.admission.v1`としてPreflight判定",
@@ -1200,6 +1230,9 @@ for (const requiredPhrase of [
   "成果を利用可能にしました",
   "非公開staging upload、QA seal、hash検証だけを成果提供やJob完了として顧客へ表示しない",
   "通常ビューは期限と必要操作、OfficeはProvision証拠、Outcome／commit相関、Delivery影響、Incidentを詳しく表示",
+  "公開／更新の反映を確認しました",
+  "確認できた時刻（推定）",
+  "ユーザーへ時刻Source選択を要求しない",
 ]) {
   if (!screenInventory.includes(requiredPhrase)) {
     fail(errors, `screen inventory: Generation Outcome display boundary missing: ${requiredPhrase}`);
@@ -1288,6 +1321,10 @@ for (const requiredPhrase of [
   "同じDB transaction／outbox batchで作成",
   "Provision検証だけでは発行しない",
   "v1.10改訂",
+  "v1.11改訂",
+  "effective_time_source",
+  "derivation keyで冪等化",
+  "遅延確定時も`effective_at`とeventの`occurred_at`を混同しない",
 ]) {
   if (!eventCatalog.includes(requiredPhrase)) {
     fail(errors, `event catalog: atomic Generation Outcome rule missing: ${requiredPhrase}`);
@@ -1324,6 +1361,18 @@ for (const requiredPhrase of [
 ]) {
   if (!contractSchemas.includes(requiredPhrase)) {
     fail(errors, `contract schemas: atomic Generation Outcome contract missing: ${requiredPhrase}`);
+  }
+}
+for (const requiredPhrase of [
+  "effective_time{source(signed_cms_event|verified_cms_value|first_confirmed_observation)",
+  "precision(exact|estimated)",
+  "予約、Command、API受付、Webhook受信、検証終了時刻を代用しない",
+  "unique(site_id,publication_fact_id)",
+  "unique(publication_fact_id,intervention_version,lane_type)",
+  "eventの発生時刻をbackdateしない",
+]) {
+  if (!contractSchemas.includes(requiredPhrase)) {
+    fail(errors, `contract schemas: Publication effective time / derivation contract missing: ${requiredPhrase}`);
   }
 }
 for (const requiredPhrase of [

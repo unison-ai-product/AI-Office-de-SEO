@@ -112,6 +112,10 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 Activationは顧客が初回価値を受け取った時点として、`site.setup_completed → cms.connection_profile_verified → site.first_recommendation_presented → 初回Recommendation採用に相関するai_office_publicationのPublication Fact` の4段階で計測し、第4段階をActivation到達とする。第2段階は対象CMSとCapability診断結果の確定であり、operation別`delivery_ready`または書込み可能を意味しない。第3段階は内部候補やブラウザ閲覧ではなく、`recommendation.presented`によってDecision Eligibility付きversionをQueueへ判断可能に公開した初回事実から導出する。予約、下書き、API成功、`external_change`、`unknown_source`では到達させない。第3段階到達・第4段階未到達のSiteを最優先の改善対象として、件数、滞留時間、失敗工程、未完了理由を可視化する。分析・Recommendation提示だけをActivationとして扱わない。
 
+Publication Factの`effective_at`は、公開／更新が外部CMSまたは公開表示で実際に有効になった時点とする。優先Sourceは、署名検証済みCMS変更eventの発生時刻、CMS APIが返す公開／更新時刻を再読取で確認した値、公開表示で初めて一致hashを確認した観測時刻の順とする。予約時刻、Command送信時刻、API受付時刻、Webhook受信時刻、検証処理の終了時刻を代用しない。正確な発生時刻を取得できない場合は、最初の確認済み観測時刻を`estimated`として使用し、Source、精度、clock skew検証、rule versionをFactへ残す。許容範囲を超える未来時刻、Decision／Jobと整合しない過去時刻、Source間不一致は`reconciliation=pending`とし、Activation、15記事count、評価起点へ使用しない。
+
+`site.activated`はSiteごとに最初の条件適合Factから一度だけ導出し、Fact再送、Webhook／polling重複、再照合versionで再発火しない。Evaluation Laneは`Publication Fact × Intervention version × lane type`を一意に登録する。`product.loop_completed`は、条件適合Fact、基準値、対象Lane、必要checkpointが保存され、そのevent outboxが同一transactionで成立した後だけ一度発火する。Publication Fact成立後にActivationまたは評価登録が失敗してもFactを巻き戻さず、冪等Consumerで再開する。遅延Factや`unknown_source`からの後日確定では、過去の`effective_at`を保持して期限到来済みcheckpointを追いつき処理するが、Activation／Loop eventの`occurred_at`を過去へ偽装しない。
+
 継続稼働の強いsignalは、Recommendation採用、記事公開／更新のCMS反映、月次計画確定のいずれかに限定する。画面閲覧、施策評価閲覧、ログイン、通知既読だけを継続稼働へ算入しない。休眠はActivation到達済みSiteだけを対象とし、`max(activation_at, last_strong_activity_at) + 30日` を到達した時点で判定する。未Activation Siteは休眠ではなくOnboarding停滞へ分類する。
 
 財務計画の月次churn 5%／10%シナリオは契約解約だけを分子にする。休眠Siteは解約へ合算せず、先行指標として別表示する。複数Siteを持つ契約ではSite休眠・Site停止を契約解約とみなさない。算式、データ源、集計周期、除外条件は `ai-office-de-seo-product-business-metrics-map_v1.md` を正本とする。
@@ -146,5 +150,5 @@ CVは `REQ-WPA-05`、`REQ-INT-01/03` を優先し、自前JavaScript Trackerの�
 - [ ] AC-L1-MEASURE-10: capacity予測から対話API優先のscale・rate・batch制御を実行できる。
 - [ ] AC-L1-MEASURE-11: support事例を相関IDと解決versionへ接続し、要求・runbook・テストへ還流できる。
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。
-- [ ] AC-L1-MEASURE-13: Recommendation採用に相関する`ai_office_publication`のPublication FactでActivationへ到達し、新規公開／実質本文更新では同Factから`seo_content` Laneの評価基準値・`effective_at`起点・1／3／6カ月予定を登録した時だけLoop完了として月次distinct Siteを算出できる。CTA・内部link・認知は月次／累積Laneへ分離し、SEO Laneをresetせず、予約・下書き・API受付・外部変更・帰属確認中を除外する。強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。
+- [ ] AC-L1-MEASURE-13: Recommendation採用に相関する`ai_office_publication`のPublication FactでActivationへ到達し、新規公開／実質本文更新では同Factから`seo_content` Laneの評価基準値・外部反映時刻をSource・精度付きで確定した`effective_at`・1／3／6カ月予定を登録した時だけLoop完了として月次distinct Siteを算出できる。予約・Command・API受付・受信・検証終了時刻を起点へ代用せず、時刻不整合は帰属確認中に保留する。Fact再送・polling重複・再照合でもSite Activation、15記事count、`Fact × Intervention version × lane type`、Loop完了を一度だけ導出し、派生処理失敗はFactを巻き戻さず再開できる。CTA・内部link・認知は月次／累積Laneへ分離し、SEO Laneをresetせず、予約・下書き・API受付・外部変更・帰属確認中を除外する。強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。
 - [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示できる。Publication Factから`seo_content / cta_cv / internal_link / awareness`の別Lane、各起点・周期、AI Office実績・外部変更・帰属確認中、復元availabilityを再現し、CTA／内部linkだけでSEO Laneをresetしない。GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。

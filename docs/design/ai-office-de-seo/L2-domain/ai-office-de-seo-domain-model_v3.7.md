@@ -225,6 +225,8 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 
 `PublicationDecision`はPublicationJobの副作用前判定を不変versionとして記録し、実行結果を後書きしない。15件count、Automation同意、リライト承認、hard gate二段階確認、現在の認可・予算・接続を入力にし、approval required／automation allowed／approved for execution／blocked／rejectedを返す。`PublicationJob`は予約・実行・再試行・反映確認、`PublicationFact`は外部検証済みの公開／更新事実、content hash、effective time、帰属を担う。15件countは、人間承認済み・新規・`ai_office_publication`のFactから導出し、予約、API受付、外部変更、帰属不明、管理画面またはClientから任意加算しない。
 
+`PublicationFact.effective_at`は外部反映の実時刻であり、署名済みCMS event、再読取で確認したCMS値、最初の一致hash観測の順にSourceを選び、精度・観測時刻・clock skew検証・rule versionを保持する。予約、Command、API受付、受信、検証終了時刻を代入しない。Site Activation、15記事membership、Evaluation Lane、Loop CompletionはFactから別Aggregateへ冪等に派生し、派生失敗でFactを巻き戻さない。ActivationはSiteに一つ、LaneはFact・Intervention version・lane typeに一つ、Loopはbaseline・Lane・checkpoint・outboxの成立後に一つとする。
+
 ### 4.5.1 CmsConnectionProfile / ArticleReadProfile（Publishing & Integration）
 
 - ルート: CmsConnectionProfile。CMS identity、Discovery、Read、Write、Media、Editor、Preview／Revision、Measurement、Capacityを別Capabilityとして集約する。

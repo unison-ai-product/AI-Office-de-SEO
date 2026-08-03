@@ -124,6 +124,9 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-GEN-OUTCOME-02: 非公開Vault stagingの検証成功だけでは成果提供・Job完了・commitを表示せず、Outcome、Ledger commit、deliverable／commit outboxが同時成立した後だけ表示・copy・downloadできる。transaction失敗fixtureはOutcome／commitなしでstaging cleanupになる。
 - [ ] PT-GEN-OUTCOME-03: Output Vaultのavailable／expiring／expired／deleted／unavailable_incidentをOutcome providedと別表示し、期限削除でGeneration失敗、commit取消し、自動再生成へ戻さない。期限前通知から未完了CMS Deliveryへ遷移できる。
 - [ ] PT-GEN-OUTCOME-04: Vault提供後のCMS失敗、CMS成功後の公開保留、公開Fact成立を別fixtureにし、いずれもGeneration Outcomeとcredit commitを重複作成しない。
+- [ ] PT-PUB-01: 予約時刻、Command送信、API受付、Webhook受信、検証終了、外部反映`effective_at`を別時刻で持つfixtureを用意し、通常ビューは反映確認日と推定表示だけ、Officeは時刻Source・精度・clock skew・reconciliation根拠を表示する。
+- [ ] PT-PUB-02: 同じPublication FactのWebhook再送、polling重複、`unknown_source`再照合を流してもActivation、15記事count、Evaluation Lane、Loop完了が一度だけ増える。派生Consumer失敗fixtureではFactを保持して再開する。
+- [ ] PT-PUB-03: 遅延確定Factで過去`effective_at`から期限到来済み評価checkpointをcatch upするが、Activation／Loop通知日時を過去へ偽装せず、通常ビューへ「反映確認が遅れました」と必要な説明を出す。
 - [ ] PT-IMAGE-08: 技術的不成立／設定不一致のblockedと、構図・トーン等のadvisoryを分け、自動投稿をadvisoryだけで止めない。
 - [ ] PT-NOTIFY-01: 固定担当者未設定でも、Task完了・確認要求が対象Siteを閲覧できる該当ユーザーへpopup表示され、閉じた後もW7へ残る。
 - [ ] PT-NOTIFY-02: 受信者をClient入力で決めず、Site付与・閲覧範囲・操作権限・購読設定をServer側の同一policy versionで解決する。

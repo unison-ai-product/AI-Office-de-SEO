@@ -2,7 +2,7 @@
 document_id: AOS-L3-GATE-A1-EVENT-ENVELOPE
 title: Gate A-1 イベント共通エンベロープ v1
 layer: L3
-version: 1.10
+version: 1.11
 kind: contract
 status: current-draft
 updated_at: 2026-08-03
@@ -148,8 +148,8 @@ updated_at: 2026-08-03
 | site.readiness_changed | site_id, readiness_key(site_identified/analysis_ready/content_read_ready/delivery_ready), scope_kind, scope_ref, operation?, before_state, after_state, evidence_ref?, source_version, valid_until?, reason_codes[], return_context_ref?, readiness_version | W,N,O,A | REQ-BUS-02, REQ-INT-05/09 |
 | cms.connection_profile_verified | connection_profile_id, version, site_identity_ref, diagnostic_ref, available_capabilities[], missing_capabilities[], verified_at | W,N,O,A | REQ-INT-05/06/09, REQ-MEASURE-13 |
 | site.first_recommendation_presented | site_id, recommendation_id, version, source_report_ref, decision_eligibility_ref, recommendation_presented_event_ref, presented_at | W,O,A | REQ-BUS-05/06, REQ-MEASURE-13 |
-| site.activated | activation_id, site_id, recommendation_ref, publication_fact_ref, activated_at, funnel_version | W,O,A | REQ-MEASURE-13 |
-| product.loop_completed | loop_completion_id, site_id, recommendation_ref, publication_fact_ref, evaluation_id, seo_content_lane_ref, completed_at, metric_rule_version | O,A | REQ-MEASURE-13 |
+| site.activated | activation_id, site_id, recommendation_ref, publication_fact_ref, effective_at, activated_at, funnel_version, derivation_key | W,O,A | REQ-MEASURE-13 |
+| product.loop_completed | loop_completion_id, site_id, recommendation_ref, publication_fact_ref, evaluation_id, seo_content_lane_ref, baseline_ref, checkpoint_refs[], effective_at, completed_at, metric_rule_version, derivation_key | O,A | REQ-MEASURE-13 |
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
 | automation.oscillation_detected | targets[] | N,O,A | REQ-PRODUCT-18 |
 | cms.connection_diagnosed | connection_profile_id, version, cms_kind, state, required_user_actions[] | W,N,O | REQ-INT-05/06/09 |
@@ -237,7 +237,7 @@ updated_at: 2026-08-03
 | publication.job_verification_pending | publication_job_id, external_command_ref?, external_post_ref?, retry_at?, evidence_ref? | W,N,O | REQ-WPA-04, REQ-INT-06 |
 | publication.job_failed | publication_job_id, failure_class, retryable, attempt_count, last_error_ref | W,N,O,A | REQ-WPA-04 |
 | publication.job_cancelled | publication_job_id, reason_code, cancelled_by_ref?, prior_state | W,N,O,A | REQ-WPA-04 |
-| publication.fact_recorded | publication_fact_id, publication_job_ref?, effect_kind, attribution, external_post_ref, canonical_url_ref, resulting_content_hash, effective_at, verified_at, verification_evidence_ref, correlation_id? | N,O,A | REQ-WPA-04, REQ-INT-06, REQ-MEASURE-13/14 |
+| publication.fact_recorded | publication_fact_id, publication_job_ref?, effect_kind, attribution, external_post_ref, canonical_url_ref, resulting_content_hash, effective_at, effective_time_source, effective_time_precision, source_observed_at, clock_skew_checked, effective_time_rule_version, verified_at, verification_evidence_ref, reconciliation_state, correlation_id? | N,O,A | REQ-WPA-04, REQ-INT-06, REQ-MEASURE-13/14 |
 | publication.attribution_reconciled | prior_publication_fact_ref, new_publication_fact_ref, from_attribution, to_attribution, evidence_refs[], rule_version | O,A | REQ-MEASURE-14 |
 | publication.cv_recorded | goal_ref, date, url_ref, count | O | REQ-WPA-05 |
 | billing.credit_reserved | reservation_id, admission_ref, estimate_ref, billing_subject_ref, amount, credit_unit, lot_allocations[], ledger_ref, idempotency_key | O,A | REQ-BILL-07 |
@@ -285,6 +285,8 @@ updated_at: 2026-08-03
 
 `generation.output_vault_provision_verified`は非公開stagingの検証事実であり、成果提供またはcommitを意味しない。`generation.deliverable_provided`、対応する`billing.credit_committed`、Generation Outcome rowは同じDB transaction／outbox batchで作成し、双方のevent IDとLedger／Outcome参照を相互に保持する。`generation.job_completed`はこの提供eventから導出し、Provision検証だけでは発行しない。Vault期限・削除eventはOutcomeの提供Factとcommitを巻き戻さず、保証期間内のaccess failureだけをIncident／adjustment候補へ接続する。
 
+`publication.fact_recorded.effective_at`は外部反映時刻であり、予約・Command・API受付・Webhook受信・検証終了時刻から作らない。時刻Sourceと精度を必須とし、時刻不整合または帰属未確定は`reconciliation_state=pending`としてActivation、15記事count、評価へ配信しない。`site.activated`はSite単位、15記事membershipはFact単位、Evaluation LaneはFact・Intervention version・lane type単位、`product.loop_completed`はFact・Lane・metric rule単位のderivation keyで冪等化する。派生失敗はFactを巻き戻さず再送し、Loop eventはbaseline、Lane、checkpoint、outboxが同一transactionで成立した後に発行する。遅延確定時も`effective_at`とeventの`occurred_at`を混同しない。
+
 v1.1改訂: 通知カタログ（REQ-PRODUCT-11）との突合で4種追加（approval_requested / webhook_failed / reconciliation_mismatch / cache_hit_floor_breached）。凍結規則どおりevent_type追加はminorでありエンベロープ・既存typeは不変。
 
 v1.2改訂: 運営お知らせのイベント投入（REQ-PRODUCT-16のイベント由来原則との整合）で `platform.announcement_published` を追加（minor）。エンベロープ・既存typeは不変。
@@ -302,5 +304,7 @@ v1.8改訂: Recommendationの内部提案、判断可能な提示、手動／自
 v1.9改訂: freeze済みIntakeとAction dispatchの間にscope・version付きExecution Admissionを追加し、Preflight、Credit Reservation、Admission consume、Action開始を別事実として再構築可能にした。Credit eventをTicket非依存のbilling subjectへ一般化した。
 
 v1.10改訂: 非公開Vault Provision、Generation Outcome／deliverable提供、Credit commitの原子的確定、Job完了、Vault期限・削除・保証期間内access failureを別eventとして追加した。
+
+v1.11改訂: Publication Factの外部反映時刻Source／精度と、Activation・15記事membership・Evaluation Lane・Loop Completionの冪等派生境界を追加した。
 
 v1.3改訂（表記正規化・型不変）: カタログを **1 event_type = 1行** へ正規化した。旧版の複合行（例: `generation.gate_passed / gate_held`）は複数typeの省略表記であり、機械照合の契約としてregex `^[a-z]+\.[a-z_]+$` に行単位で適合しなかったため分割した。event_typeの集合・エンベロープ・payload意味論は不変（新規type追加なし）。分割時、旧複合行で共有されていた消費印・根拠は各行へ引き継ぎ、区別があったもの（N(held)/N(hard)等）は当該行にのみ付した。

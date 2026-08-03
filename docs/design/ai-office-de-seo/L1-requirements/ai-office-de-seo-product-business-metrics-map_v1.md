@@ -55,5 +55,7 @@ Activationは運営側の契約獲得や画面利用ではなく、顧客がSEO�
 
 - 全eventは `tenant_id`、`site_id`、`occurred_at`、`event_id`、`source`、`correlation_id`、schema versionを持つ。契約eventは `contract_id`、Recommendationは `recommendation_id/version`、CMS反映は `publication_fact_id` を追加する。
 - `site.activated` と `product.loop_completed` は同一ではない。初回`ai_office_publication` FactでActivationへ到達し、そのFactに対する`seo_content` Laneと1／3／6か月予定の登録まで完了して初回Loop完了となる。
+- Publication Factの`effective_at`は外部反映時刻とし、署名済みCMS event、再読取確認済みCMS値、最初の一致hash観測の順でSourceを選び、精度、観測時刻、clock skew検証、rule versionを持つ。予約、Command、API受付、Webhook受信、検証終了時刻を代用しない。不整合値は`reconciliation=pending`とし、指標へ算入しない。
+- ActivationはSite、15記事membershipはPublication Fact、Evaluation Laneは`Fact × Intervention version × lane type`、Loop Completionは`Fact × Lane × metric rule`を一意keyとして冪等に導出する。派生失敗時はFactを巻き戻さず再開し、遅延確定でも外部反映時刻と派生event発生時刻を混同しない。
 - 遅延eventはevent timeで再集計し、再送は `event_id` で冪等化する。欠損、遅延、分母0、接続解除は0へ丸めずavailabilityを表示する。
 - 一般ユーザー画面は到達段階、必要操作、稼働状況を平易に表示する。算式、重複排除、補正、内部eventは開発・管理Dashboardの責務とする。
