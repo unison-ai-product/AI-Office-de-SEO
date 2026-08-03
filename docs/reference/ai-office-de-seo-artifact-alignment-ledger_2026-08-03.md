@@ -54,9 +54,9 @@
 
 - REQ定義／coverage／AC traceの機械監査は通過している。
 - 現行価格、契約周期、認可、AWS、CMS非依存、公開責任、15記事解放、月次／週次計画、1・3・6か月評価、FAQチャット、通常／Office同期を意味監査へ追加した。
-- 画面遷移は新規Site／既存Siteの導入からRecommendation、制作・更新、CMS、公開判断、評価まで追従済みである。
+- 画面遷移は新規Site／既存Siteの導入からRecommendation、制作・更新、CMS、公開判断、評価まで追従済みである。リライト／記事置換のArticle Read Snapshot取得Gateと、生成完了から独立したCMS Deliveryの再開・外部検証・持ち出し状態も画面遷移／台帳へ接続した。
 - プロト本体は未編集であり、意図どおり`prototype_follow_up`に留めている。
-- L3 Contract SchemasではTicket、未達Snapshot、Source欠損表現、13状態Workflow、Catalog型、Event payload、検証対応表を既存要求から補完した。DDLでは認可、URL、Snapshot／PostEnvelope一時保存、状態遷移、Config allowlistを補完した。
+- L3 Contract SchemasではTicket、未達Snapshot、Source欠損表現、13状態Workflow、Catalog型、Event payload、検証対応表に加え、`schema.snapshot.article_read.v1`と`schema.cms.delivery.v1`を既存要求から補完した。DDLでは認可、URL、Article Read Snapshot metadata、期限付き本文参照、CMS Delivery Job、状態遷移、Config allowlistを補完した。
 - 残る物理partition／圧縮／BigQuery境界、通知保持、k匿名・標本しきい値は、要求追従漏れではなく負荷・費用・法務・実データによる`DD-09/10`、`OC-08`として未確定台帳へ移した。
 - 旧監査資料は履歴bannerを持ち、Officeの固定6部屋／固定Agent数を現行仕様として使用しない。UI Partsはframework非依存、Gate Aは現行要求境界を明示した。
 - L3 Decision Table 35件はOpen Items Registerへ全件分類し、Configの`TODO(L3)` key familyも確定証拠と改版先へ接続した。
@@ -79,10 +79,11 @@
 | Keyword Market／Site Share | KRL、KPD、KGA詳細 | Market／Share aggregate、Source schema、DDL | 戦略／診断Report、Office drilldown | aligned |
 | Recommendation Intake | LOGIC-01〜03、BUS-08 | recommendation／intake schema、event、DDL | Queue→freeze→Preflight遷移 | aligned |
 | Article Summary・本文非恒久保持 | DATA-03〜06、ASUM | Summary schema、一時PostEnvelope、TTL | 記事遍歴・Recommendation表示 | aligned |
+| リライト用記事読取 | DATA-12、LOGIC-05〜07 | `schema.snapshot.article_read.v1`、期限付き本文領域、Article Read event | Screen Flow Intake→記事取得→Workflow、S3取得状態 | aligned |
 | 新規15記事と自動投稿 | LOGIC-04、ORG-06 | Publication Decision、Automation delegation | Dashboard進捗、CMS下書き→公開分岐 | aligned |
 | リライト・全文再生成 | LOGIC-05〜07、BUS-09 | Rewrite Ticket、Diff、backup／Revision contract | 下書き、差分、承認、安心保証 | aligned |
 | 公開／更新後評価 | LOGIC-08〜10、KRL | InterventionEvaluation、evaluation event | 1・3・6か月、月次／累積、要監視 | aligned |
-| CMS非依存・WP初期Adapter | INT-01・05・06、TECH | Publication Contract、CMS Connection Profile | Capability、縮退、再接続、持ち出し | aligned |
+| CMS非依存・WP初期Adapter | INT-01・05・06、TECH | CMS Connection Profile、`schema.cms.delivery.v1`、Publication Contract | Capability、Delivery状態、外部下書き検証、再接続、再送、持ち出し | aligned |
 | 軽量計測 | MEASURE-01〜04、INT-03 | Tracker event、集約、本文／form非取得 | ページ表示・遷移・CTA・thanks | aligned |
 | 通常／Office | DESIGN-01・09〜11、SCREEN-18・19 | 共通Command／Event、Office Proposal | Context保持・双方向遷移 | aligned |
 | Agent／Officeペルソナ／実行責務 | AGENT-01〜11、PACK-01〜21、AOUI-01〜07、Agent Requirements Map | 共通Office Conversation Runtime、6実行責務、Ticket／Snapshot、persona別Service・Proposal mapping | 初期7部屋・13ペルソナはconfig baseline。ペルソナ数、Executor責務数、LLM同時呼出数を分離 | aligned（業務能力mappingは現行、プロト反映は後工程） |

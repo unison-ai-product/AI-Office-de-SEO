@@ -175,7 +175,12 @@ flowchart TD
   B --> E[Preflight<br/>権限/credit/接続/重複/保護/依存]
   D --> E
   E -->|不足/競合| E2[理由・必要操作・相談<br/>保留/修正/中止]
-  E -->|成立| F[W5 Agent Workflow<br/>停止/再開/キャンセル]
+  E -->|新規成立| F[W5 Agent Workflow<br/>停止/再開/キャンセル]
+  E -->|リライト/記事置換| ER[Article Read Snapshot取得<br/>本文は期限付き領域だけに保持]
+  ER -->|本文・見出し・公開状態が利用可能| F
+  ER -->|取得不能/古い| ER2[input/connection required<br/>取得経路の自動診断・再取得]
+  ER2 -->|解消| ER
+  ER2 -->|未解消| E2
   F --> G{Outline確認設定}
   G -->|ON| H[見出し構成を確認・修正・確定]
   G -->|OFF| I[Meaning Unit Writing]
@@ -189,12 +194,18 @@ flowchart TD
   J -->|通過| L[Presentation Assembly<br/>装飾・アイキャッチ・CTA/内部link配置]
   K -->|公開継続| L
   K -->|修正| F
-  L --> M{CMS write再診断}
-  M -->|成立| M1[CMS下書き送信<br/>編集URL/Preview URL]
-  M -->|不成立| M2[connection_required<br/>成果保持・再接続/再送/持ち出し]
-  M2 -->|再接続| M
-  M2 -->|持ち出し| M3[HTML/Markdown等を取得<br/>Recommendation/Job履歴は維持]
-  M1 --> N{公開条件}
+  L --> M[CMS Delivery準備<br/>生成成果と送信Jobを分離]
+  M --> MC{CMS write再診断}
+  MC -->|成立| M1[delivering<br/>同一idempotency keyで送信]
+  MC -->|不成立| M2[connection/permission required<br/>成果保持・再接続/再送/持ち出し]
+  M2 -->|再接続| MC
+  M2 -->|持ち出し| M3[carried_out<br/>HTML/Markdown等を取得<br/>Recommendation/Job/Delivery履歴は維持]
+  M1 -->|一時失敗| M4[failed_retryable<br/>同一Deliveryを再開]
+  M4 --> M1
+  M1 -->|下書き作成| M5[draft_created→verification_pending]
+  M5 -->|外部下書きを確認| M6[verified<br/>編集URL/Preview URL]
+  M5 -->|確認不能| M4
+  M6 --> N{公開条件}
   N -->|新規15件未満| O[完成記事の承認必須]
   N -->|新規15件到達＋自動運用有効| P[S4 予約/公開]
   N -->|リライト/記事置換| Q[差分確認・承認必須]
@@ -326,9 +337,9 @@ flowchart TD
 | Report → 月次計画 | Report versionが存在 | 目的・KPI・月次方針確定は目標管理。予算設定・配賦は契約者またはサイトオーナー | source_report_ref付きMonthlyPlan案へ | Report変更時は未実行分への影響差分を表示し、確定済み・実行済み履歴を保持 | REQ-BUS-06 / REQ-ORG-03・05 / REQ-UJ-09 |
 | 月次計画 → 週次実行予定 | 計画確定または自動確定期限到達 | 手動確定・方針変更は目標管理。予算変更は契約者またはサイトオーナー | 今週の実行予定へ | credit、Capacity、依存、保護、品質不足を項目別に保留し、月次計画へ戻して再計算可能 | REQ-BUS-06・07 / REQ-SCREEN-01 |
 | Recommendation → Intake | version、根拠、入力availability、予測credit、依存、保護条件が成立 | 戦略的な採否・除外はキーワード・サイト戦略。個別記事の実行採否は記事制作 | freeze済みIntakeとPreflightへ | 不足入力、重複、カニバリ、予算、権限、接続を理由付きでheld。対象設定または元Recommendationへ戻す | REQ-BUS-08 / REQ-LOGIC-01〜03 / REQ-SCREEN-02・03 |
-| Intake → Agent Workflow | Preflight成立 | 新規・リライト・Patch実行は記事制作 | Task History／生成進捗へ | Preflight後の外部変化は古い条件で実行せずheld／supersededとし、Recommendation Contextを保って復帰 | REQ-AGENT-* / REQ-SCREEN-15 / REQ-ACCESS-16 |
+| Intake → Agent Workflow | Preflight成立。リライト／記事置換は有効な`schema.snapshot.article_read.v1`で本文・見出し・公開状態を取得済み | 新規・リライト・Patch実行は記事制作 | Task History／生成進捗へ | Article Read Snapshotが取得不能／期限切れなら本文更新へ進めず、取得診断・再取得へ戻す。Preflight後の外部変化は古い条件で実行せずheld／supersededとし、Recommendation Contextを保って復帰 | REQ-AGENT-* / REQ-SCREEN-15 / REQ-ACCESS-16 / REQ-DATA-12 |
 | Outline → 本文・QA・装飾 | Outline Contract成立 | 記事制作。途中確認ONの場合のみ確認操作 | CMS送信前成果へ | 差し戻しは対象stageへ戻り、ユーザー編集箇所を保護。再生成時は追加credit条件を表示 | REQ-SCREEN-15 / REQ-LOGIC-05〜07 |
-| 成果 → CMS下書き | CMS write Capabilityと副作用直前の再認可 | 記事制作 | WordPress等の編集URL／Previewへ | REST切断、Scope不足、互換性低下では生成成果を保持し、再接続・再送・持ち出しへ分岐 | REQ-INT-01・05 / REQ-SCREEN-16 |
+| 成果 → CMS下書き | `schema.cms.delivery.v1`を作成し、CMS write Capabilityと副作用直前の再認可が成立 | 記事制作 | `prepared → delivering → draft_created → verification_pending → verified`を表示し、検証済み編集URL／Previewへ | REST切断、Scope不足、互換性低下では生成成果とDelivery IDを保持する。`failed_retryable`は同一idempotency keyで再開し、再生成・二重credit消費・二重下書きを起こさない。持ち出しは`carried_out`であり公開成功には数えない | REQ-INT-01・05 / REQ-SCREEN-16 / REQ-TECH-18 |
 | CMS下書き → 公開・更新 | 新規15件ルール、承認設定、自動運用委任、hard gate、対象種別の条件成立 | 記事制作。自動運用設定は契約者またはサイトオーナー＋該当業務権限・step-up | 公開／更新eventと評価起点へ | 新規15件未達は完成記事承認へ。リライト・記事置換は原則承認へ。hard gateは同一権限者の二段階確認＋同意へ | REQ-ORG-05・06 / REQ-WPA-04 / REQ-ACCESS-08・16 |
 | 公開・更新 → 評価 → 次回計画 | 公開または実質的更新event | 閲覧は全員、分析条件・評価確定はサイト分析、補正採用や方針変更は対応する業務権限 | 1・3・6か月評価、月次／累積結果、次回Recommendationへ | データ不足は成功・悪化を確定せず観測継続。急変は即時推薦せず要監視へ | REQ-BUS-09・10 / REQ-SCREEN-13 / REQ-KRL-05〜10 |
 | 通常ビュー ⇄ Office | 同じtenant、Site、対象ID、versionへの閲覧権限 | 閲覧は共通。変更は通常ビューと同じ基本権限・業務権限 | 同一Command／Eventを両Viewへ反映 | Office独自状態や権限迂回を作らず、拒否理由と通常ビューの解消先を表示 | REQ-SCREEN-08〜11・18・19 / REQ-ACCESS-01・14〜16 |
