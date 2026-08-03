@@ -213,7 +213,7 @@ Siteごとの接続結果を`schema.cms.connection_profile.v1`へ固定する。
 - 取得経路の切替、source更新、hash変更、TTL切れで旧Snapshotを再利用しない。CMS保存値は編集入力、公開表示はSEO評価、Plugin Snapshotは変更通知という用途別正本を`source_kind`とprovenanceで区別する。
 - job完了、取消、期限切れ後は一時本文を破棄し、残すのはSnapshot ID、hash、取得時刻、availability、provenance、destroyed_atだけとする。
 
-根拠: `REQ-PRODUCT-04/20`、`REQ-BUS-02`、`REQ-LOGIC-02/12/13`、`REQ-INT-09`、`REQ-RWR-01〜06`。
+根拠: `REQ-DATA-15`、`REQ-PRODUCT-04/20`、`REQ-BUS-02`、`REQ-LOGIC-02/12/13`、`REQ-INT-09`、`REQ-RWR-01〜06`。
 
 ## 0.0.4 Agent Office Conversation・Proposal Contract
 

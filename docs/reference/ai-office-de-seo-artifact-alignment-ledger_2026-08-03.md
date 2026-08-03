@@ -79,7 +79,7 @@
 | Keyword Market／Site Share | KRL、KPD、KGA詳細 | Market／Share aggregate、Source schema、DDL | 戦略／診断Report、Office drilldown | aligned |
 | Recommendation Intake | LOGIC-01〜03、BUS-08 | recommendation／intake schema、event、DDL | Queue→freeze→Preflight遷移 | aligned |
 | Article Summary・本文非恒久保持 | DATA-03〜06、ASUM | Summary schema、一時PostEnvelope、TTL | 記事遍歴・Recommendation表示 | aligned |
-| リライト用記事読取 | DATA-12、LOGIC-05〜07 | `schema.snapshot.article_read.v1`、期限付き本文領域、Article Read event | Screen Flow Intake→記事取得→Workflow、S3取得状態 | aligned |
+| リライト用記事読取 | DATA-15、LOGIC-05〜07 | `schema.snapshot.article_read.v1`、期限付き本文領域、Article Read event | Screen Flow Intake→記事取得→Workflow、S3取得状態 | aligned |
 | 新規15記事と自動投稿 | LOGIC-04、ORG-06 | Publication Decision、Automation delegation | Dashboard進捗、CMS下書き→公開分岐 | aligned |
 | リライト・全文再生成 | LOGIC-05〜07、BUS-09 | Rewrite Ticket、Diff、backup／Revision contract | 下書き、差分、承認、安心保証 | aligned |
 | 公開／更新後評価 | LOGIC-08〜10、KRL | InterventionEvaluation、evaluation event | 1・3・6か月、月次／累積、要監視 | aligned |

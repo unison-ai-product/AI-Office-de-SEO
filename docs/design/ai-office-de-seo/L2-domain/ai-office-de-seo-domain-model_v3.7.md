@@ -26,7 +26,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 | BC | 責務 | 主な集約 | 根拠REQ |
 |---|---|---|---|
 | Tenancy & Access | 契約者・顧客組織・Membership・Site付与・基本権限・業務権限・認可判断・サンドボックス境界・アカウントライフサイクル・マスターテナント | ContractAccount, CustomerOrganization, Membership, Site(SiteSandboxContext), AuthorizationDecision | REQ-ORG-01〜12, REQ-ACCESS-01〜18 |
-| Content Index | URL正本・記事メタ（サマリー契約・意味索引）・Site Keyword Universe・Site Cluster Projection・属性・アサイン台帳・起点候補・サイトトポロジー・導出事実/施策台帳 | UrlMaster, ArticleSummary, SiteKeywordUniverse, SiteClusterProjection(AssignmentLedger), SiteTopology, DerivedFacts(InterventionLedger) | REQ-DATA-02/07/10/11, REQ-KGA-01〜04/07/12/13/14/18/19 |
+| Content Index | URL正本・記事メタ（サマリー契約・意味索引）・期限付き記事読取・Site Keyword Universe・Site Cluster Projection・属性・アサイン台帳・起点候補・サイトトポロジー・導出事実/施策台帳 | UrlMaster, ArticleSummary, ArticleReadSnapshot, SiteKeywordUniverse, SiteClusterProjection(AssignmentLedger), SiteTopology, DerivedFacts(InterventionLedger) | REQ-DATA-02/07/10/11/15, REQ-KGA-01〜04/07/12/13/14/18/19 |
 | Search Performance | Site構築進捗・GSC実績・被覆・ドリフト・カニバリ・リライト候補・マッチカスケード・ロングテール昇格・市場圧力・動的キーワード戦略・ウォッチ/変動監視・インデックス状況・戦略／診断Report・月次／週次計画・Recommendation・公開後評価 | SiteBuildRun, GscDataMart, CoverageAssessment, RewriteCandidate, QueryMatch, KeywordMarketPressure, KeywordStrategyProfile, Watchlist, KeywordReport, MonthlyPlan, WeeklyExecutionSelection, Recommendation, InterventionEvaluation | REQ-BUS-02〜10, REQ-KGA-05/06/08/11/15/16/17/20/21/23, REQ-PRODUCT-05/17/24, REQ-KRL-01〜10, REQ-DATA-06 |
 | External Intelligence | 公共Keyword Asset・Public Market Cluster、SERP/競合/Fanoutの取得・cache・batch・静穏窓スケジューリング | KeywordAssetPool, PublicMarketCluster, SourcePack, CompetitorStructure, FetchBatch | REQ-DATA-10, REQ-SRC-01〜10 |
 | Generation | Workflow状態機械・Ticket・Pack注入・執筆・QA/Repair・中断/再開・全体整合パス・実行冪等性・執筆技法レイヤ | GenerationJob, Ticket, PackCatalog, OutlineContract | REQ-AGENT-01〜11, REQ-PACK-01〜21 |
@@ -87,6 +87,12 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - `SiteClusterProjection`: Site目的、業界／横断軸、記事成立性、Article Summary、Assignmentを反映したSite固有cluster。公共Clusterと1対1を前提にせず、primary／secondary、記事割当、ユーザー確定状態を持つ。
 - `MarketShareSnapshot`: Market属性、Observed Query Share、Estimated Search Share、Article Shareを別成分・別provenanceで保持する期間read model。
 - 不変条件: global IDとSite IDを別namespaceにする／公共改版でユーザー確定Site Clusterを上書きしない／MarketとShareを単一値へ潰さない／GSC Query集合を市場全体とみなさない。
+
+### 4.3.0.1 ArticleReadSnapshot（Content Index / Rewrite）
+
+- ルート: ArticleReadSnapshot。記事取得1回の結果と一時本文のライフサイクルを、ArticleSummaryやCMS write Capabilityから独立して管理する。
+- 値: ArticleRef、UrlRef、ConnectionProfileRef、ReadRouteRef、SourceKind、FetchedAt、SourceModifiedAt、PublicState、Title、Meta、HeadingTree、ContentRef、ContentHash、StructureHash、Size、Availability、WorkspaceRef、ExpiresAt、DestroyedAt、Correlation、Provenance。
+- 不変条件: 本文全文はSite／job scopedの暗号化一時objectにだけ置く／DB・event・log・Notification・Recommendationへ複製しない／本文変更を伴うRewrite Intakeはbody・headings・public state・freshnessが成立した有効Snapshotを必須とする／経路切替、source更新、hash変更、期限切れで旧Snapshotを再利用しない／完了・取消・期限切れ後は本文objectを破棄し、metadataと破棄証跡だけを残す／読取成功をCMS write permissionへ流用しない（REQ-DATA-15）。
 
 ### 4.3.1 Recommendation（Search Performance）
 

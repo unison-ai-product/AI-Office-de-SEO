@@ -123,6 +123,14 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 
 生server／edge logは暗号化object storageへ短期保持し、Siteごとの保持上限と削除jobを持つ。通常DBには日次集約と異常sampleの参照だけを置き、IP、header全文、本文、無制限なrequest列を恒久保持しない。
 
+### REQ-DATA-15 Article Read Snapshot
+
+本文変更を伴うリライト、記事置換、Article Summary再生成および公開表示検証へ渡す記事取得結果は、`schema.snapshot.article_read.v1`へ正規化する。Snapshotはtenant／Site／article／URL、取得経路、source種別、取得時刻、source更新時刻、公開状態、title、meta、見出し構造、本文一時参照、content／structure hash、size、body／headings／public state／freshnessのavailability、provenance、correlation、期限と破棄時刻を持つ。
+
+本文はSite／jobへscopeした暗号化一時objectだけへ置き、DB、event、log、Notification、Recommendationへ複製しない。本文変更を伴う`rewrite`または`article_replacement`は、body、headings、public stateが利用可能で、hashと期限が有効なSnapshot IDを必須入力とする。不成立時は`read_connection_required`または`input_required`へ保留し、Article SummaryだけからEdit Plan、Repair Ticket、記事置換Ticketを発行しない。
+
+取得経路の切替、source更新、hash変更または期限切れ時は旧Snapshotを再利用しない。job完了、取消または期限切れ後に本文objectを破棄し、Snapshot ID、hash、取得時刻、availability、provenance、破棄時刻だけを履歴として保持する。CMS保存値、公開表示、Plugin Snapshot等は用途別正本としてsource種別で区別し、読取成功を書込権限へ流用しない。
+
 ## 受入条件
 
 - [ ] AC-L1-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
@@ -139,3 +147,4 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 - [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴とWordPress Media参照を保持できる。
 - [ ] AC-L1-DATA-13: マスターテナントの自社実績と明示許諾済みShowcase Snapshotだけを紹介記事・デモへ使用し、顧客横断参照なしに許諾撤回を反映できる。
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。
+- [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。

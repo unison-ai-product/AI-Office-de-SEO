@@ -26,6 +26,12 @@
 | LB-06 | CMS write／Media／Preview／RevisionのWP契約 | WP版・Editor別Contract Test、反映確認 | CMS Connection Profile | 投稿機能β前 |
 | LB-07 | Billing Ledger／reserve／commit／release／auto-chargeの整合 | 二重event、失敗、返金、照合fixture | Billing schema／Ledger | 有償Job開始前 |
 | LB-08 | 現行価格・契約・Plan構成・原価仮説に基づく財務モデル再生成 | 基準／保守caseの月次契約数、MRR、売上、原価、粗利、cash flow、churn、黒字転換を同一入力から再計算したversion付きmodelとreview記録 | 事業計画Financial Model。製品要求・Price Catalogの正本にはしない | 資金計画・販売目標の対外利用前 |
+| LB-09 | 規約、Privacy Policy、特商法、匿名集計・事例利用、解約・返金の法務文書と同意version | 弁護士／責任者review、同意fixture、旧version再表示・撤回試験 | Legal Document Registry／Consent Policy | 外部β募集・有償契約前 |
+| LB-10 | Google OAuth審査、GSC API利用規約、Scope・token保管・削除手順 | OAuth verification結果、規約適合review、接続／取消／削除試験 | Google Connection Policy／Security ADR | 一般顧客のGSC接続公開前 |
+| LB-11 | 公開SLO・非保証範囲、Status Page、障害告知・更新・終息運用 | SLO文書、障害訓練、Status Page fixture、顧客通知review | SLO／Incident Communication Policy | Production公開前 |
+| LB-12 | 適格請求書、Stripe Tax／請求書、特商法表示の実装・帳票整合 | 税務review、Stripe test invoice、返金・税額・端数照合 | Billing／Invoice Policy | 有償契約前 |
+| LB-13 | 商標・domain利用可否、成果非保証を含む販売・広告表現 | 商標調査、法務／marketing review、公開文面version | Brand／Marketing Claims Policy | 公開Site・販売資料公開前 |
+| LB-14 | North Star、activation、継続、churnの算式と計測契約 | 指標定義書、event-to-metric試算、欠損・重複fixture | Measurement Dictionary／Analytics Contract | β評価開始前 |
 
 ## 4. Design decision
 
@@ -45,6 +51,9 @@
 | DD-12 | YMYL分類器、対象taxonomy、誤分類時の扱い | Quality Gate／公開確認 | 法務・品質reviewと日本語評価set |
 | DD-13 | hard／advisory再分類とfew-shot・QA共通較正手順 | Pack／QA | 独立した正例・反例、回帰試験、人手評価手順 |
 | DD-14 | Accessibilityの正式準拠水準、対象画面・例外、手動／自動検証方式 | 通常ビュー／Agent Office／管理画面 | WCAG対応表、keyboard・focus・contrast・label・reduced motionの受入試験、採用tool ADR |
+| DD-15 | Transactional Email provider、送信認証、bounce／complaint／抑制list連携 | 認証・通知 | provider比較、domain認証、bounce／suppression Contract Test |
+| DD-16 | Embedding model、vector index、再計算・切替方式 | Knowledge／類似検索 | 日本語精度、latency、原価、再index時間の比較ADR |
+| DD-17 | OTelを正本としたLLM trace補助toolと相関・保存境界 | Observability／Agent trace | trace相関fixture、PII除外、費用・保持比較ADR |
 
 ## 5. Operational calibration
 
@@ -58,6 +67,7 @@
 | OC-06 | Recommendation／評価閾値 | 1/3/6か月、月次／累積、季節性、AIO／広告影響 | Logic Config／Site補正 |
 | OC-07 | Keyword Market Pool更新頻度・購入原価 | source鮮度、利用率、重複、API費 | Source Policy／Cost Table |
 | OC-08 | k匿名しきい値、segment最小標本、prior縮小重み | 再識別risk、標本安定性、補正精度 | Network Learning Policy／Config Registry |
+| OC-09 | URL Inspection quotaとランキング更新情報の取得経路・更新頻度 | quota消費、取得成功率、鮮度、原価 | Source Policy／Connector Config |
 
 ## 6. Post-release concept
 
@@ -71,6 +81,7 @@
 | PC-06 | モバイルOffice Chat・通知・簡易指示 | 初期PC標準。対応済みと誤表示しない |
 | PC-07 | 外部開発者向けApp Store／第三者Object | 初期は自社Objectだけ。審査・課金・securityは別判断 |
 | PC-08 | 高度3D Office／音声／着せ替え | 業務・性能・accessibilityを満たす後続表現 |
+| PC-09 | News／YouTube等の需要観測Source | 初期必須機能にせず、provider・規約・費用の検証後にSource Objectとして追加 |
 
 ## 7. Migration debt
 
@@ -101,35 +112,35 @@ L3 Decision Tableの項目を次の分類へ必ず接続する。本表にない
 | D-04 | DD-03 | Source Extract契約決定済み、schema file・fixture試験待ち |
 | D-05 | DD-04 | 日本語形態素解析・辞書version |
 | D-06 | OC-01／OC-05 | Provider互換Routing、初期Model Registry、原価実数 |
-| D-07 | design_decision | Email provider、認証、bounce／抑制連携 |
+| D-07 | DD-15 | Email provider、認証、bounce／抑制連携 |
 | D-08 | DD-05／DD-06 | Queue方式と専用MQへの移行条件 |
 | D-09 | DD-05 | AWS前提は決定、具体service構成はADR待ち |
-| D-10 | design_decision | 埋め込みmodel、vector index、再計算方式 |
+| D-10 | DD-16 | 埋め込みmodel、vector index、再計算方式 |
 | D-11 | DD-11 | 日本語可読性。決定まではadvisory |
 | D-12 | LB-01／OC-07 | Keyword／SERP provider契約上限と原価 |
-| D-13 | post_release_concept | News／YouTube観測の提供可否。初期機能として表示しない |
+| D-13 | PC-09 | News／YouTube観測の提供可否。初期機能として表示しない |
 | D-14 | DD-09／DD-10 | Source別Retention、TTL、圧縮、保存境界 |
 | D-15 | LB-01／OC-01 | credit原価単位、品質係数、販売枠 |
-| D-16 | launch_blocker | 規約、privacy、特商法、同意、匿名集計、事例、解約・返金 |
-| D-17 | operational_calibration | URL検査quotaとランキング更新情報の取得経路 |
+| D-16 | LB-09 | 規約、privacy、特商法、同意、匿名集計、事例、解約・返金 |
+| D-17 | OC-09 | URL検査quotaとランキング更新情報の取得経路 |
 | D-18 | PC-01 | AI表示性providerの四半期再検証 |
 | D-19 | OC-01／OC-05 | Prompt cache価格・TTL・routing原価 |
 | D-20 | DD-05／DD-06 | tenant資源profileとnode密度 |
 | D-21 | LB-04 | RPO／RTO達成性 |
 | D-22 | DD-02／DD-06 | 耐久Agent runtime方式 |
-| D-23 | design_decision | OTelを正本としたLLM trace補助手段 |
+| D-23 | DD-17 | OTelを正本としたLLM trace補助手段 |
 | D-24 | DD-02／DD-03 | Mock Executor、event、fixture共用方式 |
 | D-25 | DD-11／DD-13 | Golden evaluation set |
 | D-26 | DD-11／DD-13 | 技法principles、検品lens、few-shot本文 |
 | D-27 | DD-11／DD-13 | segment、human voice、AI定型表現辞書 |
 | D-28 | DD-14 | 最低品質項目は要求済み。正式準拠水準、対象範囲、自動・手動検証方式が画面実装前の未決事項 |
-| D-29 | launch_blocker | Google OAuth審査・API規約適合 |
+| D-29 | LB-10 | Google OAuth審査・API規約適合 |
 | D-30 | LB-06 | WordPress Plugin配布・更新経路 |
-| D-31 | launch_blocker | 公開SLA／非保証方針とStatus Page運用 |
-| D-32 | LB-03／launch_blocker | 適格請求書、Stripe税・請求書、特商法表示 |
+| D-31 | LB-11 | 公開SLO／非保証方針とStatus Page運用 |
+| D-32 | LB-03／LB-12 | 適格請求書、Stripe税・請求書、特商法表示 |
 | D-33 | decided／launch作業 | 累計10社Trial方針は決定、cohort実数登録待ち |
-| D-34 | launch_blocker | 商標、domain、成果非保証を含むmarketing表現規約 |
-| D-35 | launch_blocker | North Star、activation、継続、churnの算式・計測定義 |
+| D-34 | LB-13 | 商標、domain、成果非保証を含むmarketing表現規約 |
+| D-35 | LB-14 | North Star、activation、継続、churnの算式・計測定義 |
 
 ### 9.1 台帳整合規則
 

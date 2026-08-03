@@ -84,6 +84,8 @@ updated_at: 2026-08-03
 | rewrite.flash_applied | url_hash, tdh_diff_ref | O | REQ-RWR-09 |
 | content.keyword_map_updated | change_summary | O | REQ-KGA-03 |
 | content.article_summary_upserted | url_hash | O | REQ-KGA-07 |
+| content.article_read_snapshot_created | article_read_snapshot_id, article_ref, url_ref, source_kind, fetched_at, content_hash, structure_hash, availability, expires_at, provenance_ref | O | REQ-DATA-15, REQ-INT-09 |
+| content.article_read_snapshot_destroyed | article_read_snapshot_id, destroyed_at, destroy_reason(completed/cancelled/expired/replaced), content_object_deleted, metadata_retained | O,A | REQ-DATA-15 |
 | content.assignment_changed | keyword_group_id, status, article_ref | O | REQ-KGA-14 |
 | content.assignment_conflict | keyword_group_id | N,O | REQ-KGA-14 |
 | content.duplicate_detected | url_hash | N,O | REQ-PRODUCT-03 |
@@ -92,7 +94,7 @@ updated_at: 2026-08-03
 | search.coverage_assessed | url_hash | O | REQ-KGA-05 |
 | search.query_drift_detected | url_hash, drift_type | O | REQ-KGA-06 |
 | search.cannibalization_detected | url_hashes[], scores | N,O | REQ-KGA-07 |
-| search.rewrite_candidate_raised | recommendation_id, version, article_ref, article_summary_ref, article_read_snapshot_ref, content_hash, reason_codes[], evidence_refs[], input_availability, observed_at, priority_score | O | REQ-BUS-02, REQ-RWR-06, REQ-LOGIC-02 |
+| search.rewrite_candidate_raised | recommendation_id, version, article_ref, article_summary_ref, article_read_snapshot_ref, content_hash, reason_codes[], evidence_refs[], input_availability, observed_at, priority_score | O | REQ-BUS-02, REQ-RWR-06, REQ-LOGIC-02, REQ-DATA-15 |
 | search.longtail_cluster_promoted | cluster_id, target(parent/backlog) | N,O | REQ-KGA-16（通知種別化はv1.2・REQ-PRODUCT-11） |
 | search.match_stats_updated | click_weighted_rate, tier_breakdown | O | REQ-KGA-15 |
 | search.anomaly_detected | scope, delta, factors[] | N,O | REQ-KGA-20 |

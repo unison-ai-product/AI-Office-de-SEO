@@ -656,6 +656,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先を既存QA・Placement・Automation・限定Repair Ticketへ接続し、CTA専用Agent・Writing Ticket・作業Packを増やさず実行できる。 ｜ 検証: REQ-LOGIC-14 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。 ｜ 検証: REQ-MEASURE-12 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。 ｜ 検証: REQ-DATA-14 ｜ 正本: `categories/data-requirements_v1.md`
+- [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。 ｜ 検証: REQ-DATA-15 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-CAV-01: Googlebot等のSEO BotとAI Botを共通契約で取り込み、事業者・用途・検証状態を分離してspoof疑いを実crawlから除外できる。 ｜ 検証: REQ-CAV-01 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
 - [ ] AC-L1-CAV-02: robots許可、外部probe、検証済み実crawl、本文可読性、freshnessを別成分として取得性を再現可能に判定できる。 ｜ 検証: REQ-CAV-02 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
