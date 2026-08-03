@@ -1,6 +1,6 @@
 {
-  "version": "2.1.0",
-  "_note": "部屋7＋ハブ=ダッシュボード。7フロア構成（1部屋=1フロアでゆとりを持たせる）。描画は本configのみで追従すること（PT-G）。エレベーターはfloors配列から生成。",
+  "version": "2.2.0",
+  "_note": "部屋7＋ハブ=ダッシュボード。7フロア構成。各personaは工程表示だけでなくService・会話能力・Proposal型をconfigから解決する。描画と業務入口は本configへ追従すること。",
   "floors": [
     {
       "floor_id": "f1",
@@ -162,6 +162,9 @@
       "char_asset": "char_publish_manager.webp",
       "asset_confidence": "confirmed",
       "mapping": {
+        "service_keys": ["publication", "cms_connection", "approval"],
+        "interaction_capabilities": ["explain", "inspect", "schedule", "retry", "confirm"],
+        "proposal_types": ["cms_send", "cms_retry", "publication_schedule", "publication_approval"],
         "executors": [
           "automation"
         ],
@@ -176,6 +179,9 @@
       "char_asset": "char_knowledge_trainer.webp",
       "asset_confidence": "confirmed",
       "mapping": {
+        "service_keys": ["derived_fact", "intervention", "site_policy", "pack_registry"],
+        "interaction_capabilities": ["explain", "explore", "compare", "propose", "retrain"],
+        "proposal_types": ["knowledge_adoption", "knowledge_invalidation", "retraining", "application_scope_change"],
         "executors": [],
         "stages": []
       }
@@ -186,6 +192,9 @@
       "char_asset": "char_link_architect.webp",
       "asset_confidence": "confirmed",
       "mapping": {
+        "service_keys": ["article_summary", "keyword_cluster", "link_graph", "patch_action"],
+        "interaction_capabilities": ["explain", "explore", "compare", "propose", "batch"],
+        "proposal_types": ["internal_link_candidate", "connection_copy_repair", "patch_batch", "execution_order_change"],
         "executors": [],
         "stages": [
           "site_strategy",
@@ -199,6 +208,9 @@
       "char_asset": "char_technical_seo.webp",
       "asset_confidence": "confirmed",
       "mapping": {
+        "service_keys": ["crawler_diagnostics", "gsc_index", "cms_capability", "link_graph", "cwv"],
+        "interaction_capabilities": ["explain", "diagnose", "compare", "escalate", "recheck"],
+        "proposal_types": ["technical_response_task", "content_action_recommendation", "diagnostic_recheck"],
         "executors": [
           "qa"
         ],
@@ -214,6 +226,9 @@
       "char_asset": "char_pose_01.webp",
       "asset_confidence": "provisional",
       "mapping": {
+        "service_keys": ["monthly_plan", "keyword_report", "recommendation", "intake"],
+        "interaction_capabilities": ["explain", "explore", "compare", "plan", "propose"],
+        "proposal_types": ["goal_change", "allocation_change", "execution_order_change", "outline_change"],
         "executors": [
           "planning"
         ],
@@ -229,6 +244,9 @@
       "char_asset": "char_pose_02.webp",
       "asset_confidence": "provisional",
       "mapping": {
+        "service_keys": ["keyword_asset_pool", "market_share", "serp", "gsc_query", "keyword_classification"],
+        "interaction_capabilities": ["explain", "explore", "compare", "exclude", "research"],
+        "proposal_types": ["cluster_state_change", "weight_change", "keyword_exclusion", "additional_research", "recommendation_direction_change"],
         "executors": [
           "planning"
         ],
@@ -243,6 +261,9 @@
       "char_asset": "char_pose_03.webp",
       "asset_confidence": "provisional",
       "mapping": {
+        "service_keys": ["report", "market_share", "article_query", "aio_ad_seasonality", "intervention"],
+        "interaction_capabilities": ["explain", "explore", "compare", "hypothesize", "analyze"],
+        "proposal_types": ["diagnostic_condition_change", "comparison_axis_change", "evaluation_interpretation", "additional_analysis_task"],
         "executors": [],
         "stages": [
           "serp_ttps_research"
@@ -255,6 +276,9 @@
       "char_asset": "char_pose_04.webp",
       "asset_confidence": "provisional",
       "mapping": {
+        "service_keys": ["gsc", "tracker", "conversion", "evaluation", "watch_queue", "recommendation"],
+        "interaction_capabilities": ["explain", "explore", "segment", "compare", "observe"],
+        "proposal_types": ["period_change", "segment_change", "observation_continuation", "next_action_candidate"],
         "executors": [],
         "stages": [
           "serp_ttps_research"
@@ -267,6 +291,9 @@
       "char_asset": "char_pose_05.webp",
       "asset_confidence": "provisional",
       "mapping": {
+        "service_keys": ["intake", "outline_contract", "section_brief", "site_rule", "source_pack"],
+        "interaction_capabilities": ["explain", "inspect", "edit", "regenerate", "compare"],
+        "proposal_types": ["bounded_content_change", "additional_instruction", "regeneration_task"],
         "executors": [
           "writing"
         ],
@@ -283,6 +310,9 @@
       "char_asset": "char_pose_06.webp",
       "asset_confidence": "provisional",
       "mapping": {
+        "service_keys": ["draft_snapshot", "qa_snapshot", "gate_catalog", "hard_gate"],
+        "interaction_capabilities": ["explain", "inspect", "compare", "verify", "repair"],
+        "proposal_types": ["return_for_revision", "bounded_repair", "double_confirmation"],
         "executors": [
           "qa"
         ],
@@ -297,6 +327,9 @@
       "char_asset": "char_pose_07.webp",
       "asset_confidence": "provisional",
       "mapping": {
+        "service_keys": ["automation_policy", "schedule", "job_queue", "budget", "kill_switch"],
+        "interaction_capabilities": ["explain", "inspect", "reorder", "pause", "resume"],
+        "proposal_types": ["automation_policy_change", "schedule_change", "task_pause", "task_resume"],
         "executors": [
           "automation"
         ],
@@ -312,6 +345,9 @@
       "char_asset": "char_pose_08.webp",
       "asset_confidence": "provisional",
       "mapping": {
+        "service_keys": ["authorization_decision", "membership", "connection_profile", "consent"],
+        "interaction_capabilities": ["explain", "diagnose", "guide", "verify", "propose"],
+        "proposal_types": ["reauthorization", "permission_change", "site_assignment_change", "consent_update"],
         "executors": [],
         "stages": []
       }
@@ -322,6 +358,9 @@
       "char_asset": "char_pose_09.webp",
       "asset_confidence": "provisional",
       "mapping": {
+        "service_keys": ["diagnostic_code", "faq", "task", "connection_health", "service_status", "support"],
+        "interaction_capabilities": ["answer", "diagnose", "guide", "escalate", "track"],
+        "proposal_types": ["retry_action", "support_ticket", "escalation"],
         "executors": [],
         "stages": []
       }

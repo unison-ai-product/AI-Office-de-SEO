@@ -34,6 +34,18 @@
 | Important | RecommendationからAgentへの引継ぎ情報が図上で弱かった | RecommendationをIntake Contractと定義し、再入力禁止と引継ぎ項目を明記 |
 | Important | Office personaを既存Executorの表示だけと読める記述があった | 業務責任を持つ継続的なユーザー接点として定義し直し、共通基盤との関係を明記 |
 | Important | 現行プロトは監視・詳細表示中心で、詳細設定・会話変更・Task構成変更が未追随 | L3接続マップ上で要求未定義ではなくプロト追随待ちとして管理 |
+| Critical | `office_layout.json`が`executors/stages`だけを持ち、analyst、traffic_reporter、knowledge_trainer、security_admin、support_agent等のmappingが空だった | Gate A-3 v1.4でService、会話能力、Proposal型をconfigへ追加し、工程のないAgentも実業務へ接続する |
+
+## 4.1 モックconfig修正方針
+
+旧configはキャラクターの稼働アニメを生成工程から導出する目的には足りていたが、Agentの業務能力を表現できていなかった。現行では各personaに次の4種類を分離して持たせる。
+
+1. `service_keys`: 読取、分析、説明、探索、Task化に使う業務Service。
+2. `interaction_capabilities`: 質問回答、深掘り、比較、変更相談等の会話能力。
+3. `proposal_types`: 状態変更前に作れる型付きProposal。
+4. `executors/stages`: Agentic Executionまたは進行表示へ接続する既存Executor／工程。
+
+これにより「機械計算をする機能だからAgent不在」「生成Workflowを持たないから飾り」という誤った分離を防ぐ。計算の正本は機械処理のまま維持し、その結果の解釈、対話、条件変更、Task化を担当Agentへ接続する。
 
 ## 5. モック確認範囲と制約
 

@@ -89,7 +89,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-MIG-03: 顧客認可にOwner／Admin／Editor／Viewerを正本として使用せず、契約者／サイトオーナー／ユーザー、業務Permission、Site付与から判定する。
 - [ ] PT-MIG-04: Officeを監視専用にせず、通常ビューの詳細操作、Agent会話Proposal、影響・credit確認、共通Command、双方向同期を操作できる。
 - [ ] PT-MIG-05: 旧モックfixtureを読み込んでも、現行Schemaへのmigrationまたは拒否が行われ、旧値がPlan、権限、承認、Office状態へ昇格しない。
-- [ ] PT-OFFICE-01: 基本12＋technical_seoの全personaが、担当業務、正本、作成可能Proposal、Executor／Tool、Permission、設備へmappingされ、空のキャラクターまたは専用runtimeにならない。
+- [ ] PT-OFFICE-01: 基本12＋technical_seoの全personaが、担当業務、正本、Service、会話能力、作成可能Proposal、Executor／Tool、Permission、設備へconfigからmappingされ、全能力が空のキャラクターまたは専用runtimeにならない。分析・ナレッジ・設定・サポート等、記事生成stageを持たないpersonaも実Serviceへ到達できる。
 - [ ] PT-OFFICE-02: 質問・探索では状態変更Commandを発行せず、変更指示だけが型付きProposalへ変換される。
 - [ ] PT-OFFICE-03: Proposalが対象、base version、差分、根拠、不足入力、影響、credit／Capacity、権限、取消／復元可否を表示し、不明項目をLLM推測で埋めない。
 - [ ] PT-OFFICE-04: Proposal確定時と副作用直前に同じ認可契約を使い、persona／部屋／Office入室でPermissionが拡張されない。

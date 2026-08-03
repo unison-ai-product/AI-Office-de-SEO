@@ -20,7 +20,9 @@ Agent Officeの部屋・フロア・ペルソナをconfig駆動で描画する�
   "rooms":    [{"required": ["room_id", "section_no", "label", "floor_id", "order", "sign_asset", "screen_refs", "persona_ids"]}],
   "hub":      {"required": ["label", "screen_refs"]},
   "personas": [{"required": ["persona_id", "label", "char_asset", "asset_confidence", "mapping"],
-                "mapping": {"required": ["stages"], "properties": {"executors": [], "stages": []}}}]
+                "mapping": {"required": ["stages", "service_keys", "interaction_capabilities", "proposal_types"],
+                            "properties": {"executors": [], "stages": [], "service_keys": [],
+                                           "interaction_capabilities": [], "proposal_types": []}}}]
 }
 ```
 
@@ -29,7 +31,10 @@ Agent Officeの部屋・フロア・ペルソナをconfig駆動で描画する�
 - `sign_asset` / `char_asset` はASSET-MAPPINGの命名規約（sign_NN_* / char_*）。状態オーバーレイは全ペルソナ共通の `state_idle/working/done/error`（個別指定不要）。
 - `asset_confidence`: "confirmed" | "provisional"。provisionalは差し替え前提（ASSET-MAPPING準拠）。
 - `mapping.stages` はREQ-AGENT-09の状態ID。キャラ状態はイベント（gate-a-1）の stage_entered/gate_* から導出し、手書きアニメ禁止（PT-E）。
+- `mapping.service_keys` はペルソナが読取・説明・探索・Task化へ接続する決定論Service／業務Service、`interaction_capabilities` は顧客へ提供する会話能力、`proposal_types` は会話から作成できる型付き変更案である。これらはペルソナを専用runtimeへ固定する識別子ではない。`executors/stages` が空でもService能力を持てるが、全4集合が空の飾りキャラクターは禁止する。
+- ペルソナは工程表示だけではなく担当業務の継続的窓口である。質問・説明・探索はServiceへ、状態変更はProposal→共通Commandへ、生成・検査・配置は既存Executor／Workflowへ接続する。Office configに表示名だけを登録して機能を別コードへハードコードしない。
 - 追加・改名・並替はJSON変更のみで完結し、コード変更を要さない（AC-AOUI-07の検証対象）。
 - v1.1追補（任意フィールド=minor規則内）: `rooms[].holo{ type: chips|bars|doc|flow|books|toggles|net, title }`（部屋のホログラム表示タイプ。プロト実装からの収穫。未指定時は既定表示）。
 - v1.2追補（許容値拡張=minor規則内）: `screen_refs` のワークベンチ範囲を w1〜w9 → w1〜w10 へ拡張（v3.7.33のW10サポート追加に追随）。既存フィールド・必須集合は不変。
 - v1.3追補（初期インスタンス改訂・スキーマ不変）: `office_layout.initial.json` を **7フロア構成（1部屋=1フロア＋ハブ、config v2.1.0）** へ改訂。PO決定（ゆとり重視）とプロトのconfig駆動実証（PT-G: コード変更なしで2F⇄7F追従）に基づく。部屋7・ペルソナ13・screen_refs・必須フィールドは不変。エレベーター表示はfloors配列から生成する。
+- v1.4追補（ペルソナ業務能力）: `service_keys`、`interaction_capabilities`、`proposal_types`を必須化し、旧configの工程表示専用mappingを現行のAgent Interaction／Advisory／Executionへ接続する。v1.3インスタンスはmigration時にペルソナID別既定値を補い、空の能力で現行扱いしない。
