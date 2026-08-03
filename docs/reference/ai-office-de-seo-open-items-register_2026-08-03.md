@@ -40,6 +40,9 @@
 | DD-08 | Featured Image Pattern Editorと画像回帰検査 | 画像生成 | UI操作・Provider・CMS Media試験 |
 | DD-09 | GSC日次実績、Keyword Market Pool、global signalsのpartition・圧縮・rollup・BigQuery併用境界 | Data Mart／共有資産 | 想定件数を使った負荷・費用・復元比較ADR |
 | DD-10 | 通知の保持期間、既読archive、Support会話TTL | 通知／Support | 法務・support運用・保存費用を使ったRetention Policy |
+| DD-11 | near-duplicate、意味的一致、coherence、AI定型表現等の品質判定algorithm | Quality Gate | 日本語golden setのprecision／recall、latency、原価比較 |
+| DD-12 | YMYL分類器、対象taxonomy、誤分類時の扱い | Quality Gate／公開確認 | 法務・品質reviewと日本語評価set |
+| DD-13 | hard／advisory再分類とfew-shot・QA共通較正手順 | Pack／QA | 独立した正例・反例、回帰試験、人手評価手順 |
 
 ## 5. Operational calibration
 

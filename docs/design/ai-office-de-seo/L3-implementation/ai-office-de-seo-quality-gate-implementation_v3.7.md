@@ -17,7 +17,7 @@ REQ-PACK-09の各ゲートを検証実装へ、REQ-PACK-10の計測指標を計�
 
 各ゲートについて、計測実装（機械判定・一般システム側、REQ-KGA-08）と、LLM補助判定の要否（エージェント内限定）を確定する。
 
-| gate_key | 主要シグナルの計測実装 | しきい値（Config参照） | TODO(L3) |
+| gate_key | 主要シグナルの計測実装 | しきい値（Config参照） | true open／較正 |
 |---|---|---|---|
 | scaled_content_abuse | n-gram重複・near-duplicate類似度、独自要素カウント | near_duplicate_similarity（初期値・要調整） | 類似度アルゴリズム選定（simhash等）と競合セット取得経路 |
 | scraping_thin | 外部本文との近似度、付加価値要素の有無 | 同上 | 「本文非保持」制約下での比較方式（hash/シングリング） |
@@ -35,15 +35,15 @@ original_value / comprehensiveness / needs_met_intent / title_honesty / eeat_tru
 
 追随実装（v3.7.39〜41追加分）:
 
-| gate_key | 主要シグナルの計測実装 | しきい値（Config参照） | TODO(L3) |
+| gate_key | 主要シグナルの計測実装 | しきい値（Config参照） | true open／較正 |
 |---|---|---|---|
 | coherence_flow | Cohesion QA（組立後1パス読み通し・LLM）＋inter_unit_redundancy（ユニット間n-gram冗長度）・term_consistency（用語ロック逸脱率） | quality.inter_unit_redundancy.max / term_consistency.min | n-gram窓幅・用語ロック照合の正規化方式（REQ-AGENT-11） |
 | argument_structure | claim_evidence / nuance_qualificationユニット整合・citation_ratio・飛躍/論点先取のLLM検査 | citation_ratio | 論証パターンの判定プロンプトとfew-shot（REQ-PACK-20 academicレンズ） |
 | human_voice | AI定型表現辞書の決定論検出（ai_phrase_density）＋参照アンカー対比（gate_tags付き手書き例示・style_color）のLLM検査 | quality.ai_phrase_density.max | 辞書初期構築（D-27）・対比プロンプト・誤検知較正（ゴールデン評価併用、REQ-PACK-09） |
 
 - 計測正本: competitor_term_coverage（目標≥80%・初期値）、日本語向け可読性指標（選定まではadvisory）、original_element_count（最低1・YMYLは引き上げ）、citation_ratio、inter_unit_redundancy / term_consistency / ai_phrase_density（v1.1/v1.2追補、Gate A-5）。
-- TODO(L3): 日本語可読性指標を検証・選定する。英語向けFlesch値を日本語記事の合否基準として使用しない。
-- TODO(L3): YMYL分類器（健康・安全/金融/行政・社会）の実装方式と誤分類時の安全側挙動（疑わしきはYMYL扱い）。
+- DD-11／D-11: 日本語可読性指標を検証・選定する。英語向けFlesch値を日本語記事の合否基準として使用しない。選定前はadvisoryとする。
+- DD-12: YMYL分類器（健康・安全／金融／行政・社会）のtaxonomyと誤分類時の確認強度を検証する。疑義は警告と二段階確認へ寄せるが、システムが恒久的な公開禁止を決定しない。
 
 検証: AC-QUALITY-04/06/07。
 
@@ -52,7 +52,7 @@ original_value / comprehensiveness / needs_met_intent / title_honesty / eeat_tru
 - 初期しきい値はすべてConfig Registry（AOS-L3-CONFIG-REGISTRY-DEFAULTS）に登録し、要求書の数値は既定値として扱う（REQ-BILL-10 / REQ-ADM-09）。
 - QA実績（どのgateが落ちやすいか）に基づき、few-shot正例/反例とゲートしきい値を同時に更新する（単一ソース、REQ-PACK-12）。
 - コンテンツスコアの順位相関は約0.17〜0.28に留まる（網羅の検証であって順位予測ではない）ことを較正判断でも維持し、スコア追従のためにoriginal_value/narrative品質を犠牲にしない（REQ-PACK-10）。
-- TODO(L3): 較正データセット（正例/反例）の収集方針と、hard/advisory区分の見直しプロセス。
+- DD-13: 較正データセットは、Site学習用サンプルや実運用本文を無断で横断転用せず、許諾済み・手書き・公開利用可能な正例／反例と匿名化された判定統計を分離する。hard／advisory区分の変更はCatalog改版、golden regression、人手review、canary、rollbackを必須とする。
 
 ## 4. 実行位置
 

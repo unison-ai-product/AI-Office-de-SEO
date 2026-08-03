@@ -17,10 +17,10 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 
 | # | 項目 | 区分 | 根拠 | owner（役割） | 確定期限（フェーズ） | 状態 |
 |---|---|---|---|---|---|---|
-| D-01 | config_key命名規約の正式化（namespace/型/スコープ表現） | GateB B-1 | REQ-ADM-09 | TL（アーキテクト） | フェーズ0着手前 | open |
-| D-02 | new_article_workflow 13状態の機械可読インスタンス（Layer A格納形式） | GateB B-2 | REQ-AGENT-09, REQ-PACK-11.6 | TL（エージェント基盤） | フェーズ2着手前 | open |
+| D-01 | config_key命名規約、型、許可scope、allowlist強制 | GateB B-1 | REQ-ADM-09 | TL（アーキテクト） | フェーズ0着手前 | decided（Config Registry §1、Data DDL §7。migration実装待ち） |
+| D-02 | new_article_workflow 13状態のLayer A instance | GateB B-2 | REQ-AGENT-09, REQ-PACK-11.6 | TL（エージェント基盤） | フェーズ2着手前 | contract decided（状態・gate・格納契約確定。機械可読JSON artifact／test待ち） |
 | D-03 | 認可判定APIの実装形（基本権限`契約者/サイトオーナー/ユーザー`＋業務Permission＋Site Assignment＋内部Role分離を、Repository/API/worker/Agent tool/UI Availabilityへ同じPolicyで強制する方式） | GateB B-3 | REQ-ORG-03〜07, REQ-ACCESS-14〜18, Authorization Operation Matrix | TL（アーキテクト） | フェーズ0〜1 | open |
-| D-04 | Source Extract JSON Schema第一陣（keyword.map / gsc.query_group / assignment / page_query_matrix / snapshot.qa） | GateB B-4 | REQ-PACK-07 | TL（データ契約） | PT-1/DU-04着手前 | open |
+| D-04 | Source Extract JSON Schema第一陣（keyword.map / gsc.query_group / assignment / page_query_matrix / snapshot.qa） | GateB B-4 | REQ-PACK-07 | TL（データ契約） | PT-1/DU-04着手前 | contract decided（共通欠損・availability・主要payload確定。JSON Schema file／fixture test待ち） |
 | D-05 | 形態素解析エンジン選定（決定論・辞書versionの持ち方） | GateB B-5 | REQ-KGA-15 | TL（検索基盤） | マッチカスケード実装前 | open |
 | D-06 | Provider非依存Routingの初期Model Registry・Cost Table実数（OpenAI／Anthropicを含む検証済みroute、将来のKimi／Grok／Qwen／local互換、Batch割引・cache乗数・fallbackをversion化） | GateC | REQ-TECH-10, REQ-COST-11, REQ-BILLING-04/09 | PO＋TL（プロバイダ） | 商用化前 | open |
 | D-07 | メール送信プロバイダ選定（SPF/DKIM/DMARC・抑制リスト連携） | 検証/GateC | REQ-PRODUCT-21 | TL（インフラ） | 通知実装前 | open |
@@ -40,7 +40,7 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | D-21 | 初期内部目標RPO 1時間／RTO 4時間（`REQ-IRG-06`）の達成可能性を復元演習で検証し、未達時は設計・運用または目標変更を意思決定する | GateC | REQ-DUR-08, REQ-IRG-06 | TL（インフラ） | Production Hardening前 | open |
 | D-22 | エージェント実行ランタイム方式の選定——(a)自作Process Manager on PGキュー（`REQ-DUR-07`初期方針と一致・既定候補） (b)Temporal等の耐久実行エンジン (c)LangGraph等のグラフ実行系。**LLM呼び出し層は候補に含めない**（プロバイダSDK直＋自前Adapter=`REQ-BILL-09`で確定済み。フレームワーク側プロバイダ抽象との二重化は不可） | GateB | REQ-AGENT-01/03/09/10, REQ-PACK-15, REQ-DUR-07 | TL（エージェント基盤） | フェーズ2（DU-07）着手前 | open |
 | D-23 | LLM観測・トレーシング手段の選定——OTel（`REQ-ADM-07`既定）＋自前契約検証を正とし、専用トレーシングツールは**プロンプト全文を永続化しない構成が可能な場合のみ**採用可（`REQ-SEC-11`保存禁止が採用条件。記録項目は`REQ-SEC-02`に限定） | GateC | REQ-SEC-02/11/13, REQ-ADM-07 | TL（観測） | フェーズ2〜3 | open |
-| D-24 | Mock Executor実装形の確定（DU-07先行）——契約（Gate A-5）準拠のSnapshotを返すスタブ形式・イベント発火・fixture（PT-X）との共用方式 | GateB | REQ-DUR-05, REQ-PACK-01, Gate A-1/A-5 | TL（エージェント基盤） | フェーズ2着手時 | open |
+| D-24 | Mock Executor実装形の確定（DU-07先行）——L3 Contract Schemas準拠のSnapshotを返すスタブ形式・Gate A-1イベント発火・fixture（PT-X）との共用方式。Gate A-5は旧互換baselineに限定 | GateB | REQ-DUR-05, REQ-PACK-01, L3 Contract Schemas, Gate A-1 | TL（エージェント基盤） | フェーズ2着手時 | open |
 | D-25 | ゴールデン評価セットの初期構築（代表キーワード×記事タイプの固定タスク群・人手評価サンプルの運用形） | GateC | REQ-ADM-10, REQ-DUR-02 | PO＋TL（品質） | DU-10完了まで（3計測と同時） | open |
 | D-26 | 技法principles実文・検品レンズ構成・手書きfew-shot例示本文の執筆と登録（ADM-S8経由。例示はValidateゲート合格が登録条件・ゴールデン評価と素材重複禁止） | GateC | REQ-PACK-19/20, REQ-ADM-10 | PO（執筆=帝王様）＋TL（品質） | 該当article_typeの本番生成開放前 | open |
 | D-27 | セグメント初期定義（リテラシー/心理/シチュエーション/デモグラ）・転生プロンプト実文・AI定型表現辞書の初期構築（セグメント別手書き例示の執筆計画を含む） | GateC | REQ-PACK-21, REQ-PACK-09 | PO（執筆=帝王様）＋TL（品質） | human_voiceゲート較正開始前 | open |

@@ -1,6 +1,6 @@
 ---
 document_id: AOS-L3-CONFIG-REGISTRY-DEFAULTS
-title: AI Office de SEO Config Registry初期値テンプレート（L3スケルトン） v3.7
+title: AI Office de SEO Config Registry初期値台帳 v3.7
 version: 3.7
 layer: L3
 kind: design
@@ -9,13 +9,15 @@ updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
 
-# AI Office de SEO Config Registry初期値テンプレート（L3スケルトン）
+# AI Office de SEO Config Registry初期値台帳
 
 要求書に「初期値・要調整」として散在する数値を、設定レジストリの初期値として一元登録する台帳（REQ-BILL-10 / REQ-ADM-09。検証: AC-BILL-07, AC-ADM-06）。値はすべて既定値であり、レジストリの値が優先する。スコープ上書き: グローバル → プラン → テナント/サイト。
 
 ## 1. 登録形式
 
 `{ config_key, value, unit, scope_default, source_req, status(draft/active), effective_from, note }`。version・freeze・監査・影響プレビューは REQ-ADM-09 に従う。
+
+命名は`<domain>.<subject>.<property>[.<qualifier>]`の小文字snake_case segmentとし、値そのもの、Plan表示名、Provider名、model名をkeyへ埋め込まない。単一値は1 key、同じversionで不可分な構造値だけJSON objectとする。許可scopeはkey Catalogに`global / plan / tenant / site`から列挙し、狭いscopeが許可されていないkeyの上書きを拒否する。
 
 ## 2. 初期値台帳（出典REQ付き）
 
@@ -24,15 +26,16 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 |---|---|---|
 | quality.keyword_density.min / max | 0.5% / 3%（中庸1〜2%） | REQ-PACK-10 |
 | quality.japanese_readability.mode | advisory（指標選定・人手較正完了までhard gateにしない） | REQ-PACK-10, D-11 |
-| quality.passive_ratio.max | 10% | REQ-PACK-10 |
 | quality.competitor_term_coverage.target | 80%（競合3件以上一致） | REQ-PACK-10 |
 | quality.original_element_count.min | 1（YMYL・激戦は引き上げ） | REQ-PACK-10 |
 | quality.near_duplicate_similarity.max | TODO(L3) | REQ-PACK-10（初期値未定と明示） |
 | quality.inter_unit_redundancy.max / term_consistency.min | TODO(L3) | REQ-AGENT-11 |
 | adm.pack_rollout.canary_ratio / eval.golden_set_size / eval.regression_threshold / eval.human_sample_size | TODO(L3) | REQ-ADM-10, REQ-DUR-02 |
-| pack.writing_method.modifier_max（既定2）/ pack.fewshot.token_budget_per_entry | TODO(L3) | REQ-PACK-19 |
+| pack.writing_method.modifier_max | 2 | REQ-PACK-19 |
+| pack.fewshot.token_budget_per_entry | 未較正（OC-05。代表Packの品質・cost測定で確定） | REQ-PACK-12 |
 | pack.style_color.token_budget / quality.ai_phrase_density.max | TODO(L3) | REQ-PACK-16, REQ-PACK-09 |
-| pack.sim.persona_runs_per_validate.max / pack.sim.article_qa.enabled（既定off） | TODO(L3) | REQ-PACK-21 |
+| pack.sim.persona_runs_per_validate.max | 未較正（OC-05） | REQ-PACK-21 |
+| pack.sim.article_qa.enabled | false | REQ-PACK-21 |
 
 ### 判定ウィンドウ・カニバリ（REQ-KGA-07/08）
 | config_key | 初期値 | 出典 |
@@ -71,7 +74,8 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | inbound.rate（API/ログイン/webhook別） / mail.送信レート・バウンス停止しきい値・リトライ上限 | TODO(L3) | REQ-SEC-15, REQ-PRODUCT-21 |
 | heal.フラッピング判定 / 保守周期（ログローテ・DBメンテ） / auth.step_up経過しきい値・招待トークン期限 | TODO(L3) | REQ-DUR-10, REQ-SEC-16 |
 | support.sla目安（severity×プラン） / 会話レート・上限 / チケット保持期間 | TODO(L3) | REQ-PRODUCT-22 |
-| master.prior算入（既定: 除外） / 内部クレジット付与額 / 先行Flag許可 / showcase.公表最小標本数・撤回時削除猶予 | TODO(L3) | REQ-PRODUCT-23 |
+| master.prior.include | false | REQ-PRODUCT-23 |
+| master.internal_credit / master.early_flag / showcase.publication_min_samples / showcase.withdrawal_grace | 未較正またはLaunch判断 | REQ-PRODUCT-23 |
 | facts.鮮度期限（種別別） / サイズ上限 / ロールアップ周期 | TODO(L3) | REQ-PRODUCT-19 |
 | kga.origin.news_trend評価周期 / 鮮度期限 / video面比率しきい値 | TODO(L3) | REQ-KGA-18 |
 | kga.value.weights{demand, realizable_ctr, aio_pressure, paid_pressure, domain_credibility_fit, serp_features, intent_cv, fit} / expected_ctr基線パラメータ / aio残差有意しきい値 | TODO(L3)（固定AIO低下率・推測広告費・一般化ドメインパワーは設定しない） | REQ-KGA-17 |
@@ -159,4 +163,4 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 
 ## 3. 安全不変条件（設定対象外・本レジストリに含めない）
 
-SiteSandboxContext、記事本文非保持、GSC/WPのテナント・サイト境界、Stripe/credit台帳の監査、直接公開の承認・停止制御、Provider APIキー原文非表示（REQ-ADM-09）。TODO(L3): 許可config_keyホワイトリストによる技術的強制。
+SiteSandboxContext、記事本文非保持、GSC/WPのテナント・サイト境界、Stripe/credit台帳の監査、直接公開の承認・停止制御、Provider APIキー原文非表示（REQ-ADM-09）。許可keyは`config_key_catalog`の外部キー、`mutable=false`、許可scope、value schemaをDBと管理APIの双方で強制する（Data DDL §7）。

@@ -174,6 +174,15 @@ assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-us
 assertExcludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
   "1サイト=1プランに伴い",
 ]);
+assertExcludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-config-registry-defaults_v3.7.md", [
+  "quality.passive_ratio.max",
+  "flesch_reading_ease",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-config-registry-defaults_v3.7.md", [
+  "<domain>.<subject>.<property>[.<qualifier>]",
+  "pack.writing_method.modifier_max | 2",
+  "pack.sim.article_qa.enabled | false",
+]);
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 for (const field of ["canonical_paths", "l3_preparation_paths", "gate_a_paths", "prototype_paths"]) {
