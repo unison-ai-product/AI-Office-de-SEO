@@ -141,7 +141,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## Automation
 
 - [ ] AC-AUTO-01: 予約投稿、承認、差し戻しができる。 ｜ 検証: REQ-WPA-04
-- [ ] AC-AUTO-02: full_autoは初期OFFである。 ｜ 検証: REQ-WPA-04
+- [ ] AC-AUTO-02: 自動運用はSite作成時OFFで、新規記事15件の人間承認・公開成功、権限者の版付き同意、対象・予算・品質・公開時間・停止条件が揃った場合だけ新規記事へ解放され、リライト更新は引き続き承認を要求する。 ｜ 検証: REQ-WPA-04
 - [ ] AC-AUTO-03: 緊急停止できる。 ｜ 検証: REQ-WPA-04, REQ-DUR-04
 - [ ] AC-AUTO-04: WordPressプラグインはデータ交換ソケット（取得・公開・トラッキング挿入/蓄積）であり利用はシステム側、導入するだけで連携し、Tenant/Siteスコープで認証され最小権限で正本へ書き込む。 ｜ 検証: REQ-WPA-07, REQ-SEC-09
 - [ ] AC-AUTO-05: プラグインはZIP配布で、更新の有無をWP管理画面とシステム側コンソールの双方へ通知し、更新は署名付き・Tenant/Siteスコープで適用される。 ｜ 検証: REQ-WPA-07
@@ -173,7 +173,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 ## Role
 
-- [ ] AC-ROLE-01: full_autoの有効化とKill Switch作動がOwner/Adminに限定される。 ｜ 検証: REQ-PRODUCT-08, REQ-WPA-04
+- [ ] AC-ROLE-01: 自動運用の有効化が顧客側の契約者またはサイトオーナーに限定され、顧客の停止操作と内部運用のKill Switchが別の認可境界・監査記録で実行される。 ｜ 検証: REQ-PRODUCT-08, REQ-WPA-04
 - [ ] AC-ROLE-02: 契約・プラン変更がOwnerに限定される。 ｜ 検証: REQ-PRODUCT-08
 - [ ] AC-ROLE-03: すべてのRoleでtenant/site境界が強制され、Role権限が境界を上書きしない。 ｜ 検証: REQ-PRODUCT-08, REQ-SEC-01
 
@@ -232,7 +232,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-INBOUND-01: 公開API・画面API・Webhook・プラグインエンドポイントにテナント/ユーザー/IP単位のレート制限が効き、ログイン/再認可試行の制限とバックオフがあり、全経路TLS（HSTS）で、管理コンソールに追加防御オプションがある。 ｜ 検証: REQ-SEC-15, REQ-SEC-01, REQ-SEC-08
 - [ ] AC-MAIL-01: メール送信がアダプタ抽象化され、SPF/DKIM/DMARCが整備され、ハードバウンス/苦情で該当先のメールチャネルが自動停止（抑制リスト）されつつin-app正本が保たれ、設定画面に停止状態と再有効化導線が出て、バウンス/苦情率がしきい値監視される。 ｜ 検証: REQ-PRODUCT-21, REQ-PRODUCT-11
 
-- [ ] AC-PORT-01: 全サービスが不変コンテナイメージ（シークレット非焼き込み・設定注入）で配布され、VPS=Compose相当からマネージドコンテナへ**同一イメージ・境界API不変**で移行でき、状態がPG/S3互換/キューへ外部化され、クラウド専用API依存がアダプタ層に隔離され、クラウド側stagingでの復元・切替演習が行われる。 ｜ 検証: REQ-DUR-09, REQ-DUR-06, REQ-DUR-08
+- [ ] AC-PORT-01: 全サービスがシークレット非焼き込み・設定注入の不変コンテナイメージでAWSへ配布され、最小構成からtask／worker／DB／tenant shardを**同一イメージ・境界API不変**で段階拡張でき、状態がPG/S3 Contract/queueへ外部化され、AWS固有API依存がAdapter層に隔離され、stagingで復元・配置切替演習が行われる。 ｜ 検証: REQ-DUR-09, REQ-DUR-06, REQ-DUR-08
 - [ ] AC-HEAL-01: ヘルスチェック→自動再起動・再スケジュールが行われ、実行中ジョブがcheckpointから無人再開（不能時は保留＋通知のfail-close）し、証明書更新・ログローテ・TTL掃除・DBメンテが無人実行され、全自動アクションが監査され、フラッピング時に自動化を一時停止できる。 ｜ 検証: REQ-DUR-10, REQ-AGENT-10, REQ-DUR-04
 - [ ] AC-MAIL-02: メール送信がキュー・リトライ・dedupe_keyの二重送信防止を持ち、認証/回復系が優先レーンで、no-reply＋サポート窓口明示・DMARCレポート監視が行われ、非本番からの実送信が禁止されテストモードでキャプチャされる。 ｜ 検証: REQ-PRODUCT-21, REQ-DUR-07
 - [ ] AC-ACCT-01: 招待が期限付き単回トークンで失効・再送・取消でき、オーナー喪失時の回復が本人確認→管理者統制の移譲（自動化なし・双方通知・全監査）で行え、全端末ログアウトとRole変更/退会/回復時の強制失効があり、高リスク操作にstep-up再認証が要求される。 ｜ 検証: REQ-SEC-16, REQ-SEC-08, REQ-ADM-06
@@ -288,7 +288,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-ADM-01: 開発管理者コンソールがユーザー画面と分離され、APIキー原文・secret・master keyを表示せず、手動クレジット操作・provider変更を監査ログに残す。 ｜ 検証: REQ-ADM-01, REQ-ADM-03, REQ-ADM-05
 - [ ] AC-BILL-04: クレジット台帳がappend-onlyでreserve/commit/release/expire等を持ち、同一Stripe eventで二重付与しない。 ｜ 検証: REQ-BILL-07
 - [ ] AC-BILL-05: サブスク状態でアクセス制御し、ユーザーにmodel/provider名を見せずプラン・品質グレード・クレジットで提示する。 ｜ 検証: REQ-BILL-08
-- [ ] AC-BILL-06: Provider Registry/Adapter Contract/RoutingがClaude優先で、Capability不足を不適切用途へRoutingせず、Canary→自動rollbackし、APIキー原文を保存しない。 ｜ 検証: REQ-BILL-09
+- [ ] AC-BILL-06: Provider Registry／Adapter Contract／RoutingがProvider非依存で、Capability不足を不適切用途へRoutingせず、Canary→自動rollbackし、APIキー原文を保存しない。 ｜ 検証: REQ-BILL-09
 - [ ] AC-SEC-11: 全データが境界キーで分離され、ジョブがsite_id固定、保存禁止データ（本文全文・プロンプト全文・APIキー原文等）を保持しない。 ｜ 検証: REQ-SEC-11
 - [ ] AC-SEC-12: 実行前に決定論的Preflight Estimateを生成し、契約検証（schema/forbidden output/hallucinated source/sandbox境界）が行われる。 ｜ 検証: REQ-SEC-12, REQ-SEC-13
 - [ ] AC-WPA-08: WPCapabilitySnapshotからDynamic Post Schemaを導出し、未対応slot/blockをfail-close、最終HTML全文を恒久保存しない。 ｜ 検証: REQ-WPA-08, REQ-WPA-09
@@ -339,7 +339,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-WPA-12: 生成完了成果物がWP送信失敗時も暗号化されたOutput Vaultへ退避され、保持期限内に表示・コピー・ダウンロード・再送でき、期限到達時に本文が削除される。 ｜ 検証: REQ-WPA-14
 - [ ] AC-BILL-08: 決済/請求/カード情報がStripe正本、クレジット台帳がSaaS正本という責務分担で提示される。 ｜ 検証: REQ-BILL-01
 - [ ] AC-BILL-09: 品質グレード別の消費係数・原価前提が定義される（実数は設定レジストリ、REQ-BILL-10）。 ｜ 検証: REQ-BILL-03
-- [ ] AC-BILL-10: AI Provider拡張の位置づけが定義され、本文生成はClaude優先である。 ｜ 検証: REQ-BILL-04
+- [ ] AC-BILL-10: AI Provider拡張の位置づけが定義され、本文生成を含むrouteが品質・Capability・原価・latency・health・契約条件からversion付きで解決される。 ｜ 検証: REQ-BILL-04
 - [ ] AC-BILL-11: interactive/scheduledの2レーンが定義され、scheduledがBatch×1時間TTLキャッシュ既定で割引後見積により予約され、割引実数はCost Table管理、ユーザーには「今すぐ/おまかせ（割安）」として提示され、interactive経路にBatchが使われず、フォールバック差額が承認/ポリシー制御される。 ｜ 検証: REQ-BILL-11, REQ-BILL-09, REQ-SEC-12
 - [ ] AC-KGA-15: キーワードマップが同一SERPs/intentクラスタから自動生成される。 ｜ 検証: REQ-KGA-03
 - [ ] AC-KGA-16: キーワード分類（必須/推奨/オリジナル・intent）が機械判定で行われる。 ｜ 検証: REQ-KGA-04

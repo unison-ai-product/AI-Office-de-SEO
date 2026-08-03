@@ -59,7 +59,7 @@ AI Provider、model、API key、routing、fallback、cost tableは開発管理�
 
 Providerは固定enumにしない。Provider Registry、Model Catalog、Capability Matrix、Cost Table、Health Check、Canary、Rollbackを持つ。
 
-本文生成・重要判断はClaude-firstとする。ただし、分類、要約、軽量QA、fallback、個別契約用途では他ProviderやOpenAI互換を使える。
+本文生成・重要判断を特定Providerへ固定しない。品質段階、必要Capability、品質評価、原価、latency、health、契約条件からversion付きRouting Policyで解決する。
 
 ## 5. 開発管理者画面  ［REQ-BILL-05］
 
@@ -105,8 +105,8 @@ API keyは平文再表示しない。保存後はmask表示のみ。
 
 credit_policy の初期値（L0 v1.0で確定・実数は設定レジストリが正本）:
 
-- 月額付与クレジットは翌月まで繰越可能。保有上限は月次付与量の150%とし、上限超過時は古いクレジットから失効させる（BR-PRC-006）。
-- 追加購入クレジットは購入月を含む3か月有効（BR-PRC-007）。
+- 月額付与クレジットは当該請求期間末に失効し、追加購入クレジットは購入から最大180日とする。実際の期限はlot作成時のPrice Catalog versionへ固定し、期限が近いlot、同一期限では付与時刻が古いlotから消費する（`REQ-BILLING-03`）。
+- 月額プラン付与creditは当該請求期間末、追加購入creditは購入から180日を初期方針とし、lot作成時のPrice Catalog versionで期限を固定する（`REQ-BILLING-03`）。
 - 消費順は有効期限が近いものから。同日期限はプロモーション→月額付与→追加購入の順（BR-PRC-019）。
 - 解約時: 月額付与・プロモ由来の未使用crは契約終了日に失効し返金しない。追加購入crは有効期限または契約終了日の早い方で失効（BR-PRC-018）。
 - プラン変更: アップグレードは即時適用・差額日割り、ダウングレードは次回更新日適用。既発行クレジットの期限は変更しない（BR-PRC-016）。
@@ -117,7 +117,7 @@ Provider種別を Agent Runtime Adapter と LLM Provider Adapter に分ける。
 
 Adapter Contract 入力は `task_type / messages / system_instruction / json_schema / tools / temperature / max_output_tokens / stream / trace_id / budget_hint`。`tenant_id`/`site_id` は含めずSiteSandboxContextで固定。出力は text/structured/tool_calls/finish_reason/refusal/usage/cost/latency。エラーは authentication / authorization / rate_limited / quota_exceeded / timeout / provider_unavailable / context_length_exceeded / schema_mismatch / safety_blocked / cost_budget_exceeded へ正規化。
 
-Routingは用途別capability要件で解決し、Claude優先: 本文生成・標準/プレミアムリライトのdefault provider familyは `anthropic_claude`。非Claudeは分類・要約・メタ案・QA補助・fallback・個別契約用途とし、本文生成に使う場合は開発管理者の明示許可とRoute Decision Audit理由を要する。Health Check失敗は本番Routing除外、Cost Table未設定は本番不可、Canary→しきい値未満で自動rollback。ジョブ開始時にProvider/Profile/Model/Routing/Cost/Capability/Secret versionをfreeze。APIキー原文・credential・記事本文・プロンプト全文・raw response全文は保存しない。
+Routingは品質段階と用途別Capability要件で解決し、Provider familyを不変条件にしない。OpenAI、Anthropic、Kimi、Grok、Qwen系、自己管理・local LLM等は同じAdapter Contract、評価、Cost Table、Health Check、Canary、監査を通過した場合だけ候補にできる。Health Check失敗は本番Routing除外、Cost Table未設定は本番不可、Canary→しきい値未満で自動rollbackする。ジョブ開始時にProvider/Profile/Model/Routing/Cost/Capability/Secret versionをfreezeし、APIキー原文・credential・記事本文・プロンプト全文・raw response全文は保存しない。
 
 ## 10. 価格・クレジット・原価の設定化（管理画面設定・要求はハードコードしない）  ［REQ-BILL-10］
 
@@ -135,11 +135,11 @@ Routingは用途別capability要件で解決し、Claude優先: 本文生成・�
 
 以下は `ai-office-de-seo-business-requirements_v1.md`（BR-PRC/BR-CRD）から当時写像した旧設定値である。
 
-- `billing_plans` 初期値（BR-PRC-002/003）: エントリー 68,000円 / スタンダード 128,000円 / プライム 198,000円 / エンタープライズ 298,000円（月額・税別）。プラン別にサイト数・ユーザー数・クロール頻度・CRO/内部リンク・外部連携・SLA/監査ログの提供範囲を設定管理する。**プラン名はこの4種で全画面・全文書を統一する（Starter/Pro/Business等の仮名は廃止）。**
+- `billing_plans` 初期値（`REQ-BILLING-01`）: Entry 39,800円 / Standard 98,000円 / Premium 198,000円 / Enterprise 398,000円〜（月額換算・税別）。Entry／Standardは月契約または年契約、Premium／Enterpriseは年契約とする。プラン別EntitlementはPlan Configurationを正本とし、価格・構成を管理画面からversion改定できるようにする。
 - `credit_packs` 初期値（BR-PRC-004/005）: 月額 S=30,000円/1,000cr、M=70,000円/2,500cr、L=130,000円/5,000cr、XL=240,000円/10,000cr。追加購入 18,000円/500cr、64,000円/2,000cr。
 - 品質グレード係数初期値（BR-CRD-002）: スタンダード1.00 / ハイクオリティ1.25 / プロフェッショナル2.00。調査範囲係数初期値（BR-CRD-003）: 通常1.00 / 広範囲1.30 / 網羅1.70。
 - タスク別基準クレジット12種（BR-CRD-010）を版管理された設定として保持する。
-- 契約・請求規則（BR-PRC-008/009/014/015/017）: 最低契約6か月、年間契約はシステム利用料のみ10%割引、税別表示・請求時消費税加算・1円単位四捨五入、Stripe前払い既定（Enterprise等のみ請求書払い）、年契10%と早期20%割引は併用不可。
+- 契約・請求規則（`REQ-BILLING-02/16`）: Entry／Standardは月契約または年契約、Premium／Enterpriseは年契約とする。年間契約はシステム利用料のみ10%割引し、税別表示・請求時消費税加算・1円単位四捨五入、Stripe前払いを既定とする。Enterprise等の個別承認済み契約は請求書払いを許可し、割引併用可否はPrice Catalog versionから解決する。
 - 初期費用（BR-PRC-011〜013）: データセットアップ費=保有記事数×30円（最低30,000円）、標準設定費100,000円、新規サイト構築1,200,000円〜。
 - パック記載の本数は「記事換算上限」として表示し、固定の「記事＋分析」例は使用しない（BR-DEC-024決定）。
 - GPT系Providerの利用を許可する（BR-DEC-016/018決定）。一般ユーザーはモデル非表示（`REQ-BILL-03`）・管理者は表示のまま。初期既定モデルは検証結果に基づき設定レジストリで選択する。

@@ -5,7 +5,7 @@ version: 3.7
 layer: L3
 kind: design
 status: living
-updated_at: 2026-07-05
+updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
 
@@ -19,13 +19,13 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 |---|---|---|---|---|---|---|
 | D-01 | config_key命名規約の正式化（namespace/型/スコープ表現） | GateB B-1 | REQ-ADM-09 | TL（アーキテクト） | フェーズ0着手前 | open |
 | D-02 | new_article_workflow 13状態の機械可読インスタンス（Layer A格納形式） | GateB B-2 | REQ-AGENT-09, REQ-PACK-11.6 | TL（エージェント基盤） | フェーズ2着手前 | open |
-| D-03 | 認可判定API形（Roleマトリクスのサーバー側関数・画面可視制御の受け取り形） | GateB B-3 | REQ-PRODUCT-08, REQ-SEC-08 | TL（アーキテクト） | フェーズ0〜1 | open |
+| D-03 | 認可判定APIの実装形（基本権限`契約者/サイトオーナー/ユーザー`＋業務Permission＋Site Assignment＋内部Role分離を、Repository/API/worker/Agent tool/UI Availabilityへ同じPolicyで強制する方式） | GateB B-3 | REQ-ORG-03〜07, REQ-ACCESS-14〜18, Authorization Operation Matrix | TL（アーキテクト） | フェーズ0〜1 | open |
 | D-04 | Source Extract JSON Schema第一陣（keyword.map / gsc.query_group / assignment / page_query_matrix / snapshot.qa） | GateB B-4 | REQ-PACK-07 | TL（データ契約） | PT-1/DU-04着手前 | open |
 | D-05 | 形態素解析エンジン選定（決定論・辞書versionの持ち方） | GateB B-5 | REQ-KGA-15 | TL（検索基盤） | マッチカスケード実装前 | open |
-| D-06 | LLM Provider選定・Cost Table実数（Batch割引・キャッシュ乗数含む） | GateC | REQ-BILL-09, REQ-BILL-11 | PO＋TL（プロバイダ） | フェーズ5（商用化）前 | open |
+| D-06 | Provider非依存Routingの初期Model Registry・Cost Table実数（OpenAI／Anthropicを含む検証済みroute、将来のKimi／Grok／Qwen／local互換、Batch割引・cache乗数・fallbackをversion化） | GateC | REQ-TECH-10, REQ-COST-11, REQ-BILLING-04/09 | PO＋TL（プロバイダ） | 商用化前 | open |
 | D-07 | メール送信プロバイダ選定（SPF/DKIM/DMARC・抑制リスト連携） | 検証/GateC | REQ-PRODUCT-21 | TL（インフラ） | 通知実装前 | open |
 | D-08 | MQ移行トリガ実数（PGキュー→専用MQのキュー水位・遅延しきい値） | GateC | REQ-DUR-07 | TL（インフラ） | 負荷計測後 | open |
-| D-09 | コンテナ実行基盤選定（VPS=Compose相当／クラウド段階のマネージド先） | 検証/GateC | REQ-DUR-09 | TL（インフラ） | フェーズ0（規約のみ先行） | open |
+| D-09 | AWSを配置前提とし、Web/API、非同期worker、DB、object storage、queue、監視を疎結合にする方向を確定。具体サービス構成と段階的scale条件はAWS Operations／Recovery Mapと負荷試験で確定する | GateC | REQ-TECH-11, REQ-NFR-01〜15, AWS Operations／Recovery Map | TL（インフラ） | Production Hardening前 | decided（AWS前提。具体サービスは未確定） |
 | D-10 | 埋め込みモデル・ベクトル索引方式の選定（version固定・再計算バッチ） | GateC | REQ-PRODUCT-20 | TL（検索基盤） | 意味索引の実装前 | open |
 | D-11 | 日本語可読性指標の選定（Flesch代替。確定まで可読性ゲートはadvisory運用） | 検証 | REQ-PACK-10, AOS-L3-QUALITY-GATE-IMPL | TL（品質） | 較正開始前 | open |
 | D-12 | DataForSEO等プロバイダの契約プラン・アカウント上限実数（グローバル予算初期値） | 検証 | REQ-SRC-07 | PO（契約）＋TL | 外部取得の本番化前 | open |
@@ -49,9 +49,9 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | D-30 | WordPressプラグインの配布経路確定——wp.org公開（審査・GPL互換ライセンス整理）or 自前配布＋署名付き更新チャネル（`REQ-WPA-07`）。選択に応じた審査/更新運用 | Launch | REQ-WPA-01/07 | TL（WP） | β提供前 | open |
 | D-31 | 顧客向けSLA/稼働率の公約方針（保証の有無・水準・未達時の扱い）と公開ステータスページの運用（in-appステータス案内`REQ-PRODUCT-22`との接続） | Launch | REQ-ADM-07, REQ-DUR-08/10 | PO＋TL（インフラ） | 商用登録開放前 | open |
 | D-32 | 請求適格性——適格請求書（インボイス）発行事業者登録・Stripe税/請求書設定・領収書表記、特商法ページ（Stripe本番審査要件と連動、D-16） | Launch | REQ-BILL-01/08 | PO（事業） | 商用登録開放前 | open |
-| D-33 | トライアル/無料枠・デモ方針——期間/付与クレジット/機能制限（Pricing Configuration `REQ-BILL-10`側で定義）、見込み客デモの提供形（マスターテナント`REQ-PRODUCT-23`の転用可否・データ分離） | Launch | REQ-BILL-08/10, REQ-PRODUCT-23 | PO（事業） | 販売開始前 | open |
+| D-33 | Trialは初期検証の累計10社、1〜3か月、Standard相当＋固定credit、通常の15記事承認を適用し、自動有償化・枠再利用をしない。期間とcreditはcohortごとにAdmin設定し、開発者スーパーアカウントのサービス紹介運用とはデータ・契約を分離する | Launch | REQ-BILLING-15, REQ-PRODUCT-23 | PO（事業） | 販売開始前 | decided（cohort別実数登録はLaunch作業） |
 | D-34 | 商標・ブランド保護（「AI Office de SEO」商標調査/出願・ドメイン確保）と**マーケティング表現規約**——製品原則「順位・成果を保証しない」（`REQ-KGA-17`/`REQ-PRODUCT-17`）を広告・LP・営業資料へも適用（景表法・優良誤認の回避。D-16と連動） | Launch | REQ-KGA-17, REQ-PRODUCT-17 | PO＋法務 | 販売開始前 | open |
-| D-35 | L0事業章の補強——ターゲット顧客像・価格帯仮説・事業KPI（北極星指標・アクティベーション/チャーン定義）。**PO入力待ち**（外部フルレビューB-11。入力あり次第L0へ反映） | Launch | L0憲章 | PO（帝王様） | 販売開始前 | open |
+| D-35 | L0事業章は中小企業Web担当者／新規Site立上げを主対象、SEO運用代行システム、39,800／98,000／198,000／398,000円〜の価格階段まで反映済み。残る北極星指標、activation、利用継続・churnの算式と目標値を実データ取得前に定義する | Launch | L0事業要求、REQ-BILLING-01/02 | PO（事業） | β計測設計前 | in-progress |
 
 D-22の採用判定テスト（要求由来・全候補共通）: (1) system prompt・prefixのバイト単位の完全制御（Layer A/B/C/D明示4点、`REQ-AGENT-03`/`REQ-PACK-15`） (2) ステージ境界checkpointからfreeze済みversionで再開（`REQ-AGENT-10`） (3) プロンプト全文を永続化しない構成（`REQ-SEC-11`） (4) 自前Provider Adapterの背後に置ける（抽象の二重化なし、`REQ-BILL-09`） (5) Batchレーンの非同期実行を状態機械の意味論を変えずに扱える（`REQ-BILL-11`） (6) Workflow定義由来のdefault-denyツール権限の強制（`REQ-AGENT-06`/`REQ-AGENT-07`）。1つでも満たせない候補は不採用とし、既定候補(a)との比較は「耐久実行の実装コスト削減」対「制約適合の確実性」で行う。
 

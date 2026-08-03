@@ -244,7 +244,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 
 生成・リライトジョブは、保留系状態を統一的に扱い、checkpointから再開できる。
 
-- 保留系状態の統合: ユーザー手動の一時停止（本項で新設）、Kill Switch（`REQ-DUR-04`）、予算超過待ち（`REQ-SEC-12`）、hard gate保留（`REQ-AGENT-08`）、承認待ち（`REQ-WPA-04`）を、状態機械（`REQ-AGENT-09`）上の保留系状態として統一的に管理する。手動停止・再開の操作権限は生成実行権限（`REQ-PRODUCT-08`のEditor以上）に準ずる。
+- 保留系状態の統合: ユーザー手動の一時停止（本項で新設）、Kill Switch（`REQ-DUR-04`）、予算超過待ち（`REQ-SEC-12`）、hard gate保留（`REQ-AGENT-08`）、承認待ち（`REQ-WPA-04`）を、状態機械（`REQ-AGENT-09`）上の保留系状態として統一的に管理する。手動停止・再開は対象Siteが見え、該当Taskの`記事制作`等の業務Permissionを持つ利用者に限定し、操作時の現在policyで再判定する。
 - checkpoint＝ステージ境界・Snapshot粒度: freeze済み成果（Research Brief / Outline Contract / 完了済み意味ユニットSnapshot / QA結果）は保存済みのため、再開は最後に完了したステージの直後から行う。**完了済みステージを再実行・再課金しない。**
 - 再開時の不変条件: ジョブ開始時にfreezeしたWorkflow / Pack / Catalog / Config version（`REQ-PACK-04`）とSiteSandboxContextを維持したまま再開する。中断中にPack等が改版されても旧versionで再開し再現性を保つ。新versionを使いたい場合は新ジョブとする。
 - クレジット: 中断時に消費済み分をcommitし、未実行分のreserveは解放または保持（保持TTLは設定、`REQ-ADM-09`）。再開時は残ステージ分を再Preflight（`REQ-SEC-12`）して再予約する。

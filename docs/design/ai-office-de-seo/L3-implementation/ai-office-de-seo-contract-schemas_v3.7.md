@@ -4,8 +4,8 @@ title: AI Office de SEO 契約スキーマ設計（L3スケルトン） v3.7
 version: 3.7
 layer: L3
 kind: design
-status: skeleton
-updated_at: 2026-07-05
+status: draft
+updated_at: 2026-08-03
 related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ---
 
@@ -102,6 +102,60 @@ schema.patch.result.v1 {
 - MonthlyPlanとRecommendationは`source_report_ref=report_id+version`を保持し、画面からReportを再解釈しない。
 
 根拠: `REQ-BUS-02/04/05/06`、`REQ-SCREEN-02/09/18`、Keyword Report接続マップ。
+
+## 0.0.2.1 Site構築・分析進捗Contract
+
+Site導入からReport開放までを`schema.site.build_progress.v1`とする。
+
+```text
+{
+  build_id, version, tenant_id, site_id, site_mode(new|existing),
+  setup{site_profile_ref, industry_refs[], cross_axis_ref?, cms_profile_ref,
+    gsc_connection_ref?, keyword_upload_ref?},
+  input_conditions[]{kind, state, source_ref?, required_for[]},
+  stages[]{stage_key, state, processed, total?, coverage?, availability,
+    started_at?, updated_at, completed_at?, next_release_at?},
+  big_keyword_review{candidate_refs[], accepted_refs[], excluded_refs[], user_note?, state}?,
+  report_refs[], recommendation_ready, required_user_actions[], correlation_id
+}
+```
+
+- 新規SiteはCMS接続とSite設定後にbig keyword方向確認を行い、採用・除外・追加を経て市場探索へ進む。
+- 既存SiteはGSCまたはKeyword uploadを分析開始条件とし、CMS記事を利用できる場合は記事対応へ統合する。
+- `partially_available`を許し、完了領域からReportを開放する。全体未完了を空画面または完了として扱わない。
+- 記事送信は別途CMS REST write capabilityを必要とし、分析可能であることを送信可能へ読み替えない。
+
+根拠: `REQ-BUS-02〜06`、`REQ-LOGIC-02`、`REQ-INT-05/06`、`REQ-SCREEN-02/18`。
+
+## 0.0.2.2 月次計画・週次実行Contract
+
+月次計画を`schema.plan.monthly.v1`、週次選択を`schema.plan.weekly_selection.v1`とする。
+
+```text
+schema.plan.monthly.v1 {
+  monthly_plan_id, version, tenant_id, site_id, target_month,
+  source_report_ref, objective, objective_mode,
+  focus_cluster_refs[], directional_allocation[], budget_allocation,
+  weekly_limits, assumptions[], availability, state,
+  confirmation_mode(manual|automatic), confirm_deadline?, confirmed_by?, confirmed_at?,
+  supersedes_ref?, created_at
+}
+
+schema.plan.weekly_selection.v1 {
+  weekly_selection_id, version, monthly_plan_ref, week_start,
+  candidate_recommendation_refs[], selected_items[]{recommendation_ref, order, reason},
+  constraints{credit, capacity, dependencies, protection, quality},
+  execution_mode(manual|automatic), state,
+  confirmed_by?, confirmed_at?, recalculated_at?, correlation_id
+}
+```
+
+- 目的は達成保証または固定本数ではなく、Site単位の月次方向性と記事・施策配分を表す。
+- 月途中の目的変更は新versionを作り、実行済み項目を変更せず未実行Recommendationだけを再評価する。
+- ユーザー指定Taskを維持し、必要な先行記事、内部link、予算・週次枠への影響を相談として返す。システム自動予定だけを後方移動または要確認へ戻す。
+- 週末・月末の未実行項目は単純繰越せず、維持、順位変更、監視、失効を再判定する。
+
+根拠: `REQ-BUS-06/07`、`REQ-LOGIC-01/03`、`REQ-SCREEN-09`、`REQ-UJ-09`。
 
 ## 0.0.3 CMS Connection Profile Contract
 
@@ -318,6 +372,60 @@ schema.image.generation_job.v1 {
 - Price Catalog／Plan Configurationの新版を既存Subscription／Lotへ遡及適用しない。
 
 根拠: `REQ-BILLING-01〜16`、`REQ-NFR-15`、課金・Capacity画面接続マップ v1。
+
+## 0.0.9 公開判定・承認Contract
+
+CMS下書き以降の判定を`schema.publication.decision.v1`とする。
+
+```text
+{
+  publication_decision_id, version, tenant_id, site_id,
+  article_ref, workflow_ref, intake_ref?, correlation_id,
+  operation(new_publish|rewrite_update|article_replacement|lightweight_patch),
+  cms_draft_ref, content_hash, diff_ref?, quality_result_ref,
+  approval_policy{first_new_article_gate, approved_new_article_count,
+    automation_enabled, consent_version?, hard_gate_state, rewrite_requires_approval},
+  authorization_decision_ref, budget_ref, connection_capability_ref,
+  decision(ready_for_approval|ready_for_automation|blocked|approved|rejected|published|failed),
+  reasons[], confirmations[]{kind, actor_ref, confirmed_at, consent_version?},
+  publication_job_ref?, published_at?, resulting_cms_ref?, created_at
+}
+```
+
+- 最初の15件へ数えるのは、本システムで新規作成し、完成記事を人間が承認して公開成功した記事だけとする。既存記事、外部記事、リライトは除外する。
+- 15件到達後も、権限者の版付き同意、対象範囲、予算、品質、公開時間、停止条件が成立した場合だけ新規記事の自動投稿を許可する。
+- リライトと記事置換はCMS下書きまで自動化できるが、公開記事への更新はユーザー承認を必須とする。
+- hard gate例外は同一権限者の二段階確認と版付き同意を別confirmationとして記録する。別人2名を要求しない。
+
+根拠: `REQ-BUS-08/09`、`REQ-LOGIC-04/05`、`REQ-SCREEN-04/15`、`REQ-WPA-04`。
+
+## 0.0.10 公開・更新後評価Contract
+
+公開後の評価を`schema.evaluation.intervention.v1`とする。
+
+```text
+{
+  evaluation_id, version, tenant_id, site_id, article_ref,
+  intervention_ref, publication_event_ref, evaluation_origin_at,
+  article_change_history_ref,
+  article_purpose, search_intents[], keyword_cluster_refs[], cv_goal_refs[],
+  checkpoints[]{window(1_month|3_month|6_month), due_at, state,
+    seo{acquired_keywords, ranked_keywords, primary_secondary_fit, position_distribution,
+      impressions, clicks, market_adjustment, aio_paid_adjustment, availability},
+    conversion{monthly, cumulative, transition_rate?, cv_count?, availability},
+    awareness{cluster_coverage, assisted_path?, branded_signal?, availability},
+    outcome, reasons[], next_action?},
+  reset_policy, latest_material_change_at?, correlation_id
+}
+```
+
+- 評価起点は新規／リライトという制作時の呼称ではなく、公開または実質的更新eventとする。
+- 成功の第一条件は、記事へ割り当てた主＋補助Keyword集合が意図どおり順位を獲得することとする。CV目的の記事はCV実績を追加評価するが、CVなしだけで異常としない。
+- CTA変更はSEO周期をresetせず、CTA/CV評価起点だけを更新する。title、主要見出し、本文の実質変更は記事変更履歴としてSEO評価起点を更新する。
+- 市場需要・表示回数の変化、AIO・広告出現率を外部要因として分離する。急変は即時施策へせず要監視へ送る。
+- Siteが直近1か月1,000 click未満の領域は予測値を作らず、予測可能記事とデータ不足記事を分離する。
+
+根拠: `REQ-BUS-09/10`、`REQ-LOGIC-06〜09`、`REQ-MEASURE-01〜04`、`REQ-KRL-*`。
 
 ## 0.1 Authorization Decision Contract
 

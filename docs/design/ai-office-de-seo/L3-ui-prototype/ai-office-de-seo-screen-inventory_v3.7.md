@@ -5,7 +5,7 @@ version: 3.7
 layer: L3
 kind: design
 status: draft
-updated_at: 2026-07-30
+updated_at: 2026-08-03
 related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 ---
 

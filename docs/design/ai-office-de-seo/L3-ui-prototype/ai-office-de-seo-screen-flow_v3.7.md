@@ -15,7 +15,9 @@ related: AOS-L1-USER-JOURNEY / AOS-L3-SCREEN-INVENTORY
 
 ## 0. 現行Lifecycle正本（2026-08-03）
 
-以下を現行の最上位画面遷移とする。後続節の旧S3起点フローは、手動起動や既存プロトの履歴としてのみ使用し、本経路を置き換えない。
+以下を現行の最上位画面遷移とする。本書の全節はこのLifecycleを詳細化する。既存プロトの実装遷移は `ai-office-de-seo-screen-connection-map_v1.md` に隔離し、本書の正規遷移を上書きしない。
+
+本図は将来像だけを示す参考図ではなく、画面台帳、URL／状態、画面Availability、受入試験へ渡す遷移正本である。プロト実装は後続更新とするが、画面設計では各遷移の入口条件、保持Context、保留理由、復帰先まで本図へ一致させる。
 
 ```mermaid
 flowchart LR
@@ -302,3 +304,6 @@ flowchart TD
 - 各ジャーニー（REQ-UJ-02〜09）のステップ列は本図のパスとして到達可能であること（AC-UJ-02〜09）。
 - 終端のないノード（行き止まり）を作らない（REQ-UJ-01）。空状態・完了状態の次アクションは画面台帳§0に従う。
 - プロト検証: PT-S（本図の全パスをクリック到達で検証、通知→対処2遷移以内の計測）。
+- 遷移ごとに `source screen/tab/filter`、`tenant_id`、`site_id`、対象IDとversion、`correlation_id` を保持し、戻る操作で起点Contextを復元する。
+- 入口条件を満たさない場合は別画面へ黙って迂回させず、同一Contextで `権限 / Plan / credit・予算 / CMS・GSC等の接続 / データ / 承認 / 処理中 / 障害` を分離表示し、解消画面と復帰先を示す。
+- `screen-inventory` は画面責務、`screen-flow` は正規遷移、`screen-connection-map` は既存プロト実測と追随差分を正本とし、同じ目的で競合する遷移定義を複製しない。

@@ -23,7 +23,7 @@ updated_at: 2026-07-30
 - 増分計算、非同期化、キャッシュ、事前計算
 - 可用性、RPO/RTO、バックアップ、復元演習
 - graceful drain、後方互換migration、ロールバック
-- VPSからクラウドへ移せる境界
+- AWS最小構成から責務単位で段階拡張できる境界
 
 性能はProduction Hardeningで後付けせず、各開発ユニットの受入条件に含める。
 
@@ -73,7 +73,7 @@ Feature Objectごとにtimeout、concurrency、queue、credit／cost、memory、
 
 ### REQ-NFR-09 拡張性・移植性
 
-初期構成を過剰に分散させず、API、worker、DB、cache、queue、object storage、Provider Adapterの境界を保つ。負荷または可用性要求が上がった際に、責務単位で分離・移行でき、単一VPS等の初期配置へ不可逆に密結合しない。
+初期からAWSへ配置するが、過剰に分散させず、API、worker、DB、cache、queue、object storage、Provider Adapterの境界を保つ。負荷または可用性要求が上がった際に責務単位でscale・分離でき、単一task、単一AZ、特定の実行形へ不可逆に密結合しない。
 
 初期実装はモジュラーモノリスとmanaged queueを基本候補とし、Feature Objectごとの契約・所有データ・実行budget・障害境界をコード上で強制する。Object化を物理microservice化と同義にせず、負荷、障害頻度、独立deploy、権限隔離の実測根拠があるObjectだけを後から別process／serviceへ抽出できるようにする。
 
