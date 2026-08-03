@@ -218,7 +218,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 6. Outline Architect（Outline Contract 生成・freeze）
 7. Section Brief（各セクションのブリーフ生成）
 8. Draft Writer（意味ユニット執筆）
-9. Self Evolution（自己改善）
+9. Self Evolution / Semantic Assembly（意味ユニットを本文へ結合し、限定的な接続改善を行う）
 10. Quality Gate（品質検査・fail-close）
 11. Assembly / Placement / CMS Draft（本文QA後に装飾、アイキャッチ、CTA・内部link配置、CMS形式変換・検証、下書き送信）
 12. Preview / Approval（人手承認）
@@ -232,7 +232,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 - Sandbox Fix 後に `tenant_id`/`site_id` を変更しない。
 - Keyword Intent と SERP-TTPS Research の成果がないままOutlineへ進まない。
 - Outline Contract がないまま本文生成しない。Section Briefs がないまま本文生成しない。
-- Quality Gate を通らない記事をAssembly／PlacementとCMS下書き送信へ進めない（fail-close）。工程11は`assemble → decorate → featured_image → placement → cms_validate → cms_deliver`の内部phaseを持ち、本文完成前に装飾を開始せず、CMS送信成功前にPreview／Approvalへ進めない。初期画像Scopeはアイキャッチ基盤に限定する。
+- 状態9でSemantic Assemblyを完了してから状態10のCohesionを含むQuality Gateを実行する。Quality Gateを通らない記事を状態11のPresentation Assembly／PlacementとCMS下書き送信へ進めない（fail-close）。工程11は`presentation_assemble → decorate → featured_image → placement → cms_validate → cms_deliver`の内部phaseを持ち、本文完成前に装飾を開始せず、CMS送信成功前にPreview／Approvalへ進めない。初期画像Scopeはアイキャッチ基盤に限定する。
 - Preview またはAutomationの公開条件成立なしに予約投稿しない。初期WordPress AdapterではCMS下書きの編集URL／Preview URLを利用し、共通WorkflowをWordPress固有画面へ固定しない。
 - 最初の15記事は完成記事への人間承認を必須とする。WordPress実表示Previewは確認手段であり、URLを開いた事実自体を条件にしない。Outline確認はSite設定で任意に有効化し、有効時は見出しを修正・freezeしてから再開する。
 - リライト・全文再生成はAutomation承認だけで公開記事へ直接反映せず、WP下書きとユーザー承認を必須とする。
@@ -259,6 +259,6 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 
 - 用語ロック（Term Lock・決定論）: Outline Contract凍結時に、記事内で用いる用語・表記の固定リスト（例: サーバー/サーバ、ですます調の統一、固有名詞の表記）を確定し、任意フィールド `terminology_lock[]` としてContractに封入する（Gate A-5の任意追加=minor規則内）。全Writing/Repair Ticketへ固定制約として注入し（`REQ-AGENT-07`）、逸脱は決定論検査（`term_consistency`）で検出する。
 - 隣接文脈つきSection Brief: 各Section Brief（`REQ-AGENT-09`状態7）は、前ユニットの結び要旨・次ユニットのブリーフ要約を含めて発行し、ユニットが孤立文脈で書かれることを防ぐ（Layer Dのタスク動的入力。`REQ-AGENT-03`）。
-- Cohesion QA（組立後の全体読み通し検査）: Assembly後、記事全体を1パスで検査するQAを必須とする。これは**既存QA工程（状態機械の既存状態）の内部パス**であり、13状態（`REQ-AGENT-09` / `REQ-PACK-11.6`で凍結）に新しい状態を追加しない（LLM判定はエージェント内=`REQ-KGA-08`。Layer C prefixを再利用し追加原価を抑える）。検査対象＝論旨の流れ・重複主張・トーン/声の揺れ・導入と結論の整合・ユニット間の事実不整合（数値・件数・主張の食い違い）。決定論指標として `inter_unit_redundancy`（ユニット間n-gram冗長度）・`term_consistency` を併用する（`REQ-PACK-10`と同じく初期値・要調整）。
+- Cohesion QA（Semantic Assembly後の全体読み通し検査）: 状態9で意味ユニットを本文順へ結合した後、状態10で記事全体を1パス検査する。これは**既存Quality Gate状態の内部パス**であり、13状態に新しい状態を追加しない（LLM判定はエージェント内=`REQ-KGA-08`。Layer C prefixを再利用し追加原価を抑える）。検査対象＝論旨の流れ・重複主張・トーン/声の揺れ・導入と結論の整合・ユニット間の事実不整合（数値・件数・主張の食い違い）。決定論指標として `inter_unit_redundancy`（ユニット間n-gram冗長度）・`term_consistency` を併用する（`REQ-PACK-10`と同じく初期値・要調整）。状態11の装飾、画像、CTA、内部link、CMS形式変換はこの検査後に行い、本文意味を変更しない。
 - ゲート化: `catalog.quality_gate.coherence_flow`（advisory）として登録し（`REQ-PACK-09`）、不合格は接続部（`section_bridge`）・重複ユニットの限定Repairへ回す。H2丸ごと・全文の再生成はしない（原則不変）。収束しない場合は停止ガード（`REQ-AGENT-06`）に従い未達理由つきSnapshotで保留する。
 - 計測: coherence指標はQA Snapshot（`schema.snapshot.qa.v1`）のmetricsに含め、DU-10縦切りの必須計測（`REQ-DUR-02`）と較正（`REQ-ADM-10`のゴールデン評価）の入力にする。

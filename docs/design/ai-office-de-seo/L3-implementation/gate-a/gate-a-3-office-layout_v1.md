@@ -41,3 +41,4 @@ Agent Officeの部屋・フロア・ペルソナをconfig駆動で描画する�
 - v1.2追補（許容値拡張=minor規則内）: `screen_refs` のワークベンチ範囲を w1〜w9 → w1〜w10 へ拡張（v3.7.33のW10サポート追加に追随）。既存フィールド・必須集合は不変。
 - v1.3追補（初期インスタンス改訂・スキーマ不変）: `office_layout.initial.json` を **7フロア構成（1部屋=1フロア＋ハブ、config v2.1.0）** へ改訂。初期baselineは部屋7・ペルソナ13だが、必要なLLM runtime数または将来のpersona上限を意味しない。エレベーター表示はfloors配列から生成する。
 - v1.4追補（ペルソナ業務能力）: `service_keys`、`interaction_capabilities`、`proposal_types`を必須化し、旧configの工程表示専用mappingを現行のAgent Interaction／Advisory／Executionへ接続する。v1.3インスタンスはmigration時にペルソナID別既定値を補い、空の能力で現行扱いしない。
+- v1.4初期インスタンス追従（2026-08-03）: 旧state alias `wp_draft`を現行Workflow key `cms_draft`へ置換した。表示責務はAssembly／Placement／CMS Draftであり、初期WordPress AdapterをOffice共通stage IDへ漏らさない。

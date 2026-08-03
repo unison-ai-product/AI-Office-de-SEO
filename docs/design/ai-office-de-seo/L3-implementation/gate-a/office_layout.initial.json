@@ -169,7 +169,7 @@
           "automation"
         ],
         "stages": [
-          "wp_draft"
+          "cms_draft"
         ]
       }
     },
@@ -216,7 +216,7 @@
         ],
         "stages": [
           "quality_gate",
-          "wp_draft"
+          "cms_draft"
         ]
       }
     },

@@ -377,16 +377,18 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-pr
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
   "Assembly / Placement / CMS Draft",
-  "assemble → decorate → featured_image → placement → cms_validate → cms_deliver",
+  "Self Evolution / Semantic Assembly",
+  "presentation_assemble → decorate → featured_image → placement → cms_validate → cms_deliver",
   "共通WorkflowをWordPress固有画面へ固定しない",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
-  "assembly_placement_cms_draft",
+  "presentation_assembly_placement_cms_draft",
+  "Meaning Unitの`semantic_assembly`",
   "初期画像Scopeはアイキャッチだけ",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md", [
   "`generation_stage_phases`",
-  "assemble / decorate / featured_image / placement / cms_validate / cms_deliver",
+  "presentation_assemble / decorate / featured_image / placement / cms_validate / cms_deliver",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-2-repository-scope-api_v1.md", [
   "resolveCustomerScope",
@@ -394,6 +396,19 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-2-r
   "Site Assignment 0件=全Site",
   "Operatorには`resolveDelegatedScope`を許可しない",
   "authorization epoch更新後の旧Scope→拒否",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md", [
+  "`CmsPlacementInstruction`",
+  "共通InstructionのWP固定",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md", [
+  "`WPBlockPlacementInstruction`",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/office_layout.initial.json", [
+  '"cms_draft"',
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/office_layout.initial.json", [
+  '"wp_draft"',
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-acceptance-trace_v3.7.md", [
   "同意→接続→サンプル学習→戦略入力→マップ→初回生成→承認公開",

@@ -39,7 +39,7 @@ original_value / comprehensiveness / needs_met_intent / title_honesty / eeat_tru
 
 | gate_key | 主要シグナルの計測実装 | しきい値（Config参照） | true open／較正 |
 |---|---|---|---|
-| coherence_flow | Cohesion QA（組立後1パス読み通し・LLM）＋inter_unit_redundancy（ユニット間n-gram冗長度）・term_consistency（用語ロック逸脱率） | quality.inter_unit_redundancy.max / term_consistency.min | n-gram窓幅・用語ロック照合の正規化方式（REQ-AGENT-11） |
+| coherence_flow | Cohesion QA（Semantic Assembly後、装飾前の1パス読み通し・LLM）＋inter_unit_redundancy（ユニット間n-gram冗長度）・term_consistency（用語ロック逸脱率） | quality.inter_unit_redundancy.max / term_consistency.min | n-gram窓幅・用語ロック照合の正規化方式（REQ-AGENT-11） |
 | argument_structure | claim_evidence / nuance_qualificationユニット整合・citation_ratio・飛躍/論点先取のLLM検査 | citation_ratio | 論証パターンの判定プロンプトとfew-shot（REQ-PACK-20 academicレンズ） |
 | human_voice | AI定型表現辞書の決定論検出（ai_phrase_density）＋参照アンカー対比（gate_tags付き手書き例示・style_color）のLLM検査 | quality.ai_phrase_density.max | 辞書初期構築（D-27）・対比プロンプト・誤検知較正（ゴールデン評価併用、REQ-PACK-09） |
 
@@ -58,4 +58,4 @@ original_value / comprehensiveness / needs_met_intent / title_honesty / eeat_tru
 
 ## 4. 実行位置
 
-機械計測は一般システム（決定論的）、最終品質判断のLLM部分はQA Executor内に限定（REQ-KGA-08 / REQ-AGENT-08。検証: AC-KGA-07）。QA結果は `schema.snapshot.qa.v1` で返す。Cohesion QA（coherence_flow）はAssembly後のQA工程内パスとして実行し、検品レンズ（REQ-PACK-20）は決定論チェック先行→LLM検査の順でQA Ticketをgate束へ展開する。Persona Simulation（REQ-PACK-21）は記事QAの既定経路に含まれない（Validate/ゴールデン評価の補助・既定off）。
+機械計測は一般システム（決定論的）、最終品質判断のLLM部分はQA Executor内に限定（REQ-KGA-08 / REQ-AGENT-08。検証: AC-KGA-07）。QA結果は `schema.snapshot.qa.v1` で返す。Cohesion QA（coherence_flow）はSemantic Assembly後、Presentation Assembly／装飾前のQA工程内パスとして実行し、検品レンズ（REQ-PACK-20）は決定論チェック先行→LLM検査の順でQA Ticketをgate束へ展開する。Persona Simulation（REQ-PACK-21）は記事QAの既定経路に含まれない（Validate/ゴールデン評価の補助・既定off）。

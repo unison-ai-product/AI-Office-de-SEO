@@ -86,11 +86,12 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 
 ### 3.3 標準工程
 
-`Research & Outline → Meaning Unit Writing → QA → 限定Repair Loop → Assembly／Placement → Automation → 承認／公開 → Cleanup`
+`Research & Outline → Meaning Unit Writing → Semantic Assembly → QA → 限定Repair Loop → Presentation Assembly／Placement → Automation → 承認／公開 → Cleanup`
 
 - Research BriefとOutline ContractをfreezeしてからWritingへ進む。
 - H2／H3ではなくMeaning UnitをWriting単位とする。
-- QA不合格は該当Meaning Unitまたは接続箇所だけをRepairする。
+- Semantic AssemblyはMeaning Unitを本文順へ結合し、QA不合格は該当Meaning Unitまたは接続箇所だけをRepairする。
+- Presentation Assembly／PlacementはQA通過後に装飾、アイキャッチ、CTA、内部link、CMS形式変換を行い、本文の意味を再生成しない。
 - CTAはWriting Ticketにしない。
 - Agent Officeの表示状態は、この状態機械から導出する。
 - 停止・再開はfreeze済みversionとcheckpointを維持する。
@@ -131,9 +132,9 @@ RecommendationはAgentへの任意追加情報ではなく、Agent Interaction�
 
 | 業務 | 既存接続 | 新設してはいけないもの |
 |---|---|---|
-| 新規記事 | `workflow.new_article.v1` → Planning → Meaning Unit Writing → QA → Repair → Assembly | 記事type別専用Agent |
+| 新規記事 | `workflow.new_article.v1` → Planning → Meaning Unit Writing → Semantic Assembly → QA → Repair → Presentation Assembly／Placement | 記事type別専用Agent |
 | リライト | `workflow.rewrite.v1` → 原因分析 → 対象Unit → Repair Writing → QA | 全文再生成専用Agent |
-| CTA配置 | QA Ticket → `CTAPlacementInstruction`／`WPBlockPlacementInstruction` → Placement／Automation | CTA Writing Ticket、CTA専用Agent、CTA作業Pack |
+| CTA配置 | QA Ticket → `CTAPlacementInstruction`／`CmsPlacementInstruction` → Placement／Automation。初期WordPress AdapterだけがBlock命令へ変換 | CTA Writing Ticket、CTA専用Agent、CTA作業Pack、共通InstructionのWP固定 |
 | CTA接続文修正 | CTA QA → 対象箇所だけRepair Ticket | 記事全文Repair |
 | 内部link | Article Summary／link graph → internal_link_qa → 新規記事内配置または承認付き既存記事patch | link専用Executor |
 | CMS送信・公開 | `workflow.automation.v1`／Automation Ticket | Writing Executorの直接公開 |
