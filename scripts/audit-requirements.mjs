@@ -738,6 +738,16 @@ for (const requiredPhrase of [
     fail(errors, `screen flow: current transition phrase missing: ${requiredPhrase}`);
   }
 }
+for (const requiredPhrase of [
+  "transition_outcome",
+  "schema.ui.availability.v1",
+  "blocked / degraded / preview / partial / pending / ready",
+  "reasons[].class/code",
+]) {
+  if (!screenFlow.includes(requiredPhrase)) {
+    fail(errors, `screen flow: transition/availability separation missing: ${requiredPhrase}`);
+  }
+}
 const navigationPath = path.join(
   repoRoot,
   "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md",
