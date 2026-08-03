@@ -85,6 +85,10 @@ Agent関連要求は分類別正本だけからゼロベースで追加しない
 
 顧客基本権限、業務権限、Site Assignment、Agent、Automation、CMS副作用、内部Roleの操作別接続は`ai-office-de-seo-authorization-operation-matrix_v1.md`を索引とする。権限変更時は、顧客画面だけでなくAPI、worker、Agent tool、Automation Policy、外部Adapter、管理面の同一操作を同時に確認する。
 
+## 4.3 Keyword Market・Site Share体系
+
+公共Keyword資産、公共Market Cluster、Site Keyword Universe、Site Cluster、Observed／Estimated／Article Share、Recommendation、補正学習の接続は`ai-office-de-seo-keyword-market-share-connection-map_v1.md`を索引とする。公共データと顧客固有データのID、store、provenance、再計算を混在させない。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

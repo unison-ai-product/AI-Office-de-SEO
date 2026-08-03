@@ -24,9 +24,9 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 | BC | 責務 | 主な集約 | 根拠REQ |
 |---|---|---|---|
 | Tenancy & Access | 契約者・顧客組織・Membership・Site付与・基本権限・業務権限・認可判断・サンドボックス境界・アカウントライフサイクル・マスターテナント | ContractAccount, CustomerOrganization, Membership, Site(SiteSandboxContext), AuthorizationDecision | REQ-ORG-01〜12, REQ-ACCESS-01〜18 |
-| Content Index | URL正本・記事メタ（サマリー契約・意味索引）・キーワード/記事マップ・属性・アサイン台帳・起点候補・サイトトポロジー・導出事実/施策台帳 | UrlMaster, ArticleSummary, KeywordMap(AssignmentLedger), SiteTopology, DerivedFacts(InterventionLedger) | REQ-PRODUCT-03/04/19/20, REQ-KGA-01〜04/07/12/13/14/18/19 |
+| Content Index | URL正本・記事メタ（サマリー契約・意味索引）・Site Keyword Universe・Site Cluster Projection・属性・アサイン台帳・起点候補・サイトトポロジー・導出事実/施策台帳 | UrlMaster, ArticleSummary, SiteKeywordUniverse, SiteClusterProjection(AssignmentLedger), SiteTopology, DerivedFacts(InterventionLedger) | REQ-DATA-02/07/10/11, REQ-KGA-01〜04/07/12/13/14/18/19 |
 | Search Performance | GSC実績・被覆・ドリフト・カニバリ・リライト候補・マッチカスケード・ロングテール昇格・市場圧力・動的キーワード戦略・ウォッチ/変動監視・インデックス状況・月次プランニング・Recommendation | GscDataMart, CoverageAssessment, RewriteCandidate, QueryMatch, KeywordMarketPressure, KeywordStrategyProfile, Watchlist, MonthlyPlan, Recommendation | REQ-KGA-05/06/08/11/15/16/17/20/21/23, REQ-PRODUCT-05/17/24, REQ-KRL-01〜10, REQ-DATA-06 |
-| External Intelligence | SERP/競合/Fanoutの取得・キャッシュ・バッチ・静穏窓スケジューリング | SourcePack, CompetitorStructure, FetchBatch | REQ-SRC-01〜10 |
+| External Intelligence | 公共Keyword Asset・Public Market Cluster、SERP/競合/Fanoutの取得・cache・batch・静穏窓スケジューリング | KeywordAssetPool, PublicMarketCluster, SourcePack, CompetitorStructure, FetchBatch | REQ-DATA-10, REQ-SRC-01〜10 |
 | Generation | Workflow状態機械・Ticket・Pack注入・執筆・QA/Repair・中断/再開・全体整合パス・実行冪等性・執筆技法レイヤ | GenerationJob, Ticket, PackCatalog, OutlineContract | REQ-AGENT-01〜11, REQ-PACK-01〜21 |
 | Quality | 品質ゲート・計測・few-shot・合否・コヒーレンス検査・ゴールデン評価・検品レンズ・AIらしさ検査・転生検証 | QualityGateEvaluation, GateRegistry, ReaderSegment | REQ-PACK-09/10/12/20/21, REQ-AGENT-08/11, REQ-ADM-10 |
 | Rewrite | Article-as-Code・パッチ・原因分析・好調保護/波及・フラッシュリライト(TDH) | RewriteJob(ArticleWorkspace) | REQ-RWR-01〜09 |
@@ -44,6 +44,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 
 - Tenancy & Access → 全BC: **Shared Kernel**（SiteSandboxContextを全BCが共有）。越境は構造的に不可（REQ-SEC-07）。
 - Content Index / Search Performance / External Intelligence → Generation: **Customer/Supplier**。GenerationはこれらをSource Pack経由でのみ取得する。**Pack＝Anti-Corruption Layer**（直テーブル・生SQLを遮断、JSONへ正規化、REQ-PACK-06）。
+- External Intelligence → Content Index / Search Performance: **Published Language**。公共`keyword_asset_id`と`public_cluster_id+version`を公開し、Site側は参照によって候補を投影する。公共ClusterをSite固有Cluster、記事割当、GSC Queryの正本にしない。
 - Generation ⇄ Quality: **Partnership**。Generationは品質ゲートを工程内で呼び、fail-closeで公開を止める（REQ-PACK-09, REQ-RWR-05）。
 - Search Performance → Generation / Rewrite / Publishing & Automation: **Customer/Supplier**。採用Recommendationをversion付きIntake Contractとして渡し、目的・Keyword Cluster・検索インテント・記事目的・CTA・内部リンク・品質・予算・保護条件を再入力させない。Generation側がRecommendationを画面表示から再構築することを禁止する。
 - Generation / Rewrite → Publishing & Automation: **Customer/Supplier**。Snapshot→PostEnvelope→CMS下書き。新規記事は最初の15記事まで完成記事承認を必須とし、解放後はAutomation Policyに従う。リライト・記事置換はCMS下書き後のユーザー承認を必須とする（REQ-LOGIC-04）。
@@ -73,6 +74,15 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 - ArticleSummaryの値: ArticleIdentity、ContentInventory（topics / intent / audience / questions / claims / unit types / entities）、BusinessInventory（tier / category / tags / CTA / linkability / freshness）、GapInventory、SummaryQuality（completeness / confidence / schema version / analyzed_at）。
 - KeywordMapの値: KeywordMarketPressure（aio / paid / domain credibility）、KeywordStrategicNeed（site necessity / traffic / conversion）、KeywordStrategyProfile、DynamicPriorityComponents。
 - 不変条件: 記事本文全文を保持しない（REQ-PRODUCT-04）／各配列・短文は上限つき／content hash未変更時は再解析しない／解析失敗で直前の有効サマリーを消さない／recommendationは使用したsummary fieldと外部根拠を説明できる／canonical_url_hashが正本で照会はURL・管理はID（REQ-PRODUCT-03）／正規化で表記ゆれを寄せ修飾語違いは別キーワード（REQ-KGA-02）／1キーワードグループの主担当記事は高々1で、オーファン・二重アサインはアラート（REQ-KGA-14）。
+
+### 4.3.0 KeywordAssetPool / SiteKeywordUniverse / SiteClusterProjection
+
+- `KeywordAssetPool`: 公共外部Sourceから独立取得したKeyword、locale／地域／device別Market観測、edge、provenance、利用条件を保持するglobal集約。tenant、Site、URL、顧客別順位・CVを持たない。
+- `PublicMarketCluster`: 公共SERP／intentから導出したversion付き市場cluster。代表語変更は同じIDの改版、分割・統合はlineageで表す。
+- `SiteKeywordUniverse`: 公共asset参照、GSC Query、user upload、Site抽出語、業界・商品・顧客候補、採否を統合するSite集約。顧客固有語を公共Poolへ自動昇格しない。
+- `SiteClusterProjection`: Site目的、業界／横断軸、記事成立性、Article Summary、Assignmentを反映したSite固有cluster。公共Clusterと1対1を前提にせず、primary／secondary、記事割当、ユーザー確定状態を持つ。
+- `MarketShareSnapshot`: Market属性、Observed Query Share、Estimated Search Share、Article Shareを別成分・別provenanceで保持する期間read model。
+- 不変条件: global IDとSite IDを別namespaceにする／公共改版でユーザー確定Site Clusterを上書きしない／MarketとShareを単一値へ潰さない／GSC Query集合を市場全体とみなさない。
 
 ### 4.3.1 Recommendation（Search Performance）
 
@@ -114,9 +124,9 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 
 ## 5. 主要ドメインイベント
 
-- Content Index: KeywordMapUpdated, ArticleSummaryUpserted。
+- External Intelligence: KeywordAssetObserved, PublicMarketClusterVersioned, PublicMarketClusterSplit, PublicMarketClusterMerged, FanoutExpanded, CompetitorStructureExtracted, FetchBatchThrottled。
+- Content Index: SiteKeywordUniverseUpdated, SiteClusterProjectionUpdated, SiteClusterDependencyStaled, KeywordMapUpdated, ArticleSummaryUpserted。
 - Search Performance: GscDataIngested, CoverageAssessed, QueryDriftDetected, RewriteCandidateRaised, RecommendationProposed, RecommendationAccepted, RecommendationHeld, RecommendationExpired, RecommendationDispatched, RecommendationEvaluationStarted, RecommendationLearned。
-- External Intelligence: FanoutExpanded, CompetitorStructureExtracted, FetchBatchThrottled。
 - Generation: GenerationJobStarted, OutlineContractFrozen, MeaningUnitDrafted, QualityGateEvaluated(Passed/Failed), RepairRequested, ArticleAssembled。
 - Rewrite: RewriteJobStarted, PatchApplied, RewriteQualityFailed。
 - Publishing: PostEnvelopeSealed, ContentPublished, PublicationFailed, CvRecorded。

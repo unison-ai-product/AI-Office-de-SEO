@@ -96,6 +96,36 @@ REQ-PACK-07の「主なJSON項目」列をJSON Schemaへ確定する。内部は
 - TODO(L3): 各キーの必須/任意、欠損表現（GSC匿名化・切り捨て注記、AIO availability理由。捏造補完しない: REQ-WPA-10 / REQ-SRC-09）。
 - TODO(L3): v3.7.1で追補した `source.keyword.intent_cluster.v1` / `source.keyword.synonym_related.v1` の確定。
 
+### 3.1 Keyword Market・Share Source
+
+`source.keyword.map.v1`は次の4層を区別し、同名`cluster_id`だけで結合しない。
+
+```text
+{
+  site_keyword_universe_version,
+  public_market_refs[{public_cluster_id, cluster_version, locale, device, provenance_refs[]}],
+  site_clusters[{
+    site_cluster_id, projection_version,
+    public_cluster_refs[], representative,
+    members[{site_keyword_id, keyword_asset_ref?, role, source_type, user_state}],
+    market{size, value, seasonality, aio_pressure, paid_pressure, competition,
+           traffic_potential_range, availability, observed_at, calculation_version},
+    share{observed{value, coverage_note, confidence},
+          estimated{range, method, confidence},
+          article_distribution[], trend, period, calculation_version},
+    intent_mix, cluster_state, market_state,
+    assigned_articles[], strategy{}, provenance[], user_confirmed, version
+  }]
+}
+```
+
+- `source_type`は`public_asset / gsc_query / user_upload / site_extract / product_customer_seed / competitor_observation`を区別する。
+- `keyword_asset_ref`なしのSite固有語を許可し、global asset IDを捏造しない。
+- Observed Share、Estimated Share、Article Shareを別fieldにし、unknownを0へ変換しない。
+- Public Market Cluster改版時も、Siteの`user_confirmed`境界・代表語・割当を無条件上書きしない。
+
+根拠: Keyword Market・Site Share接続マップ、`REQ-DATA-10/11`、`REQ-KRL-01〜10`。
+
 ## 4. Workflow / Pack 型（REQ-PACK-11 の型確定）
 
 - workflow型: `{ workflow_key, flow_pack_keys[], stages[{stage, phase_bindings, transitions[{to, transition_bindings}], loop{converge, stop_guards[]}}], permissions[], bindings_ref }`。

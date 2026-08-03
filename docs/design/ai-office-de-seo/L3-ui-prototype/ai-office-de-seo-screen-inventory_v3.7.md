@@ -71,6 +71,18 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 操作別の正本は`ai-office-de-seo-authorization-operation-matrix_v1.md`とする。
 
+### 0.4 Keyword Market・Site Share表示
+
+- S2はClusterを基本行とし、`Market / 自社Share / 記事配分 / 戦略 / Recommendation`を同じ対象Contextで横断できるようにする。
+- Marketは検索需要、traffic potential、季節性、AIO、広告、競争性を表示し、顧客実績を混ぜない。
+- 自社Shareは`GSCで観測 / 外部データによる推定 / Site内の記事配分`を別カード・別凡例で表示する。ObservedとEstimatedを一つの実績値に合算しない。
+- 公共Keyword、GSC Query、ユーザー登録、Site抽出、商品・顧客seed、競合観測の来歴を表示し、公共／Site固有、実測／推定、ユーザー確定／自動推定を区別する。
+- 新規Site戦略Reportは実績不在を欠陥表示にせず、市場構造、Site必要性、商品・顧客・CV適合、記事成立性を中心にする。
+- 既存Site診断Reportは、公共市場母集団に対する獲得・未獲得、Observed／Estimated Share、記事対応、Query Drift、カニバリ、保護、index問題を接続する。
+- Public Clusterの改版、Site Clusterのユーザー修正、補正versionを履歴表示し、公共改版でユーザー確定値が上書きされないことを示す。
+
+データ・ロジック接続は`ai-office-de-seo-keyword-market-share-connection-map_v1.md`を正本とする。
+
 ## 1. 通常ビュー（Standard SaaS）第一階層7画面
 
 | # | 画面 | 主要コンポーネント（REQ-NAV-04の責務） | 主データ（モック契約） | プロト優先度 |

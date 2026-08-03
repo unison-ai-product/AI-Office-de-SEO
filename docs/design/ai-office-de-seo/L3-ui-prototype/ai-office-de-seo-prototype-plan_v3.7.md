@@ -72,6 +72,12 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-AUTH-04: Agentへの質問はread範囲で回答し、変更会話は操作別Proposalへ分解して、権限不足項目だけを理由付きで拒否できる。
 - [ ] PT-AUTH-05: Automation設定者の退会、業務権限取消、Site移管、委任期限切れ、接続Scope変更、Kill Switch後にCMS副作用が停止して確認待ちへ遷移する。
 - [ ] PT-AUTH-06: 内部Admin／Manager／Operatorが顧客面と別session・別namespaceで動き、Manager代理操作のacting principalと顧客Contextを区別し、Operatorが顧客変更・本文・秘密へ到達できない。
+- [ ] PT-MARKET-01: S2でClusterを基本単位にMarket、Observed Share、Estimated Share、Article Shareを切り替え、各値のprovenance、availability、confidence、期間を確認できる。
+- [ ] PT-MARKET-02: 新規Site戦略ReportがGSCなしで成立し、数値実績を捏造せず、既存Site診断ReportがGSC獲得語だけでなく公共市場・未獲得領域を含む。
+- [ ] PT-MARKET-03: 公共Keyword、GSC Query、user upload、Site抽出、商品・顧客seed、競合観測が別source typeで表示され、顧客固有語を公共assetとして表示しない。
+- [ ] PT-MARKET-04: Public Cluster改版fixtureでSite Projectionをstale表示にするが、ユーザー確定のCluster境界、代表語、記事割当を自動上書きしない。
+- [ ] PT-MARKET-05: ユーザーによる業界、横断軸、Cluster、代表語、primary／secondary、記事割当の修正がSiteへ反映され、匿名Global補正候補とは別状態になる。
+- [ ] PT-MARKET-06: Market→Share→戦略Report／診断Report→月次計画→Recommendation→実行→評価→補正の同一Site Cluster Contextを往復できる。
 
 - [ ] PT-A: 通常/Agent Officeで同一の詳細コンポーネント・モックAPI・状態が使われている（コード上、詳細の二重実装がない）。｜ REQ-AOUI-01（AC-AOUI-01/04）
 - [ ] PT-B: 第一階層はREQ-NAV-01の7項目・正式ラベルで、内部用語が現れない。｜ REQ-NAV-01（AC-PRODUCT-02/03）

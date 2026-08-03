@@ -97,6 +97,17 @@ L2の各集約（AOS-L2-DOMAIN-MODEL §4）をテーブルDDLへ確定する作�
 
 両領域ともアプリ・Executorから直接書き込めず、認可された公共データ取得パイプラインまたは集約バッチだけを書込主体とする。公共データと顧客由来データを同一provenanceへ混在させず、読み取りはホワイトリスト化されたversion付きViewを経由する。検証: AC-NET-01/02/04。TODO(L3): パーティション、圧縮、履歴粒度、k値、セグメント標本しきい値、集約ジョブ設計。
 
+### 8.1 Keyword MarketとSite Projectionの物理境界
+
+- global `keyword_assets`: `keyword_asset_terms`、`keyword_asset_locale_metrics`、`keyword_asset_metric_series`、`keyword_asset_edges`、`keyword_asset_provenance`。
+- global `public_market_clusters`: `public_cluster_versions`、`public_cluster_members`、`public_cluster_lineage(split/merge/supersede)`。locale、device、観測期間、SERP fingerprint、算式versionを必須とする。
+- tenant `site_keyword_universes`: Universe version、入力Source集合、構築状態。`site_keywords`はsource_type、keyword_asset_ref nullable、user state、Site内provenanceを持つ。
+- tenant `site_cluster_versions / site_cluster_members`: public cluster refs、Site境界、代表語、primary／secondary、user_confirmed、業界／横断軸version、lineageを持つ。
+- tenant `site_market_share_snapshots`: site_cluster、期間、Market属性ref、Observed Share、Estimated Share、Article Share、availability、confidence、算式versionを別column／有界JSONで持つ。
+- tenant `keyword_classification_feedback`: 修正対象、before／after、理由、入力version、ユーザー確定、Site補正適用状態、匿名較正候補refを持つ。
+
+global tableへtenant_idを追加して顧客対応を保存する方式、tenant tableへ公共metricを全件複製する方式、GSC Queryを`keyword_asset_terms`へ直接INSERTする方式を禁止する。
+
 ## 9. 受入との接続
 
 本DDLの完成判定は、負のテストを含む受入（AC-TENANT-02/03、AC-SEC-11、AC-DATA-01〜03）をスキーマレベルで満たせることとする。越境JOIN・スコープ未指定クエリが構造的に失敗することをmigrationテストで検証する。

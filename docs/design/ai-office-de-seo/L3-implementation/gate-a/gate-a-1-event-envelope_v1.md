@@ -80,6 +80,14 @@ updated_at: 2026-07-05
 | search.watchlist_threshold_crossed | keyword_group_id, delta | N,O | REQ-KGA-20 |
 | search.seasonal_refresh_due | url_hash, season_ref | N,O | REQ-KGA-20 |
 | search.index_issue_detected | url_hash, issue_type | N,O | REQ-KGA-21 |
+| market.keyword_asset_observed | keyword_asset_id, locale, device, metric_kind, observed_at | O | REQ-DATA-10 |
+| market.public_cluster_versioned | public_cluster_id, version, changed_components[], observed_period | O | REQ-DATA-10, REQ-KRL-03 |
+| market.public_cluster_lineage_changed | source_cluster_refs[], target_cluster_refs[], change_type(split/merge) | O | REQ-KRL-03 |
+| site.keyword_universe_updated | site_keyword_universe_version, source_types[], changed_refs[] | W,O | REQ-KRL-03 |
+| site.cluster_projection_updated | site_cluster_id, projection_version, cause, user_confirmed | W,O | REQ-KRL-03/09 |
+| site.cluster_dependency_staled | site_cluster_id, public_cluster_ref, reason | O | REQ-KRL-09 |
+| site.market_share_calculated | site_cluster_id, snapshot_id, period, observed_availability, estimated_availability | W,O | REQ-KRL-02/09 |
+| site.keyword_classification_corrected | target_ref, correction_kind, before_version, after_version | W,O,A | REQ-DATA-11, REQ-KRL-09 |
 | recommendation.proposed | recommendation_id, version, type, target_ref, availability | W,O | REQ-KRL-08, REQ-DATA-06 |
 | recommendation.accepted | recommendation_id, version, intake_ref, correlation_id | W,O,A | REQ-LOGIC-03, REQ-SCREEN-09 |
 | recommendation.held | recommendation_id, version, reason, release_condition | W,N,O | REQ-KRL-07/09 |
