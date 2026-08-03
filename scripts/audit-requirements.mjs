@@ -803,6 +803,19 @@ const navigationPath = path.join(
   "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md",
 );
 const navigation = fs.readFileSync(navigationPath, "utf8");
+const authorizationMatrix = fs.readFileSync(
+  path.join(
+    repoRoot,
+    "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-authorization-operation-matrix_v1.md",
+  ),
+  "utf8",
+);
+if (/\| WordPress下書き送信・予約・手動公開 \|/.test(authorizationMatrix)) {
+  fail(errors, "authorization matrix: CMS operation remains fixed to WordPress-only wording");
+}
+if (!authorizationMatrix.includes("CMS下書き送信・予約・手動公開・既存記事更新")) {
+  fail(errors, "authorization matrix: CMS side-effect operation coverage missing");
+}
 for (const currentLabel of ["5. サイトページ管理", "6. ナレッジ管理", "### サイトページ管理", "### ナレッジ管理"]) {
   if (!navigation.includes(currentLabel)) {
     fail(errors, `navigation: current first-level responsibility missing: ${currentLabel}`);
@@ -810,6 +823,20 @@ for (const currentLabel of ["5. サイトページ管理", "6. ナレッジ管�
 }
 if (/^5\. 検索流入分析$|^6\. 学習ナレッジ管理$/m.test(navigation)) {
   fail(errors, "navigation: superseded S5/S6 first-level labels remain canonical");
+}
+for (const requiredPhrase of [
+  "月次プランニング（目的、重点領域、記事・施策配分、予算配分",
+  "新規SiteのKeyword戦略レポートと既存SiteのKeyword・Site診断レポート",
+  "重複する目標管理を置かない",
+  "1・3・6か月の施策評価",
+  "CMS接続の基本設定",
+]) {
+  if (!navigation.includes(requiredPhrase)) {
+    fail(errors, `navigation: current lifecycle responsibility missing: ${requiredPhrase}`);
+  }
+}
+if (/^- 予算管理、目標管理$/m.test(navigation)) {
+  fail(errors, "navigation: monthly goal management remains duplicated under automation");
 }
 if (
   JSON.stringify(manifest.user_navigation) !==
@@ -835,6 +862,20 @@ if (!/## 1\. 旧詳細コンポーネント棚卸し（互換baseline・現行�
 }
 if (/責務の所属は§1の各行を正とし/.test(screenInventory)) {
   fail(errors, "screen inventory: current tab register still delegates responsibility to the legacy table");
+}
+const currentTabRegister = screenInventory.split("## 5. 第二階層タブ台帳")[1]?.split("### 5.1")[0] || "";
+if (/\| S4 \|[^\r\n]+\*\*目標管理/.test(currentTabRegister)) {
+  fail(errors, "screen inventory: monthly goal management regressed from S1 planning into S4 automation");
+}
+for (const requiredPhrase of [
+  "月次目的・記事／施策配分・予算配分・実績乖離はS1プランニングを正本",
+  "S4に重複する目標管理タブを置かない",
+  "戦略・診断レポート（新規Site戦略／既存Site診断を分離",
+  "施策評価（公開または実質更新を起点に1・3・6か月評価",
+]) {
+  if (!screenInventory.includes(requiredPhrase)) {
+    fail(errors, `screen inventory: S1 planning / S4 automation boundary missing: ${requiredPhrase}`);
+  }
 }
 
 const l3DecisionPath = path.join(
