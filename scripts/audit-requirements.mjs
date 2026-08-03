@@ -381,8 +381,14 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-pr
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
   "Assembly / Placement / CMS Draft",
   "Self Evolution / Semantic Assembly",
+  "Meaning Unit Writing → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → CMS Draft",
+  "CMS Capability・出力形式検証 → CMS下書き送信 → 承認／委任条件判定",
   "presentation_assemble → decorate → featured_image → placement → cms_validate → cms_deliver",
   "共通WorkflowをWordPress固有画面へ固定しない",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md", [
+  "Meaning Unit Writing → QA → Repair Loop → Assembly",
+  "WP下書き・投稿形式チェック・予約・公開/CVイベント",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
   "presentation_assembly_placement_cms_draft",

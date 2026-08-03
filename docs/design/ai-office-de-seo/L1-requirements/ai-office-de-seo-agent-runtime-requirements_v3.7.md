@@ -151,9 +151,9 @@ Workflowは権限スコープを持つ。許可ツール・アクション（外
 
 主要Workflow（列挙）:
 
-- `workflow.new_article.v1`: Research & Outline → Meaning Unit Writing → QA → Repair Loop → Assembly
-- `workflow.rewrite.v1`: GSC Query Drift/Cause Analysis → 対象Meaning Unit特定 → Repair Writing → QA → Repair Loop → Assembly
-- `workflow.automation.v1`: WP下書き・投稿形式チェック・予約・公開/CVイベント
+- `workflow.new_article.v1`: Research & Outline → Meaning Unit Writing → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → CMS Draft
+- `workflow.rewrite.v1`: GSC Query Drift／Cause Analysis → 対象Meaning Unit特定 → Repair Writing → Semantic Assembly → QA／限定Repair Loop → Presentation Assembly／Placement → CMS Draft
+- `workflow.automation.v1`: CMS Capability・出力形式検証 → CMS下書き送信 → 承認／委任条件判定 → 予約・公開／更新 → CV・評価起点event
 
 ループ（反復）を一級の構文として持つ:
 
@@ -235,7 +235,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 - 状態9でSemantic Assemblyを完了してから状態10のCohesionを含むQuality Gateを実行する。Quality Gateを通らない記事を状態11のPresentation Assembly／PlacementとCMS下書き送信へ進めない（fail-close）。工程11は`presentation_assemble → decorate → featured_image → placement → cms_validate → cms_deliver`の内部phaseを持ち、本文完成前に装飾を開始せず、CMS送信成功前にPreview／Approvalへ進めない。初期画像Scopeはアイキャッチ基盤に限定する。
 - Preview またはAutomationの公開条件成立なしに予約投稿しない。初期WordPress AdapterではCMS下書きの編集URL／Preview URLを利用し、共通WorkflowをWordPress固有画面へ固定しない。
 - 最初の15記事は完成記事への人間承認を必須とする。WordPress実表示Previewは確認手段であり、URLを開いた事実自体を条件にしない。Outline確認はSite設定で任意に有効化し、有効時は見出しを修正・freezeしてから再開する。
-- リライト・全文再生成はAutomation承認だけで公開記事へ直接反映せず、WP下書きとユーザー承認を必須とする。
+- リライト・全文再生成はAutomation承認だけで公開記事へ直接反映せず、CMS下書きとユーザー承認を必須とする。初期WordPress AdapterではWordPress下書きを使用する。
 - Cleanup が完了しないジョブを完了扱いにしない。
 
 工程ごとに引くPack/CatalogはLayer A/B/C/D（`REQ-AGENT-03`）と3スコープ（`REQ-PACK-14`）に従う。`rewrite_patch`（`rewrite` workflow）は別の状態機械として定義する（原因分析→対象特定→patch→QA→Repair Loop）。具体トポロジは各Workflowの個別設定（`REQ-AGENT-06`）で、`new_article_fast/standard/premium/custom_recipe` 等のモード差は工程の深度・モデル配分の違いとして表す（`custom_recipe` はユーザー自己サーブの定義機能ではなく、コンサルティング経由で開発管理者が登録する運用経路。`REQ-PRODUCT-12`）。
