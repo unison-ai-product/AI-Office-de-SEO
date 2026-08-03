@@ -389,7 +389,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ### business-requirements_v1
 
 - [ ] AC-L1-BUS-01: `REQ-UJ-01〜09` の全ジャーニーが、対応する業務循環と業務要求へ追跡できる。 ｜ 検証: REQ-BUS-01 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-02: 各業務に担当、開始契機、入力、判断、成果物、完了条件、次工程または戻り先がある。 ｜ 検証: REQ-BUS-01 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-02: 各業務に担当、開始契機、入力、判断、成果物、完了条件、次工程または戻り先があり、新規記事向け分析とリライトの成立条件を分離して、GSCまたはKeyword実績だけでは本文変更を伴うリライトRecommendationを生成しない。 ｜ 検証: REQ-BUS-01, REQ-BUS-02 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-03: 月初に目的・重点領域・施策・予算を持つ計画案を作成し、自動運用では期限確定、手動運用では明示確定できる。 ｜ 検証: REQ-BUS-03 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-04: 各業務の手動操作、Event、Cron候補、WorkflowまたはLoopへの配分が識別できる。 ｜ 検証: REQ-BUS-02, REQ-BUS-03, REQ-BUS-04, REQ-BUS-05, REQ-BUS-06, REQ-BUS-07, REQ-BUS-08, REQ-BUS-09, REQ-BUS-10, REQ-BUS-11, REQ-BUS-12, REQ-BUS-13 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-05: 週次上限内の実行予定を自動・手動運用別に選択し、未実行候補を再評価でき、ユーザー割込みには指定を維持した推奨順序を相談できる。 ｜ 検証: REQ-BUS-05 ｜ 正本: `categories/business-requirements_v1.md`
