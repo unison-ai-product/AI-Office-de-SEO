@@ -2,7 +2,7 @@
 document_id: AOS-L3-GATE-A1-EVENT-ENVELOPE
 title: Gate A-1 イベント共通エンベロープ v1
 layer: L3
-version: 1.7
+version: 1.8
 kind: contract
 status: current-draft
 updated_at: 2026-08-03
@@ -119,10 +119,11 @@ updated_at: 2026-08-03
 | report.cluster_state_adjusted | report_id, version, cluster_ref, before_state, after_state, adjusted_by | W,O,A | REQ-BUS-04/05 |
 | report.superseded | report_id, version, superseded_by_ref, cause | W,O | REQ-BUS-05/06 |
 | recommendation.proposed | recommendation_id, version, type, subtype?, target_ref, origin, availability | W,O | REQ-KRL-08, REQ-DATA-06 |
-| recommendation.accepted | recommendation_id, version, intake_ref, correlation_id | W,O,A | REQ-LOGIC-03, REQ-SCREEN-09 |
+| recommendation.presented | recommendation_id, version, decision_eligibility_id, source_report_ref, presented_at, available_surfaces[], eligibility_version | W,O,A | REQ-KRL-08/09, REQ-MEASURE-13 |
+| recommendation.decision_recorded | recommendation_id, version, decision_eligibility_ref, result(accepted/accepted_with_edit/held/excluded), decision_mode(manual/automatic), decided_by, edit_delta_ref?, intake_ref?, correlation_id | W,O,A | REQ-LOGIC-03, REQ-SCREEN-09, REQ-MEASURE-13 |
 | recommendation.held | recommendation_id, version, reason, release_condition | W,N,O | REQ-KRL-07/09 |
 | recommendation.expired | recommendation_id, version, cause | W,O | REQ-KRL-09 |
-| recommendation.dispatched | recommendation_id, intake_ref, workflow_key, job_id, correlation_id | W,O | REQ-LOGIC-03, REQ-AGENT-09 |
+| recommendation.dispatched | recommendation_id, version, intake_ref, route_class, action_key, execution_ref, requires_agent_job, workflow_key?, job_id?, correlation_id | W,O | REQ-LOGIC-03, REQ-AGENT-09 |
 | recommendation.user_action_requested | recommendation_id, intake_ref, action_kind, reason_refs[], release_condition | W,N,O | REQ-KRL-07/08 |
 | recommendation.no_action_recorded | recommendation_id, type(protect/observe/no_action), next_evaluation_at? | W,O | REQ-KRL-07/09 |
 | recommendation.superseded | recommendation_id, version, superseded_by_ref, cause, origin | W,O | REQ-KRL-09 |
@@ -139,7 +140,7 @@ updated_at: 2026-08-03
 | site.setup_completed | site_id, site_mode, site_profile_version, site_identified_evidence_ref, completed_at | W,N,O,A | REQ-BUS-02, REQ-MEASURE-13 |
 | site.readiness_changed | site_id, readiness_key(site_identified/analysis_ready/content_read_ready/delivery_ready), scope_kind, scope_ref, operation?, before_state, after_state, evidence_ref?, source_version, valid_until?, reason_codes[], return_context_ref?, readiness_version | W,N,O,A | REQ-BUS-02, REQ-INT-05/09 |
 | cms.connection_profile_verified | connection_profile_id, version, site_identity_ref, diagnostic_ref, available_capabilities[], missing_capabilities[], verified_at | W,N,O,A | REQ-INT-05/06/09, REQ-MEASURE-13 |
-| site.first_recommendation_presented | site_id, recommendation_id, version, source_report_ref, decision_eligibility_ref, presented_at | W,O,A | REQ-BUS-05/06, REQ-MEASURE-13 |
+| site.first_recommendation_presented | site_id, recommendation_id, version, source_report_ref, decision_eligibility_ref, recommendation_presented_event_ref, presented_at | W,O,A | REQ-BUS-05/06, REQ-MEASURE-13 |
 | site.activated | activation_id, site_id, recommendation_ref, publication_fact_ref, activated_at, funnel_version | W,O,A | REQ-MEASURE-13 |
 | product.loop_completed | loop_completion_id, site_id, recommendation_ref, publication_fact_ref, evaluation_id, seo_content_lane_ref, completed_at, metric_rule_version | O,A | REQ-MEASURE-13 |
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
@@ -260,11 +261,13 @@ updated_at: 2026-08-03
 | network.dictionary_candidate_promoted | candidate_ref（**提案生成。適用はADM統制**） | N(admin),O,A | REQ-PRODUCT-13 |
 | network.prior_updated | prior_version（**提案生成。適用はADM統制**） | N(admin),O,A | REQ-PRODUCT-13 |
 
-移行規則: 旧`generation.article_assembled`は`generation.semantic_assembled`、旧`publish.draft_created`は`cms.draft_created`へ読み替えるmigration aliasであり、新規producerは発行しない。旧`publish.decision_recorded / scheduled / approval_requested / approved / rejected / published / updated / failed / cv_recorded`は、Decision、Approval、Job、Fact、CV集計の該当`publication.*` eventへ移行し、新規producerは発行しない。旧`publish.published / updated`をPublication Factへ移行する場合も外部検証証拠、resulting content hash、effective time、帰属が不足する行を`ai_office_publication`へ補完せず`unknown_source / pending`とする。装飾・アイキャッチ・CTA／内部link配置・CMS形式化の完了をSemantic Assemblyへ混在させず、`generation.presentation_assembled`で表す。
+移行規則: 旧`generation.article_assembled`は`generation.semantic_assembled`、旧`publish.draft_created`は`cms.draft_created`へ読み替えるmigration aliasであり、新規producerは発行しない。旧`publish.decision_recorded / scheduled / approval_requested / approved / rejected / published / updated / failed / cv_recorded`は、Decision、Approval、Job、Fact、CV集計の該当`publication.*` eventへ移行し、新規producerは発行しない。旧`publish.published / updated`をPublication Factへ移行する場合も外部検証証拠、resulting content hash、effective time、帰属が不足する行を`ai_office_publication`へ補完せず`unknown_source / pending`とする。旧`recommendation.accepted`は`recommendation.decision_recorded(result=accepted)`へ移行し、対応するDecision Eligibilityとfreeze済みIntakeを復元できない行を採用率の分子へ補完しない。新規Producerは旧eventを発行しない。装飾・アイキャッチ・CTA／内部link配置・CMS形式化の完了をSemantic Assemblyへ混在させず、`generation.presentation_assembled`で表す。
 
 監査対象イベント（A印）の正本は監査ログであり、イベント・通知はその写像（REQ-SEC-10 / REQ-PRODUCT-11）。モックイベント（プロトPT-0）は本カタログと同形で作成する。
 
 `site.readiness_changed`のscopeは条件付き必須とする。`site_identified`は`scope_kind=site`、`analysis_ready`は`scope_kind=analysis_version`、`content_read_ready`は`scope_kind=article`、`delivery_ready`は`scope_kind=operation`かつ`operation`必須である。Producerは同一event IDの再送を冪等に扱い、Consumerは`readiness_version`の古いeventでcurrent projectionを巻き戻さない。失効eventは過去成果を削除せず、影響scopeの新規操作を保留し、`return_context_ref`から再開する。
+
+`recommendation.presented`は同じDecision Eligibility versionにつき一度だけ発行し、画面閲覧・再表示では再発行しない。Site最初の同eventから`site.first_recommendation_presented`を一度だけ導出する。`recommendation.decision_recorded`の`accepted / accepted_with_edit`は`intake_ref`必須、`held / excluded`は`intake_ref`禁止とし、automaticではService actorと委任Policyを監査参照する。`recommendation.dispatched.requires_agent_job=false`では`workflow_key / job_id`を禁止し、Action所有Serviceの`execution_ref`を必須とする。
 
 v1.1改訂: 通知カタログ（REQ-PRODUCT-11）との突合で4種追加（approval_requested / webhook_failed / reconciliation_mismatch / cache_hit_floor_breached）。凍結規則どおりevent_type追加はminorでありエンベロープ・既存typeは不変。
 
@@ -277,5 +280,7 @@ v1.5改訂: 現行SEO業務Lifecycleへの追随として、Site構築・段階�
 v1.6改訂: 13状態の互換keyを維持したまま、`cms_draft`状態内のAssembly／装飾／アイキャッチ／Placement／CMS検証・送信をAgent OfficeとTask Historyで識別するため、stage phase開始・完了eventを追加した。phaseは独立Workflow stateではなく、親stageを飛び越える遷移には使用しない。
 
 v1.7改訂: Site導入の4段階Capabilityをscope付きmilestone／change eventとして追加し、Connection Profile確認、記事読取、operation別write readiness、Activationを別事実として再構築可能にした。
+
+v1.8改訂: Recommendationの内部提案、判断可能な提示、手動／自動判断、Intake、正規Action dispatchを分離した。旧`recommendation.accepted`はmigration aliasとし、全ActionをAgent Workflowへ偽装しないpayloadへ変更した。
 
 v1.3改訂（表記正規化・型不変）: カタログを **1 event_type = 1行** へ正規化した。旧版の複合行（例: `generation.gate_passed / gate_held`）は複数typeの省略表記であり、機械照合の契約としてregex `^[a-z]+\.[a-z_]+$` に行単位で適合しなかったため分割した。event_typeの集合・エンベロープ・payload意味論は不変（新規type追加なし）。分割時、旧複合行で共有されていた消費印・根拠は各行へ引き継ぎ、区別があったもの（N(held)/N(hard)等）は当該行にのみ付した。

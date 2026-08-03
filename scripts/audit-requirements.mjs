@@ -318,10 +318,25 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-o
   "選択式ポップアップを先に表示",
   "玄人向けに詳細分析・操作できる",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md", [
+  "site.setup_completed → cms.connection_profile_verified → site.first_recommendation_presented",
+  "operation別`delivery_ready`または書込み可能を意味しない",
+  "`recommendation.presented`によってDecision Eligibility付きversionをQueueへ判断可能に公開",
+]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md", [
   "自由文をそのままDomain Commandへ渡す",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md", [
+  "`candidate → proposed → presented`を提示前の主経路",
+  "`accepted* → dispatched → executing → completed → evaluating → learned`だけが実行経路",
+  "`excluded / expired`は当該versionの終端",
+  "採用は実行開始ではない",
+]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
+  "schema.recommendation.presentation.v1",
+  "schema.recommendation.decision.v1",
+  "Recommendation type、target、主Objective、Keyword Cluster、Action route等の意味境界",
+  "同一transaction／transactional outbox",
   "schema.site.build_progress.v1",
   "content_read_ready{state, article_scope_ref, eligible_article_count",
   "delivery_ready[]{operation, state, connection_profile_version",
@@ -557,6 +572,10 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "Search Performanceは観測Projectionを提供するだけ",
   "Recovery Backupの最長3か月と評価保持を同一TTLへ結合しない",
   "site_readiness_states / site_readiness_transitions",
+  "recommendation_presentations",
+  "recommendation_decisions",
+  "採用Decisionだけ、またはIntakeだけが存在するcommitを禁止する",
+  "意味境界を変える編集は`accepted_with_edit`にせず`manual_intakes`",
   "scope_kind(site/analysis_version/article/operation)",
   "重複boolean列を置かない",
   "該当operationだけを失効させる",
@@ -579,6 +598,10 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-e
   "古いeventでcurrent projectionを巻き戻さない",
   "cms.connection_profile_verified | connection_profile_id",
   "site.first_recommendation_presented | site_id",
+  "recommendation.presented | recommendation_id",
+  "recommendation.decision_recorded | recommendation_id",
+  "requires_agent_job=false",
+  "旧`recommendation.accepted`は`recommendation.decision_recorded(result=accepted)`",
   "site.activated | activation_id",
   "product.loop_completed | loop_completion_id",
   "seo_content_lane_ref",
@@ -602,9 +625,14 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-pr
   "delivery_ready.update_post=held",
   "PT-CMS-08",
   "対象operationを副作用直前に再判定できる",
+  "PT-REC-07",
+  "PT-REC-08",
+  "PT-REC-09",
+  "accepted DecisionとRecommendation Intakeが同時に存在",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
   '"type": {"enum": ["user", "system", "agent"]}',
+  "| recommendation.accepted |",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-business-metrics-map_v1.md", [
   "site.setup_completed",
@@ -612,11 +640,16 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-pr
   "site.first_recommendation_presented",
   "書込み可能を意味せず、`delivery_ready`はoperation別に判定する",
   "成果生成を失敗扱いにせずDeliveryだけを保留する",
+  "`recommendation.decision_recorded.result`",
+  "`recommendation.presented`でDecision Eligibility",
+  "ブラウザ閲覧回数は使わない",
+  "手動／自動判断は同一定義で別系列",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-business-metrics-map_v1.md", [
   "`site_setup_completed`",
   "`cms_connection_verified`",
   "`first_recommendation_presented`",
+  "`adopted` または `adopted_with_edit`",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
   "Recommendation Intakeまたは手動指定を共通Preflightへ渡す",
@@ -628,6 +661,9 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "cms_capability_snapshot",
   "content_read_ready`は記事coverage",
   "delivery_ready`はoperation別Capability",
+  "Recommendation提示・判断",
+  "Decision Eligibilityをfreezeした`presented` version",
+  "`recommendation_feedback`は既読、click、UI改善等の分析補助",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
   "| S4 | オートメーション | WP接続",

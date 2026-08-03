@@ -110,7 +110,7 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 運用Loopは `分析・Recommendation → 採用 → ai_office_publicationの検証済みPublication Fact → 介入別評価Lane登録` で構成する。新規公開または実質本文更新のLoop完了点は、Recommendation／Interventionへ相関したPublication Factを起点に、SEO評価基準値、`effective_at`による`seo_content` Lane、1カ月・3カ月・6カ月の評価予定が登録された時点とする。CTA・内部link・認知施策は月次／累積Laneを登録するが、既存SEO Laneをresetせず、これだけで記事制作Loopを別完了として二重計上しない。GSCデータ取得開始、Recommendation採用、CMS下書き、予約、API受付、外部変更、帰属確認中、評価画面の閲覧だけではLoop完了にしない。月内に1回以上Loopを完了したdistinct SiteをNorth Starへ1 Siteとして数え、同一Siteの複数完了件数は診断指標へ分離する。
 
-Activationは顧客が初回価値を受け取った時点として、`Site設定完了 → CMS接続完了 → 分析・Recommendation提示 → 初回Recommendation採用に相関するai_office_publicationのPublication Fact` の4段階で計測し、第4段階をActivation到達とする。予約、下書き、API成功、`external_change`、`unknown_source`では到達させない。第3段階到達・第4段階未到達のSiteを最優先の改善対象として、件数、滞留時間、失敗工程、未完了理由を可視化する。分析・Recommendation提示だけをActivationとして扱わない。
+Activationは顧客が初回価値を受け取った時点として、`site.setup_completed → cms.connection_profile_verified → site.first_recommendation_presented → 初回Recommendation採用に相関するai_office_publicationのPublication Fact` の4段階で計測し、第4段階をActivation到達とする。第2段階は対象CMSとCapability診断結果の確定であり、operation別`delivery_ready`または書込み可能を意味しない。第3段階は内部候補やブラウザ閲覧ではなく、`recommendation.presented`によってDecision Eligibility付きversionをQueueへ判断可能に公開した初回事実から導出する。予約、下書き、API成功、`external_change`、`unknown_source`では到達させない。第3段階到達・第4段階未到達のSiteを最優先の改善対象として、件数、滞留時間、失敗工程、未完了理由を可視化する。分析・Recommendation提示だけをActivationとして扱わない。
 
 継続稼働の強いsignalは、Recommendation採用、記事公開／更新のCMS反映、月次計画確定のいずれかに限定する。画面閲覧、施策評価閲覧、ログイン、通知既読だけを継続稼働へ算入しない。休眠はActivation到達済みSiteだけを対象とし、`max(activation_at, last_strong_activity_at) + 30日` を到達した時点で判定する。未Activation Siteは休眠ではなくOnboarding停滞へ分類する。
 

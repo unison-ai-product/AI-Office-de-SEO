@@ -157,14 +157,36 @@
       "invariants": [
         {
           "invariant_id": "INV-RECOMMEND-001",
-          "statement": "急変時は即時推薦せず要監視へ送り、月次計画と週次増分選択から実行候補を決める。",
+          "statement": "急変時は即時推薦せず要監視へ送る。Recommendationは内部候補、判断可能な提示、判断、freeze済みIntake、正規Action dispatchを分離し、採用率をDecision EligibilityとDecisionから再現する。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
-            "docs/design/ai-office-de-seo/L1-requirements/logic/keyword-dynamic-recommendation-logic-requirements_v1.md"
+            "docs/design/ai-office-de-seo/L1-requirements/logic/keyword-dynamic-recommendation-logic-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-business-metrics-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md"
           ],
-          "forbidden_patterns": ["急変.{0,30}(?:即時|直ちに).{0,20}(?:推薦|実行)(?:する|へ進める)"] ,
-          "bad_fixtures": ["急変を検知したら即時推薦する。"],
-          "good_fixtures": ["急変を検知したら要監視へ送り、観測を継続する。"]
+          "forbidden_patterns": [
+            "急変.{0,30}(?:即時|直ちに).{0,20}(?:推薦|実行)(?:する|へ進める)",
+            "(?:画面閲覧|既読|再表示).{0,40}(?:Recommendation|推薦).{0,20}(?:提示数|採用率の分母).{0,20}(?:加算|計上|増やす)",
+            "(?:accepted|採用)(?: event|イベント| Decision)?.{0,40}(?:Intakeなし|Intakeを後で|Intakeは任意)",
+            "accepted_with_edit.{0,60}(?:type|target|主Objective|Keyword Cluster|Action route).{0,20}(?:変更可能|変更してよい)",
+            "requires_agent_job=false.{0,40}(?:workflow_key|job_id).{0,20}(?:必須|生成)"
+          ],
+          "bad_fixtures": [
+            "急変を検知したら即時推薦する。",
+            "画面再表示のたびにRecommendation提示数を加算する。",
+            "採用Decisionを記録し、Intakeは任意とする。",
+            "accepted_with_editならtypeとtargetを変更可能とする。",
+            "requires_agent_job=falseでもjob_idを生成する。"
+          ],
+          "good_fixtures": [
+            "急変を検知したら要監視へ送り、観測を継続する。",
+            "Recommendation提示はDecision Eligibility単位で一度だけ計上する。",
+            "採用Decisionとfreeze済みIntakeを同一transactionで確定する。",
+            "意味境界を変える編集はManual Intakeへ分離する。",
+            "非Agent Actionはexecution refだけを保持する。"
+          ]
         }
       ]
     },

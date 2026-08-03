@@ -98,6 +98,13 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 Report情報設計は`ai-office-de-seo-keyword-report-connection-map_v1.md`を正本とする。
 
+### 0.5.1 Recommendation提示・判断
+
+- 内部`candidate / proposed`を通常ビューへ表示せず、Decision Eligibilityをfreezeした`presented` versionだけを通常ビューのおすすめとOfficeの詳細対象へ同時に投影する。`presented`はQueueへ判断可能状態として公開した事実であり、ユーザーの画面閲覧・既読を必須にしない。
+- 通常ビューは`採用 / 条件を調整して採用 / 保留 / 除外`を平易に表示し、Officeでは同じRecommendation version、根拠、許可された調整field、影響、Credit、Decision履歴を詳しく扱う。再表示やView切替で別Presentationを作らない。
+- 条件調整がRecommendation type、対象、主目的、Keyword Cluster、Action routeを変える場合は「調整して採用」にせず、Recommendationの意味を残したManual Intakeまたは再分析へ案内する。`accepted*`確定時はfreeze済みIntakeを同時作成し、採用後に再入力させない。
+- `recommendation_feedback`は既読、click、UI改善等の分析補助に限り、Presentation、Decision、Intake、採用率の正本にしない。自動運用は`自動採用`と委任Policyを表示し、人間が採用した表示へ置き換えない。
+
 ### 0.6 CMS接続状態
 
 - S7データ設定はCMS種別、接続状態、認証、記事読取り、下書き送信、既存記事更新、Media、Editor互換、Preview、Revision、Tracker、最終同期、必要なユーザー操作を業務名で表示する。

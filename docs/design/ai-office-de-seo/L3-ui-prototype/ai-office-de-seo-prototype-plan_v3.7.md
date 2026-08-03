@@ -68,6 +68,9 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-REC-04: structure changeとindex診断はユーザー対応として表示され、canonical、redirect、Site設定を自動変更した表示にならない。
 - [ ] PT-REC-05: ユーザー指定Taskと自動予定が衝突した場合、ユーザーTaskを維持して影響・依存・推奨順序を示し、自動予定だけを要確認へ戻せる。
 - [ ] PT-REC-06: 月次計画または分類変更後も実行済み施策のversionと履歴を維持し、未実行Recommendationだけが再計算・supersedeされる。
+- [ ] PT-REC-07: 内部candidate／proposed、Queueへ判断可能に公開したpresented、画面閲覧、manual／automatic Decision、freeze済みIntake、dispatch、executionを別event・別時刻として再現し、再表示で採用率の分母を増やさない。
+- [ ] PT-REC-08: `accepted_with_edit`は許可fieldの変更差分を保持し、type、target、主Objective、Keyword Cluster、Action routeを変える指示はManual Intakeまたは新Recommendation versionへ分離する。
+- [ ] PT-REC-09: accepted DecisionとRecommendation Intakeが同時に存在し、どちらか片方だけのfixtureを拒否する。observe／protect／no_action等のdispatchではAgent Jobを作らず、正規Actionのexecution refを表示する。
 - [ ] PT-PATCH-01: CTA候補が記事目的、検索intent、CV Goal、CTA part、link先、月次／累積値を持ち、本文全文リライトやCTA専用Writing Ticketなしで承認・適用できる。
 - [ ] PT-PATCH-02: 内部link候補がリンク元、リンク先、対象part、重複・公開・canonical・カニバリ・保護検査を持ち、既存記事への追加は承認後、削除は別確認になる。
 - [ ] PT-PATCH-03: 一括承認したPatchの一部が失敗または競合しても、成功・失敗・再試行が候補単位で表示され、Batch全体を成功にしない。

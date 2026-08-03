@@ -15,6 +15,36 @@ L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメイン�
 
 分類別L1要求とL2集約を現行の意味正本とし、`REQ-AGENT-*`／`REQ-PACK-*`はTicket・Snapshot・Workflowの詳細契約、その他のv3.7 IDはLegacy Requirement Migration Mapに従う補助参照とする。旧IDだけを根拠にfield、enum、defaultを追加しない。
 
+## 0.0 Recommendation Presentation／Decision Contract
+
+内部候補、判断可能な提示、ユーザー／委任Policyの判断を分離し、`schema.recommendation.presentation.v1`と`schema.recommendation.decision.v1`を正本とする。
+
+```text
+schema.recommendation.presentation.v1 {
+  decision_eligibility_id, eligibility_version,
+  recommendation_id, recommendation_version, tenant_id, site_id,
+  source_report_ref, monthly_plan_ref?, weekly_selection_ref?,
+  availability_ref, reason_evidence_refs[], allowed_decisions[], adjustable_fields[],
+  available_surfaces[], presented_at, expires_at?, contract_hash
+}
+
+schema.recommendation.decision.v1 {
+  decision_id, decision_version, decision_eligibility_ref,
+  recommendation_id, recommendation_version, tenant_id, site_id,
+  result(accepted|accepted_with_edit|held|excluded),
+  decision_mode(manual|automatic), decided_by, delegation_policy_ref?,
+  edit_delta_ref?, intake_ref?, authorization_decision_ref,
+  decided_at, idempotency_key, correlation_id
+}
+```
+
+- `presented`はRecommendation versionが通常ビュー／OfficeのQueueへ判断可能な状態で公開されたDomain factであり、ブラウザ表示・click・既読eventではない。同じ`decision_eligibility_id + eligibility_version`を再表示しても採用率の分母を増やさない。
+- `accepted_with_edit`で変更できるのは`adjustable_fields`に宣言された品質、時期、実行枠、補足指示等に限る。Recommendation type、target、主Objective、Keyword Cluster、Action route等の意味境界を変える指示は同じRecommendationの採用として記録せず、provenance付きManual Intakeまたは新Recommendation versionへ分ける。
+- `accepted / accepted_with_edit`はfreeze済み`recommendation_intakes`の作成と同一transaction／transactional outboxで確定し、`intake_ref`を必須とする。`held / excluded`はIntakeを作らない。ユーザー判断の`held`と、接続・予算等の実行条件による`recommendation.held`を同じ事実へ潰さない。
+- 自動判断は`decision_mode=automatic`、Service actor、`delegation_policy_ref`を必須とし、人間の手動採用に見せない。手動／自動は同じ採用率定義で集計できるが、別系列を保持する。
+
+根拠: `REQ-BUS-05/07`、`REQ-LOGIC-03`、`REQ-KRL-08/09`、`REQ-MEASURE-13`、`REQ-SCREEN-09/18`。
+
 ## 0. Recommendation Intake Contract
 
 採用Recommendationから正規Actionへ渡すfreeze済み入力を`schema.intake.recommendation.v1`とする。ActionはAgent Workflowに限らず、軽量Patch、観測、保護Policy、Domain Command、ユーザー対応、終端を含む。画面、Office、Executorが独自に入力を再構築してはならない。

@@ -19,7 +19,7 @@ updated_at: 2026-08-03
 | 指標 | 算式・判定 | 主なデータ源 | 集計周期 | 除外・補足 |
 |---|---|---|---|---|
 | 運用Loop完了Site数（North Star） | 集計月内に `product.loop_completed` が1件以上あるdistinct `site_id` 数 | Recommendation version、採用event、`schema.publication.fact.v1`、`seo_content` Lane基準値・評価予定 | 月次。日次rolling値も内部表示 | 新規公開／実質本文更新の`ai_office_publication` Fact後、`seo_content` Laneへ評価基準値・`effective_at`起点・1/3/6カ月予定を登録して発火する。CTA・内部link・認知Laneは月次／累積で別管理し、同じ記事制作Loopを二重計上しない。GSC取得開始、下書き、予約、API受付、外部変更、帰属確認中、閲覧だけは除外。同一Siteの複数Loopは1 Siteとして数える |
-| Recommendation採用率 | `adopted` または `adopted_with_edit` となったRecommendation version数 ÷ 期間中にユーザー判断可能な状態で提示されたRecommendation version数 | Recommendation Queue、Decision Event | 週次・月次 | 提示前に失効・重複排除・自動取消されたversionは分母外。再計算versionは別versionとしてdecision eligibilityを持つ |
+| Recommendation採用率 | `recommendation.decision_recorded.result`が`accepted`または`accepted_with_edit`となったRecommendation version数 ÷ `recommendation.presented`でDecision Eligibilityを得たRecommendation version数 | Recommendation Portfolio、Decision Eligibility、Decision Event | 週次・月次 | Queueへ判断可能状態として公開した時点を提示とし、ブラウザ閲覧回数は使わない。同じversionの再表示は分母へ重複計上しない。提示前に失効・重複排除・自動取消されたversionは分母外。再計算versionは別version。手動／自動判断は同一定義で別系列も表示する |
 | アップセルevent | Plan Upgradeの支払・Entitlement反映完了件数と、追加credit購入の支払・Lot発行完了件数を別系列で計上 | Subscription、Payment、Entitlement、Credit Lot、append-only ledger | 日次・月次 | Preview、購入画面閲覧、決済失敗は除外。件数と金額を混ぜず双方を表示する |
 | 継続稼働率 | 月初時点でActivation済みかつ有効契約に属するSiteのうち、月内に強いsignalが1件以上あるdistinct Site数 ÷ 同条件のdistinct Site数 | Recommendation採用、Publication Fact、Monthly Plan確定event、Entitlement | 月次 | 強いsignalは採用、検証済み公開／更新反映、月次計画確定のみ。予約・API受付・外部変更・帰属確認中、閲覧、ログイン、通知既読、施策評価確認は除外。当月Activation Siteはcohort別に表示し翌月から通常分母へ入れる |
 
@@ -31,7 +31,7 @@ MRR、契約数、契約churnは運営側の経営指標である。ただし営
 |---|---|---|
 | ① Site設定完了 | `site.setup_completed` | 必須Site設定の保存・検証と`site_identified`が完了。CMS writeの成立は要求しない |
 | ② 対象CMS確認・接続診断完了 | `cms.connection_profile_verified` | 対象Site、Connection Profile、利用可能／不足Capabilityの診断結果がversion付きで確定。書込み可能を意味せず、`delivery_ready`はoperation別に判定する |
-| ③ 分析・Recommendation提示 | `site.first_recommendation_presented` | 初回分析結果から、内部候補ではなくユーザーが採否を判断できるRecommendation versionを1件以上表示 |
+| ③ 分析・Recommendation提示 | `site.first_recommendation_presented` | 初回分析結果から、内部候補ではなくユーザーが採否を判断できるRecommendation versionをQueueへ1件以上公開。ブラウザ閲覧は不要 |
 | ④ 初回公開／更新反映（Activation） | `site.activated` | 初回Recommendation採用に相関する`ai_office_publication` Factが記録された。予約、下書き、API受付、外部変更、帰属確認中は除外 |
 
 各段階の到達率、前段階からの転換率、到達時間、滞留理由をSite cohort別に集計する。②は接続先と診断結果の確定であり、書込み権限を含む一括の「接続済み」ではない。③到達後も、実行するCMS操作の`delivery_ready`が未成立なら成果生成を失敗扱いにせずDeliveryだけを保留する。③到達・④未到達を最優先改善ファネルとして管理Dashboardへ表示する。下書き保存や成果物downloadだけでは④へ到達しない。
