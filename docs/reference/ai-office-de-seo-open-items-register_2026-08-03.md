@@ -25,6 +25,7 @@
 | LB-05 | 顧客認可・Site境界の実強制 | API／worker／Agent／Automation負テスト | Authorization Decision Contract | 外部β前 |
 | LB-06 | CMS write／Media／Preview／RevisionのWP契約 | WP版・Editor別Contract Test、反映確認 | CMS Connection Profile | 投稿機能β前 |
 | LB-07 | Billing Ledger／reserve／commit／release／auto-chargeの整合 | 二重event、失敗、返金、照合fixture | Billing schema／Ledger | 有償Job開始前 |
+| LB-08 | 現行価格・契約・Plan構成・原価仮説に基づく財務モデル再生成 | 基準／保守caseの月次契約数、MRR、売上、原価、粗利、cash flow、churn、黒字転換を同一入力から再計算したversion付きmodelとreview記録 | 事業計画Financial Model。製品要求・Price Catalogの正本にはしない | 資金計画・販売目標の対外利用前 |
 
 ## 4. Design decision
 

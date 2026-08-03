@@ -255,8 +255,11 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-re
 assertIncludes("docs/design/ai-office-de-seo/L0-charter/ai-office-de-seo-business-requirements_v1.md", [
   "CMS下書き・投稿",
   "初期提供・主検証CMSはWordPress",
-  "現在のopen／resolved状態ではない",
+  "`Blocker / High / Medium`は2026-07-13に矛盾を発見した時点の影響度",
   "Open Items Register",
+  "BR-DEC-012 | Resolved | 解約時クレジット",
+  "BR-DEC-019 | Resolved | 予約額",
+  "BR-DEC-025 | Resolved | 請求方式",
 ]);
 assertIncludes("docs/reference/ai-office-de-seo-content-consistency-audit_2026-07-09.md", [
   "履歴スナップショット",
@@ -444,6 +447,11 @@ assertIncludes("docs/reference/ai-office-de-seo-artifact-alignment-ledger_2026-0
   "Keyword分析開始とCMS write Capabilityを分離",
   "acting principalを顧客本人へ書き換えない",
   "QA前のSemantic AssemblyとQA後のPresentation Assembly",
+  "真のLaunch blocker `LB-08`",
+]);
+assertIncludes("docs/reference/ai-office-de-seo-open-items-register_2026-08-03.md", [
+  "LB-08 | 現行価格・契約・Plan構成・原価仮説に基づく財務モデル再生成",
+  "製品要求・Price Catalogの正本にはしない",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-acceptance-trace_v3.7.md", [
   "同意→接続→サンプル学習→戦略入力→マップ→初回生成→承認公開",

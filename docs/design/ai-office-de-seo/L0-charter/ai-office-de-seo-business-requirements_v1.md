@@ -184,9 +184,9 @@ updated_at: 2026-08-03
 
 ## 12. 要相談・意思決定ログ
 
-本表の`優先度`は2026-07-13に矛盾を発見した時点の影響度であり、現在のopen／resolved状態ではない。§12.1で決定済みとした項目を現在のBlockerへ戻さない。現在も外部証拠、実測または追加判断が必要な項目と確定時期はOpen Items Register（`docs/reference/ai-office-de-seo-open-items-register_2026-08-03.md`）を全件正本とし、本表は入力事業計画の不一致記録として保持する。
+本表の`Blocker / High / Medium`は2026-07-13に矛盾を発見した時点の影響度、`Resolved`は後続要求へ判断を反映済みであることを表す。§12.1で決定済みとした項目を現在のBlockerへ戻さない。現在も外部証拠、実測または追加判断が必要な項目と確定時期はOpen Items Register（`docs/reference/ai-office-de-seo-open-items-register_2026-08-03.md`）を全件正本とし、本表は入力事業計画の不一致・解消記録として保持する。
 
-| ID | 優先度 | 論点 | 不一致／不足 | 決定が必要な内容 |
+| ID | 状態／発見時優先度 | 論点 | 不一致／不足または解消内容 | 現行の接続先／残作業 |
 |---|---|---|---|---|
 | BR-DEC-001 | Blocker | 財務モデルのチャーン | 1-4・注意事項は10%、前提条件表と顧客推移は概ね5%。 | 基準ケースと保守ケースを分けるか、正式値を一本化する。 |
 | BR-DEC-002 | Blocker | 36か月MRR | 1,050万円、1,200万円、1,550万円、約1,000万円の記載が混在。 | 予測、目標、ストレッチ目標を区分して確定する。 |
@@ -198,21 +198,21 @@ updated_at: 2026-08-03
 | BR-DEC-008 | High | Batch原価 | Claude Batch 50%OFF適用後と標準価格計算が混在。 | 基準ケースに割引を入れるか、上振れケースに標準価格を使うか決める。 |
 | BR-DEC-009 | Medium | 品質異常 | 合格率目標90%以上に対し緊急トリガー40%割れ。 | 警戒・重大・緊急の段階しきい値を確定する。 |
 | BR-DEC-010 | High | 初期費用内包 | コンサル型はツール初期構築費を含む一方、標準設定費等との関係が不明。 | 内包／無料化する費目と上限を確定する。 |
-| BR-DEC-011 | Blocker | 税・請求 | 全料金の税込／税別、請求通貨、端数処理が未記載。 | 契約・表示・請求の共通ルールを決める。 |
-| BR-DEC-012 | Blocker | 解約時クレジット | 未消費月額cr、追加cr、返金、失効日が未規定。 | 解約・契約満了・支払失敗ごとの扱いを決める。 |
-| BR-DEC-013 | High | プラン変更 | 適用日、日割り、繰越上限の再計算が未規定。 | アップ／ダウングレード規則を決める。 |
-| BR-DEC-014 | High | 割引併用 | 年契10%と早期20%の併用可否が未規定。 | 重複可否、優先順位、上限を決める。 |
-| BR-DEC-015 | High | クレジット消費順 | 古いcr優先のみで月額・追加・プロモ間の順序が不明。 | 消費・失効の優先順位を決める。 |
-| BR-DEC-016 | High | モデル名表示 | 事業計画は表示、REQ-BILL-08は非表示。 | 本書では既存の非表示方針を採用。変更する場合はL1改訂が必要。 |
+| BR-DEC-011 | Resolved | 税・請求 | 税別主表示と税込総額併記、JPY、端数処理を決定済み。 | `REQ-BILLING-01/02` とPrice Catalogを正本とする。 |
+| BR-DEC-012 | Resolved | 解約時クレジット | 月額付与・追加購入・返金候補・失効条件を決定済み。 | `REQ-BILLING-03/16` とCredit Lot Policyを正本とする。 |
+| BR-DEC-013 | Resolved | プラン変更 | Upgradeの計画適用・差額日割り、Downgradeの次回更新適用を決定済み。 | `REQ-BILLING-08/16`を正本とする。 |
+| BR-DEC-014 | Resolved | 割引併用 | 年契システム利用料10%割引を基準とし、他割引との併用可否をPrice Catalog versionで管理する。 | 販売versionごとの設定・表示・受入で確定する。 |
+| BR-DEC-015 | Resolved | クレジット消費順 | 失効期限が近いlot、同一期限では古い付与時刻を優先する。 | `REQ-BILLING-03`を正本とする。 |
+| BR-DEC-016 | Resolved | モデル名表示 | 一般ユーザーへProvider／model名を商品保証として表示せず、内部管理面だけが実routeと理由を扱う。 | `REQ-BILLING-04`、Provider Routingを正本とする。 |
 | BR-DEC-017 | High | 外部価格の鮮度 | 事業計画書のAPI・競合価格は2026年4月時点。 | 商用設定前に公式情報で再検証する。 |
 | BR-DEC-018 | Resolved | AIルーティング | Provider固定を廃止し、品質・Capability・原価・latency・health・契約条件からversion付きrouteを解決する。 | `REQ-TECH-10`、`REQ-COST-11`、`REQ-BILL-09`へ反映済み。 |
-| BR-DEC-019 | Blocker | 予約額 | 事業計画は商品係数見積を予約。REQ-BILL-06はPrompt Cache miss上限の予約を必須化。 | `max(商品見積, miss上限換算)` 等の決定論を確定する。 |
-| BR-DEC-020 | Blocker | 販売開始ゲート | Seed期はWP・GSC・課金を前提とするが、技術ロードマップではWPがPhase 4、StripeがPhase 5。 | 商用開始に必要なDU、日付、契約・品質・安全・サポート条件をCommercial Readiness Gateとして定義する。 |
+| BR-DEC-019 | Resolved | 予約額 | `max(商品見積, cache miss上限換算)`を予約額とする。 | Billing PreflightとCost Tableへ接続済み。実係数は原価較正対象。 |
+| BR-DEC-020 | Resolved | 販売開始ゲート | 商用開始に必要なCMS・GSC・課金・契約・品質・安全・サポート条件をCommercial Readiness Gateへ定義済み。 | 実装・試験証拠の未達はLaunch blockerとして別管理する。 |
 | BR-DEC-021 | Resolved | インフラ原価 | AWS前提で可観測性、復旧、負荷分離、段階拡張を設計し、単一VPS固定を現行前提にしない。 | `REQ-TECH-*`、`REQ-NFR-*`、AWS Operations／Recovery Mapへ反映済み。原価実数は構築後に計測する。 |
 | BR-DEC-022 | High | マーケティング表現 | 「コンサルの1/3以下」「完全自動・週0時間」は商品構成とfull_auto初期OFFに整合しない場合がある。 | 比較条件とAutopilot適用条件を限定し、根拠のある表現へ修正する。 |
 | BR-DEC-023 | Resolved | 追加スコープ | アイキャッチ画像基盤は初期、本文画像・AI可視性・追加CMS等は段階リリース、Feature Object／App Packageは拡張基盤、OEM・代理店横断管理・新規サイト構築は初期対象外とする。 | 分類別要求、画像／CMS接続マップ、技術要求へ反映済み。 |
-| BR-DEC-024 | High | Credit利用例 | M/L/XLは25/50/100記事で全crを使い切るため「記事＋分析」が成立しない。 | 記事本数、付与cr、基準crのいずれかを修正する。 |
-| BR-DEC-025 | Blocker | 請求方式 | 既存はStripeサブスク、事業計画CFは月末締め翌月末入金を前提とする。 | カード自動課金／invoice net-30、請求起算日、日割り、年払いを確定する。 |
+| BR-DEC-024 | Resolved | Credit利用例 | 固定M/L/XL記事例を現行商品から廃止し、品質別creditとPreflight見積で本数を算出する。 | `REQ-BILLING-04`、Plan Configurationを正本とする。 |
+| BR-DEC-025 | Resolved | 請求方式 | セルフ契約はStripe前払いを既定とし、Enterprise等の個別契約だけ請求書払いを許可する。 | 請求周期、支払方法、日割り、年払いをSubscriptionとPrice Catalog versionへ保持する。 |
 
 ### 12.1 2026-07-13 決定
 

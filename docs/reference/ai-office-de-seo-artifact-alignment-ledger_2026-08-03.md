@@ -65,6 +65,7 @@
 - 共通DDL／event／Office configに残っていた`wp_post_id`、`wp_capability_snapshots`、`wp_draft`、`wp_url`等をCMS共通ref／stateへ移し、WordPress固有値は初期Adapter extensionへ限定した。
 - Event EnvelopeとRepository Scope APIを顧客User、内部User、Service、AI Executor、期限付きManager代理へ追従させ、acting principalを顧客本人へ書き換えない契約、Site Assignment、業務Permission、authorization epochの負テストを追加した。
 - Agent Workflowの旧「Assembly」混在を、QA前のSemantic AssemblyとQA後のPresentation Assembly／装飾／アイキャッチ／CTA・内部link Placement／CMS送信へ分離した。既存13状態keyは互換維持し、工程11の内部phaseとEventで詳細進捗を表す。
+- L0の解約credit、Plan変更、割引、消費順、Provider表示、予約額、販売開始Gate、請求方式は後続要求へ反映済みとしてResolved化した。一方、現行価格・契約・原価仮説によるMRR／cash flow再生成物は存在しないため、要求追従漏れではなく真のLaunch blocker `LB-08` として分離した。
 
 ## 5. 主要決定の縦方向追従証拠
 
