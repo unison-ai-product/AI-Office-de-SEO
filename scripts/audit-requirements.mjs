@@ -556,6 +556,10 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "evaluation_lanes",
   "Search Performanceは観測Projectionを提供するだけ",
   "Recovery Backupの最長3か月と評価保持を同一TTLへ結合しない",
+  "site_readiness_states / site_readiness_transitions",
+  "scope_kind(site/analysis_version/article/operation)",
+  "重複boolean列を置かない",
+  "該当operationだけを失効させる",
   "共通table名・共通列・業務eventをWordPressへ固定しない",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md", [
@@ -570,6 +574,9 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-e
   "publication.job_verification_pending",
   "site.setup_completed | site_id",
   "site.readiness_changed | site_id",
+  "`content_read_ready`は`scope_kind=article`",
+  "`delivery_ready`は`scope_kind=operation`かつ`operation`必須",
+  "古いeventでcurrent projectionを巻き戻さない",
   "cms.connection_profile_verified | connection_profile_id",
   "site.first_recommendation_presented | site_id",
   "site.activated | activation_id",
@@ -582,6 +589,19 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-e
   "顧客本人へactorを書き換えない",
   "generation.stage_phase_entered",
   "generation.stage_phase_completed",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
+  "`content_read_ready`を記事単位",
+  "`delivery_ready`をoperation単位",
+  "保存された単一`connected` boolを正本にしない",
+  "Recommendation再生成やGeneration Outcome再生成を要求しない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [
+  "PT-CMS-07",
+  "delivery_ready.create_draft=ready",
+  "delivery_ready.update_post=held",
+  "PT-CMS-08",
+  "対象operationを副作用直前に再判定できる",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
   '"type": {"enum": ["user", "system", "agent"]}',

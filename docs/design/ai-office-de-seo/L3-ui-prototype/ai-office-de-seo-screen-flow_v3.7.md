@@ -355,6 +355,8 @@ flowchart TD
 
 各遷移は業務上の`transition_outcome`として `ready / processing / partially_available / awaiting_approval / held / failed_retryable / unavailable`を返し、表示可否は別の`schema.ui.availability.v1`を返す。Availabilityの画面状態は`blocked / degraded / preview / partial / pending / ready`へ固定し、`input_required / permission_denied / plan_locked / connection_required / data_insufficient / budget_or_credit_insufficient / consent_or_approval_required`等は`reasons[].class/code`として保持する。画面はClient側で状態を再計算せず、Server判定のprimary reason、全理由、解消操作、復帰先を表示する。入力・接続不足を機能全体の利用不可へ拡大せず、成立している閲覧、分析、生成、持ち出しを継続する。
 
+Site導入・接続画面は、`site_identified`をSite単位、`analysis_ready`を分析version単位、`content_read_ready`を記事単位、`delivery_ready`をoperation単位で受け取る。画面用の「準備完了率」はこれらのProjectionから導出する表示値に限り、保存された単一`connected` boolを正本にしない。Article Read Snapshot失効、credential失効、Capability／Permission変更を受けた場合は、影響scopeだけを`held`または`unavailable`へ変更し、理由、解消操作、元のRecommendation／Taskへの`return_context`を表示する。再接続後は同じID／version／correlationを保って再判定し、Recommendation再生成やGeneration Outcome再生成を要求しない。
+
 遷移Contextには `tenant_id`、`site_id`、`source_screen`、`source_tab`、`source_filter`、対象ID、対象version、`correlation_id` を含める。通知、Dashboard、Office、Task Historyから遷移しても同一Contextを復元し、別Siteまたは旧versionへ黙って移動しない。
 
 ## 9. 検証規約

@@ -2,7 +2,7 @@
 document_id: AOS-L3-GATE-A1-EVENT-ENVELOPE
 title: Gate A-1 イベント共通エンベロープ v1
 layer: L3
-version: 1.6
+version: 1.7
 kind: contract
 status: current-draft
 updated_at: 2026-08-03
@@ -137,7 +137,7 @@ updated_at: 2026-08-03
 | evaluation.intervention_completed | evaluation_id, intervention_ref, article_ref, window, outcome, next_action? | W,N,O | REQ-LOGIC-06/08, REQ-DATA-07 |
 | evaluation.intervention_registered | evaluation_id, intervention_ref, publication_fact_ref, lane_id, lane_type(seo_content/cta_cv/internal_link/awareness), evaluation_origin_at, cadence, checkpoints_or_windows[], baseline_ref, correlation_id | W,O,A | REQ-MEASURE-13/14 |
 | site.setup_completed | site_id, site_mode, site_profile_version, site_identified_evidence_ref, completed_at | W,N,O,A | REQ-BUS-02, REQ-MEASURE-13 |
-| site.readiness_changed | site_id, readiness_key(site_identified/analysis_ready/content_read_ready/delivery_ready), scope_ref?, operation?, before_state, after_state, evidence_ref?, reason_codes[], readiness_version | W,N,O,A | REQ-BUS-02, REQ-INT-05/09 |
+| site.readiness_changed | site_id, readiness_key(site_identified/analysis_ready/content_read_ready/delivery_ready), scope_kind, scope_ref, operation?, before_state, after_state, evidence_ref?, source_version, valid_until?, reason_codes[], return_context_ref?, readiness_version | W,N,O,A | REQ-BUS-02, REQ-INT-05/09 |
 | cms.connection_profile_verified | connection_profile_id, version, site_identity_ref, diagnostic_ref, available_capabilities[], missing_capabilities[], verified_at | W,N,O,A | REQ-INT-05/06/09, REQ-MEASURE-13 |
 | site.first_recommendation_presented | site_id, recommendation_id, version, source_report_ref, decision_eligibility_ref, presented_at | W,O,A | REQ-BUS-05/06, REQ-MEASURE-13 |
 | site.activated | activation_id, site_id, recommendation_ref, publication_fact_ref, activated_at, funnel_version | W,O,A | REQ-MEASURE-13 |
@@ -264,6 +264,8 @@ updated_at: 2026-08-03
 
 監査対象イベント（A印）の正本は監査ログであり、イベント・通知はその写像（REQ-SEC-10 / REQ-PRODUCT-11）。モックイベント（プロトPT-0）は本カタログと同形で作成する。
 
+`site.readiness_changed`のscopeは条件付き必須とする。`site_identified`は`scope_kind=site`、`analysis_ready`は`scope_kind=analysis_version`、`content_read_ready`は`scope_kind=article`、`delivery_ready`は`scope_kind=operation`かつ`operation`必須である。Producerは同一event IDの再送を冪等に扱い、Consumerは`readiness_version`の古いeventでcurrent projectionを巻き戻さない。失効eventは過去成果を削除せず、影響scopeの新規操作を保留し、`return_context_ref`から再開する。
+
 v1.1改訂: 通知カタログ（REQ-PRODUCT-11）との突合で4種追加（approval_requested / webhook_failed / reconciliation_mismatch / cache_hit_floor_breached）。凍結規則どおりevent_type追加はminorでありエンベロープ・既存typeは不変。
 
 v1.2改訂: 運営お知らせのイベント投入（REQ-PRODUCT-16のイベント由来原則との整合）で `platform.announcement_published` を追加（minor）。エンベロープ・既存typeは不変。
@@ -273,5 +275,7 @@ v1.4改訂: Pack版のゴールデン評価・活性化後監視（REQ-ADM-10拡
 v1.5改訂: 現行SEO業務Lifecycleへの追随として、Site構築・段階開放・big keyword確認、月次計画・週次選択、公開判定、公開更新、1／3／6か月評価のevent typeを追加した。Envelopeと既存typeは変更しない。
 
 v1.6改訂: 13状態の互換keyを維持したまま、`cms_draft`状態内のAssembly／装飾／アイキャッチ／Placement／CMS検証・送信をAgent OfficeとTask Historyで識別するため、stage phase開始・完了eventを追加した。phaseは独立Workflow stateではなく、親stageを飛び越える遷移には使用しない。
+
+v1.7改訂: Site導入の4段階Capabilityをscope付きmilestone／change eventとして追加し、Connection Profile確認、記事読取、operation別write readiness、Activationを別事実として再構築可能にした。
 
 v1.3改訂（表記正規化・型不変）: カタログを **1 event_type = 1行** へ正規化した。旧版の複合行（例: `generation.gate_passed / gate_held`）は複数typeの省略表記であり、機械照合の契約としてregex `^[a-z]+\.[a-z_]+$` に行単位で適合しなかったため分割した。event_typeの集合・エンベロープ・payload意味論は不変（新規type追加なし）。分割時、旧複合行で共有されていた消費印・根拠は各行へ引き継ぎ、区別があったもの（N(held)/N(hard)等）は当該行にのみ付した。

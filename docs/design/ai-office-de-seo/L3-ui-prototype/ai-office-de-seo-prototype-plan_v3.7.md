@@ -85,6 +85,8 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-CMS-04: primary障害時に内部failoverしてもwrite permissionが変化せず、全経路不成立時だけ必要なユーザー操作を表示する。
 - [ ] PT-CMS-05: 下書き／PatchのAPI成功と反映確認を分け、verification失敗を成功表示しない。
 - [ ] PT-CMS-06: Block、Classic、Content-Only、検証済みBuilder、未知Builderで、利用可能、一部制限、更新必要、未対応と縮退候補が変わる。
+- [ ] PT-CMS-07: 同一Siteで`analysis_ready=ready`、対象記事Aの`content_read_ready=ready`、対象記事Bの`content_read_ready=unavailable`、`delivery_ready.create_draft=ready`、`delivery_ready.update_post=held`を同時に再現し、単一の接続済み表示へ潰さず、可能な分析・新規下書きだけを継続できる。
+- [ ] PT-CMS-08: credential、Article Read Snapshot、CapabilityまたはPermissionの失効で影響scopeだけが保留され、再接続・再取得後に元のRecommendation／Task Contextへ戻る。既存Report、Recommendation、Generation Outcomeを作り直さず、対象operationを副作用直前に再判定できる。
 - [ ] PT-MIG-01: 顧客画面に旧価格68,000／128,000／298,000円、Prime表記、Credit Pack S/M/L/XL、繰越150%、追加credit 3か月を現行値として表示しない。
 - [ ] PT-MIG-02: 顧客画面とfixtureが現行のEntry 39,800円、Standard 98,000円、Premium 198,000円、Enterprise 398,000円〜、税込併記、月／年契約条件、追加credit180日をPrice Catalogから表示する。
 - [ ] PT-MIG-03: 顧客認可にOwner／Admin／Editor／Viewerを正本として使用せず、契約者／サイトオーナー／ユーザー、業務Permission、Site付与から判定する。

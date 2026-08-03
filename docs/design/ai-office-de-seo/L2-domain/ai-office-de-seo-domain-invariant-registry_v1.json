@@ -69,7 +69,8 @@
             "(?:delivery_ready|CMS write未成立).{0,40}(?:CMS送信|下書き送信).{0,20}(?:実行する|可能)",
             "content_read_ready.{0,50}(?:Site全体|全記事).{0,20}(?:共通|一括)(?:bool|許可)",
             "delivery_ready.{0,50}(?:Site全体|全operation|全操作).{0,20}(?:共通|一括)(?:bool|許可)",
-            "(?:connection_profile_verified|Connection Profile確認済み|CMS接続完了).{0,20}(?:なら|なので|をもって).{0,20}(?:書込み可能とする|投稿可能とする|公開可能とする)"
+            "(?:connection_profile_verified|Connection Profile確認済み|CMS接続完了).{0,20}(?:なら|なので|をもって).{0,20}(?:書込み可能とする|投稿可能とする|公開可能とする)",
+            "(?:credential|認証|権限|Capability).{0,30}(?:失効|切断|変更).{0,30}(?:全分析|全Recommendation|Site全体).{0,20}(?:削除|停止|再生成)"
           ],
           "bad_fixtures": [
             "REST API接続を市場探索とRecommendationの必須条件とする。",
@@ -77,13 +78,15 @@
             "delivery_ready未成立でもCMS送信を実行する。",
             "content_read_readyをSite全体の共通boolとして全記事のリライトを許可する。",
             "delivery_readyをSite全体の共通boolとして全operationを許可する。",
-            "Connection Profile確認済みなら投稿可能とする。"
+            "Connection Profile確認済みなら投稿可能とする。",
+            "認証失効時はSite全体の全Recommendationを削除して再生成する。"
           ],
           "good_fixtures": [
             "新規記事Recommendationはanalysis_ready、リライトはcontent_read_ready、CMS送信はdelivery_readyを要求する。",
             "CMS write未成立でも分析を継続し、Deliveryだけを保留する。",
             "content_read_readyは対象記事scope、delivery_readyは対象operation scopeで副作用直前に再検証する。",
-            "Connection Profile確認済みでも不足Capabilityを表示し、投稿可能とは判定しない。"
+            "Connection Profile確認済みでも不足Capabilityを表示し、投稿可能とは判定しない。",
+            "credential失効時は影響operationだけを保留し、再接続後に元Taskへ復帰する。"
           ]
         }
       ]
