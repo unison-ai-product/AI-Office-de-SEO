@@ -748,6 +748,17 @@ if (
 ) {
   fail(errors, "manifest.user_navigation: does not match current REQ-NAV-01 labels");
 }
+const screenInventoryPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md",
+);
+const screenInventory = fs.readFileSync(screenInventoryPath, "utf8");
+if (!/## 1\. 旧詳細コンポーネント棚卸し（互換baseline・現行責務の正本ではない）/.test(screenInventory)) {
+  fail(errors, "screen inventory: legacy detailed component table lacks a noncanonical boundary");
+}
+if (/責務の所属は§1の各行を正とし/.test(screenInventory)) {
+  fail(errors, "screen inventory: current tab register still delegates responsibility to the legacy table");
+}
 
 const l3DecisionPath = path.join(
   repoRoot,
