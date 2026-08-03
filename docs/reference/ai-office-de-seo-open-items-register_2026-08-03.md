@@ -96,7 +96,7 @@ L3 Decision Tableの項目を次の分類へ必ず接続する。本表にない
 |---|---|---|
 | D-01 | DD-01の前提 | Config契約は決定済み、migration実装待ち |
 | D-02 | DD-02 | Workflow契約決定済み、機械可読artifact・試験待ち |
-| D-03 | LB-05 | 顧客認可を全実行経路で強制する実装方式 |
+| D-03 | LB-05 | 認可Decision契約はGate A-2で決定済み。全実行経路への実装と負テスト証拠がLaunch blocker |
 | D-04 | DD-03 | Source Extract契約決定済み、schema file・fixture試験待ち |
 | D-05 | DD-04 | 日本語形態素解析・辞書version |
 | D-06 | OC-01／OC-05 | Provider互換Routing、初期Model Registry、原価実数 |

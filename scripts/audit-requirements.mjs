@@ -721,6 +721,18 @@ for (const requiredPhrase of [
     fail(errors, `screen flow: current transition phrase missing: ${requiredPhrase}`);
   }
 }
+
+const l3DecisionPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-l3-decision-table_v3.7.md",
+);
+const l3Decision = fs.readFileSync(l3DecisionPath, "utf8");
+if (/\| D-03 \|[^\r\n]+\| open \|/.test(l3Decision)) {
+  fail(errors, "L3 decision D-03: authorization contract is decided and must not be tracked as open");
+}
+if (!/\| D-03 \|[^\r\n]+contract decided[^\r\n]+LB-05/.test(l3Decision)) {
+  fail(errors, "L3 decision D-03: contract decision and remaining LB-05 evidence are not separated");
+}
 const layerPlanChecks = [
   ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],

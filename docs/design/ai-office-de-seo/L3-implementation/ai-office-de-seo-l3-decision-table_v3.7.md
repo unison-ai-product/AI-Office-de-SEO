@@ -19,7 +19,7 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 |---|---|---|---|---|---|---|
 | D-01 | config_key命名規約、型、許可scope、allowlist強制 | GateB B-1 | REQ-ADM-09 | TL（アーキテクト） | フェーズ0着手前 | decided（Config Registry §1、Data DDL §7。migration実装待ち） |
 | D-02 | new_article_workflow 13状態のLayer A instance | GateB B-2 | REQ-AGENT-09, REQ-PACK-11.6 | TL（エージェント基盤） | フェーズ2着手前 | contract decided（状態・gate・格納契約確定。機械可読JSON artifact／test待ち） |
-| D-03 | 認可判定APIの実装形（基本権限`契約者/サイトオーナー/ユーザー`＋業務Permission＋Site Assignment＋内部Role分離を、Repository/API/worker/Agent tool/UI Availabilityへ同じPolicyで強制する方式） | GateB B-3 | REQ-ORG-03〜07, REQ-ACCESS-14〜18, Authorization Operation Matrix | TL（アーキテクト） | フェーズ0〜1 | open |
+| D-03 | 認可判定APIの実装形（基本権限`契約者/サイトオーナー/ユーザー`＋業務Permission＋Site Assignment＋内部Role分離を、Repository/API/worker/Agent tool/UI Availabilityへ同じPolicyで強制する方式） | GateB B-3 | REQ-ORG-03〜07, REQ-ACCESS-14〜18, Authorization Operation Matrix | TL（アーキテクト） | フェーズ0〜1 | contract decided（Gate A-2で`resolveCustomerScope`／`resolveDelegatedScope`／`resolveSiteScope`／`authorize`／`createSandbox`、Session分離、RLS併用、負テスト契約を確定。実装・負テスト証拠はLB-05） |
 | D-04 | Source Extract JSON Schema第一陣（keyword.map / gsc.query_group / assignment / page_query_matrix / snapshot.qa） | GateB B-4 | REQ-PACK-07 | TL（データ契約） | PT-1/DU-04着手前 | contract decided（共通欠損・availability・主要payload確定。JSON Schema file／fixture test待ち） |
 | D-05 | 形態素解析エンジン選定（決定論・辞書versionの持ち方） | GateB B-5 | REQ-KGA-15 | TL（検索基盤） | マッチカスケード実装前 | open |
 | D-06 | Provider非依存Routingの初期Model Registry・Cost Table実数（OpenAI／Anthropicを含む検証済みroute、将来のKimi／Grok／Qwen／local互換、Batch割引・cache乗数・fallbackをversion化） | GateC | REQ-TECH-10, REQ-COST-11, REQ-BILLING-04/09 | PO＋TL（プロバイダ） | 商用化前 | open |

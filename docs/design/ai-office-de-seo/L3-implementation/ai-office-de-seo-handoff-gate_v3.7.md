@@ -31,7 +31,7 @@ L2以降を画面設計と実装へ渡す前に、**先に確定しないと手�
 |---|---|---|---|---|
 | B-1 | config_key 命名規約 | `kga.match.*` 等は例示済み。namespace規約（domain.feature.param）・型・スコープ表現を正式化。ADM-S7画面と全較正コードが依存 | REQ-ADM-09, CONFIG-DEFAULTS | Code / Design(ADM-S7) |
 | B-2 | 状態機械の機械可読インスタンス | `new_article_workflow` 13状態（9工程＋4ゲート）を workflow型JSON（`REQ-PACK-11.6`）の具体1本として確定。Layer A格納形式・W5表示・モックイベント系列の正本 | REQ-AGENT-09 | Code / Design(W5) |
-| B-3 | 認可判定のAPI形 | 基本権限`契約者/サイトオーナー/ユーザー`＋4業務Permission＋Site Assignment＋内部Role分離を、Repository/API/worker/Agent tool/画面Availabilityへ同じPolicyで返す関数シグネチャ | REQ-ORG-03〜07, REQ-ACCESS-14〜18, Authorization Operation Matrix | 実装 / 画面設計 |
+| B-3 | 認可判定のAPI形 | **契約決定済み**。Gate A-2の`resolveCustomerScope`／`resolveDelegatedScope`／`resolveSiteScope`／`authorize`／`createSandbox`を唯一の境界とし、基本権限`契約者/サイトオーナー/ユーザー`＋4業務Permission＋Site Assignment＋内部Role分離を、Repository/API/worker/Agent tool/画面Availabilityへ同じDecisionで強制する。実装と負テスト証拠はLB-05 | REQ-ORG-03〜07, REQ-ACCESS-14〜18, Authorization Operation Matrix, Gate A-2 | 実装 / 画面設計 |
 | B-4 | Source Extract JSON Schemaの第一陣 | プロトP0画面が使う分を先行確定: `source.keyword.map.v1`（attributes込み）/ `source.gsc.query_group.v1`（match込み）/ `source.keyword.assignment.v1` / `source.gsc.page_query_matrix.v1` / `schema.snapshot.qa.v1`。残りは画面到達順で | REQ-PACK-07 | Design(モック) / Code |
 | B-5 | 形態素解析エンジン選定 | KGA-15 exact段の正規化（分かち書き・助詞除去）の実装選定（MeCab系等・決定論）。辞書versionの持ち方に影響 | REQ-KGA-15 | Code |
 | B-6 | AWS初期配置・復旧ADR | AWS Operations Recovery Map v1の論理境界を維持してcompute、DB、queue、cache、Multi-AZ、backup隔離先、SLO、障害注入・復元演習方法を負荷・人数・費用から確定する。製品選定前でもcorrelation、bulkhead、circuit、Runbook、RPO/RTOの契約は変更しない | REQ-NFR-06〜08/14/15, REQ-TECH-19 | Code / Operations |
