@@ -76,8 +76,10 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 |---|---|---|
 | Workflow | ステージ・遷移・ループ・停止条件を定義する実行手順（版固定） | REQ-AGENT-06 |
 | State Machine / 工程 | Workflowの遷移図。13状態（実務工程9＋強制ゲート4、Intake→…→Cleanup）を強制 | REQ-AGENT-09 |
-| Executor | WorkflowからTicketを受け、意味判断・生成・検査を行う内部実行役（Planning/Writing/QA/Repair/Automation）。Officeペルソナと同義にしない | REQ-AGENT-01 |
+| Semantic Executor | WorkflowからTicketを受け、LLMを利用して意味判断・生成・意味検査を行う内部実行責務（Planning/Writing/QA/Repair）。Officeペルソナや常駐する人格と同義にしない | REQ-AGENT-01 |
+| Action Executor | Ticket／Commandを受け、許可Toolによる外部副作用を実行する責務。Automation Executorは原則として決定論で動作し、LLMへ公開判断を委ねない | REQ-AGENT-01/06 |
 | Officeペルソナ | Agent Officeでユーザーが話しかける担当窓口。Service、Proposal、Executor、Toolへ接続するが独立runtimeとは限らない | REQ-AOUI-03/04 |
+| Office Conversation Runtime | 全Officeペルソナが共有し、persona別Role ProfileとPermissionを解決して、回答・型付きProposal・Ticket候補を生成する会話実行基盤。業務正本を直接更新しない | Agent Requirements Map §3.0/§6 |
 | Orchestrator | Workflow工程、Ticket、Snapshot、停止・再開を調停する内部制御。Officeのplannerとは別物 | REQ-AGENT-01/06 |
 | Session Summary | Officeペルソナとの1会話セッションを圧縮した文脈復元用要約。業務設定・知識・実行状態の正本ではない | Agent Requirements Map §7.1 |
 | Ticket | 作業命令。本文を内包せずキー（workflow/prompt/source/schema）のみ発行 | REQ-PACK-01 / REQ-PACK-03 |

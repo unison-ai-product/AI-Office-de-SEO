@@ -283,7 +283,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-RWR-01: リライトのdefaultがrewrite_patchで、パッチはEdit Plan宣言のsection_id内に限定され、未変更セクションのhashが維持される。 ｜ 検証: REQ-RWR-01, REQ-RWR-03
 - [ ] AC-RWR-02: 既存本文は一時workspaceのみ・承認/期限切れで削除され、品質ゲートが表崩れ・CTA破壊・WPブロック破壊・境界外参照をfail-closeで検出する。 ｜ 検証: REQ-RWR-02, REQ-RWR-05
 - [ ] AC-AOUI-01: Standard SaaSとAgent Officeが同一の詳細・API・状態を共有する体験レイヤーとして分離され、第一階層7画面に内部用語を出さない。 ｜ 検証: REQ-AOUI-01, REQ-AOUI-02
-- [ ] AC-AOUI-02: 全ペルソナ（基本12＋拡張1=technical_seo、以降のconfig追加分を含む）が内部Executor/工程（REQ-AGENT-09）へマッピングされ、活動可視化が状態機械の現工程を反映する。 ｜ 検証: REQ-AOUI-03, REQ-AOUI-04, REQ-AOUI-07
+- [ ] AC-AOUI-02: 全ペルソナ（基本12＋拡張1=technical_seo、以降のconfig追加分を含む）が担当Service、会話能力、Proposal型、および必要な場合だけ内部Executor／工程（REQ-AGENT-09）へマッピングされ、実行中Taskの活動可視化が状態機械の現工程を反映する。 ｜ 検証: REQ-AOUI-03, REQ-AOUI-04, REQ-AOUI-07
 - [ ] AC-AOUI-03: 各画面が探索軸とおすすめ軸の2軸を持ち、行動ログを保存せずsaved_views/feedbackのみ最小保存する。 ｜ 検証: REQ-AOUI-05
 - [ ] AC-ADM-01: 開発管理者コンソールがユーザー画面と分離され、APIキー原文・secret・master keyを表示せず、手動クレジット操作・provider変更を監査ログに残す。 ｜ 検証: REQ-ADM-01, REQ-ADM-03, REQ-ADM-05
 - [ ] AC-BILL-04: クレジット台帳がappend-onlyでreserve/commit/release/expire等を持ち、同一Stripe eventで二重付与しない。 ｜ 検証: REQ-BILL-07

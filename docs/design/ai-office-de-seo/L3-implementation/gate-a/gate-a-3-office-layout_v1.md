@@ -34,6 +34,7 @@ Agent Officeの部屋・フロア・ペルソナをconfig駆動で描画する�
 - `asset_confidence`: "confirmed" | "provisional"。provisionalは差し替え前提（ASSET-MAPPING準拠）。
 - `mapping.stages` はREQ-AGENT-09の状態ID。キャラ状態はイベント（gate-a-1）の stage_entered/gate_* から導出し、手書きアニメ禁止（PT-E）。
 - `mapping.service_keys` はペルソナが読取・説明・探索・Task化へ接続する決定論Service／業務Service、`interaction_capabilities` は顧客へ提供する会話能力、`proposal_types` は会話から作成できる型付き変更案である。これらはペルソナを専用runtimeへ固定する識別子ではない。`executors/stages` が空でもService能力を持てるが、全4集合が空の飾りキャラクターは禁止する。
+- `interaction_capabilities` は全ペルソナ共通のOffice Conversation Runtimeが解決する。各personaのconfigはRole Profileと許可能力を示すだけで、persona数だけLLM instance、modelまたは独立processを生成しない。会話からの変更は`proposal_types`に列挙された型へ変換し、認可済みCommandを経ずに状態を更新しない。
 - ペルソナは工程表示だけではなく担当業務の継続的窓口である。質問・説明・探索はServiceへ、状態変更はProposal→共通Commandへ、生成・検査・配置は既存Executor／Workflowへ接続する。Office configに表示名だけを登録して機能を別コードへハードコードしない。
 - 追加・改名・並替はJSON変更のみで完結し、コード変更を要さない（AC-AOUI-07の検証対象）。
 - v1.1追補（任意フィールド=minor規則内）: `rooms[].holo{ type: chips|bars|doc|flow|books|toggles|net, title }`（部屋のホログラム表示タイプ。プロト実装からの収穫。未指定時は既定表示）。

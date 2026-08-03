@@ -122,7 +122,7 @@ namespace対応:
 
 ## 6. データ取得はPack経由（直テーブル禁止・site_id分離・JSON出力）  ［REQ-PACK-06］
 
-Executor（エージェント）は、アプリDBのテーブルへ直接アクセスしない。必要なデータは Source Need を発行し、Source Pack が解決して Source Extract を **JSON** で返す、Pack経由でのみ受け取る。
+Semantic／Hybrid Executorは、アプリDBのテーブルへ直接アクセスしない。必要なデータは Source Need を発行し、Source Pack が解決して Source Extract を **JSON** で返す、Pack経由でのみ受け取る。Action Executorも業務テーブルを直接参照せず、認可済みCommand／Tool契約だけを利用する。
 
 - 直テーブル・生SQL・生クエリ結果をExecutorへ渡さない。Executorが扱うのはPack由来のJSONだけである。
 - 内部データ（GSC Data Mart、Keyword Map、Article Map、記事digest、カバー率、Query Drift等）も、外部情報源（SERP/PAA/AIO/News/YouTube等）も、すべて Source Pack として抽象化し、JSONで受け取る。

@@ -144,7 +144,7 @@ DBは検索・業務判断・実行状態の正本であり、取得したもの
 - 多層防御: アプリ層のスコープ強制に加え、可能な範囲でDBの行レベルセキュリティ（RLS）等をdefense-in-depthとして併用する。
 - キャッシュ・資産分離: **テナント由来データを含む**キャッシュ（Layer B/C相当のPrompt Cache、GSC・記事・方針データのキャッシュ等）は、キーに `tenant_id` / `site_id` を必須とし、テナント間の共有・汚染・漏洩を防ぐ。一方、**テナントデータを含まない共有物**——公共キーワード資産、公共外部観測キャッシュ（SERP/AIO/PAA/News。キーワード×ロケール×プロバイダがキー、`REQ-SRC-06`/`REQ-SRC-08`/`REQ-PRODUCT-13`）と、設計上テナント情報を含まないLayer Aグローバルプレフィックス（`REQ-AGENT-03`）——はテナント横断で共有してよい。共有可の条件は「公共外部データとして取得元と再利用条件を確認でき、テナントデータを含まないこと」であり、provenance契約とcache prefix hygiene等の契約検証（`REQ-SEC-13`）で保証する。共有物への書き込みは認可されたシステム側取得・集約パイプラインに限定し、テナント別のアクセスログはテナントスコープで記録する。
 - 非DB資産の分離: キュー、ジョブ、オブジェクトストレージ、一時本文領域、ログも識別子スコープで分離する。
-- Executorのデータ経路: Executor（エージェント）はテーブルへ直接アクセスせず、site_idスコープで解決するSource Pack経由でJSONを受け取る（`REQ-PACK-06`）。Packが単一強制ポイントと一致し、Executorからの直接クエリ・越境を構造的に不可能にする。
+- Executorのデータ経路: Semantic／Hybrid Executorはテーブルへ直接アクセスせず、site_idスコープで解決するSource Pack経由でJSONを受け取る（`REQ-PACK-06`）。Action Executorは認可済みCommand／Tool契約だけを利用する。Office Conversation Runtimeも同じSiteSandboxContextと許可Serviceを通し、会話から直接DBへ接続しない。
 - 越境試行の扱い: 別テナント・別サイトの識別子を指すアクセスはfail-closeし、監査ログに残す。
 - 負のテスト: 越境が起きないことを、越境を試みて失敗することの受入テストで検証する（`REQ-SEC-05`）。
 

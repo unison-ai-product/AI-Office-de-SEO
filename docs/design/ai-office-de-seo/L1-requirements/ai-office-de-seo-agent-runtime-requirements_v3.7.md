@@ -23,18 +23,22 @@ Agent関連変更の横断責務、既存Pack／Ticketへの接続、追加前�
 
 ただし、専門エージェントを大量に作らない。専門性は、Pack、Ticket Workflow、Source Extract、Schemaに寄せる。実行役は少数のExecutorにする。
 
-Executor:
+実行責務は次の6名称で分ける。ただし、これはLLM Agentの個体数、model数、常駐process数またはOfficeペルソナ数を表す一覧ではない。
 
-- Orchestrator
-- Planning Executor
-- Writing Executor
-- QA Executor
-- Repair Executor
-- Automation Executor
+| 実行責務 | 種別 | LLM境界 |
+|---|---|---|
+| Orchestrator | Workflow調停 | 状態遷移、Ticket発行、dedupe、停止・再開は決定論で行い、意味判断を自身へ持ち込まない |
+| Planning Executor | Semantic Executor | Research、構成、計画等、意味判断が必要なTicketでLLMを利用できる |
+| Writing Executor | Semantic Executor | Meaning Unit生成等、文章生成が必要なTicketでLLMを利用する |
+| QA Executor | Hybrid Executor | 決定論Gateを先行し、主張・根拠・整合性等の意味検査だけLLMを利用できる |
+| Repair Executor | Semantic Executor | QA issueで指定された範囲の修正にLLMを利用する |
+| Automation Executor | Action Executor | CMS command、配置、予約、公開・計測eventをToolで実行し、意味判断が必要な場合はPlanning／QA等へ別Ticketを返す。Automation自体へLLMを常設しない |
+
+`Executor`という共通接尾辞はTicket／Snapshot契約へ参加する実行責務を示すものであり、全責務が同じ実装方式またはLLM呼出しを持つことを意味しない。API型LLMを利用する場合も常駐する「個体」を作らず、TicketごとにProvider Routingでmodelを解決する。同じExecutor種別を複数Ticketが並列利用できるため、実行時呼出し数を設計上のAgent体数として固定しない。
 
 Snapshotの受け取りと次工程判断はOrchestratorが担う。各ExecutorはSnapshotをTicketの`returnTo`（既定はOrchestrator）へ返し、Orchestratorが次ステージへの遷移・再ディスパッチ・保留・エスカレーションを決める。ループ停止ガード到達やハード失敗（LLMエラー・タイムアウト・スキーマ検証連続失敗）の場合も、未達理由付きSnapshotをOrchestratorへ返し、Orchestratorが対応する。失敗の既定は、部分成果を破棄せずSnapshotに残し、公開・確定へ進めず保留にすることとする。
 
-LLMによる判定は、原則としてこのエージェントシステム内（Executor）に限定する。一般システム（ダッシュボード、リライト候補抽出、カバー率・カニバリ・Query Drift判定、集約、分散バッチ）はすべて機械（決定論的）判定で行い、LLMを使わない（`REQ-KGA-08`）。
+LLMによる生成・意味判定は、原則としてSemantic／Hybrid Executorまたは後述のOffice Conversation Runtime内に限定する。一般システム（ダッシュボード、リライト候補抽出、カバー率・カニバリ・Query Drift判定、集約、分散バッチ）はすべて機械（決定論的）判定で行い、LLMを使わない（`REQ-KGA-08`）。Conversation Runtimeは決定論Serviceの計算結果を変更せず、説明、入力解釈、型付きProposal／Ticket候補への変換だけを担う。
 
 ## 2. ステージ  ［REQ-AGENT-02］
 

@@ -47,8 +47,10 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 | 用語 | 指すもの | 例 | 指さないもの |
 |---|---|---|---|
 | Officeペルソナ | ユーザーがOfficeで話しかける担当窓口 | planner、keyword_researcher、content_writer | 独立process、LLM model |
-| Executor | WorkflowからTicketを受けて意味判断・生成・検査する内部実行役 | Planning、Writing、QA、Repair、Automation Executor | Officeのキャラクター |
+| Office Conversation Runtime | 選択中のペルソナ、Site、画面文脈、Permissionを受け、質問回答または型付きProposal／Ticket候補へ変換する共通会話実行基盤 | plannerへの月次方針相談、qa_checkerへの指摘理由確認 | ペルソナごとの常駐LLM、業務正本 |
+| Semantic Executor | WorkflowからTicketを受けて意味判断・生成・意味検査を行う内部実行役 | Planning、Writing、QA、Repair Executor | Officeのキャラクター、常駐する人格 |
 | Orchestrator | Workflowの工程・Ticket・停止・再開を制御する実行調停 | new article workflowの進行 | ユーザー向けプランナー |
+| Action Executor | Ticket／Commandを受け、許可Toolによる外部副作用を実行する内部実行役 | Automation Executor | LLMによる公開判断、Officeの自律人格 |
 | 決定論Service | 収集、集計、分類、score、権限、課金、状態遷移を行う機械処理 | Keyword service、Capacity resolver | LLM会話 |
 | Automation Job | schedule／policyに従う非同期実行 | CMS送信、差分同期、月次再計算 | 自律人格 |
 | Support Chat | FAQ、診断、問い合わせの会話 | support_agentの窓口 | SEO戦略や記事生成Workflow全体 |
@@ -69,16 +71,16 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 
 ### 3.2 Executor
 
-実行役は次の少数Executorへ固定する。SEO機能、Officeのキャラクタ、商品Packごとに専用Executorを増やさない。
+実行責務は次の少数構成へ固定する。SEO機能、Officeのキャラクタ、商品Packごとに専用Executorを増やさない。6名称は責務Catalogであり、LLM Agentの体数ではない。
 
 | Executor | 責務 | 主な出力先 |
 |---|---|---|
-| Orchestrator | Workflow遷移、Ticket発行、Snapshot受領、停止・再開・保留 | 次工程、再dispatch、承認待ち |
-| Planning Executor | Research Brief、Outline Contract、Section Brief | freeze済みPlanning Snapshot |
-| Writing Executor | Meaning Unit単位の生成 | Writing Snapshot |
-| QA Executor | Gate、CTA、内部link、構造、根拠、整合性検査 | QA Snapshot、Instruction |
-| Repair Executor | 不合格箇所だけの限定修正 | Repair Snapshot |
-| Automation Executor | CMS下書き、配置、予約、公開・計測event | Command Result |
+| Orchestrator | 決定論によるWorkflow遷移、Ticket発行、Snapshot受領、停止・再開・保留 | 次工程、再dispatch、承認待ち |
+| Planning Executor | LLMを利用できるResearch Brief、Outline Contract、Section Brief生成 | freeze済みPlanning Snapshot |
+| Writing Executor | LLMによるMeaning Unit単位の生成 | Writing Snapshot |
+| QA Executor | 決定論Gate＋必要箇所だけLLMを用いるCTA、内部link、構造、根拠、整合性検査 | QA Snapshot、Instruction |
+| Repair Executor | LLMによる不合格箇所だけの限定修正 | Repair Snapshot |
+| Automation Executor | LLMを常設せず、許可ToolによるCMS下書き、配置、予約、公開・計測event実行 | Command Result |
 
 正本: `REQ-AGENT-01/02/06/09`。
 
@@ -144,6 +146,9 @@ RecommendationはAgentへの任意追加情報ではなく、Agent Interaction�
 - Recommendation候補抽出、順位集計、カバー率、カニバリ、Query Drift、差分検知、容量判定、通知、料金判定は機械処理を正本とする。
 - 機械結果の説明、横断的な意味付け、仮説、対話による条件変更案、Task化はAgent Interaction／Advisoryで扱える。Recommendationの最終的な理由文や施策構成も、機械的根拠を失わない範囲でAgentが組み立てられる。
 - Research、Outline、Meaning Unit生成、意味変化、主張・根拠、QAの一部はAgentic Workflowで扱う。
+- Office Conversation Runtimeは全ペルソナが共有する。`persona_id`に対応するRole Profile、参照可能Service、Proposal Schema、Permissionをセッションごとに解決し、必要な場合だけLLMを呼ぶ。13ペルソナを13個の常駐LLMまたは13種類の専用modelとして実装しない。
+- Conversation Runtimeの出力は回答、型付きProposal、既存Workflowへ渡すTicket候補のいずれかとする。設定、予算、公開状態、業務データを会話出力から直接更新せず、既存Commandと認可・確認を必ず通す。
+- Officeの表示ペルソナ数、Executor責務数、同時LLM呼出し数、Provider model数を相互に換算しない。それぞれUI構成、実行契約、実行時並列度、Provider Routingという別の設計値である。
 - Agentを使う理由が「画面で働いて見せたい」「機能名を分けたい」だけの場合、runtimeを増やさない。Officeのペルソナを既存Executor／工程へmappingする。
 
 正本: `REQ-AGENT-01`、`REQ-AOUI-04`、`REQ-KGA-08`。

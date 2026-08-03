@@ -40,7 +40,7 @@ Agent Officeは部門（部屋）とエージェント（キャラ）で構成�
 
 ## 4. ペルソナ⇄内部エージェント/工程マッピング  ［REQ-AOUI-04］
 
-Agent Officeが実状態と業務能力を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、利用可能Tool、担当業務へ対応づける。ペルソナは独立runtimeそのものではないが、説明、探索、会話、変更案、Task化、実行監視を担うユーザー窓口である。
+Agent Officeが実状態と業務能力を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、利用可能Tool、担当業務へ対応づける。ペルソナは独立runtimeそのものではないが、説明、探索、会話、変更案、Task化、実行監視を担うユーザー窓口である。会話実行は全ペルソナ共通のOffice Conversation Runtimeを使用し、`persona_id`別Role Profileと許可されたService／Proposal Schemaをセッション開始時に解決する。ペルソナ数だけ専用LLM、常駐processまたは独立記憶を作らない。
 
 | persona | 主な業務 | 読む正本・Service | 会話から作れるもの | Executor／Tool接続 | 変更時の業務Permission | Office設備・詳細面 |
 |---|---|---|---|---|---|---|

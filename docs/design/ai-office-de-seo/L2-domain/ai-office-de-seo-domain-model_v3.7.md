@@ -35,7 +35,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 | Provider | プロバイダ登録・アダプタ・ルーティング | ProviderProfile, RoutingPolicy | REQ-BILL-04/09, REQ-AGENT-04 |
 | Config & Governance | 設定レジストリ・Flag・安全不変条件・資源/変更ガバナンス・ネットワーク学習の適用統制 | ConfigRegistry, FeatureFlag | REQ-ADM-09, REQ-BILL-10, REQ-DUR-04, REQ-PRODUCT-13/18 |
 | Observability & Audit | トークン/契約検証・監査・SLO・表示ラベルレジストリ | UsageTrace, AuditLog | REQ-SEC-02/03/10/13, REQ-ADM-04/06/07/08/11 |
-| Experience (Agent Office UI) | 2モード・部門/ペルソナ/フロア・2軸・グローバル検索・エクスポート・レスポンシブ/i18n・アクセシビリティ品質床 | OfficeLayout(Room, Persona) | REQ-AOUI-01〜07, REQ-NAV-01〜09, REQ-PRODUCT-14/15 |
+| Experience (Agent Office UI) | 2モード・部門/ペルソナ/フロア・2軸・会話受付・グローバル検索・エクスポート・レスポンシブ/i18n・アクセシビリティ品質床 | OfficeLayout(Room, Persona), PersonaConversationSession | REQ-AOUI-01〜07, REQ-NAV-01〜09, REQ-PRODUCT-14/15 |
 | Notification | ドメインイベントからの通知導出・受信者解決・チャネル配信・通知センター・運営お知らせ・メール送達性 | NotificationDelivery, MailSuppression | REQ-PRODUCT-11/16/21 |
 | Support | サポートチケット・AI一次応答（Role/スコープ内参照限定）・エスカレーション・ナレッジ還流 | SupportTicket | REQ-PRODUCT-22 |
 | Platform Operations | 実行基盤/デプロイ規約・キャパシティ/密度・バックアップ/DR・コンテナ移管性・自動復旧/保守 | （集約なし・横断運用契約） | REQ-DUR-06〜10 |
@@ -53,6 +53,8 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 - Config & Governance → 全BC: **Conformist / Published Language**。価格・しきい値・Flagはレジストリから解決。安全不変条件は設定対象外（REQ-ADM-09）。
 - 全BC → Observability & Audit: **ドメインイベント購読**（消費・契約検証・監査を横断収集、REQ-SEC-13）。
 - Experience(UI) → 全BC: **Conformist**。業務entity・権限・Command/Eventは通常ビューとOfficeで共通化する。一方、Officeの部屋、会話、探索、設備、表示位置等の体験状態は独自に保持できるが、業務正本・認可・実行状態を複製しない（REQ-AOUI-01、REQ-SCREEN-18）。
+
+Office Conversation RuntimeはExperienceのApplication Serviceとして置く。選択中のPersona Role Profile、Site Context、表示中Resource、認可済みServiceとProposal Schemaを解決し、回答・Proposal・Ticket候補を返す。PersonaごとのAggregate、専用LLMまたは独立した業務データストアを作らず、確定操作は所有BCのCommandへ渡す。
 
 補足: Workflow状態機械（REQ-AGENT-09）は Generation 内の **Process Manager / Saga** であり、工程間遷移とゲートを調停する。
 
