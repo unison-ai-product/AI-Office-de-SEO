@@ -76,8 +76,10 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 |---|---|---|
 | Workflow | ステージ・遷移・ループ・停止条件を定義する実行手順（版固定） | REQ-AGENT-06 |
 | State Machine / 工程 | Workflowの遷移図。13状態（実務工程9＋強制ゲート4、Intake→…→Cleanup）を強制 | REQ-AGENT-09 |
-| Executor / Agent | LLM判定を行うサブエージェント（Planning/Writing/QA/Repair等） | REQ-AGENT-01 |
-| Orchestrator | Catalogとキーを見て工程・遷移・失敗遷移を決める中枢 | REQ-AGENT-01 |
+| Executor | WorkflowからTicketを受け、意味判断・生成・検査を行う内部実行役（Planning/Writing/QA/Repair/Automation）。Officeペルソナと同義にしない | REQ-AGENT-01 |
+| Officeペルソナ | Agent Officeでユーザーが話しかける担当窓口。Service、Proposal、Executor、Toolへ接続するが独立runtimeとは限らない | REQ-AOUI-03/04 |
+| Orchestrator | Workflow工程、Ticket、Snapshot、停止・再開を調停する内部制御。Officeのplannerとは別物 | REQ-AGENT-01/06 |
+| Session Summary | Officeペルソナとの1会話セッションを圧縮した文脈復元用要約。業務設定・知識・実行状態の正本ではない | Agent Requirements Map §7.1 |
 | Ticket | 作業命令。本文を内包せずキー（workflow/prompt/source/schema）のみ発行 | REQ-PACK-01 / REQ-PACK-03 |
 | Pack | Prompt Pack（注入系）/ Source Pack（取得系）/ Catalog（参照集合） | REQ-PACK-01 / REQ-PACK-02 |
 | Catalog / Registry | 版固定の参照集合（Quality Gate/Article Type/Meaning Unit等） | REQ-PACK-01 |

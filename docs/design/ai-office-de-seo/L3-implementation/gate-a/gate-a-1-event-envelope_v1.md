@@ -152,6 +152,8 @@ updated_at: 2026-07-05
 | notification.actioned | notification_id, actor_ref, resource_ref, result | O,A | REQ-PRODUCT-11 |
 | notification.digest_created | digest_ref, notification_refs, recipient_user_ref, channel | O | REQ-PRODUCT-11 |
 | notification.unresolved_action | decision_id, notification_class, fallback_attempted, reason | N,O,A | REQ-PRODUCT-11 |
+| office.session_summarized | session_summary_ref, persona_id, task_ref?, unresolved_count, retention_class | O | REQ-AOUI-04, REQ-DATA-08 |
+| office.session_summary_deleted | session_summary_ref, actor_ref, deletion_reason | O,A | REQ-DATA-10 |
 | platform.self_healed | action, target, flapping? | O,A | REQ-DUR-10 |
 | platform.maintenance_performed | action, target | O | REQ-DUR-10 |
 | platform.circuit_state_changed | circuit_key, scope_type, scope_ref, previous_state, current_state, reason, probe_at? | O,A | REQ-NFR-07, REQ-TECH-19 |

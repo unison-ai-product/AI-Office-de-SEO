@@ -163,6 +163,25 @@ Office会話を質問と状態変更へ分け、変更案を`schema.office.propo
 
 根拠: `REQ-AOUI-01/04/07`、`REQ-AGENT-06/09`、`REQ-SCREEN-15`、Agent要求マップ。
 
+### `schema.office.session_summary.v1`
+
+```text
+{
+  session_summary_id, tenant_id, site_id, persona_id, user_id,
+  task_ref?, conversation_started_at, conversation_ended_at,
+  summary, unresolved_questions[], confirmed_command_refs[],
+  proposal_refs[], source_message_count, retention_class,
+  expires_at?, user_visible, deleted_at?, schema_version
+}
+```
+
+- Officeペルソナとの一般会話は、生messageをSite永久記憶へ一律昇格せず、終了時の短いSession Summaryを次回文脈に使用する。
+- `persona_id`を必須とし、plannerとの方針相談、content_writerへの記事指示、support_agentの問い合わせを同じ「Agent会話」として混在させない。
+- Summaryは業務正本ではない。設定変更は`confirmed_command_refs`、記事指示はTask/User Order、SupportはSupport Ticket、Executor成果はSnapshotを参照する。
+- Summaryから設定、権限、公開状態、学習Factを暗黙更新しない。ユーザーは閲覧・削除でき、保持期間はretention policyで解決する。
+
+根拠: Agent Requirements Map §3.0／§7.1、`REQ-DATA-08/10`、`REQ-ACCESS-17`。
+
 ## 0.0.5 UI Availability Decision Contract
 
 利用可否を`schema.ui.availability.v1`とする。

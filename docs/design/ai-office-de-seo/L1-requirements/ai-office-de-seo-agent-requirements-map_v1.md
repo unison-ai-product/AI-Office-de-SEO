@@ -40,19 +40,34 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 
 ## 3. 実行モデル
 
-### 3.0 Agent関与とAgentic Workflowを分ける
+### 3.0 用語の主語を省略しない
+
+本製品では「Agent」単独を要求・質問・設計判断の主語にしない。最低でも次の種別まで明記する。
+
+| 用語 | 指すもの | 例 | 指さないもの |
+|---|---|---|---|
+| Officeペルソナ | ユーザーがOfficeで話しかける担当窓口 | planner、keyword_researcher、content_writer | 独立process、LLM model |
+| Executor | WorkflowからTicketを受けて意味判断・生成・検査する内部実行役 | Planning、Writing、QA、Repair、Automation Executor | Officeのキャラクター |
+| Orchestrator | Workflowの工程・Ticket・停止・再開を制御する実行調停 | new article workflowの進行 | ユーザー向けプランナー |
+| 決定論Service | 収集、集計、分類、score、権限、課金、状態遷移を行う機械処理 | Keyword service、Capacity resolver | LLM会話 |
+| Automation Job | schedule／policyに従う非同期実行 | CMS送信、差分同期、月次再計算 | 自律人格 |
+| Support Chat | FAQ、診断、問い合わせの会話 | support_agentの窓口 | SEO戦略や記事生成Workflow全体 |
+
+「Agentが変更する」「Agentが記憶する」「Agent同士で委譲する」「Agentの動きを変える」のような記述は禁止する。誰が、どの正本を読み、何のProposal／Ticket／Commandを作り、どのExecutor／Serviceが実行するかまで書く。
+
+### 3.1 Officeペルソナ関与とAgentic Workflowを分ける
 
 製品機能へのAgent関与を、記事生成用Agentic Workflowの本数だけで数えない。Agentは次の3層で全業務領域へ関与する。
 
 | 層 | 役割 | 例 |
 |---|---|---|
-| Agent Interaction | 会話、説明、探索、詳細操作、変更案、Task化 | キーワード選定理由の説明、月次方針の調整、分析結果の深掘り |
-| Agent Advisory | 決定論的な集計・診断を読み、意味付け、仮説、Recommendation、追加確認を提示 | 順位低下要因、CV導線、サイト認知への貢献、改善順序 |
+| Office Persona Interaction | Officeペルソナによる会話、説明、探索、詳細操作、変更案、Task化 | キーワード選定理由の説明、月次方針の調整、分析結果の深掘り |
+| Advisory Reasoning | 指定されたOfficeペルソナまたはPlanning／QA Executorが決定論的な集計・診断を読み、意味付け、仮説、Recommendation、追加確認を提示 | 順位低下要因、CV導線、サイト認知への貢献、改善順序 |
 | Agentic Execution | Workflow、Ticket、Pack、Executorで成果を生成・検査・配置する | 新規記事、リライト、QA、Repair、CMS Automation |
 
-基礎データの取得、集計、差分検知、スコア計算、権限、課金、状態遷移は決定論的に実行しても、ユーザーが結果を理解し、条件を変え、次のTaskへ接続する場面ではAgent Interaction／Advisoryを使用できる。「機械処理である」ことを「Agentが関与しない画面・業務」と読み替えない。
+基礎データの取得、集計、差分検知、スコア計算、権限、課金、状態遷移は決定論的に実行しても、ユーザーが結果を理解し、条件を変え、次のTaskへ接続する場面ではOffice Persona Interaction／Advisory Reasoningを使用できる。「機械処理である」ことを「Officeペルソナが説明・操作窓口にならない」と読み替えない。
 
-### 3.1 Executor
+### 3.2 Executor
 
 実行役は次の少数Executorへ固定する。SEO機能、Officeのキャラクタ、商品Packごとに専用Executorを増やさない。
 
@@ -67,7 +82,7 @@ Agent関連の変更は、必ず本書から既存要求を確認し、次の順
 
 正本: `REQ-AGENT-01/02/06/09`。
 
-### 3.2 標準工程
+### 3.3 標準工程
 
 `Research & Outline → Meaning Unit Writing → QA → 限定Repair Loop → Assembly／Placement → Automation → 承認／公開 → Cleanup`
 
@@ -141,6 +156,18 @@ RecommendationはAgentへの任意追加情報ではなく、Agent Interaction�
 - Layer D: Ticket固有の対象、差分、issue、userPrompt。
 
 Prompt Cacheは費用・latency最適化であり、状態・知識の正本ではない。状態はSnapshot／checkpoint、Site知識はDerived Facts／Pack、横断知識は許可された共有資産で保持する。
+
+### 7.1 会話・実行種別ごとの保持
+
+| 主体／会話 | 既定保持 | 正本への反映 |
+|---|---|---|
+| Officeペルソナとの一般会話 | セッション中の生会話＋終了時の短いSession Summary | Summaryは次回の文脈復元用であり、業務設定を変更しない |
+| planner／keyword_researcher等との方針相談 | Session Summary、確定したProposal／Command | 方針変更は確定CommandだけをMonthlyPlan、Site Policy等へ反映 |
+| content_writer／qa_checkerへの記事指示 | Taskに必要なUser Order、差分指示、確定Proposal | 記事Taskへscopeし、承認なしにSite全体の文体学習へ昇格しない |
+| Executor実行 | Ticket、Snapshot、checkpoint、version、usage | 「会話履歴」として保存せず、工程成果と監査事実として保持 |
+| support_agentとの問い合わせ | Support Ticketと必要なmessage／要約 | Support保持Policyへ従い、SEO学習や記事生成Contextへ流用しない |
+
+生会話をSiteの永久記憶として一律保存しない。Session Summaryは`tenant_id / site_id / persona_id / task_ref? / created_at / expires_at?`を持ち、ユーザーが確認・削除できるようにする。業務正本は確定済み設定、Proposal結果、Ticket、Snapshot、Derived Factであり、Summaryの文章から暗黙再構築しない。保持期間の実数はデータ保持Policyで確定する。
 
 正本: `REQ-AGENT-03/07`、`REQ-PACK-14/15/16`。
 

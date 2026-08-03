@@ -96,6 +96,8 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-OFFICE-05: base version競合時に古いProposalを適用せず、supersededまたは再確認へ遷移する。
 - [ ] PT-OFFICE-06: Officeの変更結果が通常ビューへ、通常ビューの採否・承認・設定結果がOffice設備・Agent・Knowledge Graphへ同じeventから反映される。
 - [ ] PT-OFFICE-07: Proposalを適用前に取消でき、適用後は対象Domainが提供するrollback／復元だけを表示し、存在しないrollbackを約束しない。
+- [ ] PT-OFFICE-08: Office会話はpersona種別を保持し、一般会話はSession Summary、記事指示はTask/User Order、SupportはSupport Ticket、Executor成果はSnapshotへ分離する。無修飾の「Agent会話履歴」へ統合しない。
+- [ ] PT-OFFICE-09: Session Summaryを次回会話で確認・削除できるが、Summary削除で確定済みCommandやTask履歴を消さず、Summary文から設定・権限・公開状態・学習Factを暗黙更新しない。
 - [ ] PT-STATE-01: 同じ対象・操作が一覧、詳細、Modal、通常ビュー、Officeで同じAvailability stateとreasonを表示する。
 - [ ] PT-STATE-02: incident＋Plan不足、権限不足＋credit不足、接続不足＋データ不足等の複合fixtureで全reasonを保持し、正しいprimary reasonとCTAを表示する。
 - [ ] PT-STATE-03: 障害時にUpgradeを主CTAにせず、権限のないユーザーへ購入を勧めず、接続不足をデータ不足として表示しない。
