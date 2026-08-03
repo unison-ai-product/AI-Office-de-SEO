@@ -317,6 +317,7 @@ assertIncludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
   "画面検証結果をL1/L2へ反映した後にL3実装設計",
   "ai-office-de-seo-recommendation-ui-validation_v1.md",
   "ai-office-de-seo-standard-office-ui-validation_v1.md",
+  "ai-office-de-seo-site-onboarding-ui-validation_v1.md",
 ]);
 assertExcludes("docs/plans/PLAN-L3-02-ai-office-de-seo-screen-prototype.md", [
   "requires:\n    - PLAN-L3-01-ai-office-de-seo-implementation-design",
@@ -351,9 +352,11 @@ assertIncludes("docs/reference/ai-office-de-seo-prototype-modernization-register
   "SF-UI-02",
   "SF-UI-03",
   "SF-UI-04",
+  "SF-UI-05",
   "validated`とL1/L2反映なしにL3確定へ送らない",
   "AOS-PRE-L3-RECOMMENDATION-UI-VALIDATION",
   "AOS-PRE-L3-STANDARD-OFFICE-UI-VALIDATION",
+  "AOS-PRE-L3-SITE-ONBOARDING-UI-VALIDATION",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-recommendation-ui-validation_v1.md", [
   "lifecycle_stage: pre_l3_ui_validation",
@@ -385,6 +388,27 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-st
   "定型操作はLLM呼出し0回",
   "VIEW-UI-01 Recommendation往復",
   "VIEW-UI-14 Graph欠損",
+  "ブラウザ操作前は`open`",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-requirements_v3.7.md", [
+  "GSCまたはキーワード登録のいずれか",
+  "全接続を直列必須にしない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md", [
+  "Site設定・対象Site確認",
+  "部分利用可",
+  "対象Site確認」をCMS write成立の意味で使わず",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-site-onboarding-ui-validation_v1.md", [
+  "lifecycle_stage: pre_l3_ui_validation",
+  "GSCまたはKeyword登録の少なくとも一方",
+  "CMS write未成立でも分析、Report、Recommendation、生成を止めず",
+  "GSC実績だけで本文変更を推測しない",
+  "業務Step＋並行準備Tray（第一検証案）",
+  "利用可能機能カード型（比較案）",
+  "四状態を合算した保存値または単一Gateにしない",
+  "ONB-UI-01 新規・接続最小",
+  "ONB-UI-15 CMS非対応",
   "ブラウザ操作前は`open`",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-plan_v3.7.md", [

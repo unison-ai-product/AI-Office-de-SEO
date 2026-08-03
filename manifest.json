@@ -1,6 +1,6 @@
 {
   "product_name": "AI Office de SEO",
-  "version": "3.7.55",
+  "version": "3.7.56",
   "generated_at": "2026-08-03",
   "scope": "L0 charter, categorized L1 canonical requirements and logic, current detail documents under migration control, cross-cutting connection maps, L2 domain model, L3 contracts/DDL/config/events, and screen design; prototype implementation is follow-up only",
   "prototype_policy": "Repository baseline only. Excluded from current requirement and implementation evidence; modification is prohibited until the requirement-alignment audit is complete.",
@@ -124,7 +124,8 @@
     "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-prototype-implementation-map_v3.7.md",
     "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md",
     "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-recommendation-ui-validation_v1.md",
-    "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-standard-office-ui-validation_v1.md"
+    "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-standard-office-ui-validation_v1.md",
+    "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-site-onboarding-ui-validation_v1.md"
   ],
   "prototype_baseline_paths": [
     "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md",
