@@ -91,6 +91,8 @@ Agent関連要求は分類別正本だけからゼロベースで追加しない
 
 Recommendation Actionの正規名、判定側alias、Agentic Workflow／軽量Patch／監視／ユーザー対応へのrouting、月次計画・手動Task・自動予定の競合規則は`ai-office-de-seo-recommendation-action-routing-map_v1.md`を正本とする。個別ロジック、画面または実装層で別Catalogを作らない。
 
+CTA・内部linkの既存公開記事向け軽量施策は`ai-office-de-seo-lightweight-content-patch-connection-map_v1.md`を接続正本とし、候補、承認Batch、対象part、CMS結果、部分失敗、月次／累積評価を同じ`patch_action_id`で追跡する。
+
 ## 5. 横断監査
 
 確定した横断判断と未確定事項の監査には `ai-office-de-seo-requirements-decision-summary_v1.md` を使用する。同文書は進捗管理表ではなく、分類別正本への索引である。

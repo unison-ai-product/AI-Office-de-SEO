@@ -44,6 +44,40 @@ L1/L2の契約（Ticket入力・Snapshot出力・Source Extract・ドメイン�
 
 根拠: `REQ-KRL-08/09`、`REQ-DATA-06/07`、`REQ-LOGIC-03`、`REQ-SCREEN-09/15/18`、Agent要求マップ。
 
+## 0.0.1 Lightweight Patch Contract
+
+CTA・内部linkの限定更新入力を`schema.patch.action.v1`、結果を`schema.patch.result.v1`とする。
+
+```text
+schema.patch.action.v1 {
+  patch_action_id, patch_type,
+  recommendation_ref?, intake_ref?, correlation_id,
+  tenant_id, site_id, target_article_ref, target_part_ref,
+  before_hash, proposed_value_ref,
+  article_purpose, search_intent,
+  cv_goal_ref?, destination_article_ref?,
+  reason_evidence_refs[], approval_batch_ref?,
+  permission_action, cms_capability_ref,
+  measurement_policy, requested_at
+}
+
+schema.patch.result.v1 {
+  patch_action_id, cms_job_ref, status,
+  applied_part_ref?, resulting_hash?, revision_ref?,
+  error_class?, retryable?, verified_at?,
+  seo_evaluation_reset, metric_evaluation_started_at?,
+  correlation_id
+}
+```
+
+- `patch_type`: `add_cta / replace_cta_part / replace_cta_destination / move_cta / remove_cta / add_internal_link / replace_internal_link / remove_internal_link`。
+- `status`: `scheduled / applying / applied / failed / conflict`。`applied`はCMS応答と反映確認の両方を必要とする。
+- CTA Patchの`seo_evaluation_reset`はfalse固定とし、CTA/CV評価起点だけを更新する。内部link Patchも本文・見出し・titleを変更しない限りfalseとする。
+- 承認Batchは複数`patch_action_id`の集合であり、結果をBatch単位へ丸めない。
+- 接続文の意味修正が必要な場合だけ既存Repair Ticketを参照し、専用Writing Ticketを作らない。
+
+根拠: `REQ-WPA-12/13`、`REQ-KGA-09/19`、`REQ-RWR-08/09`、軽量Patch接続マップ。
+
 ## 0.1 Authorization Decision Contract
 
 すべての実行面で使用する認可入力・出力を`schema.authorization.decision.v1`として固定する。

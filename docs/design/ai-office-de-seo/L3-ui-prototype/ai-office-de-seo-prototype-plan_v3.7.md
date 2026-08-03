@@ -67,6 +67,11 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-REC-04: structure changeとindex診断はユーザー対応として表示され、canonical、redirect、Site設定を自動変更した表示にならない。
 - [ ] PT-REC-05: ユーザー指定Taskと自動予定が衝突した場合、ユーザーTaskを維持して影響・依存・推奨順序を示し、自動予定だけを要確認へ戻せる。
 - [ ] PT-REC-06: 月次計画または分類変更後も実行済み施策のversionと履歴を維持し、未実行Recommendationだけが再計算・supersedeされる。
+- [ ] PT-PATCH-01: CTA候補が記事目的、検索intent、CV Goal、CTA part、link先、月次／累積値を持ち、本文全文リライトやCTA専用Writing Ticketなしで承認・適用できる。
+- [ ] PT-PATCH-02: 内部link候補がリンク元、リンク先、対象part、重複・公開・canonical・カニバリ・保護検査を持ち、既存記事への追加は承認後、削除は別確認になる。
+- [ ] PT-PATCH-03: 一括承認したPatchの一部が失敗または競合しても、成功・失敗・再試行が候補単位で表示され、Batch全体を成功にしない。
+- [ ] PT-PATCH-04: CMS応答成功後に反映確認できなければappliedにせず、接続、Capability、競合、rate limit等の原因を表示する。
+- [ ] PT-PATCH-05: CTA／内部link変更でSEO評価周期を無条件にリセットせず、介入別の月次／累積評価から次のRecommendationへ戻せる。
 - [ ] PT-LC-05: 最初の新規15記事、解放後の新規自動投稿、リライト／記事置換、hard gate例外手動公開を別fixtureと別表示で検証できる。
 - [ ] PT-LC-06: 公開・更新eventから1/3/6か月、SEO、CTA/CV、認知貢献、要監視、Site補正、匿名補正候補、再Recommendationまで相関を維持する。
 - [ ] PT-LC-07: 通常ビューの各主要対象からOfficeへContext付きで移動し、質問は非更新、変更指示はProposal→影響・credit→確定→共通Command/Eventとして双方向反映される。

@@ -103,6 +103,14 @@ updated_at: 2026-07-05
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
 | automation.oscillation_detected | targets[] | N,O,A | REQ-PRODUCT-18 |
 | wp.patch_conflict_detected | url_hash, reason | N,O | REQ-WPA-12 |
+| patch.candidate_proposed | patch_action_id, type, target_article_ref, target_part_ref, recommendation_ref? | W,O | REQ-WPA-12/13, REQ-KGA-09 |
+| patch.batch_approved | approval_batch_ref, patch_action_refs[], approved_by | W,O,A | REQ-WPA-12, REQ-PRODUCT-08 |
+| patch.action_scheduled | patch_action_id, cms_job_ref, scheduled_at | W,O | REQ-WPA-12 |
+| patch.action_applied | patch_action_id, cms_job_ref, resulting_hash, revision_ref?, verified_at | W,O,A | REQ-WPA-12/13 |
+| patch.action_failed | patch_action_id, error_class, retryable, failed_part_ref | W,N,O | REQ-WPA-12 |
+| patch.action_conflicted | patch_action_id, before_hash, current_hash, target_part_ref | W,N,O | REQ-WPA-12 |
+| patch.measurement_started | patch_action_id, metric_kind, baseline_ref, evaluation_started_at | W,O | REQ-WPA-11/13 |
+| patch.evaluated | patch_action_id, window(monthly/cumulative), result, availability | W,O | REQ-WPA-11/13, REQ-PRODUCT-19 |
 | notification.email_bounced | channel_ref, reason | O | REQ-PRODUCT-21 |
 | notification.email_suppressed | channel_ref, reason | N,O | REQ-PRODUCT-21 |
 | notification.dispatched | notification_id, channel | O | REQ-PRODUCT-11 |

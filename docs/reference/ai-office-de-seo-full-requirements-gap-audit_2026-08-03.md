@@ -63,8 +63,8 @@
 7. Recommendation TypeはAction Routing Map、L2集約、L3 Intake／DDL／event、`PT-REC-01〜04`へ正規Catalogとaliasを追加した。各Workflow、Patch、ユーザー対応の実装・契約試験は未完了。
 8. MonthlyPlan、Recommendation、手動指定Taskは、ユーザー指定維持、自動予定再検証、依存順序相談、version／supersede規則をAction Routing Mapと`PT-REC-05/06`へ集約した。実装・同時更新試験は未完了。
 9. 新規Site戦略Reportと既存Site診断Reportの画面情報設計が不足。既存Siteも市場Keyword母集団に対する自社shareを基線にする必要がある。
-10. CTA/CVはパーツ・リンク先・検索intent・記事目的へ接続済みだが、記事目的別の直接CV／認知貢献評価と画面表示が未完成。
-11. 内部linkは提案・Patch方針があるが、link candidateの状態、承認batch、公開結果、失敗、再評価の契約が不足。
+10. CTA/CVは軽量Patch接続マップ、L2集約、L3 action/result schema、DDL、event、`PT-PATCH-01/05`へ、記事目的、直接CV、認知貢献、月次／累積評価を追加した。実装と母数・判定閾値の較正は未完了。
+11. 内部linkはcandidate lifecycle、承認Batch、候補単位の部分失敗、CMS反映確認、再評価を軽量Patch接続マップと`PT-PATCH-02〜05`へ追加した。実装・CMS別Contract Testは未完了。
 12. CMS読取り経路の自動選択はL1にあるが、Siteごとの選択結果、health、切替履歴、料金／Plan制御のL2集約がない。
 13. WordPress Capability Matrixは詳細だが、CMS共通Publication ContractとUI表示項目の完全対応表がない。
 14. Officeの会話変更案はL1にあるが、Proposal schema、影響差分、credit見積、取消／rollback、通常ビュー同期eventがL3未定義。

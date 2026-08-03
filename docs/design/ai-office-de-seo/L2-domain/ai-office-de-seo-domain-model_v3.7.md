@@ -95,6 +95,13 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 - ルート: RewriteJob（ArticleWorkspaceを内包）。
 - 不変条件: パッチはEdit Plan宣言のsection_id内に限定（REQ-RWR-03）／未変更セクションのhashを保持（REQ-RWR-05）／ワークスペースは完了・承認・期限で破棄（REQ-RWR-02）／品質ゲートfail-close。
 
+### 4.4.1 LightweightPatchAction（Content Index / Publishing）
+
+- ルート: LightweightPatchAction。CTAまたは内部linkの候補1件を成功・失敗・評価の最小単位とし、承認Batchの一部としても同一IDを維持する。
+- 値: PatchActionType、TargetArticleRef、TargetPartRef、BeforeHash、ProposedValueRef、ReasonEvidence、ArticlePurpose、Intent、CvGoalRef／DestinationArticleRef、RecommendationRef、IntakeRef、ApprovalBatchRef、CmsJobRef、MeasurementPolicy、Status。
+- 状態: `candidate → proposed → accepted/rejected/held/expired → approved → scheduled → applying → applied/failed/conflict → measuring → evaluated`。
+- 不変条件: 全文リライトへ偽装しない／CTA専用Agent・専用Writing Ticketを必須にしない／Batchの一部失敗を全件成功へ丸めない／CMS反映確認前にappliedとしない／内部link削除は追加と別確認／CTA変更はSEO評価周期をリセットしない／ユーザー編集競合時は古い位置へ適用しない。
+
 ### 4.5 PublicationJob / PostEnvelope（Publishing）
 - ルート: PublicationJob（PostEnvelopeを内包）。
 - 不変条件: QA・権限・予算・接続・Automation Policyを副作用直前に再判定する／最初の新規15記事およびリライト・記事置換は所定の承認を要求する／解放済み新規記事はAutomation Policyの範囲で自動公開できる／hard gate例外は判定を残した二段階確認・版付き同意による手動公開だけを許可する／CMS能力にないslot/blockはfail-close（REQ-WPA-08）／最終HTML全文は恒久保存しない（REQ-WPA-09）。
