@@ -98,7 +98,7 @@ Agent Office（dark）は `bg_office_dark`・ネオン系（`#3ED598` 等）で�
 | `recVals()` (6175) / `gsVals()` (7416) / `kwAddVals()` (7331) / `buyVals()` (7492) / `tourVals()` (7569) / `stdVals()` (7667) / `renderVals()` (8684) | おすすめ採用/却下・グローバル検索・手動KW追加・クレジット購入・ツアー・共通・ルート合成 |
 | i18n系: `curLocale` / `applyI18n` / `_i18nSwapAll` / `_mt*` (5907〜6048) | テキストノード走査でTXT差し替え＋MTフォールバック（REQ-NAV-07） |
 | イベント/オフィス系: `mkEnv` (4864) / `derivePersonaStates` (4888) / `openRoom` / `rideElevator` / `buildRoom` (6285〜6438) | 本番同形イベントエンベロープ（Gate A-1適合: `generation.job_suspended` 等）／ペルソナ4状態導出／部屋描画 |
-| ガード: `roGuard()` (5043) | なりすまし閲覧モードの書込禁止。**全mutationハンドラの先頭で呼ぶ規約** |
+| 旧ガード: `roGuard()` (5043) | 旧なりすまし閲覧modeのbaseline。現行化では内部actorを保持した`DelegatedScopeGuard`へ置換し、Adminが指定した顧客・Site・operation・期限だけを各mutation直前に許可する。Operatorは常に顧客mutation拒否 |
 
 ### 2.3 主要stateキー（本実装のストア設計の種）
 

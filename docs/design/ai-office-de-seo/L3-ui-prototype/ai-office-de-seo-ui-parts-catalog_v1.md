@@ -215,7 +215,7 @@ HubCard / RoomCard / PersonaAvatar { state: idle|working|done|error }  // 俯瞰
 ```
 MetricCard { label, value, note, good: bool }        // sdMetrics/opsの4枚組
 TicketRow { sev, id, state, subj, tenant, plan, sla, assignee, selected }  // 選択と表示のみ・操作は詳細パネル
-ImpersonationBanner { text, onEnd }                   // 全画面常設
+DelegatedAccessBanner { customer, site, operations, expiresAt, onEnd } // 内部Manager代理操作中は管理面全画面へ常設
 AuditPush { type, action, res, tenant?, diff?, reason? }  // 操作系パーツは必ずpushAuditとセット
 TenantScope { value: tScope, appliesTo: [tickets, ...] }
 ```

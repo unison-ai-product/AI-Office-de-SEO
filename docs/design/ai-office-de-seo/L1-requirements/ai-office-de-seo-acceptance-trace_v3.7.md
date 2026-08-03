@@ -300,7 +300,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 
 - [ ] AC-SRC-02: Query Fanout Agentがシード/GSCクエリをfacet別サブクエリへ分解し、Source Packで取得してサブトピック網羅へ接続、取得不可時は捏造せずavailability理由を返す。 ｜ 検証: REQ-SRC-09, REQ-SRC-02
 - [ ] AC-ADM-02: 内部ロールとテナントロールを分離し、クロステナント操作をbreak-glass/JIT昇格（時間制限・理由・監査）で行い、常時付与しない。 ｜ 検証: REQ-ADM-06
-- [ ] AC-ADM-03: 監査ログが不変・テナント分離・所定スキーマで、なりすましがread-only・明示表示・両ユーザー記録される。 ｜ 検証: REQ-ADM-06
+- [ ] AC-ADM-03: 監査ログが不変・テナント分離・所定スキーマで、Managerの期限付き代理アクセスがAdmin指定の顧客・Site・operation・期限へ制限され、代理表示と内部actor／顧客Context／付与者／理由を記録する。顧客本人へのなりすまし、共有Session、Operatorの顧客dataアクセスを許可しない。 ｜ 検証: REQ-ADM-06, REQ-ACCESS-01〜03
 - [ ] AC-ADM-04: ログ/メトリクス/トレースがrequest_id・tenant_idで相関し、SLO・アラート・ステータス・インシデントrunbook・レート制限を持つ。 ｜ 検証: REQ-ADM-07
 - [ ] AC-ADM-05: データエクスポート/削除/同意ログ・保持ポリシー・秘密ローテーション・バックアップ復元・冪等キーが定義される。 ｜ 検証: REQ-ADM-08
 - [ ] AC-BILL-07: 価格・クレジット単価・原価/消費係数・プラン内容が要求にハードコードされず、設定レジストリから解決され、version/effective/status・freeze・監査を持つ。 ｜ 検証: REQ-BILL-10, REQ-ADM-09

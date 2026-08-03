@@ -52,7 +52,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 4. **PT-3 Agent Office**: AO-0 俯瞰ハブ → AO-1〜AO-7 部屋と選択メニュー → AO-8 状態オーバーレイ（記法注: AO-*は本計画内のAgent Office要素の局所番号。遷移図の管理ノードA1〜A12＝ADM-S*とは無関係）。詳細はPT-1/PT-2のコンポーネントをそのまま呼ぶ（新規詳細を作らない）。
 5. **PT-4 残画面**: S4 オートメーション → S6 学習ナレッジ管理 → S7 設定。
 6. **PT-5 検証**: §6の観点でウォークスルー、差し替え課題（暫定アセット・TODO）を棚卸しして本設計へフィードバック。
-7. **PT-6 管理面トラック（開発管理者コンソール）**: AOS-L3-ADMIN-SCREEN-INVENTORY に従い、ADM-S8（Pack・プロンプト・ゲート管理＝新設REQ-ADM-10の検証）→ ADM-S4（コスト・観測）→ ADM-S2（課金・入金reconciliation）→ ADM-S12（サポートデスク: キュー/SLA/deflection・FAQ還流起票・なりすまし調査導線＝PT-Yで検証）の順で作る。残る ADM-S1 / ADM-S3 / ADM-S5 / ADM-S6 / ADM-S7 / ADM-S9 / ADM-S10 / ADM-S11 はPT-0基盤とPT-6コンポーネントの上に順次実装し、全12画面がプロト対象（対象外の管理画面を作らない）。ユーザー面とテーマ・コンポーネント基盤（PT-0）を共有するが、面としては分離する（REQ-ADM-01）。
+7. **PT-6 管理面トラック（開発管理者コンソール）**: AOS-L3-ADMIN-SCREEN-INVENTORY に従い、ADM-S8（Pack・プロンプト・ゲート管理＝新設REQ-ADM-10の検証）→ ADM-S4（コスト・観測）→ ADM-S2（課金・入金reconciliation）→ ADM-S12（サポートデスク: キュー/SLA/deflection・FAQ還流起票・期限付き代理調査導線＝PT-Yで検証）の順で作る。残る ADM-S1 / ADM-S3 / ADM-S5 / ADM-S6 / ADM-S7 / ADM-S9 / ADM-S10 / ADM-S11 はPT-0基盤とPT-6コンポーネントの上に順次実装し、全12画面がプロト対象（対象外の管理画面を作らない）。ユーザー面とテーマ・コンポーネント基盤（PT-0）を共有するが、面としては分離する（REQ-ADM-01）。
 
 通常ビュー→Agent Officeの順は REQ-DUR-02（DU-15: 通常ビュー完成後にAgent Officeを乗せる）の思想に合わせる。
 
@@ -169,7 +169,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-U: 第二階層タブ台帳（§5）どおりのタブ構成で各画面が分割表示され、タブへのURL直リンクと通知からのタブ直遷移が機能し、W4がリンク再調整/波及の小リライト承認を扱える。｜ REQ-NAV-02 / REQ-KGA-19 / REQ-RWR-08（AC-NAV-05）
 - [ ] PT-T: S1プランニングタブ（目標→配分→予測レンジ→実績）、S2トポロジープランナー（ツリー表示とリンク再調整キュー）、S5リライトブリーフ・好調保護・インデックス問題一覧、ウォッチリストのピン留め→通知が動作する。｜ REQ-PRODUCT-17 / REQ-KGA-19/20/21 / REQ-RWR-08（AC-TOPO-01ほか）
 - [ ] PT-Z: 主要行動（生成起動・承認・保留対応・通知確認）がキーボードのみで到達でき、フォーカスリングが両テーマで可視、prefers-reduced-motionでpulse/glow/キャラアニメが停止し、自動チェック（コントラスト・ラベル欠落）が通る。｜ REQ-NAV-08（AC-NAV-06）
-- [ ] PT-Y: W10でユーザー起票→AI一次応答（スコープ内参照限定・低確信時は捏造せずエスカレーション提案）→ADM-S12キュー着信→SLA/優先度で対応→回答がW10チケット追跡に反映される往復が動作し、deflection計測が表示され、解決ナレッジのFAQ還流起票（ADM-10統制）となりすまし調査導線（step-up＋監査記録）が機能する。｜ REQ-PRODUCT-22 / REQ-SEC-16（AC-SUPPORT-01/02）
+- [ ] PT-Y: W10でユーザー起票→AI一次応答（スコープ内参照限定・低確信時は捏造せずエスカレーション提案）→ADM-S12キュー着信→SLA/優先度で対応→回答がW10チケット追跡に反映される往復が動作し、deflection計測が表示される。解決ナレッジはFAQ還流起票（ADM-10統制）へ接続する。顧客data調査はAdminが顧客・Site・operation・期限を指定したManager代理Scopeだけで行い、代理表示、step-up、監査、失効が機能する。｜ REQ-PRODUCT-22 / REQ-SEC-16 / REQ-ACCESS-01〜03（AC-SUPPORT-01/02）
 - [ ] PT-X（fixture必須セット）: モックデータ/モックイベントに以下の異常系・境界系fixtureを必ず含め、正常系のみのプロトにしない——①GSC匿名化・切り捨て（匿名化分の別掲表示、REQ-KGA-11/15）②tenant/site境界違反の拒否（fail-close表示、REQ-SEC-07）③クレジット不足・予算超過（Preflight差し戻し、REQ-SEC-12）④hard gate保留（W3の保留導線・影響帰属、REQ-AGENT-08）⑤scheduled選択時の鮮度警告（REQ-KGA-18/BILL-11）⑥自動運用有効化の確認UI（契約者またはサイトオーナー＋必要な業務権限、Site Assignment、step-up、同意version、REQ-WPA-04／REQ-ACCESS-16）⑦登録同意未済ブロック（W9、REQ-PRODUCT-09）。fixtureは現行L3 Contract SchemasとGate A-1 Event Envelopeに準拠し、Gate A-5は旧互換baselineとして必要な項目だけを参照する。
 - [ ] PT-S: 画面遷移図（AOS-L3-SCREEN-FLOW）の全パスがクリックで到達可能で、通知→対処が2遷移以内、行き止まり（次アクションのない画面/空状態）が存在しない。｜ REQ-UJ-01〜09（AC-UJ-01〜09）
 - [ ] PT-R: S2でキーワード選択→「記事作成」→S3に起点・グループ・推奨タイプがプリセットされ、assigned済みグループでは起動時にリライト誘導が表示され、複数選択の一括投入で「おまかせ」既定＋Preflight合算が出る。｜ REQ-NAV-04 / REQ-KGA-14 / REQ-BILL-11（AC-NAV-05）

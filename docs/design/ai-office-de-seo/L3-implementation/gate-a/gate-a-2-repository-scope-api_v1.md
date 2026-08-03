@@ -52,7 +52,7 @@ SiteDb.repo<T extends SiteTable>(t): ScopedRepo<T>
 - アプリ/Executor/API層から到達可能なクエリ手段は `db.forTenant / db.forSite` のみ。Unscopedなハンドルをexportしない（モジュール境界＋lint/依存ルールで強制）。
 - Executorはこの層にすら触れない（Source Pack経由のみ, REQ-PACK-06）。
 - 越境・スコープ未指定はコンパイル/実行時の双方でfail-close＋監査（REQ-SEC-07, AC-TENANT-02）。
-- `authorization_epoch`、Membership、Site Assignment、Delegationの変更後は既存Scopeを再利用せず再解決する。Scopeの存在だけでupdate、execute、approve、publish、purchase、impersonateを許可しない。
+- `authorization_epoch`、Membership、Site Assignment、Delegationの変更後は既存Scopeを再利用せず再解決する。Scopeの存在だけでupdate、execute、approve、publish、purchase、delegate_accessを許可しない。内部Managerの代理ScopeはAdminが付与したoperationだけを許可し、顧客User Sessionへ変換しない。
 
 ## 3. RLS（多層防御・方針決定）
 

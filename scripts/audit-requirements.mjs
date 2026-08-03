@@ -457,6 +457,28 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-ac
   "Presentation Assembly（装飾・アイキャッチ・CTA・内部link・CMS形式変換）",
   "Managerの期限付き代理調査、権限失効",
   "内部actorを顧客本人へ書き換えない",
+  "Managerの期限付き代理アクセスがAdmin指定の顧客・Site・operation・期限へ制限",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/security-access-requirements_v1.md", [
+  "REQ-ACCESS-11 監査・期限付き代理アクセス表示",
+  "export、delegate_access等のPermission",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-admin-console-requirements_v3.7.md", [
+  "Platform AdminがManagerへ対象顧客、Site、許可operation、理由、有効期限を指定",
+  "Operatorはログ・trace確認だけ",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-admin-console-requirements_v3.7.md", [
+  "impersonation）は原則read-only",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
+  "export / delegate_access",
+  "顧客Userへのなりすましを表さない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md", [
+  "DelegatedAccessBanner",
+]);
+assertExcludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md", [
+  "ImpersonationBanner",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-navigation-ui-requirements_v3.7.md", [
   "React/HTML/CSSコンポーネントで描画する",

@@ -37,14 +37,14 @@ preflight estimate vs actual、workflow/ticket/provider別 token・cost、Prompt
 
 開発運用ダッシュボード、登録ユーザー情報、利用者運用ログを扱う。Feature Flag / Kill Switch（`REQ-DUR`）、直接公開の承認・停止制御、Provider/APIキー/routing変更・返金・手動クレジット操作の監査ログを持つ。ログには本文全文・プロンプト全文を残さず、hashと処理結果を残す（`REQ-SEC`）。
 
-## 6. 認可・監査・なりすまし（一般SaaS標準）  ［REQ-ADM-06］
+## 6. 認可・監査・期限付き代理アクセス  ［REQ-ADM-06］
 
 一般的なB2B SaaS運用ベストプラクティスに基づく（要調整）。本製品の `tenant_id`/`site_id` 境界（`REQ-SEC-11`）に適合させる。
 
 - 内部（プラットフォーム運用）ロールと、テナント内ロールを分離する。内部ロールは顧客組織へ漏らさない。最小権限（least privilege）を原則とする。
 - クロステナントの運用操作は常時付与せず、break-glass / just-in-time昇格（時間制限つき・理由必須・全操作監査）で行う。
 - 監査ログは不変（immutable）・テナント分離・非同期書き込みとし、スキーマは `{ id, timestamp, actor_id, actor_type(user/system/api_key), action, resource_type, resource_id, tenant_id, changes(diff), ip, user_agent, metadata }`。本文全文・プロンプト全文・APIキー原文は残さない（`REQ-SEC-11`）。
-- サポートのなりすまし（impersonation）は原則read-only、UIに明示表示、acting/target両ユーザーと理由を記録する。生トークン・共有セッションを使わない。
+- 顧客支援は顧客Userへのなりすましではなく、Platform AdminがManagerへ対象顧客、Site、許可operation、理由、有効期限を指定する期限付き代理権限として扱う。Managerは付与範囲内でread／update／job再実行等を実行でき、画面には代理操作中であることを常時表示する。内部actor、顧客Context、付与者、理由、操作、期限を監査し、顧客本人として記録しない。Operatorはログ・trace確認だけを行い、顧客dataや顧客画面へ入らない。生トークン・共有セッションを使わない。
 - 権限変更は Preview → Validate → Approve → Apply → Audit → Rollback の順に扱い、ロール/権限定義はversion管理する。secretはsecrets managerで管理し環境変数平文に置かない。
 
 ## 7. 可観測性・SLO・インシデント（運用面）  ［REQ-ADM-07］

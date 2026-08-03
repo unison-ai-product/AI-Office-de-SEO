@@ -452,7 +452,7 @@ output {
 }
 ```
 
-- actionは少なくとも`read / create / update / delete / execute / approve / write_draft / schedule / publish / connect / purchase / export / impersonate`を区別する。
+- actionは少なくとも`read / create / update / delete / execute / approve / write_draft / schedule / publish / connect / purchase / export / delegate_access`を区別する。`delegate_access`は内部AdminがManagerへ期限付きScopeを発行・取消する管理操作であり、顧客Userへのなりすましを表さない。
 - 顧客基本権限、業務Permission bundle、内部Roleを同じassignment namespaceへ格納しない。
 - Recommendation採用時の判定結果はIntakeへ参照できるが、後続副作用の権限をfreezeする証明には使わない。job起動、Agent tool、CMS write、公開時に現在policyで再判定する。
 - UI／Officeはreason codeを平易な表示へ変換するだけで、allow／denyを計算しない。

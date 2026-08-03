@@ -23,7 +23,7 @@ updated_at: 2026-07-30
 - OAuth token、API key、Webhook secret、KMS
 - step-up認証、招待、全端末失効、契約者回復
 - Executorの直DB禁止
-- 監査ログ、なりすまし、越境負テスト
+- 監査ログ、期限付き代理アクセス、越境負テスト
 - 一時本文、ログ、キャッシュ、キュー、オブジェクトの分離
 
 既存ソース: `ai-office-de-seo-security-observability-requirements_v3.7.md`、`ai-office-de-seo-product-requirements_v3.7.md` §2/8/10。
@@ -76,7 +76,7 @@ AI Executorは本番DBへ直接接続せず、許可されたtool/APIをSiteSand
 
 Feature ProviderがMCP等の動的Discoveryを利用する場合も、接続先が提示したTool、Resource、Prompt、Schemaを自動承認しない。前回承認済みManifestとの差分、追加Permission、外部送信、破壊的operation、課金meterを検査し、Scopeが増える更新は管理承認と顧客再同意を要求する。Provider由来の説明・Resource・Promptは外部入力として扱い、固定安全制約を上書きさせない。
 
-### REQ-ACCESS-11 監査・なりすまし表示
+### REQ-ACCESS-11 監査・期限付き代理アクセス表示
 
 認証、拒否、Role変更、秘密アクセス、step-up、代理アクセス、公開、課金、Kill Switch、設定変更をappend-only監査eventへ記録する。代理操作中はacting principalとcustomer contextを画面・API・監査で分離し、顧客本人の操作として記録しない。監査eventにも本文・秘密原文を含めない。
 
@@ -95,7 +95,7 @@ Feature ProviderがMCP等の動的Discoveryを利用する場合も、接続先�
 すべての画面、API、job、Agent tool、外部Adapter、管理操作は、共通の認可判定契約 `AuthorizationDecision(principal, action, resource, context)` を使用する。判定入力は少なくとも次を持つ。
 
 - `principal`: customer user、internal operator、service、AI executorの種別と認証済みID
-- `action`: read、create、update、delete、execute、approve、publish、connect、purchase、export、impersonate等のPermission
+- `action`: read、create、update、delete、execute、approve、publish、connect、purchase、export、delegate_access等のPermission
 - `resource`: tenant、organization node、Site、記事、Keyword、Recommendation、Task、connection、credit、billing、secret等のIDと所有境界
 - `context`: active tenant／organization／Site、Membership、Site Assignment、基本権限、業務タグ、Plan Entitlement、認証強度、代理権限、job、環境
 
