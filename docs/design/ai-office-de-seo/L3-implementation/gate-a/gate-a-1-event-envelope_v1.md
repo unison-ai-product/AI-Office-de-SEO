@@ -91,7 +91,7 @@ updated_at: 2026-08-03
 | search.coverage_assessed | url_hash | O | REQ-KGA-05 |
 | search.query_drift_detected | url_hash, drift_type | O | REQ-KGA-06 |
 | search.cannibalization_detected | url_hashes[], scores | N,O | REQ-KGA-07 |
-| search.rewrite_candidate_raised | url_hash, priority_score | O | REQ-RWR-06 |
+| search.rewrite_candidate_raised | recommendation_id, version, article_ref, article_summary_ref, article_read_snapshot_ref, content_hash, reason_codes[], evidence_refs[], input_availability, observed_at, priority_score | O | REQ-BUS-02, REQ-RWR-06, REQ-LOGIC-02 |
 | search.longtail_cluster_promoted | cluster_id, target(parent/backlog) | N,O | REQ-KGA-16（通知種別化はv1.2・REQ-PRODUCT-11） |
 | search.match_stats_updated | click_weighted_rate, tier_breakdown | O | REQ-KGA-15 |
 | search.anomaly_detected | scope, delta, factors[] | N,O | REQ-KGA-20 |

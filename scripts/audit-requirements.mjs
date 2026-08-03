@@ -791,6 +791,24 @@ if (!/\| D-03 \|[^\r\n]+contract decided[^\r\n]+LB-05/.test(l3Decision)) {
 if (!/\| D-28 \|[^\r\n]+DD-14[^\r\n]+画面実装着手前[^\r\n]+open/.test(l3Decision)) {
   fail(errors, "L3 decision D-28: accessibility design gap is not classified before screen implementation");
 }
+const domainModelPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
+);
+const domainModel = fs.readFileSync(domainModelPath, "utf8");
+for (const requiredPhrase of ["Article Read Snapshot", "GSCまたはKeyword実績だけの候補", "Rewrite Intakeへdispatchしない"]) {
+  if (!domainModel.includes(requiredPhrase)) {
+    fail(errors, `domain model: rewrite retrieval invariant missing: ${requiredPhrase}`);
+  }
+}
+const eventCatalogPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md",
+);
+const eventCatalog = fs.readFileSync(eventCatalogPath, "utf8");
+if (!/search\.rewrite_candidate_raised \|[^\r\n]+article_read_snapshot_ref[^\r\n]+input_availability/.test(eventCatalog)) {
+  fail(errors, "event catalog: rewrite candidate event lacks article retrieval and availability evidence");
+}
 const layerPlanChecks = [
   ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],

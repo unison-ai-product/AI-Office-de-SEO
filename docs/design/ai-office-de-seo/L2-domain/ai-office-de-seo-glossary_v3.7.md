@@ -57,7 +57,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Coverage | 登録被覆率／クリック加重被覆率。未カバー主題を検出 | REQ-KGA-05 |
 | Query Drift | 記事の獲得クエリのずれ分類 | REQ-KGA-06 |
 | Cannibalization | 被覆重複>50%かつ流入分散のカニバリ | REQ-KGA-07 |
-| Rewrite Candidate | GSC実績・カニバリから機械判定したリライト対象 | REQ-KGA-08 / REQ-RWR-06 |
+| Rewrite Candidate | GSC／登録Keyword等の分析信号と、取得済みArticle Summary・本文構造・公開状態・施策履歴・競合差分等から原因分類したリライト候補。本文変更を伴う候補は対象記事の読取りSnapshotが成立していることを必要とし、GSCまたはKeyword実績だけでは成立しない | REQ-BUS-02 / REQ-KGA-08 / REQ-RWR-06 / REQ-LOGIC-02 |
 | Anonymized Query | GSCが匿名化するクエリ（合計と一致しない前提） | REQ-KGA-11 |
 | Watchlist | ユーザーが手動ピン留めするキーワード監視（しきい値通知・下落時導線） | REQ-KGA-20 |
 | Volatility Guard | SERP/アルゴ変動期間中にリライト・統合の重大判定を保留する判断ガード | REQ-KGA-20 |
