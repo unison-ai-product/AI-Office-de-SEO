@@ -24,9 +24,9 @@ Agent Officeと内部Executor／Workflowの境界は `ai-office-de-seo-agent-req
 同じTask・Agent・工程event・Contextを共有し、役割を分ける2モードを持つ。
 
 - Standard SaaS: サイドメニュー → タブ/一覧 → 詳細。白基調・業務効率重視。
-- Agent Office: オフィス表示 → エージェント／部屋を選択 → 会話・設備・Task Panelから、実行中Task、工程、待機、完了、失敗、成果要約を監視する。暗色オフィス背景＋透過パーツ。
+- Agent Office: オフィス表示 → エージェント／部屋を選択 → 会話・設備・Task Panelから、通常ビューで提示されたRecommendationや成果を専門的に確認し、根拠・分析・設定・Taskを段階的に掘り下げて調整する。実行中Task、工程、待機、完了、失敗も同じ業務Contextで確認する。暗色オフィス背景＋透過パーツ。
 
-通常ビューは簡単な判断、採否、承認、基本設定、成果要約を担う。Agent Officeはエージェントの実行状況を見守りながら、詳細分析、根拠探索、条件・方針変更、Task変更、Agent指示を行う玄人向け運用面とする。定型操作は選択式ポップアップから決定論Serviceへ接続し、自由文は必要な場合だけLLMで型付きProposalへ変換する。両Viewは同じProjectionと共通Commandを使う。
+通常ビューは、SEOに詳しくないユーザーでもRecommendationに沿って簡単な判断、採否、承認、基本設定、成果確認を完了できる主導線とする。Agent Officeは「専門的に見たい」「根拠を確かめたい」「少し条件を変えたい」段階から入り、軽い確認・微調整から高度な分析・運用までを連続的に扱う。定型操作は選択式ポップアップから決定論Serviceへ接続し、自由文は必要な場合だけLLMで型付きProposalへ変換する。両Viewは同じProjectionと共通Commandを使う。
 
 ## 2. 第一階層7画面  ［REQ-AOUI-02］
 
@@ -40,7 +40,7 @@ Agent Officeは部門（部屋）とエージェント（キャラ）で構成�
 
 ## 4. ペルソナ⇄内部エージェント/工程マッピング  ［REQ-AOUI-04］
 
-Agent Officeが実状態を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、担当業務へ対応づける。ペルソナは独立runtimeそのものではなく、現在Task、工程、待機理由、完了成果、次の確認先を説明する監視上の窓口である。ペルソナ数だけ専用LLM、常駐processまたは独立記憶を作らない。
+Agent Officeが実状態を反映するため、ユーザー向けペルソナ（基本12＋拡張1=technical_seo、`REQ-AOUI-03`。config追加分も同様）を、内部Executor（`REQ-AGENT-01`）、工程（`REQ-AGENT-09`）、決定論サービス、担当業務へ対応づける。ペルソナは独立runtimeそのものではなく、現在Task、工程、待機理由、完了成果を説明し、担当領域の分析・設定・Task操作へ案内するOffice上の業務窓口である。ペルソナ数だけ専用LLM、常駐processまたは独立記憶を作らない。
 
 | persona | 監視対象 | 読むProjection | Officeで説明する内容 | Officeで作れる型付きProposal | 通常ビューの成果／一覧 | Office設備 |
 |---|---|---|---|---|---|---|
@@ -51,7 +51,7 @@ Agent Officeが実状態を反映するため、ユーザー向けペルソナ�
 | `content_writer` | 新規記事・リライト制作 | ContentProductionJob、Outline、Writing Snapshot | 執筆工程、現在のMeaning Unit、停止・再開理由 | 本文限定変更・追加要望・再生成Task | S4記事制作・Outline | Draft desk、Meaning Unit board |
 | `link_architect` | 内部Link計算・Patch候補 | Link Analysis Task、Patch Candidate | 候補計算の進捗、対象記事、依存Task | Link候補採否・接続文Repair・順序変更 | S5内部Link候補 | Link graph table、candidate queue |
 | `qa_checker` | Quality Gate・Repair | QA Snapshot、Gate Result、Repair Task | Gate結果、指摘理由、Repair進捗、判断待ち | 差し戻し・限定Repair・二段階確認 | S4 QA・差分・承認 | QA console、evidence desk |
-| `publish_manager` | CMS下書き・反映確認 | CmsDelivery、Approval、Output Vault | 送信、再送待ち、承認待ち、反映結果 | 送信・再送・予約・承認・公開 | S4承認・公開、S6 CMS接続 | Publishing desk、CMS status |
+| `publish_manager` | CMS下書き、公開判定、予約・実行、反映Fact、評価登録 | Generation Outcome、CmsDelivery、Publication Decision／Job／Fact、Approval、Evaluation Registration | 成果提供、下書き、判定根拠、承認待ち、予約、実行・再試行、外部検証、帰属、評価登録 | 送信・再送・予約・承認・公開、帰属再照合、評価登録確認 | S3生成履歴、S4承認・公開、S5評価、S6 CMS接続 | Publishing desk、CMS status、Publication evidence |
 | `automation_operator` | 自動予定・実行Queue | Automation Task、schedule、Kill Switch | 実行順、停止理由、再開条件、Credit消費 | Policy・予定・停止・再開 | S3週次予定、S4自動運用設定 | Operations board、queue rail |
 | `knowledge_trainer` | Site補正・学習更新 | Learning Task、Pack version、correction | 再学習時期、適用version、承認待ち | 採用・無効化・再学習・適用先変更 | S2補正、S6文体・装飾設定 | Knowledge graph、version shelf |
 | `security_admin` | 接続・認証・権限診断 | Authorization Decision、Connection Health | 認証切れ、権限不足、必要なユーザー操作 | 再認証・権限・Site付与・同意更新 | S6接続・権限・同意 | Access console、connection health |

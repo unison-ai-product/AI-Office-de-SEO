@@ -78,6 +78,7 @@ updated_at: 2026-08-03
 | generation.job_completed | generation_outcome_id, deliverable_provided_at, credit_commit_ref | W,N,O,A | REQ-AGENT-01, REQ-BILLING-04 |
 | generation.job_failed | reason, generation_outcome_id(null), reserve_disposition(held/released), retryable, resume_from? | W,N,O,A | REQ-AGENT-01/10, REQ-BILLING-04 |
 | generation.job_cancelled | cause, generation_outcome_id?, reserve_disposition(unchanged/released) | W,N,O,A | REQ-AGENT-10, REQ-BILLING-04 |
+| workflow.run_completed | workflow_run_id, workflow_key, completion_kind(publication_job_handoff/carried_out/cancelled/failed_terminal), generation_outcome_ref?, cms_delivery_ref?, publication_job_ref?, correlation_id | W,O,A | REQ-AGENT-09/10 |
 | rewrite.job_started | workflow_key(rewrite), target_url_hash | W,O | REQ-RWR-01 |
 | rewrite.patch_applied | section_id, operation | W,O | REQ-RWR-03 |
 | rewrite.quality_failed | failed_gates[] | W,O | REQ-RWR-05 |
@@ -134,6 +135,9 @@ updated_at: 2026-08-03
 | plan.monthly_closed | period, source_report_ref, target_delta, factors[] | N,O | REQ-PRODUCT-17 |
 | evaluation.intervention_due | evaluation_id, intervention_ref, article_ref, window | W,N,O | REQ-LOGIC-06 |
 | evaluation.intervention_completed | evaluation_id, intervention_ref, article_ref, window, outcome, next_action? | W,N,O | REQ-LOGIC-06/08, REQ-DATA-07 |
+| evaluation.intervention_registered | evaluation_id, intervention_ref, publication_fact_ref, baseline_ref, evaluation_origin_at, checkpoints(1_month/3_month/6_month), correlation_id | W,O,A | REQ-MEASURE-13/14 |
+| site.activated | activation_id, site_id, recommendation_ref, publication_fact_ref, activated_at, funnel_version | W,O,A | REQ-MEASURE-13 |
+| product.loop_completed | loop_completion_id, site_id, recommendation_ref, publication_fact_ref, evaluation_id, completed_at, metric_rule_version | O,A | REQ-MEASURE-13 |
 | automation.change_budget_exhausted | budget_ref, queued | N,O,A | REQ-PRODUCT-18 |
 | automation.oscillation_detected | targets[] | N,O,A | REQ-PRODUCT-18 |
 | cms.connection_diagnosed | connection_profile_id, version, cms_kind, state, required_user_actions[] | W,N,O | REQ-INT-05/06/09 |
@@ -205,23 +209,24 @@ updated_at: 2026-08-03
 | source.fanout_expanded | facets[] | O | REQ-SRC-09 |
 | source.competitor_structure_extracted | keyword | O | REQ-SRC-03 |
 | source.fetch_throttled | provider, deferred_to | N(繰延), O | REQ-SRC-07 |
-| publish.envelope_sealed | post_refs | W,O | REQ-WPA-09 |
+| publication.envelope_sealed | post_envelope_ref, content_hash, expires_at | W,O | REQ-WPA-09 |
 | cms.draft_created | cms_delivery_id, cms_adapter_key, external_post_refs[], edit_url?, preview_url?, resulting_hash, correlation_id | W,O | REQ-INT-05/06/10, REQ-WPA-04, REQ-SCREEN-15 |
-| publish.decision_recorded | publication_decision_id, operation, decision, reasons[], correlation_id | W,O,A | REQ-LOGIC-04/05 |
-| publish.scheduled | schedule_at | W,O | REQ-WPA-04 |
-| publish.approval_requested | requester, schedule_at? | N,O | REQ-WPA-04 |
-| publish.approved | approver | N,O,A | REQ-WPA-04 |
-| publish.rejected | approver, reason | N,O,A | REQ-WPA-04 |
-| publish.published | cms_url, cms_content_ref, publication_decision_ref | N,O | REQ-WPA-04, REQ-INT-06 |
-| publish.updated | cms_ref, operation, resulting_hash, publication_decision_ref | N,O,A | REQ-LOGIC-05/06, REQ-WPA-04 |
-| publish.failed | reason | N,O | REQ-WPA-04 |
-| publish.cv_recorded | goal, date, count | O | REQ-WPA-05 |
+| publication.decision_recorded | publication_decision_id, version, operation, decision, reasons[], expires_at?, correlation_id | W,O,A | REQ-LOGIC-04/05 |
+| publication.approval_requested | publication_decision_ref, requester_ref, expires_at?, proposed_schedule_at? | N,O,A | REQ-WPA-04 |
+| publication.approval_confirmed | publication_decision_ref, confirmation_ref, approver_ref, consent_version? | N,O,A | REQ-WPA-04 |
+| publication.approval_rejected | publication_decision_ref, approver_ref, reason_code | N,O,A | REQ-WPA-04 |
+| publication.job_scheduled | publication_job_id, publication_decision_ref, cms_delivery_ref, execute_at, timezone, idempotency_key | W,O,A | REQ-WPA-04 |
+| publication.job_started | publication_job_id, publication_decision_ref, attempt_count, target_content_hash, idempotency_key | W,O,A | REQ-WPA-04, REQ-TECH-07 |
+| publication.job_verification_pending | publication_job_id, external_command_ref?, external_post_ref?, retry_at?, evidence_ref? | W,N,O | REQ-WPA-04, REQ-INT-06 |
+| publication.job_failed | publication_job_id, failure_class, retryable, attempt_count, last_error_ref | W,N,O,A | REQ-WPA-04 |
+| publication.job_cancelled | publication_job_id, reason_code, cancelled_by_ref?, prior_state | W,N,O,A | REQ-WPA-04 |
+| publication.fact_recorded | publication_fact_id, publication_job_ref?, effect_kind, attribution, external_post_ref, canonical_url_ref, resulting_content_hash, effective_at, verified_at, verification_evidence_ref, correlation_id? | N,O,A | REQ-WPA-04, REQ-INT-06, REQ-MEASURE-13/14 |
+| publication.attribution_reconciled | prior_publication_fact_ref, new_publication_fact_ref, from_attribution, to_attribution, evidence_refs[], rule_version | O,A | REQ-MEASURE-14 |
+| publication.cv_recorded | goal_ref, date, url_ref, count | O | REQ-WPA-05 |
 | billing.credit_reserved | amount, ledger_ref | O,A | REQ-BILL-07 |
 | billing.credit_committed | amount, ledger_ref | O,A | REQ-BILL-07 |
 | billing.credit_released | amount, ledger_ref | O,A | REQ-BILL-07 |
 | billing.monthly_granted | amount | N,O,A | REQ-BILL-08 |
-
-移行規則: 旧`generation.article_assembled`は`generation.semantic_assembled`、旧`publish.draft_created`は`cms.draft_created`へ読み替えるmigration aliasであり、新規producerは発行しない。装飾・アイキャッチ・CTA／内部link配置・CMS形式化の完了をSemantic Assemblyへ混在させず、`generation.presentation_assembled`で表す。
 | billing.balance_low | threshold | N,O,A | REQ-BILL-02 |
 | billing.subscription_state_changed | from, to | N,O,A | REQ-BILL-08 |
 | billing.batch_lane_fallback | job_id, delta_estimate | N,O | REQ-BILL-11 |
@@ -250,6 +255,8 @@ updated_at: 2026-08-03
 | security.plugin_update_available | site_ref, version | N,O | REQ-WPA-07 |
 | network.dictionary_candidate_promoted | candidate_ref（**提案生成。適用はADM統制**） | N(admin),O,A | REQ-PRODUCT-13 |
 | network.prior_updated | prior_version（**提案生成。適用はADM統制**） | N(admin),O,A | REQ-PRODUCT-13 |
+
+移行規則: 旧`generation.article_assembled`は`generation.semantic_assembled`、旧`publish.draft_created`は`cms.draft_created`へ読み替えるmigration aliasであり、新規producerは発行しない。旧`publish.decision_recorded / scheduled / approval_requested / approved / rejected / published / updated / failed / cv_recorded`は、Decision、Approval、Job、Fact、CV集計の該当`publication.*` eventへ移行し、新規producerは発行しない。旧`publish.published / updated`をPublication Factへ移行する場合も外部検証証拠、resulting content hash、effective time、帰属が不足する行を`ai_office_publication`へ補完せず`unknown_source / pending`とする。装飾・アイキャッチ・CTA／内部link配置・CMS形式化の完了をSemantic Assemblyへ混在させず、`generation.presentation_assembled`で表す。
 
 監査対象イベント（A印）の正本は監査ログであり、イベント・通知はその写像（REQ-SEC-10 / REQ-PRODUCT-11）。モックイベント（プロトPT-0）は本カタログと同形で作成する。
 

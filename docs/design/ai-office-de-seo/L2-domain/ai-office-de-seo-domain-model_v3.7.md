@@ -185,7 +185,7 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 
 ### 4.3.4 InterventionEvaluation
 
-- ルート: InterventionEvaluation。制作時の「新規／リライト」ではなく、公開または実質的更新eventを評価起点とする。
+- ルート: InterventionEvaluation。制作時の「新規／リライト」ではなく、検証済みPublication Factの`effective_at`を評価起点とする。`ai_office_publication`は主介入、実質的`external_change`は交絡要因、`unknown_source`は帰属確認中として分離する。
 - 値: ArticlePurpose、SearchIntent、Keyword Cluster、CV Goal、1／3／6か月Checkpoint、SEO、CTA/CV、認知、外部市場調整、availability、Outcome、NextAction。
 - 不変条件: 割当Keyword集合が意図どおり順位を獲得したかを第一に評価する／CVなしだけを異常にしない／CTA変更でSEO周期をresetしない／急変を即時Recommendationにしない／直近1か月1,000 click未満の予測対象をデータ不足と分離する／Site補正が順位へ悪影響を及ぼす変更はユーザー承認を要求する。
 
@@ -200,13 +200,13 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - 状態: `candidate → proposed → accepted/rejected/held/expired → approved → scheduled → applying → applied/failed/conflict → measuring → evaluated`。
 - 不変条件: 全文リライトへ偽装しない／CTA専用Agent・専用Writing Ticketを必須にしない／Batchの一部失敗を全件成功へ丸めない／CMS反映確認前にappliedとしない／内部link削除は追加と別確認／CTA変更はSEO評価周期をリセットしない／ユーザー編集競合時は古い位置へ適用しない。
 
-### 4.5 CmsDeliveryJob / PublicationJob / PostEnvelope（Publishing）
-- ルート: CmsDeliveryJobとPublicationJob。PostEnvelopeはDelivery入力としてversion・hash・TTL付き参照で内包する。
+### 4.5 CmsDeliveryJob / PublicationDecision / PublicationJob / PublicationFact / PostEnvelope（Publishing）
+- ルート: CmsDeliveryJob、PublicationDecision、PublicationJob、PublicationFact。PostEnvelopeはDelivery入力としてversion・hash・TTL付き参照で内包する。
 - CmsDeliveryJobはPresentation Assembly完了後の成果保持、write再診断、下書き作成、反映確認、再送、持ち出しを追跡する。状態は`prepared / connection_required / permission_required / delivering / draft_created / verification_pending / verified / failed_retryable / failed_terminal / carried_out / cancelled`とし、生成完了とCMS送信成功を同じ状態にしない。
 - CmsDeliveryJobは`REQ-INT-10`を正本とし、接続・権限・一時障害後も同一Delivery IDとidempotency keyで再開する。再開を再生成、追加credit消費または別下書き作成へ変換せず、外部反映確認後だけ`verified`へ進める。
 - 不変条件: QA・権限・予算・接続・Automation Policyを副作用直前に再判定する／接続不足でも成果を失敗・再生成扱いにせず同一idempotency keyで再開する／持ち出しを公開成功としない／最初の新規15記事およびリライト・記事置換は所定の承認を要求する／解放済み新規記事はAutomation Policyの範囲で自動公開できる／hard gate例外は判定を残した二段階確認・版付き同意による手動公開だけを許可する／CMS能力にないslot/blockはfail-close（REQ-WPA-08）／最終HTML全文は恒久保存しない（REQ-WPA-09）。
 
-`PublicationDecision`はPublicationJobの副作用前判定を独立して記録する。15件count、Automation同意、リライト承認、hard gate二段階確認、現在の認可・予算・接続を入力にし、ready／blocked／approved／publishedを追跡する。15件countは公開成功eventから導出し、管理画面やClientから任意加算しない。
+`PublicationDecision`はPublicationJobの副作用前判定を不変versionとして記録し、実行結果を後書きしない。15件count、Automation同意、リライト承認、hard gate二段階確認、現在の認可・予算・接続を入力にし、approval required／automation allowed／approved for execution／blocked／rejectedを返す。`PublicationJob`は予約・実行・再試行・反映確認、`PublicationFact`は外部検証済みの公開／更新事実、content hash、effective time、帰属を担う。15件countは、人間承認済み・新規・`ai_office_publication`のFactから導出し、予約、API受付、外部変更、帰属不明、管理画面またはClientから任意加算しない。
 
 ### 4.5.1 CmsConnectionProfile / ArticleReadProfile（Publishing & Integration）
 

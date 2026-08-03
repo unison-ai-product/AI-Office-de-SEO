@@ -57,7 +57,7 @@ Dashboardの主領域は単なる稼働状況ではなく、ユーザー判断�
 
 ユーザーがRecommendation外のKeyword、記事、施策を追加した場合は、指定を維持したまま、予算、週次上限、重複、カニバリ、依存関係、内部リンク機会への影響を相談形式で表示する。推奨順序を強制せず、「指定どおり実行」「推奨順序へ変更」「今回は保留」を選択できる。
 
-新規Siteでは、本システムで新規作成し、完成記事を人間承認後に公開成功した記事だけを15件まで進捗表示する。既存記事・外部記事・リライトは進捗へ含めない。到達前は新規記事の自動投稿設定を利用不能とし、到達後は同意書の版・要点・責任境界と自動投稿の対象範囲、予算、停止条件を確認して有効化できる。見出し構成確認はSite単位でON/OFFでき、ON時はOutlineで停止して見出しを編集・確定できる。
+新規Siteでは、本システムで新規作成し、完成記事の人間承認証拠とconfirmed `ai_office_publication` Factを持つ記事だけを15件まで進捗表示する。予約、下書き、API受付、外部変更、帰属確認中、既存記事・外部記事・リライトは進捗へ含めない。到達前は新規記事の自動投稿設定を利用不能とし、到達後は同意書の版・要点・責任境界と自動投稿の対象範囲、予算、停止条件を確認して有効化できる。見出し構成確認はSite単位でON/OFFでき、ON時はOutlineで停止して見出しを編集・確定できる。
 
 ### REQ-SCREEN-04 非同期状態
 
@@ -123,7 +123,7 @@ Site設定で「業界／業種」の2階層を複数選択し、優先順を並
 
 ### REQ-SCREEN-15 記事制作・リライト実行面
 
-新規記事の実行面は、Recommendation／手動起動、Intake結果、Preflight見積、Research Brief、Outline Contract、Section Brief、生成進捗、Quality Gate、限定Repair、Generation Outcome、CMS Delivery、CMS下書き、プレビュー、承認・Automation判定、公開結果を同一相関IDで追跡できる。Generation Outcomeでは成果提供日時、Presentation Snapshot、Output Vaultの利用期限、生成credit確定を表示し、CMS Deliveryでは接続待ち、送信、下書き、外部反映確認を表示する。生成成果提供済み、CMS下書き作成済み、公開／更新済みを一つの「完了」へ丸めない。初期WordPress AdapterではWordPress編集URL／Preview URLを表示する。
+新規記事の実行面は、Recommendation／手動起動、Intake結果、Preflight見積、Research Brief、Outline Contract、Section Brief、生成進捗、Quality Gate、限定Repair、Generation Outcome、CMS Delivery、CMS下書き、プレビュー、Publication Decision、承認、Publication Job、Publication Fact、評価対象登録を同一相関IDで追跡できる。Generation Outcomeでは成果提供日時、Presentation Snapshot、Output Vaultの利用期限、生成credit確定、CMS Deliveryでは接続待ち、送信、下書き、外部反映確認、Publication Decisionでは判定versionと理由、Publication Jobでは予約・実行・再試行、Publication Factでは検証済み公開／更新・帰属を表示する。生成成果提供済み、CMS下書き作成済み、予約済み、API受付済み、公開／更新確認済み、評価登録済みを一つの「完了」へ丸めない。初期WordPress AdapterではWordPress編集URL／Preview URLを表示する。
 
 リライト実行面は、原因、Article Read Snapshot、Edit Plan、対象section、許可operation、変更上限、保持対象、変更前後差分、title/meta、見出し、CTA、内部リンク、品質・保護結果、復元点、費用を表示する。変更対象外のsectionが維持されたことを確認できる。部分リライト・全文再生成ともCMS下書きまで送り、リスクと復元可否を確認してユーザーが更新を承認する。初期WordPress AdapterではWordPress下書きを使用する。全文再生成は高リスク操作として影響範囲と追加確認を伴って提供する。
 
@@ -179,7 +179,7 @@ soft limitでは削減・archive、処理延期、Plan変更、購入可能な�
 
 ### REQ-SCREEN-18 Agent Office専門分析・詳細運用
 
-通常ビューはSEO非専門者がシステムのRecommendationに沿って、採否、承認、基本設定、成果確認、Site／Cluster／記事の要点確認を少ない操作で完了する簡単操作面とする。専門的に確かめたい、根拠を見たい、条件を少し変えたい場合は、各Recommendation、分析結果またはTaskから「Officeで詳しく見る・調整する」を選び、対象Contextを維持して担当フロア、部屋、AgentまたはTask詳細Panelへ移動する。通常ビューだけでも主要業務は完結し、Officeは詳細度と操作自由度を段階的に上げる上級導線とする。
+通常ビューはSEO非専門者がシステムのRecommendationに沿って、採否、承認、基本設定、成果確認、Site／Cluster／記事の要点確認を少ない操作で完了する簡単操作面とする。専門的に確かめたい、根拠を見たい、条件を少し変えたい場合は、各Recommendation、分析結果またはTaskから「Officeで詳しく見る・調整する」を選び、対象Contextを維持して担当フロア、部屋、AgentまたはTask詳細Panelへ移動する。通常ビューだけでも主要業務は完結する。Officeは専門家だけに閉じた別製品ではなく、軽い確認・微調整から高度な分析・運用まで、詳細度と操作自由度を段階的に上げる導線とする。
 
 Agent Officeでは、担当Agent、実行中Task、工程、待機、判断待ち、完了、失敗、再開、消費Creditを実eventから表示する。Agent、エレベーター、部屋、設備からKeyword、Cluster、記事、Recommendation、成果、設定、Taskを玄人向けに詳細分析・操作できる。定型指示は選択式ポップアップと決定論Service、自由文は必要な場合だけLLMで型付きProposalへ変換する。影響・Credit・認可確認後に共通Commandへ渡し、結果を両Viewへ同期する。Office専用の業務正本、権限、変更Command、成果計算を作らない。
 
@@ -192,6 +192,8 @@ OfficeでAgentへ話しかけた場合は、選択式ポップアップを先に
 ### REQ-SCREEN-19 業務通知・完了表示
 
 Task完了、ユーザー確認待ち、承認期限、停止、失敗、再開、接続異常、credit・capacity到達等の業務eventは、Web画面内の一時popup／toastと、後から確認できる通知Centerへ表示する。完了通知を受け取るためだけに記事またはTaskへ「人間の担当者」を割り当てることを必須としない。通知は実行を開始したユーザー、対象Siteの基本権限・業務タグ、event種別ごとの購読設定から受信者を導出する。未処理の停止・承認等で受信者が成立しない場合だけ、対象Siteのサイトオーナーを通知先とする。
+
+生成成果提供、CMS下書き準備、承認待ち、公開予約、公開／更新反映確認、評価対象登録、Loop完了を別event・別文言で通知する。`workflow.run_completed(completion_kind=publication_job_handoff)`を「公開完了」と表示せず、「公開処理へ引き渡し済み」と表示する。予約確定は「予約済み（公開待ち）」、Publication Fact成立は「公開／更新を確認済み」、評価登録後は「評価を開始」と表示する。外部変更と帰属確認中はAI Officeによる公開完了通知を発行しない。
 
 ユーザーはSiteまたはユーザー単位で、event種別ごとに画面内通知・email等のchannel、即時／digest、ON／OFFを設定できる。課金失敗、権限喪失、接続停止等、サービス利用の継続判断に必要な通知は完全OFFにせず、最低限通知Centerへ残す。popupを閉じても通知Centerから消去せず、未読、既読、確認済み、対応済みを区別し、対象Task、記事、Recommendation、設定画面へ直接遷移できる。同一相関ID・同一状態の反復eventは重複表示を抑止する。
 
@@ -219,9 +221,9 @@ Task完了、ユーザー確認待ち、承認期限、停止、失敗、再開�
 - [ ] AC-L1-SCREEN-12: 文体の組合せと個別Site言い回し学習のON/OFFを設定でき、ON時だけサンプル記事10本を使用し、10本未満は暫定状態を確認できる。
 - [ ] AC-L1-SCREEN-13: 急変対象が通常推薦と分離され、1か月・3か月・6か月評価の状態と既存予定の継続を区別できる。
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。
-- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、Generation Outcomeの成果提供・Output Vault期限・生成credit確定、CMS Deliveryの保留・再開・外部反映確認、公開／更新結果、追加見積を同一相関IDで区別して確認できる。
+- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、Generation Outcome、CMS Delivery、Publication Decision、承認、Publication Job、Publication Fact、評価対象登録、追加見積を同一相関IDで区別して確認でき、予約・API受付・外部変更・帰属確認中を公開成功またはAI Office実績として表示しない。
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。
 - [ ] AC-L1-SCREEN-18: 通常ビューでRecommendation中心の要約・簡単操作を行え、Agent Officeで同じProjectionを使う玄人向け詳細分析・設定・Task操作を行え、選択式操作は決定論Service、自由文は必要時だけLLMを使い、確認済み共通Commandの結果が両Viewへ同期される。
-- [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。
+- [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。生成成果提供、CMS下書き、公開処理引渡し、予約、Publication Fact、評価登録を別文言で表示し、予約・外部変更・帰属確認中を公開完了通知にしない。
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。

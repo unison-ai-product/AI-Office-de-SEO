@@ -210,7 +210,7 @@
         },
         {
           "invariant_id": "INV-CMS-002",
-          "statement": "最初の15件は本システム経由の新規記事だけを数え完成記事承認を必須とする。リライト／記事置換は件数に含めず常に個別承認、hard gate例外は同一権限者の二段階確認と版付き同意を要する。",
+          "statement": "最初の15件は、完成記事の人間承認証拠を持ち、effect_kind=new_publish、attribution=ai_office_publication、reconciliation=confirmedのPublication Factが成立した新規記事だけを数える。予約、CMS API受付、下書き、外部変更、帰属確認中、既存記事、リライト／記事置換は件数に含めず、リライト／記事置換は常に個別承認、hard gate例外は同一権限者の二段階確認と版付き同意を要する。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
@@ -310,7 +310,7 @@
       "invariants": [
         {
           "invariant_id": "INV-OFFICE-001",
-          "statement": "通常ビューはSEO非専門者がRecommendation中心で主要業務を完結できる簡単操作面、Agent Officeは同じ対象を専門的に確認・微調整する玄人向け詳細分析・運用面とする。Officeは詳細度と操作自由度を段階的に上げる上級導線であり必須経路にしない。両Viewは同じProjection・認可・Domain Commandを使い、Office独自の業務正本を持たない。定型会話は選択式と決定論Serviceを優先する。",
+          "statement": "通常ビューはSEO非専門者がRecommendation中心で主要業務を完結できる簡単操作面、Agent Officeは同じ対象を専門的に確認・微調整する詳細分析・運用面とする。Officeは専門家だけに閉じず、軽い確認・微調整から高度な分析・運用まで詳細度と操作自由度を段階的に上げる任意導線とする。両Viewは同じProjection・認可・Domain Commandを使い、Office独自の業務正本を持たない。定型会話は選択式と決定論Serviceを優先する。",
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
@@ -320,7 +320,7 @@
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-requirements-decision-summary_v1.md",
             "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
             "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md",
-            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md",
             "docs/reference/FEATURE-LIST.md"
           ],
           "forbidden_patterns": [
@@ -328,16 +328,20 @@
             "Agent Office.{0,80}(?:成果|順位|Credit|権限).{0,40}(?:独自計算|別計算)(?:する|とする)",
             "(?:Agent )?Office.{0,80}(?:DB|CMS|決済|公開状態).{0,30}(?:直接更新|直接変更|直接実行)",
             "(?:Agent )?Office.{0,80}(?:成果分析の場ではない|成果分析をOffice内で完結しない|成果の短い要約と通常ビューへのLinkだけ)",
-            "(?:Agent )?Office.{0,100}(?:結果要約|状態と結果要約).{0,50}(?:通常ビューへのlinkだけ|通常ビューへのLinkだけ)"
+            "(?:Agent )?Office.{0,100}(?:結果要約|状態と結果要約).{0,50}(?:通常ビューへのlinkだけ|通常ビューへのLinkだけ)",
+            "(?:Agent )?Office.{0,80}(?:決定を持たない|操作を持たない|設定変更を持たない)",
+            "(?:選ぶ|決める|設定する).{0,30}(?:操作|処理).{0,30}(?:通常ビューだけ|通常ビューのみ)"
           ],
           "bad_fixtures": [
             "Agent Officeは独自の業務正本と変更Commandを持つ。",
             "Agent Officeは成果順位を通常ビューと別計算する。",
             "OfficeからCMSを直接更新する。",
-            "Agent Officeは成果分析の場ではなく、成果の短い要約と通常ビューへのLinkだけを表示する。"
+            "Agent Officeは成果分析の場ではなく、成果の短い要約と通常ビューへのLinkだけを表示する。",
+            "Officeは決定を持たず、選ぶ・決める操作は通常ビューだけで行う。"
           ],
           "good_fixtures": [
             "通常ビューだけでRecommendationの採否と承認を完了でき、詳しく確認・微調整する場合だけ同じContextでOfficeへ移動する。",
+            "SEOに詳しくないユーザーは通常ビューのおすすめに沿って操作し、専門的に見たい、少し触りたい場合は同じ対象をOfficeで段階的に掘り下げる。",
             "Agent Officeは共通Projectionで詳細分析し、型付きProposalを共通Domain Commandへ渡して詳細運用できる。",
             "選択式ポップアップは決定論Serviceを使い、自由文の意味解釈だけLLMを利用する。"
           ]
@@ -452,28 +456,50 @@
     {
       "context_key": "publication_attribution",
       "context_name": "Publication Attribution",
-      "aggregate_root": "PublicationAttribution",
-      "owner_requirements": ["REQ-INT-05", "REQ-LOGIC-13", "REQ-MEASURE-14"],
+      "aggregate_root": "PublicationFact",
+      "owner_requirements": ["REQ-INT-05", "REQ-LOGIC-04", "REQ-LOGIC-13", "REQ-MEASURE-13", "REQ-MEASURE-14"],
       "invariants": [
         {
           "invariant_id": "INV-PUBATTR-001",
-          "statement": "CMS変更は検証済みcorrelationだけをAI Office実績へ算入し、不一致はexternal_change、不明はunknown_sourceとする。外部変更は実績から除外し、実質変更だけを該当評価の交絡要因へ含める。",
+          "statement": "Publication Decision、Publication Job、Publication Factを分離し、予約・API受付を公開成功へ丸めない。CMS変更は外部検証とcorrelationが成立したFactだけをAI Office実績へ算入し、不一致はexternal_change、不明はunknown_sourceとする。Activation、15記事count、Loop完了は条件を満たすai_office_publication Factからだけ導出し、外部の実質変更は該当評価の交絡要因へ含める。",
           "canonical_sources": [
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md",
-            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md"
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-product-requirements_v3.7.md"
           ],
           "forbidden_patterns": [
             "(?:external_change|外部変更).{0,80}(AI Office実績へ算入|主実績へ算入|施策効果として表示)",
             "unknown_source.{0,60}(?:AI Office実績|external_change).{0,30}(?:推定|自動|暫定).{0,20}(?:算入|分類)",
-            "(?:誤字|余白|色|軽微変更)(?:だけで|を理由に).{0,30}(?:SEO|CV).{0,30}(?:評価不能|評価準備中|周期をリセット)"
+            "(?:誤字|余白|色|軽微変更)(?:だけで|を理由に).{0,30}(?:SEO|CV).{0,30}(?:評価不能|評価準備中|周期をリセット)",
+            "予約確定は公開成功である",
+            "CMS API成功でPublication Factを作成する",
+            "external_changeでActivationへ到達する",
+            "予約時のPublication Decisionを再判定せず実行する",
+            "Webhook再送ごとにPublication Factを作る",
+            "(?:予約時刻|API受付時刻|verified_at)を評価起点にする",
+            "(?:公開|更新)(?:または|・)(?:更新|公開)イベントを起点に.{0,40}(?:一次評価|1か月後)"
           ],
           "bad_fixtures": [
             "外部変更はAI Office実績へ算入する。",
             "unknown_sourceはAI Office実績へ推定算入する。",
-            "軽微変更だけでSEOを評価準備中にする。"
+            "軽微変更だけでSEOを評価準備中にする。",
+            "予約確定は公開成功である。",
+            "CMS API成功でPublication Factを作成する。",
+            "external_changeでActivationへ到達する。",
+            "予約時のPublication Decisionを再判定せず実行する。",
+            "Webhook再送ごとにPublication Factを作る。",
+            "予約時刻を評価起点にする。",
+            "公開または更新イベントを起点に1か月後の一次評価を開始する。"
           ],
           "good_fixtures": [
+            "Publication Decision、Publication Job、Publication Factを分離する。",
+            "予約後の条件変更は副作用直前にPublication Decisionの新versionで再判定する。",
             "検証済みcorrelationだけをAI Office実績へ算入する。",
+            "Publication Factは外部post・content hash・effective time・検証証拠から冪等化する。",
+            "評価はPublication Factのeffective_atを起点にする。",
+            "ActivationとLoop完了は条件を満たすai_office_publication Factから導出する。",
             "外部の実質変更は実績から除外し該当評価の交絡要因へ含め、軽微変更は履歴だけへ残す。"
           ]
         }

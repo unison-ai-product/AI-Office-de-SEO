@@ -39,7 +39,7 @@ SEO業務Lifecycleと完了条件は `categories/business-requirements_v1.md`、
 5. 既存Site経路: GSCを接続するかKeywordを画面／fileから登録する。市場候補、GSC獲得Query、登録Keyword、適格な競合Keywordを統合し、検索意図とSERP実績でcluster化して既存URL、主従関係、順位・流入・CVを割り当てる。市場、獲得・未獲得、記事割当、市場状態、競合差分、AIO・広告・季節性をKeyword診断レポートとして示し、Keyword Recommendationへ進む
 6. 成立条件を満たさない場合は空のRecommendationを出さず、不足する接続または入力へ戻す。新規Siteは`site_identified`と市場探索入力による`analysis_ready`、既存SiteはGSCまたはKeyword登録による`analysis_ready`を最低条件とする。リライトRecommendationは、さらにCMS read、記事data取込または許可された公開取得により本文・見出し・公開状態を取得できた記事だけを対象とし、`content_read_ready`を成立させる。GSCまたはKeyword実績だけから本文変更を推測しない
 7. 採用したRecommendationは対象、目的、Keyword Cluster、検索インテント、根拠、記事目的、CTA、内部link、品質、予算、保護条件を再入力させずIntakeへ渡す。記事送信時にREST APIが未成立なら生成成果を保持して接続修復または持ち出しへ分岐する
-- 運用解放: 本サービスで新規作成し、人が承認して公開成功した新規記事が15件に達するまでは個別承認を必須とする。既存記事、外部作成記事、リライトは件数へ含めない。15件到達後、権限者が自動運用の責任範囲、予算、品質、停止条件と同意書を確定した場合、新規記事の個別承認を省略できる
+- 運用解放: 本サービスで新規作成し、人間承認証拠付きconfirmed `ai_office_publication` Factを持つ新規記事が15件に達するまでは個別承認を必須とする。予約、下書き、API受付、外部変更、帰属確認中、既存記事、外部作成記事、リライトは件数へ含めない。15件到達後、権限者が自動運用の責任範囲、予算、品質、停止条件と同意書を確定した場合、新規記事の個別承認を省略できる
 - 大規模Site: 初回取込・解析を「自動構築期間」としてbatch分割し、成立した分析・閲覧・設定から段階開放する。現在工程、取得済み範囲、利用可能／制限中機能、概算完了、失敗・再試行を表示する
 - 分岐: 接続失敗→再認可・権限確認・Adapter更新導線。GSC反映遅延やSource欠損はavailabilityとして表示し、利用できるSourceだけで部分処理する。
 
@@ -68,7 +68,7 @@ SEO業務Lifecycleと完了条件は `categories/business-requirements_v1.md`、
 
 ## 5. 生成〜公開ジャーニー  ［REQ-UJ-05］
 
-対象権限: `記事制作`。自動運用の設定は契約者またはサイトオーナー、公開・更新承認は対象Siteの`記事制作`権限者と現在の公開Policyに従う。完了条件: 公開完了通知の受領（または明示キャンセル）。
+対象権限: `記事制作`。自動運用の設定は契約者またはサイトオーナー、公開・更新承認は対象Siteの`記事制作`権限者と現在の公開Policyに従う。完了条件: `ai_office_publication`のPublication Factに基づく公開／更新確認通知の受領、または明示キャンセル。生成完了、CMS下書き、Publication Jobへの引渡し、予約確定だけでは本Journeyを公開完了にしない。
 
 1. recommendation queueで新規記事候補を選び、未充足の意図・問い・トピック、既存記事との重複、サイト内の役割、期待価値を確認する（`REQ-PRODUCT-24`）。手動時はS3でキーワード/ニュース/動画需要を指定する。
 2. 採用したrecommendationから対象、目的、根拠、品質条件をTicketへ引き継ぎ、実行オプション（今すぐ/おまかせ）→Preflight見積→開始（`REQ-SEC-12`）

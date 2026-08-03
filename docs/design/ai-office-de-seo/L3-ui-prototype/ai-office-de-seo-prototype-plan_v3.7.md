@@ -112,7 +112,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 - [ ] PT-IMAGE-05: CMS Capabilityが要求するfeatured media／thumbnail sizeだけを選択でき、本文中画像・SNS・広告sizeを初期対象として表示しない。
 - [ ] PT-IMAGE-06: 生成→採否→最適化→Media登録→featured割当を追跡し、Media失敗で本文成果を失わず再送できる。
 - [ ] PT-IMAGE-07: 同一入力の二重送信を防ぎ、ユーザー再生成は新credit、サービス障害再開は同一Job・追加課金なしになる。
-- [ ] PT-GEN-OUTCOME-01: 生成履歴でGeneration Outcome、CMS Delivery、Publication Resultを別状態として表示し、同一Job再開は`customer_credit_delta=0`、ユーザー希望の別成果は親Outcomeを参照する新Job・新見積として確認できる。
+- [ ] PT-GEN-OUTCOME-01: 生成履歴でGeneration Outcome、CMS Delivery、Publication Decision、Publication Job、Publication Factを別状態として表示し、同一Job再開は`customer_credit_delta=0`、ユーザー希望の別成果は親Outcomeを参照する新Job・新見積として確認できる。
 - [ ] PT-IMAGE-08: 技術的不成立／設定不一致のblockedと、構図・トーン等のadvisoryを分け、自動投稿をadvisoryだけで止めない。
 - [ ] PT-NOTIFY-01: 固定担当者未設定でも、Task完了・確認要求が対象Siteを閲覧できる該当ユーザーへpopup表示され、閉じた後もW7へ残る。
 - [ ] PT-NOTIFY-02: 受信者をClient入力で決めず、Site付与・閲覧範囲・操作権限・購読設定をServer側の同一policy versionで解決する。

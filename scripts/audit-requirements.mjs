@@ -325,6 +325,10 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "schema.site.build_progress.v1",
   "schema.plan.monthly.v1",
   "schema.publication.decision.v1",
+  "schema.publication.job.v1",
+  "schema.publication.fact.v1",
+  "PublicationJob.state=verified",
+  "transactional outbox",
   "schema.evaluation.intervention.v1",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-glossary_v3.7.md", [
@@ -416,7 +420,7 @@ assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-ag
   "キャラクターとExecutorの1対1表を別途作らない",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-office-ui-requirements_v3.7.md", [
-  "玄人向け運用面",
+  "軽い確認・微調整から高度な分析・運用まで",
   "定型操作は選択式ポップアップから決定論Service",
   "初期構成（確定）: 部屋7",
   "製品要求はReact等の特定フレームワークへ固定せず",
@@ -527,6 +531,9 @@ assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-
   "content_output_schemas",
   "CMS edit／preview URL",
   "`cms_patch_jobs`",
+  "publication_fact_projections",
+  "Fact正本をSearch Performanceへ複製所有しない",
+  "publication_facts（外部post、canonical URL、effect kind",
   "共通table名・共通列・業務eventをWordPressへ固定しない",
 ]);
 assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
@@ -534,7 +541,10 @@ assertExcludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-e
   "publish.published | wp_url",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md", [
-  "publish.published | cms_url, cms_content_ref, publication_decision_ref",
+  "publication.fact_recorded | publication_fact_id",
+  "publication.job_verification_pending",
+  "site.activated | activation_id",
+  "product.loop_completed | loop_completion_id",
   "patch.action_conflicted",
   '"principal_kind": {"enum": ["customer_user", "internal_user", "service", "ai_executor", "system"]}',
   '"acting_context"',
@@ -949,7 +959,7 @@ for (const requiredPhrase of [
   "Intake → Agent Workflow",
   "成果 → CMS下書き",
   "CMS下書き → 公開・更新",
-  "公開・更新 → 評価 → 次回計画",
+  "Publication Fact → 評価 → 次回計画",
 ]) {
   if (!screenFlow.includes(requiredPhrase)) {
     fail(errors, `screen flow: canonical transition contract missing: ${requiredPhrase}`);

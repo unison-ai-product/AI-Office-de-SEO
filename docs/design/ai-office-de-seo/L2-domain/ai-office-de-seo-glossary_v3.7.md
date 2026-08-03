@@ -141,7 +141,9 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Dynamic Post Schema | 生成物をWP slot/block/fieldへ封入する動的スキーマ | REQ-WPA-02 / REQ-WPA-09 |
 | Post Envelope | slot割当済みの投稿封入体（一時保存、最終HTMLは非保持） | REQ-WPA-09 |
 | Scheduled Action / Automation Policy | 予約投稿・自動化ポリシー（承認ゲート付き） | REQ-WPA-04 |
-| Publication Decision | CMS副作用前に、15記事解放、Automation同意、リライト承認、hard gate確認、権限・予算・接続を評価して記録する公開判定 | REQ-LOGIC-04/05 |
+| Publication Decision | CMS公開／更新の副作用前に、15記事解放、Automation同意、リライト承認、hard gate確認、権限・予算・接続を評価する不変の判定version。実行結果を後書きしない | REQ-LOGIC-04/05 |
+| Publication Job | Decisionに基づく公開／更新の予約、実行、再試行、外部反映確認を担うJob。予約・API受付だけでは公開成功にならない | REQ-LOGIC-03/04, REQ-WPA-04 |
+| Publication Fact | 外部検証済みの公開／更新事実。結果hash、effective time、証拠、`ai_office_publication / external_change / unknown_source`の帰属を持ち、実績・Activation・評価起点の正本になる | REQ-MEASURE-13/14 |
 | CV Event | コンバージョン計測イベント | REQ-WPA-05 |
 | Engagement計測 | 滞在・スクロールの個人非特定集計（任意有効化・相関補助） | REQ-WPA-11 |
 | Partial Patch（部分パッチ） | 公開済み記事へのブロック/要素レベル小粒更新（リビジョン保存・競合検知・分散適用） | REQ-WPA-12 |

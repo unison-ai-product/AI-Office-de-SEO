@@ -475,7 +475,7 @@ Generation Outcome確定後のCMS write再診断、下書き作成、反映確�
 
 根拠: `REQ-INT-10`、`REQ-LOGIC-03/08/09/10`、`REQ-INT-01/05/06/09`、`REQ-SCREEN-15/16`、`REQ-WPA-04/09/12`、画面遷移図§2。
 
-## 0.0.9 公開判定・承認Contract
+## 0.0.9 公開判定・実行・反映Fact Contract
 
 CMS下書き以降の判定を`schema.publication.decision.v1`とする。
 
@@ -486,15 +486,54 @@ CMS下書き以降の判定を`schema.publication.decision.v1`とする。
   operation(new_publish|rewrite_update|article_replacement|lightweight_patch),
   cms_draft_ref, content_hash, diff_ref?, quality_result_ref,
   approval_policy{first_new_article_gate, approved_new_article_count,
-    automation_enabled, consent_version?, hard_gate_state, rewrite_requires_approval},
+    approved_new_article_counter_ref, automation_enabled, consent_version?,
+    hard_gate_state, rewrite_requires_approval},
   authorization_decision_ref, budget_ref, connection_capability_ref,
-  decision(ready_for_approval|ready_for_automation|blocked|approved|rejected|published|failed),
+  decision(approval_required|automation_allowed|approved_for_execution|blocked|rejected),
   reasons[], confirmations[]{kind, actor_ref, confirmed_at, consent_version?},
-  publication_job_ref?, published_at?, resulting_cms_ref?, created_at
+  decided_at, expires_at?
 }
 ```
 
-- 最初の15件へ数えるのは、本システムで新規作成し、完成記事を人間が承認して公開成功した記事だけとする。既存記事、外部記事、リライトは除外する。
+判定後の予約・実行・検証を`schema.publication.job.v1`とする。
+
+```text
+{
+  publication_job_id, version, tenant_id, site_id,
+  publication_decision_ref, cms_delivery_ref, generation_outcome_ref?,
+  article_ref, operation(new_publish|rewrite_update|article_replacement|lightweight_patch),
+  target_content_hash, correlation_id, idempotency_key,
+  schedule{mode(immediate|scheduled), execute_at?, timezone?},
+  state(pending|scheduled|executing|verification_pending|verified|
+    failed_retryable|failed_terminal|cancelled),
+  attempt_count, external_command_ref?, last_error_ref?,
+  created_at, updated_at, completed_at?
+}
+```
+
+CMSで検証できた公開／更新事実と帰属を`schema.publication.fact.v1`とする。
+
+```text
+{
+  publication_fact_id, version, tenant_id, site_id, article_ref,
+  effect_kind(new_publish|content_update|status_change|lightweight_patch),
+  attribution(ai_office_publication|external_change|unknown_source),
+  publication_job_ref?, publication_decision_ref?, cms_delivery_ref?,
+  recommendation_ref?, intervention_ref?, correlation_id?,
+  external_post_ref, canonical_url_ref, resulting_content_hash,
+  cms_status, effective_at, verified_at, verification_evidence_ref,
+  approval_evidence_ref?, source_observation_refs[], rule_version,
+  reconciliation{state(confirmed|pending), retry_until?, missing_sources[]}
+}
+```
+
+- Decisionは副作用前入力に対する不変versionであり、公開結果、失敗、外部post参照を後書きしない。条件変化または承認成立時は新versionを作る。
+- Jobは予約確定、実行、反映検証を追跡する。予約から実行までに認可、Automation同意、hard gate、Kill Switch、接続、対象hash、公開時間等が変化した場合は副作用直前にDecisionの新versionを作り、古いDecision参照のまま実行しない。`scheduled`、CMS API受付、外部post ID取得だけを`verified`または公開成功としない。同じ副作用は同一idempotency keyで再開する。
+- Factは公開表示またはCMS状態の外部検証後だけ作る。AI Office Command／Decision／Delivery／Jobとcontent hashが相関した場合だけ`ai_office_publication`とし、相関なしは`external_change`、証拠不足は`unknown_source / pending`とする。時刻の近さだけで帰属を推定しない。
+- `PublicationJob.state=verified`と`publication.fact_recorded`は同じ外部検証結果からtransactional outboxで接続し、JobだけverifiedのままFactが欠落しないよう再送・照合する。同じSite、外部post、effect kind、resulting content hash、effective time、verification evidenceからFactを冪等化し、Webhook再送やpolling重複で15記事count・Activation・実績を二重計上しない。
+- `unknown_source`は再照合できるが、既存Factを上書きせず新versionまたはreconciliation eventで確定する。`external_change`と`unknown_source`を15件解放、Activation、AI Office公開実績へ算入しない。
+
+- 最初の15件へ数えるのは、本システムで新規作成し、完成記事の人間承認証拠を持ち、`effect_kind=new_publish / attribution=ai_office_publication / reconciliation=confirmed`のPublication Factが成立した記事だけとする。予約、下書き、API受付、外部変更、帰属確認中、既存記事、外部記事、リライトは除外する。
 - 15件到達後も、権限者の版付き同意、対象範囲、予算、品質、公開時間、停止条件が成立した場合だけ新規記事の自動投稿を許可する。
 - リライトと記事置換はCMS下書きまで自動化できるが、公開記事への更新はユーザー承認を必須とする。
 - hard gate例外は同一権限者の二段階確認と版付き同意を別confirmationとして記録する。別人2名を要求しない。
@@ -508,20 +547,22 @@ CMS下書き以降の判定を`schema.publication.decision.v1`とする。
 ```text
 {
   evaluation_id, version, tenant_id, site_id, article_ref,
-  intervention_ref, publication_event_ref, evaluation_origin_at,
+  intervention_ref, publication_fact_ref, evaluation_origin_at,
   article_change_history_ref,
   article_purpose, search_intents[], keyword_cluster_refs[], cv_goal_refs[],
   checkpoints[]{window(1_month|3_month|6_month), due_at, state,
     seo{acquired_keywords, ranked_keywords, primary_secondary_fit, position_distribution,
       impressions, clicks, market_adjustment, aio_paid_adjustment, availability},
     conversion{monthly, cumulative, transition_rate?, cv_count?, availability},
-    awareness{cluster_coverage, assisted_path?, branded_signal?, availability},
+    awareness{cluster_coverage, branded_signal?, recognition_contribution?, availability},
+    conversion_context{direct_cv?, previous_url_single_hop?, availability},
     outcome, reasons[], next_action?},
   reset_policy, latest_material_change_at?, correlation_id
 }
 ```
 
-- 評価起点は新規／リライトという制作時の呼称ではなく、公開または実質的更新eventとする。
+- 評価起点は新規／リライトという制作時の呼称ではなく、検証済みPublication Factの`effective_at`とする。予約、CMS API受付、下書き作成、帰属確認中だけでは評価を開始しない。
+- `ai_office_publication`は施策評価の主介入、実質的な`external_change`は交絡要因、`unknown_source`は帰属確認中として扱う。外部変更だけからAI Office施策の評価を新規作成しない。
 - 成功の第一条件は、記事へ割り当てた主＋補助Keyword集合が意図どおり順位を獲得することとする。CV目的の記事はCV実績を追加評価するが、CVなしだけで異常としない。
 - CTA変更はSEO周期をresetせず、CTA/CV評価起点だけを更新する。title、主要見出し、本文の実質変更は記事変更履歴としてSEO評価起点を更新する。
 - 市場需要・表示回数の変化、AIO・広告出現率を外部要因として分離する。急変は即時施策へせず要監視へ送る。
@@ -640,7 +681,7 @@ L2 §5 のイベント（GenerationJobStarted / OutlineContractFrozen / QualityG
 
 - 共通: `{ event_id, event_type, occurred_at, tenant_id, site_id?, job_id?, actor, payload, schema_version }`。
 - 用途: Observability購読（REQ-SEC-13）、Agent Officeの活動可視化（REQ-AOUI-04。キャラ状態＝待機/作業/完了/エラーはこのイベントから導出）、監査。
-- payload Catalogは少なくとも次を固定する。`site.build_*={build_run_id,stage,stage_state,released_capabilities[],progress}`、`keyword.report_*={report_id,report_type,source_version,status}`、`plan.monthly_*={plan_id,period,version,status}`、`plan.weekly_execution_selected={selection_id,week,selected_item_refs[],deferred_item_refs[]}`、`recommendation.*={recommendation_id,version,state,reason_codes[]}`、`job/stage/ticket/snapshot.*={workflow_key,stage,ticket_id?,snapshot_id?,state,reason_code?}`、`quality.gate_*={snapshot_id,gate_key,verdict,hard_gate_block}`、`publish.decision_recorded={decision_id,operation,decision,reason_codes[],consent_ref?}`、`publish.*={delivery_id?,external_post_id?,operation,state,target_version?,content_hash?,correlation_id,source_event_id?}`、`publication.attribution_*={attribution_id,publication_fact_id,classification,reason_codes[],rule_version,reconcile_by?}`、`evaluation.intervention_*={evaluation_id,checkpoint_month,scope_ref,state,outcome?}`、`billing.credit_*={ledger_entry_id,lot_id?,amount,unit,state}`、`connection.*={connection_id,capability,state,reason_code?}`。payloadに本文、secret、Provider生responseを含めない。画面モックも同じevent typeとpayload versionを使用する。
+- payload Catalogは少なくとも次を固定する。`site.build_*={build_run_id,stage,stage_state,released_capabilities[],progress}`、`keyword.report_*={report_id,report_type,source_version,status}`、`plan.monthly_*={plan_id,period,version,status}`、`plan.weekly_execution_selected={selection_id,week,selected_item_refs[],deferred_item_refs[]}`、`recommendation.*={recommendation_id,version,state,reason_codes[]}`、`job/stage/ticket/snapshot.*={workflow_key,stage,ticket_id?,snapshot_id?,state,reason_code?}`、`quality.gate_*={snapshot_id,gate_key,verdict,hard_gate_block}`、`publication.decision_recorded={publication_decision_id,version,operation,decision,reasons[],correlation_id}`、`publication.job_*={publication_job_id,publication_decision_ref,state,idempotency_key,attempt_count?,external_command_ref?}`、`publication.fact_recorded={publication_fact_id,publication_job_ref?,effect_kind,attribution,external_post_ref,resulting_content_hash,effective_at,verified_at,verification_evidence_ref,correlation_id?}`、`publication.attribution_reconciled={prior_publication_fact_ref,new_publication_fact_ref,from_attribution,to_attribution,evidence_refs[],rule_version}`、`evaluation.intervention_*={evaluation_id,checkpoint_month,scope_ref,state,outcome?}`、`billing.credit_*={ledger_entry_id,lot_id?,amount,unit,state}`、`connection.*={connection_id,capability,state,reason_code?}`。payloadに本文、secret、Provider生responseを含めない。画面モックも同じevent typeとpayload versionを使用する。
 
 ### 5.1 Tracker ingressと集計契約
 

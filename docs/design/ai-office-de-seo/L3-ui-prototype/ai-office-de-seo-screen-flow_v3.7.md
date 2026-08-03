@@ -212,7 +212,14 @@ flowchart TD
   Q -->|承認| P
   O -->|差し戻し| F
   Q -->|差し戻し| F
-  P --> R[W7 完了通知] --> S[S5 公開/更新後評価]
+  P --> PJ[Publication Job<br/>pending/scheduled/executing/verification_pending]
+  PJ -->|外部反映を検証| PF[Publication Fact<br/>ai_office_publication/external_change/unknown_source]
+  PJ -->|一時失敗| PR[failed_retryable<br/>同一idempotency keyで再開]
+  PR --> PJ
+  PF -->|ai_office_publication| ER[評価対象登録<br/>baseline・effective_at・1/3/6か月予定]
+  PF -->|external_change| EC[変更履歴・交絡要因<br/>AI Office実績から除外]
+  PF -->|unknown_source| UC[取得元確認中<br/>再照合期限・不足source]
+  ER --> R[W7 公開/更新・評価登録通知] --> S[S5 公開/更新後評価]
 ```
 
 ## 3. キーワード分析→Report→Recommendation（UJ-04）
@@ -272,7 +279,7 @@ flowchart TD
 
 CMS REST API等のwrite接続は、導入時に設定できるがKeyword分析の直列必須工程にはしない。接続失敗時も成立済みSourceで分析・Reportを進め、CMS送信を伴うRecommendationだけ`connection_required`で保留する。新規記事送信、リライト送信、Media登録、公開・更新へ進む前には、対象operationごとのwrite Capabilityを再診断する。
 
-最初の新規15記事の承認と自動運用解放は導入完了条件ではなく、UJ-05の公開Loopを通じて累積する運用上の解放条件である。既存記事、外部作成記事、リライトを数えず、本システム経由で人が承認して公開成功した新規記事だけを数える。15件到達後も自動的にONへせず、権限者が責任範囲、予算、品質、停止条件と同意書を確定した場合だけ新規記事の個別承認省略を解放する。
+最初の新規15記事の承認と自動運用解放は導入完了条件ではなく、UJ-05の公開Loopを通じて累積する運用上の解放条件である。予約、下書き、API受付、外部変更、帰属確認中、既存記事、外部作成記事、リライトを数えず、本システム経由で人が承認し、confirmed `ai_office_publication` Factが成立した新規記事だけを数える。15件到達後も自動的にONへせず、権限者が責任範囲、予算、品質、停止条件と同意書を確定した場合だけ新規記事の個別承認省略を解放する。
 
 ## 6. 管理コンソール全体（UJ-08）
 
@@ -339,8 +346,8 @@ flowchart TD
 | Intake → Agent Workflow | Preflight成立。リライト／記事置換は有効な`schema.snapshot.article_read.v1`で本文・見出し・公開状態を取得済み | 新規・リライト・Patch実行は記事制作 | Task History／生成進捗へ | Article Read Snapshotが取得不能／期限切れなら本文更新へ進めず、取得診断・再取得へ戻す。Preflight後の外部変化は古い条件で実行せずheld／supersededとし、Recommendation Contextを保って復帰 | REQ-AGENT-* / REQ-SCREEN-15 / REQ-ACCESS-16 / REQ-DATA-15 |
 | Outline → 本文・QA・装飾 | Outline Contract成立 | 記事制作。途中確認ONの場合のみ確認操作 | CMS送信前成果へ | 差し戻しは対象stageへ戻り、ユーザー編集箇所を保護。再生成時は追加credit条件を表示 | REQ-SCREEN-15 / REQ-LOGIC-05〜07 |
 | 成果 → CMS下書き | `schema.generation.outcome.v1`が成果提供、Output Vault期限、生成credit確定を一意に保持し、それを参照する`schema.cms.delivery.v1`を作成。CMS write Capabilityと副作用直前の再認可が成立 | 記事制作 | Generation Outcomeを保ったまま`prepared → delivering → draft_created → verification_pending → verified`を表示し、検証済み編集URL／Previewへ | REST切断、Scope不足、互換性低下ではGeneration OutcomeとDelivery IDを保持する。`failed_retryable`は同一idempotency keyで再開し、再生成・二重reserve／commit・二重下書きを起こさない。持ち出しは`carried_out`であり公開成功には数えない | REQ-BILLING-04 / REQ-INT-01・05・10 / REQ-SCREEN-15・16 / REQ-TECH-18 |
-| CMS下書き → 公開・更新 | 新規15件ルール、承認設定、自動運用委任、hard gate、対象種別の条件成立 | 記事制作。自動運用設定は契約者またはサイトオーナー＋該当業務権限・step-up | 公開／更新eventと評価起点へ | 新規15件未達は完成記事承認へ。リライト・記事置換は原則承認へ。hard gateは同一権限者の二段階確認＋同意へ | REQ-ORG-05・06 / REQ-WPA-04 / REQ-ACCESS-08・16 |
-| 公開・更新 → 評価 → 次回計画 | 公開または実質的更新event | 閲覧は全員、分析条件・評価確定はサイト分析、補正採用や方針変更は対応する業務権限 | 1・3・6か月評価、月次／累積結果、次回Recommendationへ | データ不足は成功・悪化を確定せず観測継続。急変は即時推薦せず要監視へ | REQ-BUS-09・10 / REQ-SCREEN-13 / REQ-KRL-05〜10 |
+| CMS下書き → 公開・更新 | version付きPublication Decisionが、新規15件ルール、承認設定、自動運用委任、hard gate、認可、接続、対象種別を副作用前入力から判定 | 記事制作。自動運用設定は契約者またはサイトオーナー＋該当業務権限・step-up | Publication Jobの`pending / scheduled / executing / verification_pending / verified`へ。外部検証後にPublication Factを作成 | 新規15件未達は完成記事承認へ。リライト・記事置換は原則承認へ。hard gateは同一権限者の二段階確認＋同意へ。予約・API受付を公開成功にしない | REQ-ORG-05・06 / REQ-WPA-04 / REQ-ACCESS-08・16 / REQ-MEASURE-13・14 |
+| Publication Fact → 評価 → 次回計画 | `ai_office_publication`で外部反映検証済みのFact。外部の実質変更は既存評価の交絡要因として別処理 | 閲覧は全員、分析条件・評価確定はサイト分析、補正採用や方針変更は対応する業務権限 | Factの`effective_at`を起点にbaselineと1・3・6か月予定を登録し、月次／累積結果、次回Recommendationへ | `unknown_source`は再照合、`external_change`はAI Office実績から除外。データ不足は成功・悪化を確定せず観測継続し、急変は即時推薦せず要監視へ | REQ-BUS-09・10 / REQ-MEASURE-13・14 / REQ-SCREEN-13 / REQ-KRL-05〜10 |
 | 通常ビュー ⇄ Office | 同じtenant、Site、対象ID、versionへの閲覧権限 | 閲覧は共通。変更は通常ビューと同じ基本権限・業務権限 | 同一Command／Eventを両Viewへ反映 | Office独自状態や権限迂回を作らず、拒否理由と通常ビューの解消先を表示 | REQ-SCREEN-08〜11・18・19 / REQ-ACCESS-01・14〜16 |
 | 顧客面 → 内部管理面 | 遷移不可 | なし | なし | URL／API直接指定もdefault-deny。内部支援は管理面で期限付き代理権限を開始し、代理操作表示を維持 | REQ-ACCESS-01〜03 / REQ-SCREEN-07 |
 

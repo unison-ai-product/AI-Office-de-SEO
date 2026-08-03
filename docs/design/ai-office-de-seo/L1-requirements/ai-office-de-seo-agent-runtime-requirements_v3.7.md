@@ -236,7 +236,7 @@ Workflowの工程順序と遷移は状態機械として定義し、Layer A（`R
 - Preview またはAutomationの公開条件成立なしに予約投稿しない。初期WordPress AdapterではCMS下書きの編集URL／Preview URLを利用し、共通WorkflowをWordPress固有画面へ固定しない。
 - 最初の15記事は完成記事への人間承認を必須とする。WordPress実表示Previewは確認手段であり、URLを開いた事実自体を条件にしない。Outline確認はSite設定で任意に有効化し、有効時は見出しを修正・freezeしてから再開する。
 - リライト・全文再生成はAutomation承認だけで公開記事へ直接反映せず、CMS下書きとユーザー承認を必須とする。初期WordPress AdapterではWordPress下書きを使用する。
-- `generation.job_completed`は生成成果提供の完了であり、CMS下書きまたは公開完了を意味しない。状態13のCleanupが完了するまでは親Workflow全体を完了扱いにせず、Generation Outcome、CMS Delivery、Publication Fact、親Workflow resultを別状態で保持する。
+- `generation.job_completed`は生成成果提供の完了であり、CMS下書きまたは公開完了を意味しない。状態13のCleanup完了後、Content Production Workflowは`publication_job_handoff / carried_out / cancelled / failed_terminal`の型付き結果で閉じる。`publication_job_handoff`はPublication Jobへ責務と相関を引き渡した技術的完了であり、予約済み、公開済み、Loop完了を意味しない。Generation Outcome、CMS Delivery、Publication Decision／Job／Fact、評価登録、親Workflow resultを別状態で保持する。
 
 工程ごとに引くPack/CatalogはLayer A/B/C/D（`REQ-AGENT-03`）と3スコープ（`REQ-PACK-14`）に従う。`rewrite_patch`（`rewrite` workflow）は別の状態機械として定義する（原因分析→対象特定→patch→QA→Repair Loop）。具体トポロジは各Workflowの個別設定（`REQ-AGENT-06`）で、`new_article_fast/standard/premium/custom_recipe` 等のモード差は工程の深度・モデル配分の違いとして表す（`custom_recipe` はユーザー自己サーブの定義機能ではなく、コンサルティング経由で開発管理者が登録する運用経路。`REQ-PRODUCT-12`）。
 

@@ -141,7 +141,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ## Automation
 
 - [ ] AC-AUTO-01: 予約投稿、承認、差し戻しができる。 ｜ 検証: REQ-WPA-04
-- [ ] AC-AUTO-02: 自動運用はSite作成時OFFで、新規記事15件の人間承認・公開成功、権限者の版付き同意、対象・予算・品質・公開時間・停止条件が揃った場合だけ新規記事へ解放され、リライト更新は引き続き承認を要求する。 ｜ 検証: REQ-WPA-04
+- [ ] AC-AUTO-02: 自動運用はSite作成時OFFで、完成記事の人間承認証拠とconfirmed `ai_office_publication` Publication Factを持つ新規記事15件、権限者の版付き同意、対象・予算・品質・公開時間・停止条件が揃った場合だけ新規記事へ解放される。予約、CMS API受付、下書き、外部変更、帰属確認中、既存記事、リライトは15件へ算入せず、リライト更新は引き続き承認を要求する。 ｜ 検証: REQ-WPA-04
 - [ ] AC-AUTO-03: 緊急停止できる。 ｜ 検証: REQ-WPA-04, REQ-DUR-04
 - [ ] AC-AUTO-04: WordPressプラグインはデータ交換ソケット（取得・公開・トラッキング挿入/蓄積）であり利用はシステム側、導入するだけで連携し、Tenant/Siteスコープで認証され最小権限で正本へ書き込む。 ｜ 検証: REQ-WPA-07, REQ-SEC-09
 - [ ] AC-AUTO-05: 初期βのプラグインは自社ZIP配布とし、SaaS側でSite用ZIP取得・期限付きペアリング・導入手順・接続versionを確認でき、更新の有無をWP管理画面とシステム側コンソールの双方へ通知し、更新は署名付き・Tenant/Siteスコープで適用される。 ｜ 検証: REQ-WPA-07, REQ-SCREEN-01
@@ -395,8 +395,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-BUS-05: 週次上限内の実行予定を自動・手動運用別に選択し、未実行候補を再評価でき、ユーザー割込みには指定を維持した推奨順序を相談できる。 ｜ 検証: REQ-BUS-05 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-06: 月次目的から実行可能量内の方向性配分が作成され、達成保証として扱われない。 ｜ 検証: REQ-BUS-03, REQ-BUS-05, REQ-BUS-06 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-07: 日次判断を承認期限、停止、今週の予定、新規Recommendation、完了・評価の順で処理し、未処理項目へ理由・期限を持たせられる。 ｜ 検証: REQ-BUS-07 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-08: 公開または更新されたページが、1か月後、3か月後、6か月後の段階評価へ進み、更新時は承認、保護、復元条件を持つ。 ｜ 検証: REQ-BUS-08, REQ-BUS-09, REQ-BUS-10 ｜ 正本: `categories/business-requirements_v1.md`
-- [ ] AC-L1-BUS-09: 新規Siteの新規記事15件まで個別承認され、既存記事、外部記事、リライトが件数から除外される。 ｜ 検証: REQ-BUS-02, REQ-BUS-08 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-08: 検証済みPublication Factを持つ公開または更新ページが、Factの`effective_at`を起点に1か月後、3か月後、6か月後の段階評価へ進み、更新時は承認、保護、復元条件を持つ。予約・下書き・帰属確認中だけでは評価を開始しない。 ｜ 検証: REQ-BUS-08, REQ-BUS-09, REQ-BUS-10 ｜ 正本: `categories/business-requirements_v1.md`
+- [ ] AC-L1-BUS-09: 新規Siteの新規記事15件まで個別承認され、人間承認証拠付き`ai_office_publication` Factだけが件数へ入り、予約、下書き、外部変更、帰属確認中、既存記事、外部記事、リライトが件数から除外される。 ｜ 検証: REQ-BUS-02, REQ-BUS-08 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-10: 例外時に影響範囲、担当、解除条件、期限、戻り先または終端が記録される。 ｜ 検証: REQ-BUS-11, REQ-BUS-12 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-11: 顧客ユーザーと当社内部管理領域が分離され、ManagerとOperatorの操作範囲が区別される。 ｜ 検証: REQ-BUS-12 ｜ 正本: `categories/business-requirements_v1.md`
 - [ ] AC-L1-BUS-12: 下位の画面、ロジック、データ、連携、技術、権限、非機能、費用、障害要求が対応する業務要求IDを参照する。 ｜ 検証: REQ-BUS-01, REQ-BUS-02, REQ-BUS-03, REQ-BUS-04, REQ-BUS-05, REQ-BUS-06, REQ-BUS-07, REQ-BUS-08, REQ-BUS-09, REQ-BUS-10, REQ-BUS-11, REQ-BUS-12, REQ-BUS-13 ｜ 正本: `categories/business-requirements_v1.md`
@@ -510,7 +510,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-LOGIC-01: Siteごとに月次目的を単純選択し、未実行候補へ方向性としての施策配分が計算され、達成保証として表示されない。 ｜ 検証: REQ-LOGIC-01 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-02: 実績不足時に根拠のない数値を表示せず、unknownと再評価条件を返す。 ｜ 検証: REQ-LOGIC-02 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-03: 推薦採用からGeneration Outcome、CMS Delivery、公開・効果計測までを同一相関IDかつ別状態で追跡し、新規記事とリライトのどちらでも成果提供後のCMS障害を生成失敗へ戻さず再開できる。 ｜ 検証: REQ-LOGIC-03 ｜ 正本: `categories/logic-requirements_v1.md`
-- [ ] AC-L1-LOGIC-04: 承認済み公開15記事、版付き同意、事前許可のいずれかが欠ける場合、または停止条件下で自動投稿が実行されない。 ｜ 検証: REQ-LOGIC-04 ｜ 正本: `categories/logic-requirements_v1.md`
+- [ ] AC-L1-LOGIC-04: 人間承認証拠付き新規`ai_office_publication` Fact 15件、版付き同意、事前許可のいずれかが欠ける場合、または停止条件下で自動投稿が実行されず、予約・下書き・API受付・外部変更・帰属確認中・リライトを15件へ算入しない。 ｜ 検証: REQ-LOGIC-04 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-05: 急変対象が即時推薦されず要監視キューへ移り、ユーザー指定予定は継続し、システム予定は選択理由と現在順位により差し替えまたは続行される。 ｜ 検証: REQ-LOGIC-05 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-06: プライマリ＋セカンダリの割当クラスタへの順位付与を評価し、順位なしは自動修復せず診断内容をユーザーへエスカレーションし、CVなし単体を失敗とせず、十分な母数がある場合だけCVRを評価できる。 ｜ 検証: REQ-LOGIC-06 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-07: 直近1か月で1,000クリック到達後も記事単位で予測可否を判定し、予測可能数・ロック数・不足データを返す。 ｜ 検証: REQ-LOGIC-07 ｜ 正本: `categories/logic-requirements_v1.md`
@@ -585,11 +585,11 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-SCREEN-12: 文体の組合せと個別Site言い回し学習のON/OFFを設定でき、ON時だけサンプル記事10本を使用し、10本未満は暫定状態を確認できる。 ｜ 検証: REQ-SCREEN-12 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-13: 急変対象が通常推薦と分離され、1か月・3か月・6か月評価の状態と既存予定の継続を区別できる。 ｜ 検証: REQ-SCREEN-13 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-14: Siteへ業界／業種の2階層を複数設定・追加でき、複数設定時は横断軸を明記し、適用中の業界priorとSite固有補正の状態を確認できる。 ｜ 検証: REQ-SCREEN-14 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、Generation Outcomeの成果提供・Output Vault期限・生成credit確定、CMS Deliveryの保留・再開・外部反映確認、公開／更新結果、追加見積を同一相関IDで区別して確認できる。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-15: 新規記事とリライトの別Workflow、freeze成果、限定Repair、差分、Article Read、Generation Outcome、CMS Delivery、Publication Decision、承認、Publication Job、Publication Fact、評価対象登録、追加見積を同一相関IDで区別して確認でき、予約・API受付・外部変更・帰属確認中を公開成功またはAI Office実績として表示しない。 ｜ 検証: REQ-SCREEN-15 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-16: 上位機能を価値の分かるロック状態で表示し、Plan条件とデータ不足を区別して解放条件・現プランの代替操作を確認できる一方、画面迂回やAPI直接呼出しでは実行できず、Entryの自動投稿は15記事承認までの解放進捗を表示できる。 ｜ 検証: REQ-SCREEN-16 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-17: Capacityの使用量・上限・到達予測と、自動構築期間の進捗・利用可能機能・制限理由・完了見込みを確認できる。 ｜ 検証: REQ-SCREEN-17 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-18: 通常ビューでRecommendation中心の要約・簡単操作を行え、Agent Officeで同じProjectionを使う玄人向け詳細分析・設定・Task操作を行え、選択式操作は決定論Service、自由文は必要時だけLLMを使い、確認済み共通Commandの結果が両Viewへ同期される。 ｜ 検証: REQ-SCREEN-18 ｜ 正本: `categories/screen-operation-requirements_v1.md`
-- [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。 ｜ 検証: REQ-SCREEN-19 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。生成成果提供、CMS下書き、公開処理引渡し、予約、Publication Fact、評価登録を別文言で表示し、予約・外部変更・帰属確認中を公開完了通知にしない。 ｜ 検証: REQ-SCREEN-19 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 
 ### security-access-requirements_v1
 
@@ -656,8 +656,8 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-LOGIC-13: 公開記事の変更を機械比較でCTA・SEO評価・error・軽微変更へ分類し、必要な評価または診断だけを起動して、単発取得失敗を削除や成果悪化として扱わず、LLMを意味派生が必要な処理だけへ限定できる。 ｜ 検証: REQ-LOGIC-13 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-LOGIC-14: 複数CV Goal、検索インテント、記事目的から記事ごとのCVまたは認知貢献方向を割り当て、CTA partとlink先を既存QA・Placement・Automation・限定Repair Ticketへ接続し、CTA専用Agent・Writing Ticket・作業Packを増やさず実行できる。 ｜ 検証: REQ-LOGIC-14 ｜ 正本: `categories/logic-requirements_v1.md`
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。 ｜ 検証: REQ-MEASURE-12 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
-- [ ] AC-L1-MEASURE-13: CMS反映後の評価対象登録をLoop完了として月次distinct Siteを算出し、4段階Activation、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。 ｜ 検証: REQ-MEASURE-13 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
-- [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示でき、AI Office実績と外部変更、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。 ｜ 検証: REQ-MEASURE-14 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-13: Recommendation採用に相関する`ai_office_publication`のPublication FactでActivationへ到達し、同Factから評価基準値・起点・1／3／6カ月予定を登録した時だけLoop完了として月次distinct Siteを算出できる。予約・下書き・API受付・外部変更・帰属確認中を除外し、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。 ｜ 検証: REQ-MEASURE-13 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
+- [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示できる。Publication FactからAI Office実績・外部変更・帰属確認中を再現し、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。 ｜ 検証: REQ-MEASURE-14 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。 ｜ 検証: REQ-DATA-14 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。 ｜ 検証: REQ-DATA-15 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`

@@ -144,7 +144,7 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 ### 公開・自動運用
 | config_key | 初期値 | 出典 |
 |---|---|---|
-| publication.new_article_approval_unlock_count | 15件（本システム作成・人間承認・公開成功した新規記事のみ） | REQ-LOGIC-04 |
+| publication.new_article_approval_unlock_count | 15件（本システム作成・人間承認証拠付き・confirmed `ai_office_publication` Factの新規記事のみ） | REQ-LOGIC-04 |
 | publication.rewrite_requires_approval | true | REQ-LOGIC-05 |
 | publication.hard_gate_confirmation_steps | 2（同一権限者可＋版付き同意） | REQ-LOGIC-05 |
 | automation.default_enabled | false | REQ-LOGIC-04 |

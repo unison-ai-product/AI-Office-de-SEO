@@ -19,7 +19,7 @@ updated_at: 2026-08-03
 - レコメンド生成数、採用率、編集率、却下率、反復率、実施後効果
 - ArticleSummaryの本文取得省略率、保存量、再解析率、完全性
 - GSCマッチ率、カバー率、Query Drift、カニバリ
-- 生成品質、Repair収束、hard gate、公開成功率
+- 生成品質、Repair収束、hard gate、Publication Jobから検証済みPublication Factへの到達率
 - API、DB、画面、キュー、バッチの性能
 - token、cache、credit、Provider原価、粗利
 - SLO、エラー率、再試行、復旧、サポートSLA
@@ -108,9 +108,9 @@ API、worker、queue、database、storage、Provider quota、WordPress送信、G
 
 顧客側の成果指標は、顧客Siteの検索流入、獲得keywordと順位、公開・更新数、CV、cluster充足等、SEO代行の結果として顧客へ示す値であり、運営側指標へ混合しない。指標ごとの評価対象、基準期間、市場影響、availability、成果非保証、通常ビューとOfficeの表示契約は `REQ-MEASURE-14` を正本とする。通常ビューは要約と簡単なdrill down、Agent Officeは同じ成果Projectionを使う玄人向け詳細分析を提供する。
 
-運用Loopは `分析・Recommendation → 採用 → 記事公開または更新のCMS反映 → 評価対象登録` で構成する。Loop完了点は、CMSが公開・更新の反映成功を返し、その施策について評価基準値、評価起点、1カ月・3カ月・6カ月の評価予定が登録された時点とする。GSCデータ取得開始だけ、Recommendation採用だけ、CMS下書き作成だけ、評価画面の閲覧だけではLoop完了にしない。月内に1回以上Loopを完了したdistinct SiteをNorth Starへ1 Siteとして数え、同一Siteの複数完了件数は診断指標へ分離する。
+運用Loopは `分析・Recommendation → 採用 → ai_office_publicationの検証済みPublication Fact → 評価対象登録` で構成する。Loop完了点は、Recommendation／Interventionへ相関したPublication Factを起点に、評価基準値、`effective_at`による評価起点、1カ月・3カ月・6カ月の評価予定が登録された時点とする。GSCデータ取得開始、Recommendation採用、CMS下書き、予約、API受付、外部変更、帰属確認中、評価画面の閲覧だけではLoop完了にしない。月内に1回以上Loopを完了したdistinct SiteをNorth Starへ1 Siteとして数え、同一Siteの複数完了件数は診断指標へ分離する。
 
-Activationは顧客が初回価値を受け取った時点として、`Site設定完了 → CMS接続完了 → 分析・Recommendation提示 → 初回Recommendation採用による記事公開／更新のCMS反映` の4段階で計測し、第4段階をActivation到達とする。第3段階到達・第4段階未到達のSiteを最優先の改善対象として、件数、滞留時間、失敗工程、未完了理由を可視化する。分析・Recommendation提示だけをActivationとして扱わない。
+Activationは顧客が初回価値を受け取った時点として、`Site設定完了 → CMS接続完了 → 分析・Recommendation提示 → 初回Recommendation採用に相関するai_office_publicationのPublication Fact` の4段階で計測し、第4段階をActivation到達とする。予約、下書き、API成功、`external_change`、`unknown_source`では到達させない。第3段階到達・第4段階未到達のSiteを最優先の改善対象として、件数、滞留時間、失敗工程、未完了理由を可視化する。分析・Recommendation提示だけをActivationとして扱わない。
 
 継続稼働の強いsignalは、Recommendation採用、記事公開／更新のCMS反映、月次計画確定のいずれかに限定する。画面閲覧、施策評価閲覧、ログイン、通知既読だけを継続稼働へ算入しない。休眠はActivation到達済みSiteだけを対象とし、`max(activation_at, last_strong_activity_at) + 30日` を到達した時点で判定する。未Activation Siteは休眠ではなくOnboarding停滞へ分類する。
 
@@ -120,7 +120,7 @@ Activationは顧客が初回価値を受け取った時点として、`Site設�
 
 顧客成果はSite全体、Keyword Cluster、記事の3階層で保持する。通常ビューのS1／S2／S5はRecommendation主導の要約と簡単なdrill downを提供する。Agent OfficeのA0〜A8は同じ成果Projectionを、Task、Agent、Recommendation、根拠、市場影響、変更履歴と横断する玄人向け詳細分析として表示する。Officeで成果値を別計算せず、条件変更は型付きProposalと共通Commandを使用する。詳細な画面割当ては `ai-office-de-seo-customer-outcome-metrics-map_v1.md` を正本とする。
 
-公開・更新実績はAI OfficeのPublication Command、Delivery、外部post ID、対象version／content hash、CMS反映結果が同一correlationへ接続したものだけを`ai_office_publication`として主実績へ算入する。検知変更に一致するAI Office Command／Deliveryがない場合は`external_change`としてAI Office実績数から除外する。event欠損、correlation不成立、接続切替、複数候補等で帰属を確定できない場合は`unknown_source`としていずれにも算入せず、再照合期限・不足source・次回probeを持つ「取得元確認中」へ送る。時刻の近さだけでAI Office実績へ推定帰属しない。
+公開・更新実績は`schema.publication.fact.v1`を正本とする。AI OfficeのPublication Decision／Job、CMS Delivery、外部post ID、対象version／content hash、CMS反映検証が同一correlationへ接続したFactだけを`ai_office_publication`として主実績へ算入する。検知変更に一致するAI Office Command／Deliveryがない場合は`external_change`としてAI Office実績数から除外する。event欠損、correlation不成立、接続切替、複数候補等で帰属を確定できない場合は`unknown_source`としていずれにも算入せず、再照合期限・不足source・次回probeを持つ「取得元確認中」へ送る。時刻の近さだけでAI Office実績へ推定帰属しない。
 
 WordPressで利用可能な場合の優先経路はThin Plugin署名付きWebhookとし、利用不能なSiteではCMS Connection Routing Mapが選んだnative webhook、REST modified、RSS／sitemap等の観測sourceを使用する。検知経路の違いを成果source分類そのものへ混入させず、provenanceとconfidenceを保持する。
 
@@ -146,5 +146,5 @@ CVは `REQ-WPA-05`、`REQ-INT-01/03` を優先し、自前JavaScript Trackerの�
 - [ ] AC-L1-MEASURE-10: capacity予測から対話API優先のscale・rate・batch制御を実行できる。
 - [ ] AC-L1-MEASURE-11: support事例を相関IDと解決versionへ接続し、要求・runbook・テストへ還流できる。
 - [ ] AC-L1-MEASURE-12: SEO／AIについて取得性と表示性を二軸表示し、内部では取得・候補化・順位／引用／言及・流入・CVを分離して、4象限から異なる診断へ接続できる。
-- [ ] AC-L1-MEASURE-13: CMS反映後の評価対象登録をLoop完了として月次distinct Siteを算出し、4段階Activation、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。
-- [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示でき、AI Office実績と外部変更、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。
+- [ ] AC-L1-MEASURE-13: Recommendation採用に相関する`ai_office_publication`のPublication FactでActivationへ到達し、同Factから評価基準値・起点・1／3／6カ月予定を登録した時だけLoop完了として月次distinct Siteを算出できる。予約・下書き・API受付・外部変更・帰属確認中を除外し、強いsignalだけの継続稼働、Activation後30日の休眠、契約解約だけの月次churnを同じevent契約から再現できる。
+- [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示できる。Publication FactからAI Office実績・外部変更・帰属確認中を再現し、GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。
