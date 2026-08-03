@@ -64,7 +64,7 @@ CMS変更検知は利用可能な場合に署名付きWebhookを優先し、通�
 
 ### REQ-TECH-07 冪等性・再試行・排他
 
-課金、クレジット、WordPress投稿、Webhook、ジョブ起動、通知等の副作用を伴う処理は冪等キーを必須とする。再試行は指数バックオフ、上限、再試行可能エラー分類を持ち、同一対象への競合実行は排他またはversion検証で制御する。再試行による二重課金、二重公開、二重通知を禁止する。
+課金、クレジット、CMS下書き作成・公開・更新、Media登録、Webhook、ジョブ起動、通知等の副作用を伴う処理は冪等キーを必須とする。初期WordPress Adapterを含む各CMS Adapterは共通の副作用契約に従う。再試行は指数バックオフ、上限、再試行可能エラー分類を持ち、同一対象への競合実行は排他またはversion検証で制御する。再試行による二重課金、二重公開、二重更新、二重通知を禁止する。
 
 WordPress AdapterはPortとして抽象化し、Core REST、Tracking、Thin Pluginの実装を分離する。業務Workflowは特定プラグインのPHP hook、Gutenberg内部Data Store、DOM構造、非公開APIを直接参照しない。WordPressのCapability、Compatibility Matrix、縮退順序、下書き応答は `REQ-INT-05`、CMS共通Publication Contractと他CMSの検証条件は `REQ-INT-06` を正本とし、本要求では再定義しない。
 

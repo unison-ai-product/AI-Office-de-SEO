@@ -61,7 +61,7 @@ Article Read ProfileはSite、用途、候補経路、許可状態、primary／s
 
 ### REQ-DATA-05 差分更新
 
-WordPress同期、生成、公開、リライト時にcontent hashとcheckpointを比較し、未変更記事を再取得・再解析しない。変更された対象と依存する派生データだけを更新する。
+CMS read同期、生成、公開、更新時にcontent hashとcheckpointを比較し、未変更記事を再取得・再解析しない。変更された対象と依存する派生データだけを更新する。初期WordPress Adapterも同じ差分更新契約に従い、WordPress固有hookを差分判定の正本にしない。
 
 ### REQ-DATA-06 推薦データ
 
@@ -105,7 +105,7 @@ Siteは「業界／業種」の2階層分類を複数持てる。業界は上位
 
 Site画像Style Profileは目的、トーン、画風、構図、palette、明暗、被写体、人物、文字入れ、比率、配置、枚数、禁止要素、参照Media ID／URL／hash、権利・出典、ユーザー確定状態、versionを持つ。記事単位overrideは差分だけを保持する。
 
-既存画像の原本は解析中の一時領域へ限定し、WordPress等の外部正本を無期限複製しない。恒久保持する解析cacheはperceptual hash、content hash、Style Feature、解析model／prompt version、observed_at、source_ref、権利・出典、失効条件に限定する。生成画像はWordPress Mediaを公開正本とし、製品側は生成job、model、prompt version、Profile version、Media ID／URL、content hash、採否、費用、権利表示に必要な来歴を保持する。
+既存画像の原本は解析中の一時領域へ限定し、CMS等の外部正本を無期限複製しない。恒久保持する解析cacheはperceptual hash、content hash、Style Feature、解析model／prompt version、observed_at、source_ref、権利・出典、失効条件に限定する。生成画像は接続中CMSのMedia資産を公開正本とし、製品側は生成job、model、prompt version、Profile version、外部Media ID／URL、content hash、採否、費用、権利表示に必要な来歴を保持する。初期WordPress AdapterではWordPress Mediaを使う。
 
 Featured Image PatternはCMS要求size、layer、領域、位置、比率、余白、安全領域、固定・可変slot、palette、トーン、参照画像hash、variation tolerance、可変属性と範囲、ロゴ配置・余白、合成方式、作成者、確定者、version、既定状態を保持する。編集中、確定、廃止を区別し、生成jobが使用したPattern versionを追跡する。
 
@@ -144,7 +144,7 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 - [ ] AC-L1-DATA-09: エクスポート、削除、移管の対象と結果を監査できる。
 - [ ] AC-L1-DATA-10: 横断集計から顧客、Site、URLを特定できない。
 - [ ] AC-L1-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。
-- [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴とWordPress Media参照を保持できる。
+- [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴と接続中CMSのMedia参照を保持できる。
 - [ ] AC-L1-DATA-13: マスターテナントの自社実績と明示許諾済みShowcase Snapshotだけを紹介記事・デモへ使用し、顧客横断参照なしに許諾撤回を反映できる。
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。
 - [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。

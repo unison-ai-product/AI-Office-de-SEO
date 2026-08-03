@@ -133,8 +133,36 @@ const documents = sources.map(([sheetName, sheetId, relativePath]) => ({
 }));
 
 const requestedSheet = process.argv[2];
+const requestedStart = process.argv[3] === undefined ? null : Number(process.argv[3]);
+const requestedCount = process.argv[4] === undefined ? null : Number(process.argv[4]);
+if (
+  (requestedStart !== null && (!Number.isInteger(requestedStart) || requestedStart < 0)) ||
+  (requestedCount !== null && (!Number.isInteger(requestedCount) || requestedCount < 1))
+) {
+  throw new Error("row chunk must be: <sheetName> <zeroBasedStart> <positiveCount>");
+}
+
+const selectedDocuments = requestedSheet
+  ? documents.filter((document) => document.sheetName === requestedSheet)
+  : documents;
+
 process.stdout.write(JSON.stringify({
-  documents: requestedSheet
-    ? documents.filter((document) => document.sheetName === requestedSheet)
-    : documents,
+  documents: selectedDocuments.map((document) => ({
+    ...document,
+    rows:
+      requestedStart === null
+        ? document.rows
+        : document.rows.slice(
+            requestedStart,
+            requestedCount === null ? undefined : requestedStart + requestedCount,
+          ),
+    rowChunk:
+      requestedStart === null
+        ? null
+        : {
+            start: requestedStart,
+            count: requestedCount,
+            total: document.rows.length,
+          },
+  })),
 }));

@@ -712,6 +712,25 @@ for (const requiredPhrase of [
     fail(errors, `business requirements: current lifecycle phrase missing: ${requiredPhrase}`);
   }
 }
+for (const stalePhrase of [
+  "通過成果へ装飾を適用してWordPress下書きへ送り",
+  "成果物: Research Brief、Outline Contract、Section Brief、記事Snapshot、品質・Repair結果、WordPress下書き",
+  "差分をWordPress下書きへ送り",
+  "WordPress下書き、リスク表示、差分確認",
+]) {
+  if (businessLifecycle.includes(stalePhrase)) {
+    fail(errors, `business requirements: CMS-independent lifecycle regressed to WordPress-only wording: ${stalePhrase}`);
+  }
+}
+for (const requiredPhrase of [
+  "接続中CMSの下書き",
+  "CMS下書き／持ち出し成果",
+  "初期WordPress Adapter",
+]) {
+  if (!businessLifecycle.includes(requiredPhrase)) {
+    fail(errors, `business requirements: CMS core / initial adapter separation missing: ${requiredPhrase}`);
+  }
+}
 for (const requiredPhrase of [
   "対象記事の本文・見出し・公開状態を取得できること",
   "GSCまたはKeyword実績だけでは本文変更を伴うRecommendationを成立させない",
@@ -736,6 +755,37 @@ for (const requiredPhrase of [
 ]) {
   if (!screenFlow.includes(requiredPhrase)) {
     fail(errors, `screen flow: current transition phrase missing: ${requiredPhrase}`);
+  }
+}
+for (const requiredPhrase of [
+  "現行Lifecycle正本",
+  "新規Site導入",
+  "既存Site導入",
+  "Reportから月次計画・Recommendation",
+  "Recommendation／手動指定から生成〜公開",
+  "Article Read Snapshot取得",
+  "CMS Delivery準備",
+  "公開・更新後評価",
+  "通常ビューとAgent Officeの往復・変更フロー",
+  "正規遷移契約マトリクス",
+]) {
+  if (!screenFlow.includes(requiredPhrase)) {
+    fail(errors, `screen flow: lifecycle transition coverage missing: ${requiredPhrase}`);
+  }
+}
+for (const requiredPhrase of [
+  "新規Site → big keyword方向確認",
+  "既存Site → Keyword統合",
+  "分析 → 戦略／診断Report",
+  "Report → 月次計画",
+  "Recommendation → Intake",
+  "Intake → Agent Workflow",
+  "成果 → CMS下書き",
+  "CMS下書き → 公開・更新",
+  "公開・更新 → 評価 → 次回計画",
+]) {
+  if (!screenFlow.includes(requiredPhrase)) {
+    fail(errors, `screen flow: canonical transition contract missing: ${requiredPhrase}`);
   }
 }
 for (const requiredPhrase of [

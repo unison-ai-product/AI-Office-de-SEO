@@ -105,7 +105,7 @@ Feature Objectには契約テスト、依存グラフ検査、install／upgrade�
 
 - 管理規模: Site数、公開・管理記事数、キーワード・Query数、ユーザー数
 - 保存量: Article Summary、施策・順位・CV履歴、監査、画像、バックアップ、索引、object storage
-- 取込量: GSC行数、WordPress同期件数、外部検索・市場データ、計測event
+- 取込量: GSC行数、CMS read同期件数、外部検索・市場データ、計測event（初期WordPress Adapterを含む）
 - Site同期規模: 初回取込記事数、期間内更新記事数、取得bytes、差分確認回数、一時解析量
 - 計算量: 差分解析、推薦再計算、集計、embedding、AI job、画像job
 - 瞬間負荷: 同時job、queue投入率、API request、DB走査行数、外部Provider rate

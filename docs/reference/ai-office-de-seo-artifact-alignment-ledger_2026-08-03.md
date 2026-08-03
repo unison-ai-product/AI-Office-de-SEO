@@ -25,7 +25,7 @@
 | L1ロジック詳細 | `L1-requirements/logic/*.md` 5文書 | current | 動的Recommendation、Summary、不足、品質・Repair、Crawler／AI可視性の判定詳細 |
 | L1横断判断 | `requirements-decision-summary`、authorization、recommendation、keyword、report、patch、CMS、availability、image、notification、billingの各map | current | 会話で確定した横断判断と分類正本の接続境界 |
 | 旧L1詳細要求 | product、navigation、agent runtime、Pack/Ticket、Keyword/GSC/Article、DataForSEO、WP、billing/provider、security/observability、rewrite、Agent Office、Admin、User Journey | current_with_migration | Agent／Pack等の有効な詳細を保持する一方、分類正本と矛盾する旧Role・旧価格・旧責務はMigration Mapを介して解決する。旧IDだけから新しい横断判断を作らない |
-| 受入トレース | `ai-office-de-seo-acceptance-trace_v3.7.md` | current | 443 REQとcanonical ACを横断追跡する。旧ACの意味も現行判断へ更新する |
+| 受入トレース | `ai-office-de-seo-acceptance-trace_v3.7.md` | current | 445 REQとcanonical ACを横断追跡する。旧ACの意味も現行判断へ更新する |
 | 開発ロードマップ | `ai-office-de-seo-development-unit-roadmap_v3.7.md` | current | 現行SEO業務Lifecycleと商用成立条件に基づく構築順。コンサル必須・FAQ外出しの旧前提は廃止 |
 | L2 | domain model、glossary | current | Site Build、Keyword Report、月次／週次計画、Recommendation、Publication Decision、評価、認可を集約・用語へ写像 |
 | L3主要設計 | contract schemas、DDL、config registry、quality gate、decision table、AWS operations、handoff gate | current | 実装へ渡す契約・保存・設定・運用。`partial / missing / TODO(L3)`はtrue_open候補として管理 |
@@ -36,7 +36,7 @@
 | 計画書 | `docs/plans/PLAN-L0-01`〜`PLAN-L3-02` | current | 各層の成果物とDoD。プロト更新は全要求・L2/L3・画面遷移の整合後 |
 | review／audit資料 | `docs/reference/*review*`、`*audit*`、verification log | baseline | 当時の指摘と解消証拠。現在値の正本にはしない |
 | open items | `ai-office-de-seo-open-items-register_2026-08-03.md` | current | true_open候補、後続機能、実測待ちを区別する作業台帳 |
-| 機能一覧 | `docs/reference/FEATURE-LIST.md` | current | 443 REQの全数転記ではなく、現行Lifecycleと機能境界を利用者向けに要約する。全数coverageはacceptance traceを参照 |
+| 機能一覧 | `docs/reference/FEATURE-LIST.md` | current | 445 REQの全数転記ではなく、現行Lifecycleと機能境界を利用者向けに要約する。全数coverageはacceptance traceを参照 |
 | prototype modernization register | `ai-office-de-seo-prototype-modernization-register_2026-08-03.md` | prototype_follow_up | 現行要求との差分。要求監査が終わるまでプロト本体を変更しない |
 | `prototype/` | DC HTML、support.js、config、Design、CLAUDE、asset refs | prototype_follow_up | 現行製品仕様の証拠に使わない。移行baselineとして保持 |
 | 画像asset | `docs/reference/assets/**`、screen reference画像 | baseline | 視覚参照。画面責務・Agent数・業務仕様を決める正本ではない |

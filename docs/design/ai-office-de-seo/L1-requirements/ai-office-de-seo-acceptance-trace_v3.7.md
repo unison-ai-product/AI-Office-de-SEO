@@ -447,7 +447,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DATA-09: エクスポート、削除、移管の対象と結果を監査できる。 ｜ 検証: REQ-DATA-09 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-10: 横断集計から顧客、Site、URLを特定できない。 ｜ 検証: REQ-DATA-10 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-11: Siteと記事へ主担当・関連の業界／業種を保持でき、構造化横断軸と非保証の推定根拠を持ち、ユーザー修正を正本・較正データとして保持し、ユーザー追加分類が標準Catalogを直接変更しない。 ｜ 検証: REQ-DATA-11 ｜ 正本: `categories/data-requirements_v1.md`
-- [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴とWordPress Media参照を保持できる。 ｜ 検証: REQ-DATA-12 ｜ 正本: `categories/data-requirements_v1.md`
+- [ ] AC-L1-DATA-12: 原画像を無期限複製せず、版付きImage Style Profile、Featured Image Pattern、解析cache、生成画像の来歴と接続中CMSのMedia参照を保持できる。 ｜ 検証: REQ-DATA-12 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-13: マスターテナントの自社実績と明示許諾済みShowcase Snapshotだけを紹介記事・デモへ使用し、顧客横断参照なしに許諾撤回を反映できる。 ｜ 検証: REQ-DATA-13 ｜ 正本: `categories/data-requirements_v1.md`
 
 ### design-experience-requirements_v1

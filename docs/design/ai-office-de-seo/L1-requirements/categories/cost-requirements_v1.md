@@ -121,7 +121,7 @@ recommendationは価値だけでなく、実行コストと維持コストを入
 - GPT Image 2の費用はユーザーがテスト生成または記事用画像生成を実行した時だけ発生させる。
 - cache hitを理由に新規画像output原価をゼロ見積しない。
 - 同一生成条件の既存成果を再利用する場合と、新規生成・編集・ユーザー希望の再生成を区別する。
-- 画像解析、生成、最適化、WordPress Media転送、storage、egressを分けて原価計測する。
+- 画像解析、生成、最適化、CMS Media転送、storage、egressを分けて原価計測する。初期WordPress AdapterのMedia API原価も同じmeterへ接続する。
 
 ## 9.2 Provider Route最適化  ［REQ-COST-11］
 
