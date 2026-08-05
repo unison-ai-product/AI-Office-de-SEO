@@ -30,7 +30,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 | Customer Account & Access | ContractAccount | ORG, ACCESS, PRODUCTの認可詳細 | 契約者、顧客組織、Site付与、基本権限、業務権限、認可 |
 | Site Onboarding & Strategy | SiteOperatingCycle | BUS, UJ, PRODUCTの導入・月次運用詳細 | Site設定、新規／既存導入、月次計画、週次実行、評価Loop |
 | Keyword Market Intelligence | SiteKeywordPortfolio | KGA, KRL, KPD, SRC, CAV, PRODUCTのNetwork Learning詳細 | Keyword市場、Site Share、Cluster、診断、外部検索情報、AI検索観測 |
-| Content Knowledge | SiteContentIndex | DATA, ASUM, PRODUCTの記事索引詳細 | URL、記事Summary、記事遍歴、内部Link、Site構造の検索用正本 |
+| Content Knowledge | SiteContentIndex | DATA, ASUM, PRODUCTの記事索引詳細 | URL、記事Summary、記事遍歴、内部Link、Site構造の正本と再構築可能な検索read model |
 | Recommendation Planning | RecommendationPortfolio | LOGIC, PRODUCTの自動運用統制 | 目的・制約・費用・保護条件から施策候補を選択し、状態遷移を管理 |
 | Content Production | ContentProductionJob | AGENT, PACK, CQR, RWR, PRODUCTの執筆設定詳細 | 新規記事、リライト、Research、Outline、Writing、QA、Repair |
 | CMS Publication | CmsDelivery | WPA, INT, PRODUCTのCMS詳細 | CMS接続、下書き送信、承認後反映、外部変更通知、CV集計入力 |

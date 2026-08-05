@@ -162,6 +162,14 @@ API、ジョブ、外部連携、AI実行を相関IDで接続し、ログ、メ�
 
 application telemetryはOpenTelemetry互換とし、CloudWatch Application Signals／Logs／Metrics／Trace等へ送信できる構成とする。全経路へ `correlation_id`、`tenant_id`、`site_id`、`job_id`、処理stage、Provider、結果分類を付与するが、本文、秘密情報、不要な個人情報は送信しない。dashboardはユーザー経路、queue、外部Provider、公開、課金、cache、databaseを分け、alertから該当runbookと原因候補へ遷移できるようにする。
 
+### REQ-TECH-20 内部検索Index・再構築
+
+内部検索はversion付きSearch Document ContractとSearch Portへ分離し、特定のRDB機能または専用検索製品を業務ロジックへ埋め込まない。初期技術は日本語lexical検索、構造化filter／facet、更新lag、基準Site規模、同時query、運用人数、AWS費用を負荷試験してADRで決める。Vector検索は補助Capabilityとし、停止してもKeyword、記事、Recommendation、Task、成果の基本検索と絞込みを継続できる。
+
+Index更新は正本transactionのoutbox／Domain Eventから非同期・冪等に行い、Document version比較で順序逆転を防ぐ。schema、analyzer、embedding modelの変更は新世代Indexへbackfillし、件数、hash sample、Scope負テスト、代表query、latencyを検証後にaliasを切り替え、rollback可能にする。全件再indexは専用Capacity、rate limit、checkpoint、再開、backpressureを持ち、対話APIと通常Jobを枯渇させない。
+
+検索APIは認可済みserver contextからtenant／Site Scopeを強制し、query、facet、suggestion、cursor、cacheで越境を防ぐ。検索hitから副作用Commandを直接実行せず、対象正本を再読込して認可・version・状態を再検証する。Index障害・遅延時はDB read model、保存済みProjection、exact-ID参照等へ縮退し、全ページ表示とP95 3秒の理由付き状態を維持する。詳細は`ai-office-de-seo-internal-search-index-connection-map_v1.md`を正本とする。
+
 ## 4. 接続要求
 
 - 性能、可用性、容量目標は `non-functional-requirements_v1.md` を参照する。
@@ -192,3 +200,4 @@ application telemetryはOpenTelemetry互換とし、CloudWatch Application Signa
 - [ ] AC-L1-TECH-17: 具体的な技術選定と例外にADRまたは期限付き記録がある。
 - [ ] AC-L1-TECH-18: 技術的禁止事項を自動検査またはレビューゲートで検出できる。
 - [ ] AC-L1-TECH-19: AWS上の代表E2Eで相関IDがAPI、queue、worker、Provider、CMS Adapter結果まで維持され、初期WordPress Adapterを含むDLQから原因確認と安全なredriveができる。
+- [ ] AC-L1-TECH-20: 検索Indexを正本eventから冪等更新・全再構築でき、世代切替・rollback、tenant／Site越境負テスト、更新lag監視、Index停止時の縮退を検証し、検索障害中も正本CommandとP95 3秒のページ状態表示を維持できる。

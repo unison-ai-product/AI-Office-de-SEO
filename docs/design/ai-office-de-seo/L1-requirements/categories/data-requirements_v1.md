@@ -139,6 +139,12 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 
 本文はSite／jobへscopeした暗号化一時objectだけへ置き、DB、event、log、Notification、Recommendationへ複製しない。本文変更を伴う`rewrite`または`article_replacement`は、body、headings、public stateが利用可能で、hashと期限が有効なSnapshot IDを必須入力とする。不成立時は`read_connection_required`または`input_required`へ保留し、Article SummaryだけからEdit Plan、Repair Ticket、記事置換Ticketを発行しない。
 
+### REQ-DATA-16 内部検索Document・Index境界
+
+製品内検索はKeyword、カテゴリー／テーマ戦略、Article Summary、Recommendation、Task、Customer Outcome等の正本・Projectionから生成する再構築可能な派生Indexを使用する。検索Indexを業務正本にせず、Documentはowner entity、source version、tenant／Site、schema／analyzer version、indexed_at、source_observed_at、availabilityを持つ。更新、削除、Scope変更、同意撤回はversion付きeventから冪等反映し、古いeventで新しいDocumentを巻き戻さない。
+
+検索Documentへ記事本文全文、生HTML、Prompt全文、Provider raw response、secret、契約・権限・監査原文を投入しない。Article検索はtitle、見出し名、Article Summary、Keyword、目的、状態等の有界fieldを使う。Vector／embeddingはArticle Summary等の許可fieldだけを対象にする補助Capabilityとし、本文の恒久embedding、基本検索の必須依存、検索ごとのLLM呼出しを行わない。公共Keyword poolと顧客固有Documentは別Scope・provenanceで保持する。詳細は`ai-office-de-seo-internal-search-index-connection-map_v1.md`を正本とする。
+
 取得経路の切替、source更新、hash変更または期限切れ時は旧Snapshotを再利用しない。job完了、取消または期限切れ後に本文objectを破棄し、Snapshot ID、hash、取得時刻、availability、provenance、破棄時刻だけを履歴として保持する。CMS保存値、公開表示、Plugin Snapshot等は用途別正本としてsource種別で区別し、読取成功を書込権限へ流用しない。
 
 ## 受入条件
@@ -158,3 +164,4 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 - [ ] AC-L1-DATA-13: マスターテナントの自社実績と明示許諾済みShowcase Snapshotだけを紹介記事・デモへ使用し、顧客横断参照なしに許諾撤回を反映できる。
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。
 - [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。
+- [ ] AC-L1-DATA-16: 内部検索Indexを正本から再構築でき、tenant／Site Scope、version、鮮度、削除を保ったまま差分更新し、記事本文・Prompt・secretをDocumentまたはembeddingへ恒久複製せず、vector機能停止時も基本検索を継続できる。

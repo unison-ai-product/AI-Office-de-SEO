@@ -144,6 +144,33 @@
             "記事本文は解析後に破棄し、Article Summaryと遍歴を保持する。",
             "Output Vaultは既定14日、Recovery Backupは最長3か月とし、目的外利用しない。"
           ]
+        },
+        {
+          "invariant_id": "INV-CONTENT-002",
+          "statement": "内部検索Indexは正本から再構築可能な派生read modelであり、tenant／Site Scopeとversionを強制し、記事本文・Prompt・secretをDocumentまたはembeddingへ恒久複製しない。Vectorは補助Capabilityに限定し、Index障害時も正本Commandと基本画面を維持する。SEO index診断とは別境界とする。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/data-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/technical-architecture-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-internal-search-index-connection-map_v1.md"
+          ],
+          "forbidden_patterns": [
+            "検索Index.{0,30}(?:業務正本|唯一の正本|更新の正本)(?:とする|にする)",
+            "記事本文.{0,40}(?:embedding|vector|検索Document).{0,30}(?:恒久|無期限)(?:保存|保持)",
+            "vector検索.{0,30}(?:必須経路|停止時は基本検索不可)",
+            "検索hit.{0,40}(?:正本再読込なし|再認可なし).{0,30}(?:公開|更新|課金|権限変更)"
+          ],
+          "bad_fixtures": [
+            "検索Indexを業務正本とする。",
+            "記事本文をembeddingへ恒久保存する。",
+            "vector検索を必須経路にする。",
+            "検索hitから正本再読込なしで公開する。"
+          ],
+          "good_fixtures": [
+            "検索Indexは正本eventから再構築する派生read modelとする。",
+            "Article Summaryだけを許可fieldとして索引化する。",
+            "vector停止時もlexical検索とfilterで基本業務を継続する。",
+            "検索hitの対象を正本から再読込し再認可してCommandを実行する。"
+          ]
         }
       ]
     },
@@ -621,6 +648,34 @@
             "CTAと内部linkは変更月・累積で評価し、SEO Laneをresetしない。",
             "公開後は公開ページとして評価する。",
             "Recovery Backup削除後も6か月評価を継続し、復元不可をavailabilityで示す。"
+          ]
+        },
+        {
+          "invariant_id": "INV-OUTCOME-003",
+          "statement": "顧客成果画面はSite、カテゴリー／テーマ戦略、記事の三階層で同じProjectionを使い、seo_content、cta_cv、internal_link、awarenessを別Laneとして表示する。順位段階、運用protect、市場影響、外部変更、計測availability、復元availabilityを分離し、評価結果は未実行Recommendationと次回配分へだけ還流する。全成果ページを表示し、標準利用条件P95 3秒以内に前回値、部分結果または理由付き状態を示す。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/measurement-operations-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-customer-outcome-metrics-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-customer-outcome-ui-validation_v1.md"
+          ],
+          "forbidden_patterns": [
+            "Office.{0,40}(?:独自|別).{0,20}(?:成果集計|成果計算|Projection)",
+            "CVなし.{0,30}(?:記事失敗|CTA失敗|施策失敗)(?:とする|へ分類)",
+            "評価結果.{0,50}(?:実行済み施策|過去の評価|ユーザー確定分類).{0,20}(?:上書き|変更する)",
+            "成果(?:集計|評価)中.{0,40}(?:全面spinner|ページを隠す)"
+          ],
+          "bad_fixtures": [
+            "Officeは別の成果集計を使用する。",
+            "CVなしは記事失敗とする。",
+            "評価結果で実行済み施策を上書きする。",
+            "成果集計中は全面spinnerでページを隠す。"
+          ],
+          "good_fixtures": [
+            "通常ビューとOfficeは同じCustomer Outcome Projectionを使用する。",
+            "CVなしは母数と記事目的を確認して観測を継続する。",
+            "評価結果は未実行Recommendationと次回配分へ還流する。",
+            "成果集計中も3秒以内に前回値と更新中を表示する。"
           ]
         }
       ]

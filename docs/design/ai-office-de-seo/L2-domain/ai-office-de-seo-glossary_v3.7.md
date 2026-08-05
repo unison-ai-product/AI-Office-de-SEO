@@ -50,6 +50,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Derived Facts（導出事実） | 調査由来の低変化事実のコンパクト蓄積。鮮度期限内は外部再取得を省略 | REQ-PRODUCT-19 |
 | Intervention Ledger（施策台帳） | 施策タイプ×文脈×効果デルタの記録。較正・好調分析・成果較正の入力 | REQ-PRODUCT-19 |
 | Article Summary Contract | 記事が持つトピック・意図・読者・問い・主張・意味ユニット・エンティティ・CTA・リンク可能性・鮮度・不足を、上限つきの構造化インベントリとして保持する契約。本文は保持せず、推薦の一次入力と軽量意味索引の入力に使う | REQ-PRODUCT-20 |
+| Internal Search Index | Keyword、カテゴリー／テーマ戦略、Article Summary、Recommendation、Task、成果を探すために正本から再構築する派生read model。SEO index診断とは別境界で、本文全文を保持せずvectorは補助Capabilityとする | REQ-DATA-16 / REQ-TECH-20 |
 
 ## 検索実績（Search Performance / GSC）
 | 用語 | 定義 | 根拠 |

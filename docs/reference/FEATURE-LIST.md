@@ -101,6 +101,7 @@
 
 - AWS配置を前提にWeb／API、worker、PostgreSQL、object storage、queue、監視を疎結合化し、機能単位のbulkhead、DLQ、冪等性、checkpoint再開を持つ。
 - 本文、HTML、block、prompt、secret、Provider raw responseを恒久DBへ保存せず、Article Summary、hash、履歴、順位、Keyword、CV等の有界データを保持する。
+- Keyword、カテゴリー／テーマ戦略、Article Summary、Recommendation、Task、成果を横断検索する再構築可能な内部検索Indexを持つ。tenant／Siteを強制し、本文・Prompt・secretを索引化せず、vector停止時もlexical検索とfilterで基本業務を継続する。
 - 顧客データはtenant／Site境界、Repository強制点、RLS、暗号化、step-up、監査、break-glassで保護する。顧客面と内部管理面を分離する。
 - 主要画面は一般的Web指標とP95を監視し、重い処理は非同期化して通常ビュー／Officeで進行を体験化する。
 - 初期内部目標はRPO 1時間／RTO 4時間。全体障害より機能単位の縮退を優先し、復元演習で達成性を検証する。

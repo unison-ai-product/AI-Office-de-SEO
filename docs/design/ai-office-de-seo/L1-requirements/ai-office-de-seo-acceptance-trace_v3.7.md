@@ -633,6 +633,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-TECH-17: 具体的な技術選定と例外にADRまたは期限付き記録がある。 ｜ 検証: REQ-TECH-17 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-18: 技術的禁止事項を自動検査またはレビューゲートで検出できる。 ｜ 検証: REQ-TECH-18 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-19: AWS上の代表E2Eで相関IDがAPI、queue、worker、Provider、CMS Adapter結果まで維持され、初期WordPress Adapterを含むDLQから原因確認と安全なredriveができる。 ｜ 検証: REQ-TECH-19 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
+- [ ] AC-L1-TECH-20: 検索Indexを正本eventから冪等更新・全再構築でき、世代切替・rollback、tenant／Site越境負テスト、更新lag監視、Index停止時の縮退を検証し、検索障害中も正本CommandとP95 3秒のページ状態表示を維持できる。 ｜ 検証: REQ-TECH-20 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 
 ## 26. 詳細ロジック受入トレース
 
@@ -660,6 +661,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-MEASURE-14: 顧客成果をSite／Cluster／記事の3階層で保持し、通常ビューでは要約・簡単操作、Agent Officeでは同じProjectionによる玄人向け詳細分析として表示できる。Publication Factから`seo_content / cta_cv / internal_link / awareness`の別Lane、各起点・周期、AI Office実績・外部変更・帰属確認中、復元availabilityを再現し、CTA／内部linkだけでSEO Laneをresetしない。GSC順位段階とprotect flag、市場補正3分類、自前Trackerの単ホップCVをsource・rule version付きで再現できる。 ｜ 検証: REQ-MEASURE-14 ｜ 正本: `categories/measurement-operations-requirements_v1.md`
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。 ｜ 検証: REQ-DATA-14 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。 ｜ 検証: REQ-DATA-15 ｜ 正本: `categories/data-requirements_v1.md`
+- [ ] AC-L1-DATA-16: 内部検索Indexを正本から再構築でき、tenant／Site Scope、version、鮮度、削除を保ったまま差分更新し、記事本文・Prompt・secretをDocumentまたはembeddingへ恒久複製せず、vector機能停止時も基本検索を継続できる。 ｜ 検証: REQ-DATA-16 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-CAV-01: Googlebot等のSEO BotとAI Botを共通契約で取り込み、事業者・用途・検証状態を分離してspoof疑いを実crawlから除外できる。 ｜ 検証: REQ-CAV-01 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
 - [ ] AC-L1-CAV-02: robots許可、外部probe、検証済み実crawl、本文可読性、freshnessを別成分として取得性を再現可能に判定できる。 ｜ 検証: REQ-CAV-02 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`

@@ -76,6 +76,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - キーワード戦略、新規記事、リライト、品質確認、承認、CMS引渡し、公開・更新後評価等の基本SEO代行LifecycleはCore Productだけで完結させる。Feature Objectの主境界は分析Context接続であり、追加データSource、分析レンズ、Connector、専門評価、追加CapabilityをContext Envelope／Source PackとしてCoreへ供給する。Object未導入・停止時も追加Contextだけを縮退し、基本SEO機能を購入不能にしない。
 - 外部接続は共通Feature Connection Adapter Portへ統一する。Provider固有SDK、認証、quota、payload、errorはAdapter内へ閉じ、CoreにはCapability Descriptor、Context Envelope、Command Result、Connection Health、Usage／Costだけを返す。Adapter能力をcontext source、action tool、event source、content destinationへ分け、read接続と副作用のあるwrite接続の権限を混合しない。
 - サイト構造はWordPress等の外部正本に従い、本システムはカテゴリ、階層、slug、redirect、canonicalを変更しない。構造提案は可能だが、記事は現在構造へ割り当てる。内部linkはArticle Summary・Keyword cluster・GSC・実linkの集約バッチで候補化し、新規／リライト本文から既存記事へのlinkは生成内で自動挿入、公開済み既存記事からのlink追加は権限確認とユーザー承認後の限定Patch、削除は別承認とする。公開前はSERP重複・意図・assignmentからカニバリriskを提案する。
+- 製品内部検索IndexはKeyword、カテゴリー／テーマ戦略、Article Summary、Recommendation、Task、顧客成果を対象とする再構築可能な派生read modelとし、SEO index診断と分離する。本文全文・Prompt・secretを索引化せず、tenant／Site Scopeを強制する。初期はlexical検索と構造化filterを必須経路とし、vectorはArticle Summary等だけの補助Capability、専用検索製品は負荷試験とADR後の選択とする。
 - プライマリキーワードと3〜5件程度の補助キーワードを検索意図・SERPからクラスタ化し、記事へ割り当てる。
 - 獲得キーワードが意図したクラスタで順位を得ることを記事評価の第一条件とし、CV可能な記事はCV取得を次の評価軸とする。
 - 想定外のキーワード獲得は単純な主従入替えにせず、業界・Site実績を再計算してロジック補正へ使う。
