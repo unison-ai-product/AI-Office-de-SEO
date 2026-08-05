@@ -220,6 +220,32 @@
             "non_billable ActionはReservationなしを明示する。",
             "一括操作もAction単位のAdmissionを保持する。"
           ]
+        },
+        {
+          "invariant_id": "INV-CAPACITY-001",
+          "statement": "月次計画・週次選択・一括確認を全件同時起動へ丸めず、platform、資源クラス、Provider／CMS、tenant、SiteのCapacity Admissionを満たしたActionだけをfair shareとjitter付きでdispatchする。追加creditは安全上限を解除しない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/business-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/technical-architecture-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/non-functional-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-dataforseo-competitor-batch-requirements_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-monthly-plan-ui-validation_v1.md"
+          ],
+          "forbidden_patterns": [
+            "(?:月次計画|週次予定|一括確認).{0,30}(?:確定|承認).{0,30}(?:全件|すべて).{0,20}(?:同時起動|即時起動|一斉実行)",
+            "追加credit.{0,40}(?:同時実行|rate|安全上限)(?:を解除する|を無制限にする|が解除される)",
+            "(?:大規模Site|単一tenant).{0,40}(?:全worker|全slot|資源pool).{0,20}(?:占有|専有)"
+          ],
+          "bad_fixtures": [
+            "月次計画を確定したら全件を同時起動する。",
+            "追加credit購入で同時実行の安全上限を解除する。",
+            "大規模Siteが全workerを占有できる。"
+          ],
+          "good_fixtures": [
+            "週次予定の各Actionは多段Capacity Admission後に分散実行する。",
+            "追加creditは処理可能量を増やしても安全上限を解除しない。",
+            "fair shareとjitterでSite間・時間帯の負荷を分散する。"
+          ]
         }
       ]
     },

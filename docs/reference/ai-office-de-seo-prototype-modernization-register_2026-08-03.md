@@ -66,6 +66,7 @@
 | SF-UI-04 | Officeの専門情報を`すぐ確認 / 詳しく見る / 相談・高度操作`へ段階開示し、標準3D／簡略3D／2Dでも同じ業務を完了できるか | 3D配置、カード密度、段階名、初期展開。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-DESIGN-09、REQ-AOUI-01/04/06 |
 | SF-UI-05 | 新規／既存Siteの業務Stepと、分析・記事読取り・CMS送信の並行準備をどう見せれば、単一の「接続済み」へ誤認せず最短で利用開始できるか。`AOS-PRE-L3-SITE-ONBOARDING-UI-VALIDATION`の業務Step＋準備Tray／利用可能機能カードとONB-UI-01〜15を比較する | Step構成、準備Tray配置、準備率表示、部分開放copy。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-BUS-02、REQ-SCREEN-01、SiteBuildRun |
 | SF-UI-06 | Keyword Market、Observed／Estimated／Article Share、新規戦略／既存診断を、カテゴリー／テーマ戦略単位でどう見せれば次の月次計画・Recommendationへ判断できるか。`AOS-PRE-L3-KEYWORD-REPORT-UI-VALIDATION`の判断Story＋Explorer／Cluster MatrixとKWR-UI-01〜19を比較する | 章立て、カテゴリー／テーマ戦略label、Matrix列、指標密度、Cluster操作粒度。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-BUS-02/04/05、REQ-SCREEN-09/18、KeywordReport |
+| SF-UI-07 | 月次計画と週次実行予定を、権限別確定、カテゴリー／テーマ戦略の配分、Action別Admission、分散実行としてどう見せれば、計画確定＝全件起動と誤認しないか。`AOS-PRE-L3-MONTHLY-PLAN-UI-VALIDATION`の判断サマリー／月間配置ボードとPLAN-UI-01〜18を比較する | セクション順、権限待ち表示、見込み幅、Capacity待機表現、S1／S3／S4の遷移。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-BUS-03/05、REQ-SCREEN-01/18、Authorization、Capacity Admission |
 
 視覚検証ではdesktop標準viewport、狭幅、reduced motion、2D縮退を確認し、通常ビューの優先判断が埋もれないこと、Officeの詳細操作が演出に隠れないこと、往復時に対象を見失わないことを記録する。ブラウザ未接続のソース監査だけでこれらを`resolved`にしない。
 

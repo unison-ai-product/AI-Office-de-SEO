@@ -114,6 +114,8 @@ flowchart TD
   J -->|深掘り| K[Office Keyword room\n同一Context]
 ```
 
+MonthlyPlan確定後は全Actionを直ちに起動しない。週次選択でcredit、依存、保護、品質、処理Capacityへ収まる候補をfreezeし、各ActionをExecution Admissionへ渡す。手動の一括確認もAction別判定を残し、自動確定もAutomation Policyを新規付与しない。S3カレンダーから月次目的・カテゴリー／テーマ戦略・施策順を変える場合はS1 Planning Context、CMS公開予約を変える場合はS4 Automation Contextへ遷移する。
+
 ## 1. 全体マップ（通常ビュー）
 
 サイドメニュー=第一階層7項目、ヘッダー=グローバル要素（REQ-NAV-02）。W系は呼び出し元文脈で開く（パネル/ドロワー、第三階層）。
