@@ -153,6 +153,14 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 
 Plan Configurationは観測coverage、freshness、粒度、詳細保持期間、再計算Capacity、Site固有feature depth、外部取得予算、検索可能履歴をDimensionとして版管理する。Plan変更は新しい取得・rollup・保持・再計算範囲へ適用し、過去Observation Factを書き換えない。Downgrade前に詳細保持終了、rollup、削除予定、export期限を確定し、現在Objectの基本検索品質とtenant／Site境界をPlan差分にしない。詳細は`ai-office-de-seo-plan-data-fidelity-connection-map_v1.md`を正本とする。
 
+### REQ-DATA-18 計測精度・近似・Sampling Provenance
+
+Metric Snapshotは`exact_fact / exact_rollup / approximate_sketch / sampled_estimate`のcalculation modeを必須とし、Source、母集団、対象期間、grain、coverage、watermark、algorithm／query version、欠損を保持する。近似はalgorithm、precision、error bound、merge条件、Samplingはframe、method、strata、sample size、inclusion probability／weight、seedまたは決定論key、confidence interval、bias noteを追加する。推定不能または信頼区間を算出できない値は`directional_only`として確定数値にしない。
+
+Credit、契約、権限、公開状態、Publication Fact、取得済みGSC／CV集計、記事別確定評価はSamplingで代替しない。Recommendation採否、Site固有補正の自動適用、顧客成果の確定値をSampling結果だけで決めない。大量集合のdistinct／percentile／分布、市場探索、匿名cohort、原価観測等では近似またはSamplingを利用できるが、事前集計、bounded query、incremental rollup、Sketchで成立しない場合に限定し、用途外へ転用しない。
+
+Planは観測coverageと処理Capacityを変えられるが、Observationの採用確率、推定量、統計weight、誤差幅へ有利な係数を加えない。小標本、rare CV、ロングテール、heavy-tail、急変、Source欠損では全体平均を確定値へ強制適用せず、観測継続、対象拡張、方向性表示または非数値Recommendationへ縮退する。詳細は`ai-office-de-seo-measurement-precision-connection-map_v1.md`を正本とする。
+
 ## 受入条件
 
 - [ ] AC-L1-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
@@ -172,3 +180,4 @@ Plan Configurationは観測coverage、freshness、粒度、詳細保持期間、
 - [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。
 - [ ] AC-L1-DATA-16: 内部検索Indexを正本から再構築でき、tenant／Site Scope、version、鮮度、削除を保ったまま差分更新し、記事本文・Prompt・secretをDocumentまたはembeddingへ恒久複製せず、vector機能停止時も基本検索を継続できる。
 - [ ] AC-L1-DATA-17: Site実測、Site固有較正、匿名業界cohort、global priorをprovenance・weight・confidence付きで分離し、Plan別Dimensionからcoverage・freshness・粒度・保持・再計算範囲を変えても、顧客固有事実と過去Observation Factを平均値で上書きしない。
+- [ ] AC-L1-DATA-18: Exact基準fixtureに対してrollup、Sketch、Samplingのmode・algorithm・母集団・coverage・誤差・bias・versionを再現でき、small-N、rare CV、heavy-tail、ロングテールで許容誤差を超えた推定を確定成果、課金、公開、Recommendation採否またはSite補正の自動適用へ使用しない。

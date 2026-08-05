@@ -1499,7 +1499,8 @@ if (/^\| generation\.article_assembled \||^\| publish\.draft_created \|/m.test(e
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
   "### 0.7 Plan別Data Fidelity・Semantic Metric表示",
   "Agent Officeは通常ビューと同じ`schema.metric.snapshot.v1`",
-  "FID-UI-01〜36",
+  "PrecisionInfoMark",
+  "FID-UI-01〜44",
   "SF-UI-16",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
@@ -1510,7 +1511,38 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
 assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md", [
   "# 11. Plan別Data Fidelity・Semantic Metric接続",
   "Office専用算式・Metric copy・認可迂回",
+  "INV-PRECISION-001",
   "P95 3秒以内にページ骨格と値または理由付き状態",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-measurement-precision-connection-map_v1.md", [
+  "exact fact → exact rollup → approximate sketch → sampled estimate",
+  "Recommendation採否の唯一根拠",
+  "Planを母集団の統計weightへ使わない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/data-requirements_v1.md", [
+  "### REQ-DATA-18 計測精度・近似・Sampling Provenance",
+  "sampled_estimate",
+  "AC-L1-DATA-18",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md", [
+  "### REQ-SCREEN-24 推定・近似値の説明表示",
+  "Information Mark",
+  "AC-L1-SCREEN-24",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md", [
+  "## 2.15 `PrecisionInfoMark` / `PrecisionPopover`",
+  "hover／focus／click／tap／screen reader",
+  "決定論template",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-plan-data-fidelity-ui-validation_v1.md", [
+  "FID-UI-41",
+  "FID-UI-42",
+  "FID-UI-43",
+  "FID-UI-44",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md", [
+  "mode(exact_fact|exact_rollup|approximate_sketch|sampled_estimate)",
+  "sample_frame_ref",
 ]);
 assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/non-functional-requirements_v1.md", [
   "### REQ-NFR-16 分析Workload隔離・優先順位",

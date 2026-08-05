@@ -168,6 +168,27 @@ KpiCard { label, value, delta, deltaColor, note, spark?: number[] }  // S1/ADM�
 ```
 - **SVG内にテキストを置く場合の注意**: バインディングは tspan で描画される（support.js修正済み）。検収は `getBBox().width===0 && textContent` の全数スキャン。
 
+## 2.15 `PrecisionInfoMark` / `PrecisionPopover`
+
+`approximate_sketch`、`sampled_estimate`、`directional_only`、coverage不足、stale、fallbackを含む値の直近に配置する。最新の`exact_fact / exact_rollup`へ不要な警告を付けない。
+
+```
+PrecisionInfoMark {
+  mode, shortLabel: '実測'|'集計'|'推定'|'参考傾向',
+  reasonCode, controls: precisionPopoverId
+}
+PrecisionPopover {
+  reason, period, populationSize?, sampleSize?, coverage?, errorBound?,
+  confidenceInterval?, freshness, biasNotes[], limitation, nextUpdate,
+  officeDetail?: { algorithmRef, strataRef, inclusionWeightRef, watermark, version }
+}
+```
+
+- Markは値に隣接するbuttonとし、accessible name、focus ring、`aria-controls`を持つ。hoverだけに依存せず、hover／focus／click／tap／screen readerから同じ説明へ到達でき、Escで閉じて起点へfocusを戻す。
+- 閉じた状態でも`実測 / 集計 / 推定 / 参考傾向`の短い区分を残す。Popoverは実態と乖離し得る理由、対象期間、母集団・sample、coverage、誤差・信頼区間、鮮度、欠損・bias、判断上の制限、次回更新または精度が上がる条件を平易に示す。
+- 説明文はMetric Snapshotのreason codeとmetadataから決定論templateで生成する。LLMの自由文で確からしさを補わない。
+- Agent Officeだけalgorithm、strata、weight、watermark、versionを追加表示できる。通常ビュー、Office、chart legend、export、printは同じmode・`as_of`・versionを維持する。
+
 ---
 
 # 3. Officeビュー専用パーツ

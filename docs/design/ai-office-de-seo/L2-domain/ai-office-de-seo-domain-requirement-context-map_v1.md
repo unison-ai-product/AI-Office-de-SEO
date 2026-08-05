@@ -22,15 +22,15 @@ L1の要求分類は監査と文書管理の分類であり、業務データの
 | Customer Account & Access | ORG, ACCESS + PRODUCT-02/08/10 | 33 | ContractAccount |
 | Site Onboarding & Strategy | BUS, UJ + PRODUCT-01/05/09/17/24 | 27 | SiteOperatingCycle |
 | Keyword Market Intelligence | KGA, KRL, KPD, SRC, CAV + PRODUCT-13 | 56 | SiteKeywordPortfolio |
-| Content Knowledge | DATA, ASUM + PRODUCT-03/04/19/20 | 26 | SiteContentIndex |
+| Content Knowledge | DATA, ASUM + PRODUCT-03/04/19/20 | 27 | SiteContentIndex |
 | Recommendation Planning | LOGIC + PRODUCT-18 | 15 | RecommendationPortfolio |
 | Content Production | AGENT, PACK, CQR, RWR + PRODUCT-07/12 | 57 | ContentProductionJob |
 | CMS Publication | WPA, INT + PRODUCT-06 | 25 | CmsDelivery |
 | Customer Outcome | MEASURE-01〜04/12/14 | 6 | CustomerOutcomeSnapshot |
 | Commercial Entitlement | BILL, BILLING, COST, UPSELL | 48 | SubscriptionAccount |
 | Platform Control & Reliability | PAC, ADM, IRG, SEC, NFR, DUR, TECH + MEASURE-05〜11/13 + PRODUCT-16/21/22/23 | 110 | PlatformControlPolicy |
-| Agent Execution Experience | SCREEN, DESIGN, AOUI, NAV + PRODUCT-11/14/15 | 54 | AgentTaskProjection |
-| **合計** | **35接頭辞** | **457** | |
+| Agent Execution Experience | SCREEN, DESIGN, AOUI, NAV + PRODUCT-11/14/15 | 55 | AgentTaskProjection |
+| **合計** | **35接頭辞** | **459** | |
 
 新しいREQ接頭辞を追加した場合は、同じ変更で所有コンテキストを登録する。未割当、二重割当、存在しない接頭辞の登録はRequirements Auditを失敗させる。
 

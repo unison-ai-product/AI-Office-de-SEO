@@ -128,8 +128,9 @@ Report情報設計は`ai-office-de-seo-keyword-report-connection-map_v1.md`を�
 - S7契約・お支払いはData Fidelity Entitlementのcoverage、freshness、grain、history、recalculation、Site feature depth、外部取得CapacityをPlan比較と変更影響へ表示する。Upgradeを順位・精度保証と表現せず、Downgradeでは将来のrollup、詳細履歴の失効予定、export期限を表示し、過去Observation Factまたは確定評価が変更されるように見せない。
 - Agent Officeは通常ビューと同じ`schema.metric.snapshot.v1`と`schema.calibration.snapshot.v1`を使用し、専門的な内訳、根拠、watermark、versionを表示する。Officeが独自にMetric、weight、予測、Plan可否を再計算しない。
 - Pre-aggregationが`partial / stale / failed`の場合も、全ページを先に表示してP95 3秒以内に状態、最後に確認できたwatermark、対象範囲、利用可能な操作を返す。詳細再構築は非同期Taskとして継続し、0、最新値、完全値へ偽装しない。
+- 近似・Sampling・参考傾向・coverage不足・stale・fallbackの値には共通`PrecisionInfoMark`を隣接させる。Popoverはreason codeから決定論的に乖離理由、coverage、誤差、鮮度、bias、制限、次回更新を説明し、通常ビュー、Office、exportで同じmode・`as_of`・versionを維持する。
 
-画面fixtureは`ai-office-de-seo-plan-data-fidelity-ui-validation_v1.md`の`FID-UI-01〜36`、検証記録は`SF-UI-16`を正本とする。
+画面fixtureは`ai-office-de-seo-plan-data-fidelity-ui-validation_v1.md`の`FID-UI-01〜44`、検証記録は`SF-UI-16`を正本とする。
 
 ## 1. 旧詳細コンポーネント棚卸し（互換baseline・現行責務の正本ではない）
 

@@ -247,3 +247,4 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | Hierarchical Calibration Snapshot | Site実績と参考データの利用内訳 | Site実測、Site×業界、匿名業界cohort、全体参考のweight・標本・期間・confidenceをfreezeした版付き較正Snapshot |
 | Domain Metric Definition | 指標の定義 | 指標の意味、Fact、grain、期間、attribution、availability、confidenceを所有業務Contextが公開するversion付き契約 |
 | Pre-aggregation Projection | 集計済み表示データ | P95 3秒表示用の再構築可能な派生集計。正本Factではなく、stale・partial・watermarkを持つ |
+| Calculation Mode | 計算精度区分 | `exact fact / exact rollup / approximate sketch / sampled estimate`。近似・Samplingは母集団、coverage、誤差、bias、versionを伴う |

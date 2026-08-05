@@ -239,6 +239,14 @@ Plan別Data Fidelityは「精度優遇」とだけ表示せず、追加される
 
 Pattern、Image Generation Job、CMS Media Delivery、記事制作を別状態で表示する。ユーザー再生成は新Job、障害再試行は元Jobとし、採用主体・policy version、技術停止・設定不一致・advisoryを区別する。Media登録とfeatured割当を冪等な別Commandとして扱い、割当失敗でMediaを重複登録せず、画像工程の失敗で完成済み本文を失わせない。詳細は`ai-office-de-seo-featured-image-pattern-connection-map_v1.md`を正本とする。
 
+### REQ-SCREEN-24 推定・近似値の説明表示
+
+`approximate_sketch / sampled_estimate / directional_only`の値、またはcoverage不足、Source欠損、stale、較正fallback等により実態と乖離し得る値は、値の直近に共通Information Markと`実測 / 集計 / 推定 / 参考傾向`の短い区分を表示する。Information Markはhoverだけに依存せず、keyboard focus、click、tap、screen readerから開けるPopoverとし、色または記号だけで精度を伝えない。表、chart、KPI card、Tooltip、exportで同じPrecision Presentationを使用する。
+
+Popoverは、乖離し得る理由、対象期間、母集団・sample size、coverage、誤差幅またはconfidence interval、freshness、主なbias／欠損、利用上の注意、正確値へ近づく条件または次回更新を平易に表示する。通常ビューは理由を短くまとめ、Agent Officeはcalculation mode、algorithm、strata、weight、watermark、versionまで展開する。説明はMetric Snapshotのreason codeとmetadataから決定論的に生成し、LLM自由文で数値の確からしさを作らない。
+
+`exact_fact / exact_rollup`で欠損・staleがない値へ不要な警告を付けない。情報表示は免責文だけで終わらず、利用者が「何が観測済みで、何が推定で、判断へどこまで使えるか」を理解できる内容にする。説明を閉じても計算区分の短いlabelは残し、exportにはmode、coverage、error、as_of、versionを機械可読列として含める。
+
 ## 受入条件
 
 - [ ] AC-L1-SCREEN-01: Dashboardで承認期限、停止、今週の予定、新規Recommendation、完了・評価の順に判断項目を確認し、月次計画と週次予定を運用modeに応じて確定できる。WordPress Thin Pluginを選ぶ場合はSaaS側からZIP取得、Siteペアリング、接続・version・署名付き更新状態を確認できる。
@@ -264,3 +272,4 @@ Pattern、Image Generation Job、CMS Media Delivery、記事制作を別状態�
 - [ ] AC-L1-SCREEN-21: Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果を現在Siteまたは付与済み全Siteで横断検索し、通常／Officeの同一対象へContextを保って遷移できる。indexing、stale、partial、0件、権限除外、障害を区別し、P95 3秒以内に結果または理由付き縮退状態を表示し、副作用前に検索hitの対象を正本から再読込・再認可できる。
 - [ ] AC-L1-SCREEN-22: 契約周期・税別税込・年額総額、Credit lot、自動チャージ、Dimension別Capacity、Plan別Data Fidelity、Plan変更、支払失敗を同じ正本versionから区別して表示できる。Data Fidelityは追加coverage・詳細期間・再計算頻度・予測可能対象として比較し、較正weightへのPlan加点や精度保証にせず、権限・step-up・影響Preview・stale再確認を経て操作し、hard limit／past_dueでも閲覧・export・修正導線を維持できる。
 - [ ] AC-L1-SCREEN-23: Featured Image Patternの版・slot・variation・CMS sizeを生成前に設定し、Pattern編集、画像生成、採否、最適化、Media登録、featured割当を別状態で確認できる。ユーザー再生成と障害再試行、技術停止とadvisoryを区別し、Media二重登録と画像失敗による本文成果喪失を防げる。
+- [ ] AC-L1-SCREEN-24: 近似・Sampling・参考値の直近にInformation Markと精度区分を表示し、focus／click／tap／screen readerで理由、母集団・sample、coverage、誤差、freshness、bias、判断上の制限、次回更新を確認できる。通常／Office／exportが同じMetric Snapshotのmode・versionを使い、Exact値へ不要な警告を付けず、LLMが説明から確からしさを捏造しない。

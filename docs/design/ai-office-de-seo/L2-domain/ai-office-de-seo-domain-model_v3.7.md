@@ -217,8 +217,8 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 ### 4.3.5 DomainMetricDefinition / MetricSnapshot（各業務Context）
 
 - `DomainMetricDefinition`: 指標の意味を所有する業務Contextが公開するversion付きPublished Language。MetricKey、Meaning、FactContract、Grain、Dimensions、Window、Filter、Attribution、AvailabilityRule、ConfidenceRule、OwnerContextを持つ。
-- `MetricSnapshot`: Definition version、tenant／Site Scope、対象、期間、値またはrange、availability、confidence、source watermarks、calibration ref、calculated_atを持つ派生read model。顧客成果と運営KPIは別Definition／Projectionとする。
-- 不変条件: PlatformまたはUIが業務指標の意味を独自変更しない／通常ビューとOfficeは同じMetricSnapshotを使用する／window・grain・attributionが異なる値を同じMetricとして比較しない／確定評価は使用Definition／Fact／Calibration versionを保持する。
+- `MetricSnapshot`: Definition version、tenant／Site Scope、対象、期間、値またはrange、availability、confidence、source watermarks、calibration ref、calculation mode、algorithm、母集団／sample、precision／error／confidence interval、bias、calculated_atを持つ派生read model。顧客成果と運営KPIは別Definition／Projectionとする。
+- 不変条件: PlatformまたはUIが業務指標の意味を独自変更しない／通常ビューとOfficeは同じMetricSnapshotを使用する／window・grain・attributionが異なる値を同じMetricとして比較しない／確定評価は使用Definition／Fact／Calibration versionを保持する／ExactとSamplingを同じ表示精度へ丸めない／Samplingだけで課金、公開、確定成果、Recommendation採否、Site補正を確定しない。
 
 ### 4.4 RewriteJob / ArticleWorkspace（Rewrite）
 - ルート: RewriteJob（ArticleWorkspaceを内包）。

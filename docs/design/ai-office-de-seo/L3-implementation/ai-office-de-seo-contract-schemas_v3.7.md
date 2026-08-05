@@ -466,6 +466,10 @@ schema.metric.snapshot.v1 {
   metric_snapshot_id, metric_ref, tenant_id, site_id?, subject_ref,
   grain, dimensions, window, value?, range?, availability, confidence,
   source_watermarks[], calibration_ref?, coverage, calculated_at,
+  calculation{mode(exact_fact|exact_rollup|approximate_sketch|sampled_estimate),
+    algorithm_ref?, population_size?, sample_size?, sample_frame_ref?, strata_ref?,
+    inclusion_weight_ref?, seed_or_deterministic_key?, precision?, error_bound?,
+    confidence_interval?, bias_notes[], directional_only},
   expires_at?, projection_version, authorization_scope_ref
 }
 
@@ -480,6 +484,7 @@ schema.metric.preaggregation.v1 {
 - Metric DefinitionはFact所有Contextが公開し、Platformは意味、算式、attributionを変更しない。顧客成果と運営KPIは別`metric_key`／owner contextを使う。
 - Calibrationのweight合計は利用可能Layer内で1とし、Site実測が有効な成分をPlan理由でglobal priorへ置換しない。同一入力watermark、rule、entitlementから同じSnapshotを再現できる。
 - Metric Snapshotは通常ビューとOfficeの共通Query結果である。Surface別の表示整形は許すが、同じmetric／scope／grain／window／filterから別の値を作らない。`unavailable / partial / stale`を0、最新、完全へ変換しない。
+- `exact_fact → exact_rollup → approximate_sketch → sampled_estimate`の順で最小限の近似を選ぶ。SamplingはCredit、契約、権限、公開Fact、GSC／CVの取得済み集計、記事別確定評価を代替せず、Recommendation採否またはSite補正の唯一根拠にしない。近似／Samplingはalgorithm、母集団、coverage、誤差、bias、versionを省略しない。
 - Pre-aggregationは再構築可能な派生契約であり、Observation Fact、契約、権限、Credit、Recommendationを所有しない。失敗時も正本Commandを停止させず、最後に確認できたwatermarkと状態を返す。
 - Plan差分はData Fidelity Entitlementからcoverage、freshness、grain、history、recalculation、external acquisition capacityを制約する。同じMetric Definitionの式や較正weightへPlan係数を加えない。
 

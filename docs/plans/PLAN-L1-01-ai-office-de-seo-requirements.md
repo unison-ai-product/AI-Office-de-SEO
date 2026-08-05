@@ -66,6 +66,8 @@ generates:
     artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-plan-data-fidelity-connection-map_v1.md
     artifact_type: design_doc
+  - artifact_path: docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-measurement-precision-connection-map_v1.md
+    artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-authorization-operation-matrix_v1.md
     artifact_type: design_doc
   - artifact_path: docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-recommendation-action-routing-map_v1.md

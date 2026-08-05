@@ -650,4 +650,4 @@ renderVals例外0・コンソールエラー0・タグバランス全一致（�
 | Agent Office | 同一Metric Snapshot、Calibration Snapshot | 四階層weight、標本、variance、fallback、watermark、version、専門的drilldown | Office専用算式・Metric copy・認可迂回 |
 | Global Search | Entitlement適用済みSearch Projection | 現在Objectの基本検索、履歴可否、失効予定 | Index経由のEntitlement迂回 |
 
-全Surfaceは`partial / stale / failed`を0、最新、完全として表示しない。P95 3秒以内にページ骨格と値または理由付き状態を表示し、詳細再構築を非同期Taskへ分離する。検証は`FID-UI-01〜36`、findingは`SF-UI-16`、要求変更はPlan Data Fidelity接続マップと`INV-DATA-FIDELITY-001 / INV-METRIC-001`へ先に戻す。
+全Surfaceは`partial / stale / failed`を0、最新、完全として表示しない。近似・Sampling・参考傾向の値は`PrecisionInfoMark`からreason code、coverage、誤差、鮮度、bias、制限、次回更新を確認できる。P95 3秒以内にページ骨格と値または理由付き状態を表示し、詳細再構築を非同期Taskへ分離する。検証は`FID-UI-01〜44`、findingは`SF-UI-16`、要求変更はMeasurement Precision接続マップと`INV-DATA-FIDELITY-001 / INV-METRIC-001 / INV-PRECISION-001`へ先に戻す。

@@ -39,6 +39,8 @@ Downgrade後も現在の許可Objectを基本検索できる。失効予定の�
 
 通常ビューとOfficeは同じMetric key、Fact source、grain、window、attribution、versionを使う。表示詳細が異なっても同じ条件の値は一致する。pre-aggregationがstaleまたはpartialの場合はwatermark、取得日時、対象範囲を示し、0件・最新値・完全値として扱わない。
 
+Metricは`実測 / 集計 / 推定 / 参考傾向`を区別する。近似またはSamplingの場合、通常ビューはcoverageと誤差幅または参考値表示、Officeはmode、algorithm、母集団、sample size、層、weight、confidence interval、bias、versionを示す。`directional_only`を精密な数値にせず、Samplingだけを根拠に公開、課金、成果確定、Recommendation採否またはSite補正を確定できるUIを作らない。
+
 全routeを先に表示し、P95 3秒以内に前回確定値、部分集計、理由付き状態のいずれかへ到達する。詳細weight・履歴・比較表は遅延読込できるが、利用可否と次操作を隠さない。
 
 ## 6. 検証fixture
@@ -81,7 +83,15 @@ Downgrade後も現在の許可Objectを基本検索できる。失効予定の�
 | FID-UI-34 | partial集計を完全値として表示しない |
 | FID-UI-35 | 3秒以内に値または理由付き状態を出す |
 | FID-UI-36 | 詳細遅延中も利用可否と次操作を維持する |
+| FID-UI-37 | 実測・集計・推定・参考傾向を区別する |
+| FID-UI-38 | 近似／Samplingへcoverage・誤差・biasを表示する |
+| FID-UI-39 | Samplingだけで確定Actionを許可しない |
+| FID-UI-40 | directional onlyを精密な数値にしない |
+| FID-UI-41 | 粒度が荒い値の直近にInformation Markと短い精度区分を表示する |
+| FID-UI-42 | Popoverへ乖離理由、coverage、誤差、鮮度、bias、制限、精度が上がる条件を表示する |
+| FID-UI-43 | hover／focus／click／tap／screen readerの全経路から同じ説明へ到達できる |
+| FID-UI-44 | 最新のExact値へ不要な警告を付けず、近似値だけを誤認防止対象にする |
 
 ## 7. Finding
 
-検証結果は`SF-UI-16`へ記録する。意味変更は`REQ-SCREEN-16/17/21/22`、Plan別Data Fidelity接続マップ、`REQ-DATA-17`、`REQ-KRL-11`、`REQ-BILLING-17`、`REQ-TECH-21`、`INV-DATA-FIDELITY-001`へ先に戻す。ブラウザ操作前は`open`とする。
+検証結果は`SF-UI-16`へ記録する。意味変更は`REQ-SCREEN-16/17/21/22/24`、Plan別Data Fidelity接続マップ、Measurement Precision接続マップ、`REQ-DATA-17/18`、`REQ-KRL-11`、`REQ-BILLING-17`、`REQ-TECH-21`、`INV-DATA-FIDELITY-001 / INV-PRECISION-001`へ先に戻す。ブラウザ操作前は`open`とする。

@@ -643,6 +643,37 @@
             "Analytics Store停止時は既存Projectionをstale表示し公開Commandを継続する。",
             "Plan別weightはtenant hard capとCore最低枠の内側で適用する。"
           ]
+        },
+        {
+          "invariant_id": "INV-PRECISION-001",
+          "statement": "Exact Fact、Exact Rollup、Approximate Sketch、Sampled Estimateを区別し、近似・Samplingは母集団、coverage、誤差、bias、freshness、versionを保持する。Samplingだけで課金、公開、顧客成果、Recommendation採否またはSite補正を確定しない。UIは粒度が荒い値の直近にaccessibleなPrecisionInfoを表示し、reason codeから決定論的に乖離理由と利用上の制限を説明する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/data-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-measurement-precision-connection-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-plan-data-fidelity-ui-validation_v1.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-ui-parts-catalog_v1.md"
+          ],
+          "forbidden_patterns": [
+            "(?:Sampling|sampled_estimate).{0,35}(?:課金|公開|確定成果|Recommendation採否|Site補正).{0,20}(?:単独で確定|唯一の根拠とする)",
+            "(?:approximate_sketch|sampled_estimate).{0,30}(?:exact_fact|実測値)(?:として表示|と表示する)",
+            "(?:近似値|推定値).{0,30}(?:誤差|coverage|母集団).{0,20}(?:表示しない|省略する)",
+            "Information Mark.{0,30}(?:hoverのみ|色だけ)(?:で表示|にする)"
+          ],
+          "bad_fixtures": [
+            "Samplingだけで課金を単独で確定する。",
+            "sampled_estimateを実測値として表示する。",
+            "推定値では誤差を表示しない。",
+            "Information Markはhoverのみで表示する。"
+          ],
+          "good_fixtures": [
+            "Sampling結果は母集団、coverage、誤差、bias、versionと共に保持する。",
+            "Recommendation採否はSamplingだけで確定せずSite Factと制約を再確認する。",
+            "近似値の直近にInformation Markを置き、focusとtapから同じ説明へ到達できる。",
+            "説明文はreason codeとMetric metadataから決定論的に生成する。"
+          ]
         }
       ]
     },
