@@ -634,3 +634,20 @@ renderVals例外0・コンソールエラー0・タグバランス全一致（�
 2. PR-02〜04は、要求ID自体は存在するため、L1の新規要求化よりも「UI責務・状態・受入条件」の追補を優先する。
 3. PR-05〜08は、L1の抽象要求を増やし過ぎず、`screen-inventory`・`admin-screen-inventory`・`screen-flow`・`acceptance-trace`の4点セットで正本化する。
 4. 本台帳の項目を要求書へ反映した後は、該当行を「反映済み」に変更し、古い接続マップの記述（特に§3.5、§7.2〜7.4、§9.2）を削除または履歴扱いにする。
+
+---
+
+# 11. Plan別Data Fidelity・Semantic Metric接続（2026-08-05）
+
+本節は旧プロト実装記録ではなく、次回画面再構成へ渡す現行接続契約である。画面は同じMetric／Calibration／Entitlement Projectionを用途別に表示し、値または可否を独自計算しない。
+
+| Surface | 使用Projection | 表示責務 | 禁止 |
+|---|---|---|---|
+| S1 Dashboard／Planning | Metric Snapshot、Data Fidelity Availability | 成果・予測の要約、Plan lock／data不足、期間、confidence、更新時刻 | KPI値、予測可否、Plan可否のClient再計算 |
+| S2 Keyword／Report | Metric Snapshot、Calibration Snapshot | Market／Share／予測可能数、通常向け較正説明、Office詳細導線 | ObservedとEstimatedの合算、global priorをSite実績として表示 |
+| S5 Page／Outcome | Article Metric Snapshot、Evaluation Lane | 記事別予測可否、SEO／CTA-CV／link／認知の別評価 | Site gateだけで全記事をunlock |
+| S7 Contract／Payment | Entitlement Snapshot、Plan Change Impact | 追加／削減coverage、grain、history、freshness、再計算、失効／export予定 | Upgradeを順位・精度保証として販売 |
+| Agent Office | 同一Metric Snapshot、Calibration Snapshot | 四階層weight、標本、variance、fallback、watermark、version、専門的drilldown | Office専用算式・Metric copy・認可迂回 |
+| Global Search | Entitlement適用済みSearch Projection | 現在Objectの基本検索、履歴可否、失効予定 | Index経由のEntitlement迂回 |
+
+全Surfaceは`partial / stale / failed`を0、最新、完全として表示しない。P95 3秒以内にページ骨格と値または理由付き状態を表示し、詳細再構築を非同期Taskへ分離する。検証は`FID-UI-01〜36`、findingは`SF-UI-16`、要求変更はPlan Data Fidelity接続マップと`INV-DATA-FIDELITY-001 / INV-METRIC-001`へ先に戻す。

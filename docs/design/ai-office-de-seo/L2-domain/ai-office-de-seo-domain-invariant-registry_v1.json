@@ -121,7 +121,10 @@
             "docs/design/ai-office-de-seo/L1-requirements/logic/keyword-dynamic-recommendation-logic-requirements_v1.md",
             "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
             "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
-            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md"
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md"
           ],
           "forbidden_patterns": [
             "(?:Entry|下位Plan).{0,40}(?:Site実測|顧客実測).{0,30}(?:global prior|全体平均)(?:へ置換|だけを使用)",
@@ -588,6 +591,9 @@
             "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-contract-schemas_v3.7.md",
             "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md",
             "docs/design/ai-office-de-seo/L3-implementation/gate-a/gate-a-1-event-envelope_v1.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md",
             "docs/reference/open-source-analytics-architecture-review_2026-08-05.md"
           ],
           "forbidden_patterns": [

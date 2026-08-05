@@ -1496,6 +1496,22 @@ for (const requiredPhrase of [
 if (/^\| generation\.article_assembled \||^\| publish\.draft_created \|/m.test(eventCatalog)) {
   fail(errors, "event catalog: legacy assembly/draft aliases remain active event rows");
 }
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-inventory_v3.7.md", [
+  "### 0.7 Plan別Data Fidelity・Semantic Metric表示",
+  "Agent Officeは通常ビューと同じ`schema.metric.snapshot.v1`",
+  "FID-UI-01〜36",
+  "SF-UI-16",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-flow_v3.7.md", [
+  "Metric要約 → 通常ビュー内drilldown → Office詳細",
+  "S7 Plan変更影響 → Upgrade／Downgrade確定",
+  "過去Observation Fact・確定評価・Metric Definitionを変更しない",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-screen-connection-map_v1.md", [
+  "# 11. Plan別Data Fidelity・Semantic Metric接続",
+  "Office専用算式・Metric copy・認可迂回",
+  "P95 3秒以内にページ骨格と値または理由付き状態",
+]);
 const agentRuntimePath = path.join(
   repoRoot,
   "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md",

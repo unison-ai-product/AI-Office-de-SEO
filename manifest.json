@@ -1,6 +1,6 @@
 {
   "product_name": "AI Office de SEO",
-  "version": "3.7.72",
+  "version": "3.7.73",
   "generated_at": "2026-08-03",
   "scope": "L0 charter, categorized L1 canonical requirements and logic, current detail documents under migration control, cross-cutting connection maps, L2 domain model, L3 contracts/DDL/config/events, and screen design; prototype implementation is follow-up only",
   "prototype_policy": "Repository baseline only. Excluded from current requirement and implementation evidence; modification is prohibited until the requirement-alignment audit is complete.",

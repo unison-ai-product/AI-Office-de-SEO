@@ -120,6 +120,17 @@ Report情報設計は`ai-office-de-seo-keyword-report-connection-map_v1.md`を�
 
 接続契約は`ai-office-de-seo-cms-connection-routing-map_v1.md`を正本とする。
 
+### 0.7 Plan別Data Fidelity・Semantic Metric表示
+
+- S1は顧客成果と月次計画に必要なMetric Snapshotを要約し、値、期間、対象範囲、availability、confidence、更新時刻を表示する。Plan lock、データ不足、接続不足、処理中、障害を同じ「利用不可」へ丸めない。
+- S2はカテゴリー／テーマ戦略・ClusterごとにMarket、Observed／Estimated／Article Share、予測可能対象数を表示し、通常画面では較正を`Site実績中心 / Site＋業界参考 / 業界参考中心 / 全体参考`と平易に示す。四階層weight、標本、variance、fallback、versionはOfficeの詳細へ送る。
+- S5は記事別Metricと評価Laneを表示する。Siteの1,000 click条件成立を全記事の予測解放へ読み替えず、予測可能／データ不足を記事単位で分ける。
+- S7契約・お支払いはData Fidelity Entitlementのcoverage、freshness、grain、history、recalculation、Site feature depth、外部取得CapacityをPlan比較と変更影響へ表示する。Upgradeを順位・精度保証と表現せず、Downgradeでは将来のrollup、詳細履歴の失効予定、export期限を表示し、過去Observation Factまたは確定評価が変更されるように見せない。
+- Agent Officeは通常ビューと同じ`schema.metric.snapshot.v1`と`schema.calibration.snapshot.v1`を使用し、専門的な内訳、根拠、watermark、versionを表示する。Officeが独自にMetric、weight、予測、Plan可否を再計算しない。
+- Pre-aggregationが`partial / stale / failed`の場合も、全ページを先に表示してP95 3秒以内に状態、最後に確認できたwatermark、対象範囲、利用可能な操作を返す。詳細再構築は非同期Taskとして継続し、0、最新値、完全値へ偽装しない。
+
+画面fixtureは`ai-office-de-seo-plan-data-fidelity-ui-validation_v1.md`の`FID-UI-01〜36`、検証記録は`SF-UI-16`を正本とする。
+
 ## 1. 旧詳細コンポーネント棚卸し（互換baseline・現行責務の正本ではない）
 
 本節は2026-07時点のモック用Source Pack、画面部品、操作候補を失わないための棚卸しである。S2に記事割当／カテゴリーツリーを置く記述、旧S4／S5／S6の配置、旧価格・Role・承認条件等を含み得るため、現行の画面責務、第一階層名、タブ所属、業務遷移の根拠として使用してはならない。現行責務は§0.1、`REQ-NAV-04`、現行タブ所属は§5、正規遷移は画面遷移図を正本とする。本節から再利用できるのは、現行要求と衝突しないComponent候補、表示項目候補、Source Contract参照だけである。
@@ -185,13 +196,13 @@ CTA／内部link軽量Patchでは、候補一覧、対象記事とpart、記事�
 
 | 画面 | 現行タブ構成（順序変更時もURL keyを維持） |
 |---|---|
-| S1 | ピックアップ（旧: やること。おすすめ施策・承認待ち＝ユーザーの行動。**2026-07-10 承認待ちをコンパクト行化＝種別+タイトル/cr+差分を確認・承認/差し戻しは差分モーダルに集約・「一括処理→」でS4へ。1画面完結**） / サマリー（KPI・成長グラフ・タスク・クレジット＝状態の把握） / プランニング（目標・配分・予測・実績乖離） / モニタリング（旧: 変動。急変・アルゴ/SERP・季節・ウォッチ変化） |
+| S1 | ピックアップ（旧: やること。おすすめ施策・承認待ち＝ユーザーの行動。**2026-07-10 承認待ちをコンパクト行化＝種別+タイトル/cr+差分を確認・承認/差し戻しは差分モーダルに集約・「一括処理→」でS4へ。1画面完結**） / サマリー（KPI・成長グラフ・タスク・クレジット＝状態の把握。Metric Snapshotの期間・availability・confidence・更新時刻を伴う） / プランニング（目標・配分・予測・実績乖離。Plan lockとデータ不足を分離） / モニタリング（旧: 変動。急変・アルゴ/SERP・季節・ウォッチ変化） |
 | S2 | 構築・入力（新規SiteのBig Keyword方向確認／既存SiteのGSC・Keyword upload・記事取得availability、自動構築期間） / キーワード一覧（Cluster基本行、属性filter、編集、分類、export） / クラスター図（主＋補助Keyword、検索intent、funnel、Market／Share、記事割当） / 戦略・診断レポート（新規Site戦略／既存Site診断を分離し、Report version、根拠、Source availability、Clusterの優先／通常／保留／除外を表示） / 流入クエリ（GSC実Queryと受けたページ、click、CTR、順位、CV） / クエリ診断（未獲得、Query Drift、カニバリ、index、AIO・広告・季節性） / 順位・要監視（Watch Queue、急変、地域・device） / 対策候補（起点別候補、手動追加、seed展開、Recommendation）。Report確定後は`report_id + version`を保持してS1プランニングとRecommendationへ進む。 |
 | S3 | 作成する（Recommendation Intakeまたは手動指定を共通Preflightへ渡す。新規／リライトを別Workflowとして表示し、採用済みKeyword、目的、CTA、内部link、品質、予算を再入力させない） / ライブ生成（Task進捗、Outline途中確認、生成Preview、QA、限定Repair、保留理由、停止・再開） / カレンダー（月次計画と週次実行予定、予約公開、生成予定を同じ時間軸で参照する。月次目的・カテゴリー／テーマ戦略・施策順の変更はS1 Planning Contextへ、CMS下書き・公開予約の作成／変更／取消はS4 Automation Contextへ接続し、一律にS4へ送らない） / 生成履歴（記事、URL、状態、QA、credit、correlation、CMS送信状態、編集／Preview URL、再送、品質確認、リライト導線）。本文は接続中CMSの保存値を編集・更新の外部正本、公開表示をSEO評価の正本とし、AI OfficeはSummary、成果meta、履歴と期限付きOutput Vaultだけを保持する。初期WordPress Adapterでは「WordPressで開く」を表示し、他CMSへ固定した共通画面名・列・状態を作らない。※新規／リライトは種別、保留は品質Gate状態でありタブではない |
 | S4 | 承認（W4。完成記事、リライト、記事置換、hard gate例外を別状態で表示） / 予約（投稿予約・下書き） / おまかせ運用（実行条件・**新規記事の自動公開設定**。新規Siteは、完成記事の人間承認証拠とconfirmed `ai_office_publication` Publication Factを持つ新規記事15件まで解放進捗を表示する。予約、CMS API受付、下書き、外部変更、帰属確認中、既存記事、外部記事、リライトを数えない。15件到達後、契約者またはサイトオーナー等の権限者が許可operation、対象Site、予算、品質、停止条件、有効期間と版付き同意書を確定して有効化する。リライト／記事置換はCMS下書きと個別承認を維持し、初期WordPress AdapterではWordPress下書きを使う。hard gateは判定を残し、同一権限者の二段階確認＋版付き同意による例外手動公開だけを許可する。緊急停止で新規副作用を即時停止する**・接続と同期） / **予算管理（自動運用が利用できるcredit上限＋自動変更の安全ルールW8＝変更予算・クールダウン・振動検知・保留候補キュー。REQ-PRODUCT-18）** / 緊急停止（W8 Kill Switch。おまかせから分離）　※月次目的・記事／施策配分・予算配分・実績乖離はS1プランニングを正本とし、S4に重複する目標管理タブを置かない。夜間チェックタブも廃止し、夜間QAは内部processとして継続する。 |
 | S5 | ページ一覧（Article Summary、主＋補助Keyword、記事目的、公開／更新日、取得状態、保護状態） / 流入・CV（Query、click、CTR、順位、CTA遷移、CV、認知貢献を月次／累積で表示） / カテゴリ・内部link（現在構造を読み、構造は変更せず記事割当、link候補、孤立、カニバリ候補を表示） / リライト・軽量施策（原因分類、Article Read availability、リライト、CTA、内部link PatchのRecommendation） / 施策評価（`seo_content`はconfirmed Publication Factの`effective_at`から1・3・6か月、`cta_cv / internal_link / awareness`は変更月・累積を別Laneで表示し、外部変更・市場外因、成功・悪化・観測継続・復元availabilityを併記する） / 上位ベンチマーク / テクニカル診断（index障害等を記事失敗と混同せずユーザー対応へ接続）。評価結果はS6のSite学習・匿名補正候補と次回Recommendationへ渡す。 |
 | S6 | 戦略入力（ターゲット軸・主張軸） / 要望・NG / 文体（です・ます調／だ・である調 × 文語体／口語体、Site言い回し学習ON/OFF） / レギュレーション / **成功学習（旧: 好調記事分析。「学んだ勝ちパターン」＝2026-07-10に1行化: 学び×反映先×状態＋●オフィス導線。根拠の実測値・効果の推移・確信度はOffice詳細ページkn_*が正本。＋好調記事（保護対象・学習元）・波及リンク提案・慎重リライト・改善前後比較）** / **CVポイント台帳（カタログ登録・記事割当・有効期間。REQ-WPA-13）** |
-| S7 | 組織・Site（契約主体、自由階層、メンバー、基本権限、業務Permission、Site付与） / データ・接続（CMS Connection Profile、GSC、Keyword取得、地域・device、初回取込・差分同期、Capacity） / 契約・お支払い（現行4 Plan、月／年契約条件、税込総額、Entitlement、credit lot、消費、失効、自動チャージ、容量option、請求書） / 通知 / セキュリティ / その他（表示言語、自動運用同意、データ利用、事例許諾、解約）。SiteはPlan Configurationの上限・追加条件へ従い、1 Site 1課金を固定不変条件にしない。具体値はPrice Catalog／Plan Configurationから表示する |
+| S7 | 組織・Site（契約主体、自由階層、メンバー、基本権限、業務Permission、Site付与） / データ・接続（CMS Connection Profile、GSC、Keyword取得、地域・device、初回取込・差分同期、Capacity） / 契約・お支払い（現行4 Plan、月／年契約条件、税込総額、Entitlement、Data Fidelity Dimension、credit lot、消費、失効、自動チャージ、容量option、請求書。Plan変更前に追加／削減coverage、履歴、再計算、失効／export予定を表示） / 通知 / セキュリティ / その他（表示言語、自動運用同意、データ利用、事例許諾、解約）。SiteはPlan Configurationの上限・追加条件へ従い、1 Site 1課金を固定不変条件にしない。具体値はPrice Catalog／Plan Configurationから表示する |
 
 タブはURL直リンク可能（通知・遷移図の2遷移以内の前提）。タブの追加・並替はconfig/実装で吸収し第一階層を増やさない。
 
