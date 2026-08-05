@@ -112,6 +112,8 @@ Feature Objectには契約テスト、依存グラフ検査、install／upgrade�
 
 各Dimensionは使用量、soft limit、hard limit、期間、集計単位、超過時動作をversion付き設定として持つ。単一の不透明な総合点だけへ集約せず、DB、worker、storage、network、Providerのどこが制約かを判別可能にする。追加creditはAI実行可能量を増やしても、同時実行、DB走査、外部rate等の安全上限を解除しない。
 
+Capacity Admissionは `platform全体 → 資源クラス → Provider／CMS等の接続先 → tenant → Site` の多段で評価する。全階層の許容量を予約できたJobだけをdispatchし、完了、取消、timeout時にslotを解放する。一括計画または一括承認は複数Jobの同時開始を保証しない。fair shareとjitterで負荷を時間・tenant間に分散し、単一の大規模Site、画像生成、外部Provider遅延または再試行stormが他の主要経路へ連鎖しないことを負荷試験する。
+
 記事同期は初回全体取込と通常の更新差分を別meterで計測し、管理記事数、月間変更記事数、取得bytes、render取得数、再試行数をPlan Capacityの入力とする。通常同期を定期全件crawlの回数で販売せず、Site規模と実際の更新量に応じてPlan推奨・自動構築期間・処理待機を決定する。
 
 soft limitでは予測到達日と削減・Plan変更候補を通知する。hard limitでは既存データを削除せず、新規取込・低優先再計算・生成jobを対象Dimensionごとに遅延または保留する。ロールアップ、期限削除、archive、増枠、Plan変更後に安全に再開できるようにする。

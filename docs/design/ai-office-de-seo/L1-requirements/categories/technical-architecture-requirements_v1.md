@@ -58,6 +58,8 @@ CMS変更検知は利用可能な場合に署名付きWebhookを優先し、通�
 
 認証、設定参照、一覧取得、操作受付等の短時間処理は同期APIで扱い、外部取得、AI実行、記事解析、バッチ推薦、公開処理等の長時間処理はジョブとして非同期実行する。同期APIは長時間処理の完了を待たず、受付結果、状態参照先、取消可否を返す。
 
+非同期実行は単一の共通worker poolへ無制限投入せず、少なくとも `interactive／analysis・sync／generation／image／CMS side effect` の資源クラスを識別する。Global、資源クラス、Provider／接続先、tenant、Siteの各階層で同時実行数、投入率、実行時間またはcost budgetをAdmission時に検査し、利用可能slotがなければジョブを失敗扱いせず待機または次窓へ繰り延べる。重いbatchが対話API、承認、公開状態確認、課金、権限操作のCapacityを枯渇させないよう、別poolまたは予約Capacityを持つ。
+
 ### REQ-TECH-06 ジョブ契約と状態管理
 
 非同期処理は、`tenant_id`、`site_id`、`job_id`、処理種別、入力参照、設定version、予算、期限、冪等キーを持つジョブ契約で起動する。状態遷移は列挙制とし、開始、保留、再開、成功、失敗、取消、期限切れを監査可能にする。ワーカーのメモリ状態を処理状態の正本にしない。
@@ -115,6 +117,8 @@ Feature Objectは `draft → validated → installed → configured → active �
 ### REQ-TECH-13 キャッシュ・キュー・オブジェクト利用
 
 キャッシュは正本にせず、TTL、容量、無効化、tenant/siteキーを持つ。キューは少なくとも優先度、可視性期限、dead-letter、重複排除、滞留監視を持つ。一時オブジェクトは暗号化、アクセス期限、自動削除を必須とし、記事本文を恒久オブジェクトとして保管しない。
+
+Queue schedulerは、月初、週初、静穏時間帯またはCron境界で全tenant／Siteを一斉dispatchしない。実行窓内の決定論的offsetとjitter、重み付きfair share、Site別上限、資源クラス別priority、queue水位によるbackpressureを適用する。同一Siteの大量処理が他Siteを飢餓状態にせず、長時間待機にはageによる昇格または期限切れ・次窓繰り延べを適用する。ただし安全上限をpriorityだけで迂回しない。
 
 ### REQ-TECH-14 環境・秘密情報分離
 
