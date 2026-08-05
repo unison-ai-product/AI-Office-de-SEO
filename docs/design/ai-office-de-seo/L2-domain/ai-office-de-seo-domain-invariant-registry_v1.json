@@ -459,6 +459,34 @@
             "Presentation Assembly、Generation Outcome、CMS Deliveryは別stageとして接続する。",
             "Generation Outcome、CMS Delivery、Publication Factは別Lifecycleとして追跡する。"
           ]
+        },
+        {
+          "invariant_id": "INV-BILLING-UI-001",
+          "statement": "契約画面はversion付きPrice Catalog、Entitlement Snapshot、append-only Credit Ledger、Dimension別Capacity SnapshotからProjectionを作る。税別／税込、請求周期、年契約の実請求総額、利用可能／予約／commit／失効、自動チャージ、Capacityを区別し、確定前は最新正本で再見積する。hard limitとpast_dueでも既存dataの閲覧・export・削減・支払修正を維持する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/billing-accounting-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-billing-capacity-ui-connection-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-billing-capacity-ui-validation_v1.md"
+          ],
+          "forbidden_patterns": [
+            "Premiumは(?:1か月|月単位|月払い|月契約)(?:で|を).{0,20}(?:選択|申込|checkout|契約できる)",
+            "(?:Credit|クレジット).{0,30}(?:Capacity|容量).{0,30}(?:合算|単一残量)",
+            "(?:hard limit|past_due).{0,40}(?:閲覧|export).{0,20}(?:停止|禁止)",
+            "stale.{0,30}(?:金額|残高).{0,30}(?:購入確定|Plan変更確定|決済実行)"
+          ],
+          "bad_fixtures": [
+            "Premiumは月契約を選択できる。",
+            "CreditとCapacityを合算して単一残量にする。",
+            "past_dueでは閲覧を停止する。",
+            "staleな残高のまま購入確定する。"
+          ],
+          "good_fixtures": [
+            "Premiumは月額換算と年額請求総額を併記し、年契約として扱う。",
+            "CreditとDimension別Capacityを別Projectionで表示する。",
+            "past_dueでは新規有償Jobを止め、既存dataの閲覧と支払修正を維持する。",
+            "画面に前回残高を表示できるが、確定前に最新台帳から再見積する。"
+          ]
         }
       ]
     },

@@ -664,6 +664,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DATA-16: 内部検索Indexを正本から再構築でき、tenant／Site Scope、version、鮮度、削除を保ったまま差分更新し、記事本文・Prompt・secretをDocumentまたはembeddingへ恒久複製せず、vector機能停止時も基本検索を継続できる。 ｜ 検証: REQ-DATA-16 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-21: Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果を現在Siteまたは付与済み全Siteで横断検索し、通常／Officeの同一対象へContextを保って遷移できる。indexing、stale、partial、0件、権限除外、障害を区別し、P95 3秒以内に結果または理由付き縮退状態を表示し、副作用前に検索hitの対象を正本から再読込・再認可できる。 ｜ 検証: REQ-SCREEN-21 ｜ 正本: `categories/screen-operation-requirements_v1.md`
+- [ ] AC-L1-SCREEN-22: 契約周期・税別税込・年額総額、Credit lotの利用可能／予約／消費／失効、自動チャージ、Dimension別Capacity、Plan変更、支払失敗を同じ正本versionから区別して表示し、権限・step-up・影響Preview・stale再確認を経て操作でき、hard limit／past_dueでも閲覧・export・修正導線を維持できる。 ｜ 検証: REQ-SCREEN-22 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-CAV-01: Googlebot等のSEO BotとAI Botを共通契約で取り込み、事業者・用途・検証状態を分離してspoof疑いを実crawlから除外できる。 ｜ 検証: REQ-CAV-01 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
 - [ ] AC-L1-CAV-02: robots許可、外部probe、検証済み実crawl、本文可読性、freshnessを別成分として取得性を再現可能に判定できる。 ｜ 検証: REQ-CAV-02 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`
 - [ ] AC-L1-CAV-03: Buy／ブランドquery中心の評価セットについて、SEO順位・表示と複数AI surfaceの言及・URL引用・share・安定性をcluster単位で分離し、分離不能値をunknown／combinedとして扱える。 ｜ 検証: REQ-CAV-03 ｜ 正本: `logic/crawler-ai-visibility-logic-requirements_v1.md`

@@ -225,6 +225,12 @@ popup、通知Center、emailは同じNotificationのchannel deliveryとして扱
 
 検索中、indexing、stale、partial、true empty、権限除外、利用不能を区別し、権限外対象の存在・件数・facetを漏らさない。Index障害時も主要一覧・最近見た項目・exact-ID等へ縮退し、全ページを表示する。検索結果の選択だけで業務状態を変更せず、副作用Actionは対象正本を再読込して認可・version・状態を再判定する。顧客面検索と内部管理検索を別契約にし、検索ごとにLLMを呼ばない。詳細は`ai-office-de-seo-internal-search-index-connection-map_v1.md`を正本とする。
 
+### REQ-SCREEN-22 契約・Credit・Capacity操作面
+
+契約・お支払い画面は現Plan、税別／税込、請求周期、契約期間、更新日、年契約の月額換算と実請求総額、Creditの利用可能・予約・消費・返還・失効予定、自動チャージ、Dimension別Capacity、支払状態、Entitlementを同じCatalog／Ledger／Snapshotから表示する。Premium／Enterpriseを月契約と誤認させず、Provider名・model名・運営原価を商品保証または未明示請求にしない。
+
+購入、Plan変更、解約、自動チャージ、上限変更は権限、step-up、影響Previewを通す。Upgradeは差額・税・適用時刻、Downgradeは次回更新時の超過解消、支払失敗は猶予・停止対象・修正導線を表示する。CapacityとCreditを単一残量へ合算せず、hard limit／past_dueでも既存data閲覧・export・削減・支払修正を維持する。staleな金額・残高では確定前に再取得・再見積し、Officeの提案も共通Billing Commandへ渡す。詳細は`ai-office-de-seo-billing-capacity-ui-connection-map_v1.md`を正本とする。
+
 ## 受入条件
 
 - [ ] AC-L1-SCREEN-01: Dashboardで承認期限、停止、今週の予定、新規Recommendation、完了・評価の順に判断項目を確認し、月次計画と週次予定を運用modeに応じて確定できる。WordPress Thin Pluginを選ぶ場合はSaaS側からZIP取得、Siteペアリング、接続・version・署名付き更新状態を確認できる。
@@ -248,3 +254,4 @@ popup、通知Center、emailは同じNotificationのchannel deliveryとして扱
 - [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。生成成果提供、CMS下書き、公開処理引渡し、予約、Publication Fact、評価登録を別文言で表示し、予約・外部変更・帰属確認中を公開完了通知にしない。
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。
 - [ ] AC-L1-SCREEN-21: Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果を現在Siteまたは付与済み全Siteで横断検索し、通常／Officeの同一対象へContextを保って遷移できる。indexing、stale、partial、0件、権限除外、障害を区別し、P95 3秒以内に結果または理由付き縮退状態を表示し、副作用前に検索hitの対象を正本から再読込・再認可できる。
+- [ ] AC-L1-SCREEN-22: 契約周期・税別税込・年額総額、Credit lotの利用可能／予約／消費／失効、自動チャージ、Dimension別Capacity、Plan変更、支払失敗を同じ正本versionから区別して表示し、権限・step-up・影響Preview・stale再確認を経て操作でき、hard limit／past_dueでも閲覧・export・修正導線を維持できる。
