@@ -502,6 +502,35 @@
             "選択式Actionは決定論Serviceへ渡し、LLMを呼ばない。",
             "自由文の曖昧な意図解釈が必要な場合だけLLMを使う。"
           ]
+        },
+        {
+          "invariant_id": "INV-ASYNC-001",
+          "statement": "顧客向け全ページは長時間処理を待たず表示し、データ画面は標準利用条件P95 3秒以内に既存data、部分結果または理由付き状態を出す。非同期Taskは離脱・復帰可能で、Office演出とpercentは実event・実測量からだけ導出する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/technical-architecture-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/non-functional-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/design-experience-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-async-task-experience-ui-validation_v1.md"
+          ],
+          "forbidden_patterns": [
+            "分析が完了するまでページを表示しない",
+            "画面遷移でTaskをキャンセルする",
+            "固定percentを一定速度で増加して表示する",
+            "Officeは固定時間の架空作業を演出する"
+          ],
+          "bad_fixtures": [
+            "分析が完了するまでページを表示しない。",
+            "画面遷移でTaskをキャンセルする。",
+            "固定percentを一定速度で増加して表示する。",
+            "Officeは固定時間の架空作業を演出する。"
+          ],
+          "good_fixtures": [
+            "全ページを先に表示し、データ画面はP95 3秒以内に前回値または理由付き状態を表示する。",
+            "非同期Taskは画面を離れても継続し、同じcorrelationへ復帰する。",
+            "総量不確定Taskはpercentを出さず実stageと待機理由を表示する。",
+            "Officeの作業演出は実eventから決定論的に導出する。"
+          ]
         }
       ]
     },

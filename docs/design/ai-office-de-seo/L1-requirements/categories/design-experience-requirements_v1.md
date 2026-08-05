@@ -51,6 +51,8 @@ Recommendationは結論だけでなく、目的、対象、主要根拠、優先
 
 短時間処理は即時feedback、長時間処理は受付、現在stage、完了済みstage、待機理由、残りの見込み、取消・離脱可否を示す。画面を閉じても処理が継続すること、戻った時に同じ相関IDへ復帰できることを明示する。架空のpercent、架空の作業、固定時間animationで待ち時間を偽装しない。
 
+受付後は他の業務へ移れるTask Shelfを通常ビューへ置き、確認待ち、失敗、成果完成等の意味ある変化だけをpopup／通知Centerへ送る。stage進行やBatch内の連続eventは集約し、toastを連発しない。進捗総量を測れない処理はpercentでなくstageと待機理由、測れる処理は件数または実測比率を表示する。部分成果が利用可能なら全件完了前に開放する。
+
 ### REQ-DESIGN-06 UI文言・i18n
 
 状態名、操作名、警告、課金、権限、障害文言はversion付きUI Copy Registryで管理し、同じ概念へ複数の呼称を割り当てない。変数、plural、日付、時刻、数値、通貨、locale fallbackを定義し、翻訳不能な文字列連結を避ける。禁止語・非推奨語は理由と代替語を持つ。
@@ -107,7 +109,7 @@ mobile対応は初期リリースの必須範囲外とする。後続versionで�
 - [ ] AC-L1-DESIGN-02: 非専門者が主要画面で次の操作・状態・理由・影響・費用を内部実装用語なしに理解できる。
 - [ ] AC-L1-DESIGN-03: Recommendationの根拠、優先度成分、unknown、再評価条件をロジック結果どおり表示できる。
 - [ ] AC-L1-DESIGN-04: desktopの主要操作がkeyboard、screen reader、reduced motionで完了でき、狭幅でも重要状態を失わず、初期mobile非対応範囲を誤表示しない。
-- [ ] AC-L1-DESIGN-05: 長時間処理から離脱・復帰しても相関IDと実stageが維持され、架空進捗を表示しない。
+- [ ] AC-L1-DESIGN-05: 長時間処理から離脱・復帰しても相関IDと実stageが維持され、通常ビューのTask ShelfとOfficeの実event演出が一致し、架空進捗を表示しない。全ページを表示し、データ画面はP95 3秒以内に既存data、部分結果または理由付き状態を示す。
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。
 - [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。

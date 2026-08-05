@@ -456,7 +456,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DESIGN-02: 非専門者が主要画面で次の操作・状態・理由・影響・費用を内部実装用語なしに理解できる。 ｜ 検証: REQ-DESIGN-02 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-03: Recommendationの根拠、優先度成分、unknown、再評価条件をロジック結果どおり表示できる。 ｜ 検証: REQ-DESIGN-03 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-04: desktopの主要操作がkeyboard、screen reader、reduced motionで完了でき、狭幅でも重要状態を失わず、初期mobile非対応範囲を誤表示しない。 ｜ 検証: REQ-DESIGN-04 ｜ 正本: `categories/design-experience-requirements_v1.md`
-- [ ] AC-L1-DESIGN-05: 長時間処理から離脱・復帰しても相関IDと実stageが維持され、架空進捗を表示しない。 ｜ 検証: REQ-DESIGN-05 ｜ 正本: `categories/design-experience-requirements_v1.md`
+- [ ] AC-L1-DESIGN-05: 長時間処理から離脱・復帰しても相関IDと実stageが維持され、通常ビューのTask ShelfとOfficeの実event演出が一致し、架空進捗を表示しない。全ページを表示し、データ画面はP95 3秒以内に既存data、部分結果または理由付き状態を示す。 ｜ 検証: REQ-DESIGN-05 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-06: UI Copy Registryから状態・操作・警告をlocale別に一貫表示できる。 ｜ 検証: REQ-DESIGN-06 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-07: 画像非表示でも主要情報と操作が失われず、画像assetにalt・size・loading方針が適用される。 ｜ 検証: REQ-DESIGN-07 ｜ 正本: `categories/design-experience-requirements_v1.md`
 - [ ] AC-L1-DESIGN-08: Agent Office演出が実eventと一致し、演出OFF・reduced motionでも同じ業務を完了できる。 ｜ 検証: REQ-DESIGN-08 ｜ 正本: `categories/design-experience-requirements_v1.md`
@@ -536,7 +536,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 ### non-functional-requirements_v1
 
 - [ ] AC-L1-NFR-01: 推薦再計算中でも画面シェルと既存データを操作できる。 ｜ 検証: REQ-NFR-01 ｜ 正本: `categories/non-functional-requirements_v1.md`
-- [ ] AC-L1-NFR-02: Core Web Vitalsと主要画面・ジョブ受付のP50/P75/P95を継続計測できる。 ｜ 検証: REQ-NFR-02 ｜ 正本: `categories/non-functional-requirements_v1.md`
+- [ ] AC-L1-NFR-02: Core Web Vitalsと主要画面・ジョブ受付のP50/P75/P95を継続計測でき、顧客向け全page routeを先に表示したうえで、データ画面が標準利用条件P95 3秒以内に判断可能なdata、部分結果または理由付き状態へ到達する。最新再計算待ち、Plan、権限、接続不足を理由にpageを隠さない。 ｜ 検証: REQ-NFR-02 ｜ 正本: `categories/non-functional-requirements_v1.md`
 - [ ] AC-L1-NFR-03: 主要画面の配信量、API、query、走査行数に予算がある。 ｜ 検証: REQ-NFR-03 ｜ 正本: `categories/non-functional-requirements_v1.md`
 - [ ] AC-L1-NFR-04: バッチ負荷時も対話APIの性能目標を維持できる。 ｜ 検証: REQ-NFR-04 ｜ 正本: `categories/non-functional-requirements_v1.md`
 - [ ] AC-L1-NFR-05: 基準容量で保存量が設定上限内に収まる。 ｜ 検証: REQ-NFR-05 ｜ 正本: `categories/non-functional-requirements_v1.md`
