@@ -110,6 +110,11 @@ updated_at: 2026-08-03
 | site.cluster_projection_updated | site_cluster_id, projection_version, cause, user_confirmed | W,O | REQ-KRL-03/09 |
 | site.cluster_dependency_staled | site_cluster_id, public_cluster_ref, reason | O | REQ-KRL-09 |
 | site.market_share_calculated | site_cluster_id, snapshot_id, period, observed_availability, estimated_availability | W,O | REQ-KRL-02/09 |
+| calibration.snapshot_published | calibration_id, version, target_ref, observation_window, layer_summaries[], source_watermarks[], confidence, rule_version, entitlement_snapshot_ref, contract_hash | W,O,A | REQ-DATA-17, REQ-KRL-11 |
+| metric.definition_published | metric_key, definition_version, owner_context, fact_contract_refs[], grain, window, attribution, contract_hash, supersedes_ref? | O,A | REQ-TECH-21 |
+| metric.preaggregation_refreshed | preaggregation_id, metric_ref, scope_ref, state, coverage, source_watermarks[], built_at, expires_at, adapter_key | W,O | REQ-TECH-21 |
+| metric.preaggregation_staled | preaggregation_id, metric_ref, scope_ref, prior_watermarks[], stale_reason, detected_at, rebuild_ref? | W,N,O | REQ-TECH-21 |
+| billing.data_fidelity_entitlement_changed | entitlement_snapshot_ref, prior_snapshot_ref?, dimensions_changed[], effective_at, plan_config_version | W,O,A | REQ-BILLING-17 |
 | site.keyword_classification_corrected | target_ref, correction_kind, before_version, after_version | W,O,A | REQ-DATA-11, REQ-KRL-09 |
 | site.build_started | build_id, version, site_mode, input_states[] | W,O | REQ-BUS-02/03 |
 | site.build_stage_released | build_id, stage_key, coverage, available_capabilities[] | W,N,O | REQ-BUS-02/03, REQ-SCREEN-18 |

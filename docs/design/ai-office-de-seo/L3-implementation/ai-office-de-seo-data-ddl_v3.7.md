@@ -85,6 +85,18 @@ Site導入の4段階Capabilityは、`site_build_runs`の補助として`site_rea
 - Recovery Backupの最長3か月と評価保持を同一TTLへ結合しない。Backup削除後も評価Lane、集計、6か月checkpointを保持し、復元可否は別availabilityで表す。
 - Search Performanceは観測Projectionを提供するだけで、Evaluation Lane、Outcome、Confounder正本を直接更新しない。
 
+### 3.2 Semantic Metric・Calibration Projection
+
+対象: `domain_metric_definitions`、`domain_metric_definition_facts`、`hierarchical_calibration_snapshots`、`hierarchical_calibration_layers`、`metric_snapshots`、`metric_preaggregations`、`metric_preaggregation_watermarks`、`metric_execution_registry`。
+根拠: REQ-DATA-17、REQ-KRL-11、REQ-BILLING-17、REQ-TECH-21。検証: AC-L1-DATA-17、AC-L1-KRL-24、AC-L1-BILLING-17、AC-L1-TECH-21。
+
+- `domain_metric_definitions`は`metric_key + definition_version`を一意とし、owner context、意味、unit、grain、window、filter、attribution、availability／confidence rule、Authorization Policy、contract hash、公開・廃止時刻を保持する。`domain_metric_definition_facts`は許可されたFact Contract参照だけを持ち、Platform独自の業務Factを追加しない。
+- `hierarchical_calibration_snapshots`はtenant／Site／target、観測窓、rule／Entitlement version、watermark集合、confidence、lineage、contract hashをappend-onlyで保持する。Layerは`hierarchical_calibration_layers`へ`site_observed / site_industry_cohort / industry_cohort / global_prior`、source ref、sample、freshness、variance、weight、availability、fallback reasonを分離し、利用可能weight合計1の制約を検証する。他Tenant明細または識別可能なcohort memberを保存しない。
+- `metric_snapshots`はmetric version、tenant／Site Scope、subject、grain、Dimension、window、valueまたはrange、availability、confidence、coverage、watermark、Calibration、計算時刻、Projection versionを持つ再構築可能なread modelとする。通常／Office別の値列を作らず、画面差はPresentation Projectionで表現する。
+- `metric_preaggregations`はscope／filter hash、grain、window、state、coverage、freshness、row count、adapter、期限、failure refだけを保持し、実値は有界Projection tableまたはAnalytics Store Portのobject refへ置く。正本Fact、Credit、契約、権限、Recommendationへの外部キー所有を禁止し、削除・再構築可能にする。
+- `metric_execution_registry`はDefinition versionとQuery Plan／Fact Adapter／rollup／cache／Analytics Store Portの対応だけを持つ。Plan別の算式コピーを作らず、EntitlementはQuery Admissionでcoverage、grain、history、freshness、再計算Capacityへ適用する。
+- indexは少なくとも`metric_snapshots(tenant_id,site_id,metric_key,subject_ref,window_end desc)`、`metric_preaggregations(tenant_id,site_id,metric_key,state,expires_at)`、`hierarchical_calibration_snapshots(tenant_id,site_id,target_ref,created_at desc)`を用意する。partial／stale／failedをcurrent rowへcoalesceしない。
+
 ## 4. Generation / Quality / Rewrite（GenerationJob / QualityGateEvaluation / RewriteJob 集約）
 
 対象: generation_jobs（freeze済み workflow/pack/catalog/config version、SiteSandboxContext、intake_ref、correlation_id）、tickets（キーのみ・本文非内包・intake_ref）、snapshots_meta（snapshot_hash・schema_key・returnTo・結果参照）、outline_contracts、qa_results（schema.snapshot.qa.v1 準拠のgates/metrics/ymyl/hard_gate_block）、rewrite_jobs / edit_plans / patch_audit（patch_id / section_id / operation / reason / quality result / cost / approved_by）。
@@ -116,10 +128,11 @@ Agent Office会話は本文全文を業務正本へ保存せず、`office_conver
 
 ## 6. Billing & Credit（CreditAccount 集約）
 
-対象: price_catalog_versions／catalog_products／catalog_prices、plan_configuration_versions、subscriptions（catalog/config version固定）、entitlement_snapshots、credit_lots、credit_reservations、usage_credit_ledger（append-only。monthly_grant / purchase_grant / promo_grant / manual_grant / reserve / release / commit / adjustment / expire / refund_reversal / chargeback_hold、stripe_event_id + idempotency_key 一意）、auto_charge_policies（version、閾値、購入商品、月間有限／無制限上限、当月購入額、step-up／確認参照、状態）、auto_charge_attempts（policy/version、period、trigger balance、purchase idempotency、payment result、lot/ledger ref）、capacity_snapshots／capacity_dimension_usage／capacity_entitlements、invoices／payments／reconciliation_exceptions、preflight_estimates。
+対象: price_catalog_versions／catalog_products／catalog_prices、plan_configuration_versions、subscriptions（catalog/config version固定）、entitlement_snapshots、data_fidelity_entitlements、credit_lots、credit_reservations、usage_credit_ledger（append-only。monthly_grant / purchase_grant / promo_grant / manual_grant / reserve / release / commit / adjustment / expire / refund_reversal / chargeback_hold、stripe_event_id + idempotency_key 一意）、auto_charge_policies（version、閾値、購入商品、月間有限／無制限上限、当月購入額、step-up／確認参照、状態）、auto_charge_attempts（policy/version、period、trigger balance、purchase idempotency、payment result、lot/ledger ref）、capacity_snapshots／capacity_dimension_usage／capacity_entitlements、invoices／payments／reconciliation_exceptions、preflight_estimates。
 根拠: REQ-BILL-01/02/06/07/08/10、REQ-BILLING-01〜16、REQ-NFR-15、REQ-SEC-12。検証: AC-BILL-03/04, AC-SEC-12, AC-L1-BILLING-01〜16。
 
 - 残高はビュー/導出（台帳を直接書き換えない）。予約はmiss上限側で仮押さえ（REQ-BILL-06）。CapacityはDimension別に保存し相殺しない。自動チャージ試行はperiod＋policy version＋purchase idempotencyで一意とし、決済成功とlot／ledger作成をoutbox／reconciliationで追跡する。
+- `data_fidelity_entitlements`はEntitlement Snapshotごとにcoverage、freshness、grain、detailed retention、recalculation、Site feature depth、external acquisition capacity、searchable historyを型付きDimensionとして保持する。Plan名を分析Queryへ渡さず、このSnapshot refを渡す。score、weight、顧客実測、最低標本条件を変更する列を設けない。
 - `preflight_estimates`はexpected、reserved max、fixed customer credit、credit unit、pricing／cost model／route／quality／cache assumption version、有効期限を保持し、実績原価で過去見積を更新しない。`credit_reservations`はAdmission／estimate version、billing subject、lot allocation、reserved、committed、released、state、idempotencyを保持し、Ledger eventから再構築可能にする。reserveは消費またはcommitではなく、未使用分だけをreleaseする。
 
 ## 7. Provider / Config & Governance / Observability

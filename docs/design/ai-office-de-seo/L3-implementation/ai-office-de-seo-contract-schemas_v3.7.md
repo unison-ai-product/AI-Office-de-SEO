@@ -441,6 +441,50 @@ schema.image.generation_job.v1 {
 
 根拠: `REQ-SCREEN-19`、`REQ-PRODUCT-11/21`、Notification Recipient Routing Map。
 
+## 0.0.7.1 Semantic Metric・Calibration Contract
+
+指標の意味、較正結果、表示用Snapshot、実行用事前集計を分離し、次を正本契約とする。
+
+```text
+schema.metric.definition.v1 {
+  metric_key, definition_version, owner_context, meaning,
+  fact_contract_refs[], value_type, unit, grain, dimensions[],
+  window{kind,size,timezone}, filters[], attribution,
+  availability_rule_ref, confidence_rule_ref, authorization_policy_ref,
+  published_at, supersedes_ref?, contract_hash
+}
+
+schema.calibration.snapshot.v1 {
+  calibration_id, version, tenant_id, site_id, target_ref,
+  industry_refs[], cross_axis_ref?, observation_window,
+  source_watermarks[], layers[]{kind,source_ref?,sample_size,freshness,variance,
+    weight,availability,confidence,fallback_reason?},
+  rule_version, entitlement_snapshot_ref, created_at, lineage_refs[], contract_hash
+}
+
+schema.metric.snapshot.v1 {
+  metric_snapshot_id, metric_ref, tenant_id, site_id?, subject_ref,
+  grain, dimensions, window, value?, range?, availability, confidence,
+  source_watermarks[], calibration_ref?, coverage, calculated_at,
+  expires_at?, projection_version, authorization_scope_ref
+}
+
+schema.metric.preaggregation.v1 {
+  preaggregation_id, metric_ref, tenant_id, site_id?, scope_hash,
+  grain, dimensions, window, filter_hash, source_watermarks[],
+  coverage, freshness, state(planned|building|partial|current|stale|failed|rebuilding),
+  row_count, built_at?, expires_at?, failure_ref?, adapter_key, projection_version
+}
+```
+
+- Metric DefinitionはFact所有Contextが公開し、Platformは意味、算式、attributionを変更しない。顧客成果と運営KPIは別`metric_key`／owner contextを使う。
+- Calibrationのweight合計は利用可能Layer内で1とし、Site実測が有効な成分をPlan理由でglobal priorへ置換しない。同一入力watermark、rule、entitlementから同じSnapshotを再現できる。
+- Metric Snapshotは通常ビューとOfficeの共通Query結果である。Surface別の表示整形は許すが、同じmetric／scope／grain／window／filterから別の値を作らない。`unavailable / partial / stale`を0、最新、完全へ変換しない。
+- Pre-aggregationは再構築可能な派生契約であり、Observation Fact、契約、権限、Credit、Recommendationを所有しない。失敗時も正本Commandを停止させず、最後に確認できたwatermarkと状態を返す。
+- Plan差分はData Fidelity Entitlementからcoverage、freshness、grain、history、recalculation、external acquisition capacityを制約する。同じMetric Definitionの式や較正weightへPlan係数を加えない。
+
+根拠: `REQ-DATA-17`、`REQ-KRL-11`、`REQ-BILLING-17`、`REQ-TECH-21`、`INV-DATA-FIDELITY-001`、`INV-METRIC-001`。
+
 ## 0.0.8 Billing Overview・AutoCharge・Capacity Contract
 
 顧客画面とOfficeが独自に残高、利用権、Capacityを合成せず、次のread modelを使用する。
@@ -786,7 +830,7 @@ L2 §5 のイベント（GenerationJobStarted / OutlineContractFrozen / QualityG
 
 - 共通: `{ event_id, event_type, occurred_at, tenant_id, site_id?, job_id?, actor, payload, schema_version }`。
 - 用途: Observability購読（REQ-SEC-13）、Agent Officeの活動可視化（REQ-AOUI-04。キャラ状態＝待機/作業/完了/エラーはこのイベントから導出）、監査。
-- payload Catalogは少なくとも次を固定する。`site.build_*={build_run_id,stage,stage_state,released_capabilities[],progress}`、`keyword.report_*={report_id,report_type,source_version,status}`、`plan.monthly_*={plan_id,period,version,status}`、`plan.weekly_execution_selected={selection_id,week,selected_item_refs[],deferred_item_refs[]}`、`recommendation.*={recommendation_id,version,state,reason_codes[]}`、`job/stage/ticket/snapshot.*={workflow_key,stage,ticket_id?,snapshot_id?,state,reason_code?}`、`quality.gate_*={snapshot_id,gate_key,verdict,hard_gate_block}`、`publication.decision_recorded={publication_decision_id,version,operation,decision,reasons[],correlation_id}`、`publication.job_*={publication_job_id,publication_decision_ref,state,idempotency_key,attempt_count?,external_command_ref?}`、`publication.fact_recorded={publication_fact_id,publication_job_ref?,effect_kind,attribution,external_post_ref,resulting_content_hash,effective_at,verified_at,verification_evidence_ref,correlation_id?}`、`publication.attribution_reconciled={prior_publication_fact_ref,new_publication_fact_ref,from_attribution,to_attribution,evidence_refs[],rule_version}`、`evaluation.intervention_*={evaluation_id,lane_id,lane_type,origin_publication_fact_ref,origin_at,cadence,window?,state,outcome?}`、`billing.credit_*={ledger_entry_id,lot_id?,amount,unit,state}`、`connection.*={connection_id,capability,state,reason_code?}`。payloadに本文、secret、Provider生responseを含めない。画面モックも同じevent typeとpayload versionを使用する。
+- payload Catalogは少なくとも次を固定する。`site.build_*={build_run_id,stage,stage_state,released_capabilities[],progress}`、`keyword.report_*={report_id,report_type,source_version,status}`、`plan.monthly_*={plan_id,period,version,status}`、`plan.weekly_execution_selected={selection_id,week,selected_item_refs[],deferred_item_refs[]}`、`recommendation.*={recommendation_id,version,state,reason_codes[]}`、`job/stage/ticket/snapshot.*={workflow_key,stage,ticket_id?,snapshot_id?,state,reason_code?}`、`quality.gate_*={snapshot_id,gate_key,verdict,hard_gate_block}`、`calibration.snapshot_published={calibration_id,version,target_ref,layer_summaries[],source_watermarks[],rule_version,entitlement_snapshot_ref}`、`metric.definition_published={metric_key,definition_version,owner_context,fact_contract_refs[],contract_hash}`、`metric.preaggregation_*={preaggregation_id,metric_ref,scope_ref,state,coverage,source_watermarks[]}`、`publication.decision_recorded={publication_decision_id,version,operation,decision,reasons[],correlation_id}`、`publication.job_*={publication_job_id,publication_decision_ref,state,idempotency_key,attempt_count?,external_command_ref?}`、`publication.fact_recorded={publication_fact_id,publication_job_ref?,effect_kind,attribution,external_post_ref,resulting_content_hash,effective_at,verified_at,verification_evidence_ref,correlation_id?}`、`publication.attribution_reconciled={prior_publication_fact_ref,new_publication_fact_ref,from_attribution,to_attribution,evidence_refs[],rule_version}`、`evaluation.intervention_*={evaluation_id,lane_id,lane_type,origin_publication_fact_ref,origin_at,cadence,window?,state,outcome?}`、`billing.credit_*={ledger_entry_id,lot_id?,amount,unit,state}`、`billing.data_fidelity_entitlement_changed={entitlement_snapshot_ref,dimensions_changed[],effective_at}`、`connection.*={connection_id,capability,state,reason_code?}`。payloadに本文、secret、Provider生responseを含めない。画面モックも同じevent typeとpayload versionを使用する。
 
 ### 5.1 Tracker ingressと集計契約
 
