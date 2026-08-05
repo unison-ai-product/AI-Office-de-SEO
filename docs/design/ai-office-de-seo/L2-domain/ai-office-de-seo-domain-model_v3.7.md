@@ -29,14 +29,14 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 |---|---|---|---|
 | Customer Account & Access | ContractAccount | ORG, ACCESS, PRODUCTの認可詳細 | 契約者、顧客組織、Site付与、基本権限、業務権限、認可 |
 | Site Onboarding & Strategy | SiteOperatingCycle | BUS, UJ, PRODUCTの導入・月次運用詳細 | Site設定、新規／既存導入、月次計画、週次実行、評価Loop |
-| Keyword Market Intelligence | SiteKeywordPortfolio | KGA, KRL, KPD, SRC, CAV, PRODUCTのNetwork Learning詳細 | Keyword市場、Site Share、Cluster、診断、外部検索情報、AI検索観測 |
+| Keyword Market Intelligence | SiteKeywordPortfolio | KGA, KRL, KPD, SRC, CAV, PRODUCTのNetwork Learning詳細 | Keyword市場、Site Share、Cluster、診断、階層較正、外部検索情報、AI検索観測 |
 | Content Knowledge | SiteContentIndex | DATA, ASUM, PRODUCTの記事索引詳細 | URL、記事Summary、記事遍歴、内部Link、Site構造の正本と再構築可能な検索read model |
 | Recommendation Planning | RecommendationPortfolio | LOGIC, PRODUCTの自動運用統制 | 目的・制約・費用・保護条件から施策候補を選択し、状態遷移を管理 |
 | Content Production | ContentProductionJob | AGENT, PACK, CQR, RWR, PRODUCTの執筆設定詳細 | 新規記事、リライト、Research、Outline、Writing、QA、Repair |
 | CMS Publication | CmsDelivery | WPA, INT, PRODUCTのCMS詳細 | CMS接続、下書き送信、承認後反映、外部変更通知、CV集計入力 |
-| Customer Outcome | CustomerOutcomeSnapshot | MEASUREの顧客計測・成果要求 | 顧客Siteの成果、施策評価、市場影響、運営指標との分離 |
-| Commercial Entitlement | SubscriptionAccount | BILL, BILLING, COST, UPSELL | Plan、契約、Credit、原価、利用権、追加購入、アップセル |
-| Platform Control & Reliability | PlatformControlPolicy | PAC, ADM, IRG, SEC, NFR, DUR, TECH, MEASUREの運用要求, PRODUCTの運営詳細 | 運営管理、障害、保証、セキュリティ、可用性、技術基盤 |
+| Customer Outcome | CustomerOutcomeSnapshot | MEASUREの顧客計測・成果要求 | 顧客Siteの成果、施策評価、市場影響、Domain Metricの意味、運営指標との分離 |
+| Commercial Entitlement | SubscriptionAccount | BILL, BILLING, COST, UPSELL | Plan、契約、Credit、Data Fidelity Entitlement、原価、利用権、追加購入、アップセル |
+| Platform Control & Reliability | PlatformControlPolicy | PAC, ADM, IRG, SEC, NFR, DUR, TECH, MEASUREの運用要求, PRODUCTの運営詳細 | 運営管理、障害、保証、セキュリティ、可用性、Metric実行・rollup、技術基盤 |
 | Agent Execution Experience | AgentTaskProjection | SCREEN, DESIGN, AOUI, NAV, PRODUCTの通知・検索・出力詳細 | 通常ビューの簡単操作と成果分析、Officeの詳細運用・Agent操作を同じ業務状態から投影 |
 
 Conversion MeasurementとPublication Attributionは独立した要求所有コンテキストではなく、CMS PublicationからCustomer Outcomeへ渡す明示的な下位モデルである。これにより、CVの保存制約とAI Office経由／外部変更の帰属規則を局所的な不変条件として検証する。
@@ -75,12 +75,13 @@ Site設定・接続
 | Aggregate | 主Command | 主Domain Event |
 |---|---|---|
 | SiteOperatingCycle | ConfigureSite, StartAnalysis, ConfirmMonthlyPlan, SelectWeeklyWork | SiteConfigured, AnalysisStarted, MonthlyPlanConfirmed, WeeklyWorkSelected |
-| SiteKeywordPortfolio | AddSeedKeyword, ConfirmDirection, ReclassifyCluster | KeywordDirectionConfirmed, PortfolioBuilt, ClusterReclassified |
+| SiteKeywordPortfolio | AddSeedKeyword, ConfirmDirection, ReclassifyCluster, RecalculateCalibration | KeywordDirectionConfirmed, PortfolioBuilt, ClusterReclassified, CalibrationSnapshotPublished |
 | RecommendationPortfolio | GenerateRecommendations, AcceptRecommendation, HoldRecommendation | RecommendationProposed, RecommendationAccepted, RecommendationHeld |
 | ContentProductionJob | StartProduction, ReviseOutline, ResumeRepair | ProductionStarted, OutlineFrozen, ContentQualified, ProductionSuspended |
 | CmsDelivery | SendDraft, ApproveDelivery, ApplyUpdate | DraftDelivered, PublicationReflected, ExternalChangeObserved |
-| CustomerOutcomeSnapshot | RecordObservation, EvaluateIntervention | OutcomeObserved, InterventionEvaluated |
-| SubscriptionAccount | ReserveCredit, CommitCredit, ChangePlan | CreditReserved, CreditCommitted, EntitlementChanged |
+| CustomerOutcomeSnapshot | RecordObservation, EvaluateIntervention, PublishMetricMeaning | OutcomeObserved, InterventionEvaluated, DomainMetricDefinitionPublished |
+| SubscriptionAccount | ReserveCredit, CommitCredit, ChangePlan | CreditReserved, CreditCommitted, EntitlementChanged, DataFidelityEntitlementChanged |
+| PlatformControlPolicy | RegisterMetricExecution, RefreshPreAggregation | MetricExecutionRegistered, PreAggregationRefreshed |
 
 UIはCommandを発行しEventからProjectionを更新する。UIが順位段階、市場影響、公開成否、Credit残高、権限を独自計算してはならない。Agent Officeは `AgentTaskProjection` と各成果Projectionを起点に玄人向け詳細分析を行い、選択式Actionまたは自由文会話を型付きProposalへ変換し、影響・Credit・認可の確認後に所有BCの共通Commandを利用できる。Office独自の業務正本・認可・Command・成果計算は作らない。
 
@@ -168,6 +169,13 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - 不変条件: 本文全文はSite／job scopedの暗号化一時objectにだけ置く／DB・event・log・Notification・Recommendationへ複製しない／本文変更を伴うRewrite Intakeはbody・headings・public state・freshnessが成立した有効Snapshotを必須とする／経路切替、source更新、hash変更、期限切れで旧Snapshotを再利用しない／完了・取消・期限切れ後は本文objectを破棄し、metadataと破棄証跡だけを残す／読取成功をCMS write permissionへ流用しない（REQ-DATA-15）。
 - 本文を含み得る保管境界は、実行中のArticle Read／Workspace、生成成果受渡しのOutput Vault、変更前復元のRecovery Backupに限定する。前者はJob／Snapshot期限、Output Vaultは既定14日、Recovery BackupはSite容量上限内かつ最長3か月とし、相互転用・学習・分析Corpus化を禁止する。CMS Revisionは外部正本として参照する。
 
+### 4.3.0.2 HierarchicalCalibrationSnapshot（Keyword Market Intelligence）
+
+- ルート: `HierarchicalCalibrationSnapshot`。Site／カテゴリー・テーマ戦略／予測対象ごとに、`site_observed / site_industry_cohort / industry_cohort / global_prior`の利用状態をfreezeする。
+- 値: CalibrationId、Version、SiteRef、TargetRef、IndustryRefs、CrossAxisRef、ObservationWindow、SourceWatermarks、SampleSizes、Freshness、Variance、LayerWeights、Availability、Confidence、FallbackReason、RuleVersion、EntitlementSnapshotRef、CreatedAt。
+- 入力Factは各所有Contextに残し、本Snapshotは参照ID、集計値、weight、provenanceだけを持つ。匿名cohortは匿名化・最小標本条件を満たした公開Snapshotだけを参照し、他Tenantの識別可能な明細を持たない。
+- 不変条件: Site実測が有効な成分をPlan理由でglobal priorへ置換しない／Planは入力coverage・保持・再計算Capacityを決め、weightへ直接bonusを加えない／標本条件をPlanで緩めない／同じ入力・rule・calibration versionは決定的／Plan変更や再計算で旧Snapshotを上書きせずlineageを保持する／Recommendation、Report、予測は使用Snapshot versionを記録する。
+
 ### 4.3.1 Recommendation（Search Performance）
 
 - ルート: Recommendation。候補抽出時点から採用、実行、評価、再推薦まで同じ`recommendation_id`とversionで追跡する。
@@ -205,6 +213,12 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - ルート: InterventionEvaluation。記事へ単一時計を持たせず、制作時の「新規／リライト」ではなく、検証済みPublication Factの`effective_at`を起点とする介入別`EvaluationLane`を束ねる。`ai_office_publication`は主介入、実質的`external_change`は交絡要因、`unknown_source`は帰属確認中として分離する。
 - 値: ArticlePurpose、SearchIntent、Keyword Cluster、CV Goal、EvaluationLane（`seo_content / cta_cv / internal_link / awareness`）、Origin Fact、Cadence、Observation、Confounder、availability、Outcome、NextAction。
 - 不変条件: `seo_content`だけを1／3／6か月で評価する／CTA・内部link・認知は変更月と累積で評価しSEO Laneをresetしない／title・主要見出し・実質本文変更は旧評価を保持して新SEO Laneへ接続する／外部変更はAI Office Laneを作らず影響Laneの交絡へ付与する／割当Keyword集合が意図どおり順位を獲得したかを第一に評価する／CVなしだけを異常にしない／急変を即時Recommendationにしない／直近1か月1,000 click未満の予測対象をデータ不足と分離する／Site補正が順位へ悪影響を及ぼす変更はユーザー承認を要求する／Recovery Backup最長3か月と6か月評価保持を同一期限にしない。
+
+### 4.3.5 DomainMetricDefinition / MetricSnapshot（各業務Context）
+
+- `DomainMetricDefinition`: 指標の意味を所有する業務Contextが公開するversion付きPublished Language。MetricKey、Meaning、FactContract、Grain、Dimensions、Window、Filter、Attribution、AvailabilityRule、ConfidenceRule、OwnerContextを持つ。
+- `MetricSnapshot`: Definition version、tenant／Site Scope、対象、期間、値またはrange、availability、confidence、source watermarks、calibration ref、calculated_atを持つ派生read model。顧客成果と運営KPIは別Definition／Projectionとする。
+- 不変条件: PlatformまたはUIが業務指標の意味を独自変更しない／通常ビューとOfficeは同じMetricSnapshotを使用する／window・grain・attributionが異なる値を同じMetricとして比較しない／確定評価は使用Definition／Fact／Calibration versionを保持する。
 
 ### 4.4 RewriteJob / ArticleWorkspace（Rewrite）
 - ルート: RewriteJob（ArticleWorkspaceを内包）。
@@ -247,9 +261,18 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 ### 4.6.1 Subscription／Entitlement／AutoChargePolicy／CapacityAccount
 
 - Subscriptionは契約主体、Price Catalog version、Plan Configuration version、状態、周期、更新、外部決済参照を持ち、契約時のEntitlement Snapshotを暗黙改版しない。
+- DataFidelityEntitlementは観測coverage、freshness、grain、詳細保持、再計算頻度、Site固有feature depth、外部取得予算、検索可能履歴を独立Dimensionとして持つ。Plan名ではなくEntitlement Snapshotの値を各Query／Jobへ渡し、score、weight、顧客実測値を変更しない。
 - AutoChargePolicyは残高閾値、購入商品、1回購入額、月間上限または無制限、当月購入額、状態、認証・確認versionを持つ。自動購入も通常のCredit LotとLedgerへ記録する。
 - CapacityAccountはDimensionごとのusage、soft/hard limit、予測到達日、集計時刻、追加容量Entitlementを持ち、Dimension間を相殺しない。
 - 状態変更はBilling Commandで行い、通常ビュー、Office、Automationから同じ認可、step-up、冪等性を使う。支払失敗・上限到達時は新規有償副作用を保留するが、閲覧・export・支払修正を停止しない。
+
+### 4.11 MetricExecutionRegistry / PreAggregationProjection（Platform Control）
+
+- `MetricExecutionRegistry`: 公開済みDomainMetricDefinitionを実行可能なQuery Plan、Fact Adapter、rollup、cache、Analytics Store Portへ対応付ける。業務上の意味は所有せず、owner contextが公開したDefinition versionを変更しない。
+- `PreAggregationProjection`: Metric version、tenant／Site Scope、grain、window、filter、source watermark、coverage、freshness、build status、expires_atを持つ再構築可能な派生Projection。正本Fact、Observation、Credit、契約、権限を所有しない。
+- 状態: `planned → building → partial → current → stale / failed → rebuilding`。`partial / stale / failed`を0件・最新・完全値へ写像しない。
+- columnar store、Cube等のsemantic runtime、別cache engineはAdapter候補であり、scan量、backlog、storage、latency、費用、運用工数の移行閾値を満たしADRが承認されるまで必須依存にしない。
+- 不変条件: 全Queryへtenant／Site ScopeとAuthorizationを強制する／PlanごとにMetric式をforkしない／現在Objectの基本検索を分析Entitlementで劣化させない／pre-aggregation障害で正本Commandを止めない／UIがcache値を再計算しない。
 
 ### 4.7 Site / SiteSandboxContext（Tenancy）
 - ルート: Site。
@@ -282,10 +305,11 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - Content Index: SiteKeywordUniverseUpdated, SiteClusterProjectionUpdated, SiteClusterDependencyStaled, KeywordMapUpdated, ArticleSummaryUpserted。
 - Search Performance: SiteBuildStarted, SiteBuildStageReleased, BigKeywordDirectionConfirmed, KeywordReportVersioned, MonthlyPlanProposed, MonthlyPlanConfirmed, WeeklyExecutionSelected, GscDataIngested, CoverageAssessed, QueryDriftDetected, RewriteCandidateRaised, RecommendationProposed, RecommendationAccepted, RecommendationHeld, RecommendationExpired, RecommendationDispatched, OutcomeObservationProjected, RecommendationEvaluationStarted, RecommendationLearned。
 - Customer Outcome: InterventionEvaluationRegistered, EvaluationLaneScheduled, EvaluationLaneObserved, EvaluationConfounderRecorded, InterventionEvaluated。
+- Calibration / Metrics: CalibrationSnapshotPublished, DomainMetricDefinitionPublished, MetricExecutionRegistered, PreAggregationRefreshed, PreAggregationStaled。
 - Generation: GenerationJobStarted, OutlineContractFrozen, MeaningUnitDrafted, SemanticAssembled, QualityGateEvaluated(Passed/Failed), RepairRequested, PresentationAssembled。
 - Rewrite: RewriteJobStarted, PatchApplied, RewriteQualityFailed。
 - Publishing: PostEnvelopeSealed, CmsDraftCreated, PublicationDecisionRecorded, PublicationApprovalConfirmed, PublicationJobScheduled, PublicationJobStarted, PublicationJobVerificationPending, PublicationFactRecorded, PublicationAttributionReconciled, PublicationJobFailed, CvRecorded。
-- Billing: CreditReserved, CreditCommitted, CreditReleased, MonthlyCreditGranted。
+- Billing: CreditReserved, CreditCommitted, CreditReleased, MonthlyCreditGranted, DataFidelityEntitlementChanged, DetailedHistoryRollupScheduled。
 - Provider: ProviderRouteDecided, ProviderHealthDegraded, CanaryRolledBack。
 - Config/Governance: ConfigVersionActivated, FeatureFlagToggled, KillSwitchEngaged。
 - Notification: NotificationDispatched, NotificationRead（通知はイベント購読の下流であり、独自ドメインイベントを増やさない。運営お知らせは `platform.announcement_published` として同一エンベロープに投入、REQ-PRODUCT-16）。
@@ -300,6 +324,8 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - Preflight Estimator（REQ-SEC-12）, Fair-share Scheduler（REQ-SRC-07）, Routing Policy（REQ-BILL-09）。
 - Config Resolution（グローバル→プラン→テナント/サイトの上書き、REQ-ADM-09）。
 - Network Aggregation Service（k匿名集約→辞書候補/prior/較正提案の生成。一方向・Config & Governance経由でのみ適用、REQ-PRODUCT-13）。
+- Hierarchical Calibration Policy（有効標本・freshness・分散・provenanceから階層weightを決定し、Planは入力Capacityだけを制約、REQ-KRL-11）。
+- Semantic Metric Planner（owner contextのMetric DefinitionをScope付きQuery／rollupへ変換し、stale・partial・watermarkを維持、REQ-TECH-21）。
 
 ## 7. L3への引き渡し（次レイヤー）
 

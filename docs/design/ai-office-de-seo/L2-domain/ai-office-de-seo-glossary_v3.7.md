@@ -243,3 +243,7 @@ L2ドメインモデルの共通語彙。定義はL1要求（根拠REQ）に基�
 | 記事×キーワード（旧S2タブ名）＝アサイン台帳 | ページ一覧 | 2026-07-08にサイトページ管理へ移設。UI見出しは「ページ一覧（サマリー×キーワード割当）」 |
 | 通常ビュー（Standard/SaaS View） | 日常判断の簡単操作面 | Recommendationの採否、承認、基本設定、費用確認等を少ない操作で行う正規入口。Officeと同じ業務正本・権限・Command／Eventを使い、Officeで確定した変更も即時反映する |
 | Agent Officeビュー（Office View） | 玄人向け詳細分析・運用・Agent操作面 | Agentが働く仮想Office体験としてTaskの進行を監視し、成果、Keyword、Recommendation、記事、根拠、設定を詳細分析できる。選択式または自由文会話から変更案を型付きProposalとして作り、影響・Credit・権限確認後に共通Domain Commandへ接続する。業務正本、認可、Command、成果計算をOfficeへ複製しない |
+| Data Fidelity | 利用できるデータ範囲／データの詳しさ | Plan別のcoverage、freshness、粒度、詳細保持、再計算頻度、Site固有feature、外部取得枠。実測値への加点または精度保証を意味しない |
+| Hierarchical Calibration Snapshot | Site実績と参考データの利用内訳 | Site実測、Site×業界、匿名業界cohort、全体参考のweight・標本・期間・confidenceをfreezeした版付き較正Snapshot |
+| Domain Metric Definition | 指標の定義 | 指標の意味、Fact、grain、期間、attribution、availability、confidenceを所有業務Contextが公開するversion付き契約 |
+| Pre-aggregation Projection | 集計済み表示データ | P95 3秒表示用の再構築可能な派生集計。正本Factではなく、stale・partial・watermarkを持つ |

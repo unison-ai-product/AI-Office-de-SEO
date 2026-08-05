@@ -118,7 +118,8 @@
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-plan-data-fidelity-connection-map_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/categories/data-requirements_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/categories/billing-accounting-requirements_v1.md",
-            "docs/design/ai-office-de-seo/L1-requirements/logic/keyword-dynamic-recommendation-logic-requirements_v1.md"
+            "docs/design/ai-office-de-seo/L1-requirements/logic/keyword-dynamic-recommendation-logic-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md"
           ],
           "forbidden_patterns": [
             "(?:Entry|下位Plan).{0,40}(?:Site実測|顧客実測).{0,30}(?:global prior|全体平均)(?:へ置換|だけを使用)",
@@ -573,6 +574,35 @@
           "forbidden_patterns": ["(?:記事本文|API.?key|秘密情報).{0,30}(?:監査log|監査ログ).{0,20}(?:保存|記録)"],
           "bad_fixtures": ["記事本文を監査ログへ保存する。"],
           "good_fixtures": ["監査logは参照IDとhashを記録し、記事本文を含めない。"]
+        },
+        {
+          "invariant_id": "INV-METRIC-001",
+          "statement": "Domain Metricの意味はFact所有Contextがversion付きDefinitionとして公開し、PlatformはScope付き実行、rollup、cacheを所有する。PreAggregationは再構築可能な派生で正本Factではなく、通常ビューとOfficeビューは同じMetricSnapshotを使用する。Planはcoverage、grain、history、freshnessだけを制約し、Metric式を分岐させない。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/technical-architecture-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-plan-data-fidelity-connection-map_v1.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-requirement-context-map_v1.md",
+            "docs/reference/open-source-analytics-architecture-review_2026-08-05.md"
+          ],
+          "forbidden_patterns": [
+            "(?:通常ビュー|Officeビュー).{0,30}(?:Metric|指標).{0,25}(?:独自計算|別計算)(?:する|とする)",
+            "PreAggregation.{0,30}(?:業務正本|Fact正本)(?:とする|である)",
+            "Planごとに.{0,30}(?:Metric式|算式).{0,20}(?:分岐|fork|変更)(?:する|させる)",
+            "Analytics Store.{0,40}(?:契約|権限|Credit Ledger|Recommendation).{0,20}(?:正本|所有)(?:とする|する)"
+          ],
+          "bad_fixtures": [
+            "通常ビューは指標を独自計算する。",
+            "PreAggregationをFact正本とする。",
+            "PlanごとにMetric式を分岐する。",
+            "Analytics StoreがCredit Ledgerを所有する。"
+          ],
+          "good_fixtures": [
+            "通常ビューとOfficeビューは同じMetricSnapshotを用途別に投影する。",
+            "PreAggregationはObservation Factから再構築できる派生Projectionである。",
+            "Plan差分はMetric式ではなく利用できるcoverage、grain、history、freshnessへ適用する。",
+            "PlatformはMetric実行を所有するが、業務上の意味はFact所有Contextが公開する。"
+          ]
         }
       ]
     },

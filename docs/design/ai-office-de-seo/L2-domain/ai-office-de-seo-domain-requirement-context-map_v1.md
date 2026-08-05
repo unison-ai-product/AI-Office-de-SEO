@@ -21,16 +21,16 @@ L1の要求分類は監査と文書管理の分類であり、業務データの
 |---|---|---:|---|
 | Customer Account & Access | ORG, ACCESS + PRODUCT-02/08/10 | 33 | ContractAccount |
 | Site Onboarding & Strategy | BUS, UJ + PRODUCT-01/05/09/17/24 | 27 | SiteOperatingCycle |
-| Keyword Market Intelligence | KGA, KRL, KPD, SRC, CAV + PRODUCT-13 | 55 | SiteKeywordPortfolio |
-| Content Knowledge | DATA, ASUM + PRODUCT-03/04/19/20 | 24 | SiteContentIndex |
+| Keyword Market Intelligence | KGA, KRL, KPD, SRC, CAV + PRODUCT-13 | 56 | SiteKeywordPortfolio |
+| Content Knowledge | DATA, ASUM + PRODUCT-03/04/19/20 | 26 | SiteContentIndex |
 | Recommendation Planning | LOGIC + PRODUCT-18 | 15 | RecommendationPortfolio |
 | Content Production | AGENT, PACK, CQR, RWR + PRODUCT-07/12 | 57 | ContentProductionJob |
 | CMS Publication | WPA, INT + PRODUCT-06 | 25 | CmsDelivery |
 | Customer Outcome | MEASURE-01〜04/12/14 | 6 | CustomerOutcomeSnapshot |
-| Commercial Entitlement | BILL, BILLING, COST, UPSELL | 47 | SubscriptionAccount |
-| Platform Control & Reliability | PAC, ADM, IRG, SEC, NFR, DUR, TECH + MEASURE-05〜11/13 + PRODUCT-16/21/22/23 | 107 | PlatformControlPolicy |
-| Agent Execution Experience | SCREEN, DESIGN, AOUI, NAV + PRODUCT-11/14/15 | 51 | AgentTaskProjection |
-| **合計** | **35接頭辞** | **447** | |
+| Commercial Entitlement | BILL, BILLING, COST, UPSELL | 48 | SubscriptionAccount |
+| Platform Control & Reliability | PAC, ADM, IRG, SEC, NFR, DUR, TECH + MEASURE-05〜11/13 + PRODUCT-16/21/22/23 | 109 | PlatformControlPolicy |
+| Agent Execution Experience | SCREEN, DESIGN, AOUI, NAV + PRODUCT-11/14/15 | 54 | AgentTaskProjection |
+| **合計** | **35接頭辞** | **456** | |
 
 新しいREQ接頭辞を追加した場合は、同じ変更で所有コンテキストを登録する。未割当、二重割当、存在しない接頭辞の登録はRequirements Auditを失敗させる。
 
@@ -40,14 +40,14 @@ L1の要求分類は監査と文書管理の分類であり、業務データの
 
 | 画面群 | 主Query／Projection | 許可Commandの所有先 | 禁止事項 |
 |---|---|---|---|
-| S1 Dashboard | SiteOperatingCycle、CustomerOutcomeSnapshot、SubscriptionAccountの要約 | Strategyの月次確定、Recommendationの採否 | 成果、市場影響、CreditをUIで再計算しない |
-| S2 Keyword・戦略・診断 | SiteKeywordPortfolio、KeywordReport、RecommendationPortfolio | Keyword分類修正、方向性確認、優先方針変更 | Clusterや主従Keywordを画面ローカル正本にしない |
+| S1 Dashboard | SiteOperatingCycle、CustomerOutcomeSnapshot、MetricSnapshot、SubscriptionAccountの要約 | Strategyの月次確定、Recommendationの採否 | 成果、市場影響、Credit、MetricをUIで再計算しない |
+| S2 Keyword・戦略・診断 | SiteKeywordPortfolio、CalibrationSnapshot、KeywordReport、RecommendationPortfolio | Keyword分類修正、方向性確認、優先方針変更 | Cluster、較正weight、主従Keywordを画面ローカル正本にしない |
 | S3 Recommendation・計画 | RecommendationPortfolio、MonthlyStrategy、WeeklySelection | 採用、保留、除外、週次選択 | 推薦理由や実行可否をUIで再判定しない |
 | S4 記事制作 | ContentProductionJob、Outline、QA結果 | 制作開始、Outline修正、再生成、再開 | 画面から直接CMS公開しない |
 | S5 Siteページ管理 | SiteContentIndex、PublicationFact、記事成果 | 内部Link提案採用、リライト起動、CTA Patch採用 | CMSの公開表示とAI Office経由実績を混同しない |
 | S6 Site設定・執筆ルール | ContractAccount、Site設定、Style／Decoration Policy | Site設定、業務権限、執筆・装飾設定変更 | 開発者用接続経路や内部閾値を顧客設定にしない |
-| S7 契約・利用量 | SubscriptionAccount、Credit Ledger、Capacity | Plan変更、自動入金、上限変更、Credit購入 | 残高、税、Stripe状態をUI計算しない |
-| A0〜A8 Agent Office | AgentTaskProjection、Conversation、Proposal、CustomerOutcomeSnapshot、KeywordReport、RecommendationPortfolio、記事成果 | 所有BCの共通Command。詳細分析、条件調整、Task変更は影響・Credit・認可確認を必須とする | 独自の業務正本・認可・Command・成果計算を持たず、同じProjectionを専門的な解像度で扱う |
+| S7 契約・利用量 | SubscriptionAccount、Credit Ledger、Capacity、DataFidelityEntitlement | Plan変更、自動入金、上限変更、Credit購入 | 残高、税、Stripe状態、較正weightをUI計算しない |
+| A0〜A8 Agent Office | AgentTaskProjection、Conversation、Proposal、CustomerOutcomeSnapshot、MetricSnapshot、CalibrationSnapshot、KeywordReport、RecommendationPortfolio、記事成果 | 所有BCの共通Command。詳細分析、条件調整、Task変更は影響・Credit・認可確認を必須とする | 独自の業務正本・認可・Command・成果計算を持たず、通常ビューと同じMetric／Calibration Projectionを専門的な解像度で扱う |
 | W系Workbench | 対象Aggregateの詳細Projection | 対象BCの型付きCommand | Workbench独自の状態機械を作らない |
 | 開発者Console | PlatformControlPolicy、監査・障害Projection | 管理面Command | 顧客面Roleまたは顧客Sessionから到達させない |
 
@@ -75,6 +75,8 @@ Adapterは外部の状態名を内部Aggregateへ直接持ち込まず、ACLでP
 | CV | 自前Trackerの日別・URL別・Goal別集計 | DailyUrlGoalAggregate | S1／S5 |
 | 市場影響 | Keyword市場、表示回数、AIO／広告圧力、外部変更から決定論分類 | InterventionEvaluation | S1／S2／S5 |
 | 運営側KPI | Product Event | 運営用Projection | 開発者Console |
+
+Domain Metricの意味はFactを所有する業務Contextがversion付きDefinitionとして公開する。Platform ControlはMetric実行、pre-aggregation、cache、Analytics Store Adapterを所有するが、指標の意味またはFactを所有しない。PlanはEntitlement Dimensionで利用可能なcoverage、grain、history、freshnessを制約し、同じDefinitionへ別の算式や有利な係数を適用しない。
 
 顧客成果と運営側KPIを同じAggregateまたはDashboardへ混在させない。通常ビューは顧客成果とRecommendationを要約し、判断と日常操作を少ない手数で完了させる。Officeは同じ顧客成果Projectionを、Keyword、Cluster、記事、Recommendation、Task、根拠、市場影響、変更履歴と横断して専門的に分析・調整できる形で投影する。
 
