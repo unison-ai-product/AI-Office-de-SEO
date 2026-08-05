@@ -246,6 +246,8 @@ flowchart TD
 
 ## 4. 通知起点の対処フロー（UJ-03/07、通知→2遷移以内）
 
+popup、通知Center、Dashboard、emailは同じNotification／Resourceを投影する。read／acknowledgedは受信者単位、actionedは対象Resourceの解消eventから全受信者へ同期する。通知から対象へ移る時はPermissionとAvailabilityを再判定し、受信自体を操作権限にしない。
+
 ```mermaid
 flowchart LR
   N[W7 通知] -->|承認依頼| W4[W4] -->|承認/差戻| END1[完了]

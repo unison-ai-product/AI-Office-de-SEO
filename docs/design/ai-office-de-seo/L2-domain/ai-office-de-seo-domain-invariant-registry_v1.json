@@ -613,6 +613,33 @@
             "検索hitの対象を正本から再読込・再認可してActionを実行する。",
             "Index障害時も主要一覧と理由付き状態を表示する。"
           ]
+        },
+        {
+          "invariant_id": "INV-NOTIFY-UI-001",
+          "statement": "popup、通知Center、Dashboard、emailは同じNotification／Resourceを投影し、channelごとに別件数を作らない。read／acknowledgedは受信者単位、actionedはResource解消から全受信者へ同期する。通知OFF・digestでも必須判断を消さず、遷移時に再認可し、同一状態再送だけを重複抑止する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-notification-recipient-routing-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-notification-action-ui-validation_v1.md"
+          ],
+          "forbidden_patterns": [
+            "(?:popup|通知Center|email).{0,40}(?:別Notification|別件).{0,20}(?:作成|加算)",
+            "一人.{0,20}(?:既読|read).{0,30}(?:全員|他の受信者).{0,20}(?:既読|read)",
+            "通知OFF.{0,40}(?:承認期限|停止|必須判断).{0,20}(?:非表示|削除)",
+            "通知受信.{0,30}(?:閲覧権限|操作権限).{0,20}(?:として扱う|を付与)"
+          ],
+          "bad_fixtures": [
+            "popupとemailを別Notificationとして加算する。",
+            "一人が既読にしたら全員を既読にする。",
+            "通知OFFで承認期限を非表示にする。",
+            "通知受信を操作権限として扱う。"
+          ],
+          "good_fixtures": [
+            "複数channelは同じNotificationのdeliveryとして扱う。",
+            "readは受信者単位、actionedはResource解消から同期する。",
+            "通知OFFでもDashboardの必須判断を維持する。",
+            "通知遷移時にResourceを再認可する。"
+          ]
         }
       ]
     },

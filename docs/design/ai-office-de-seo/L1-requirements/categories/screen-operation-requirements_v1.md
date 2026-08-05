@@ -207,6 +207,10 @@ Task完了、ユーザー確認待ち、承認期限、停止、失敗、再開�
 
 ユーザーはSiteまたはユーザー単位で、event種別ごとに画面内通知・email等のchannel、即時／digest、ON／OFFを設定できる。課金失敗、権限喪失、接続停止等、サービス利用の継続判断に必要な通知は完全OFFにせず、最低限通知Centerへ残す。popupを閉じても通知Centerから消去せず、未読、既読、確認済み、対応済みを区別し、対象Task、記事、Recommendation、設定画面へ直接遷移できる。同一相関ID・同一状態の反復eventは重複表示を抑止する。
 
+popup、通知Center、emailは同じNotificationのchannel deliveryとして扱い、notification ID単位で一件と数える。未読・既読・確認済みは受信者単位、対応済みは対象Resourceの解消eventから全受信者へ同期する。ある受信者の既読を他受信者へ伝播せず、別の受信者が承認・再認可等を完了した後も未処理表示を残さない。重複抑止は同一状態の再送へ適用し、期限接近、重要度上昇、状態変更、再発のreminderまで消さない。
+
+通知後にMembership、Site付与、Permissionが変わった場合は遷移時に再認可し、通知受信をResource閲覧・操作権限として扱わない。通知OFFまたはdigest設定でも、DashboardのResource状態から導出する承認期限・停止等の必須判断を消さない。email bounce／suppressionはemailだけへ適用し、in-app Centerを停止しない。action requiredのdigestは判断期限を越えて遅延させない。
+
 通常ビューとAgent Officeは同じ通知eventと状態を使用する。通常ビューでは判断事項を簡潔に提示し、Officeでは関連Task、Agent、原因、履歴、影響を詳細表示する。内部監査alertおよび開発者向け障害通知は顧客向け業務通知へ混在させない。
 
 ### REQ-SCREEN-20 SEO／AI取得性・表示性診断

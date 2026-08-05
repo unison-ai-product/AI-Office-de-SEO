@@ -72,6 +72,7 @@
 | SF-UI-10 | 生成成果、CMS下書き、Preview、承認、予約、API受付、外部反映、評価登録を別状態で見せ、外部確認待ちでも全ページをP95 3秒以内の判断可能状態へ出せるか。`AOS-PRE-L3-CMS-PUBLICATION-UI-VALIDATION`のCMS-UI-01〜30を比較する | 状態文言、次操作、15件count、Preview経路、retry、通常／Office詳細差、3秒状態表示。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-04/15/19、REQ-INT-10、REQ-WPA-04、CMS Routing、Publication Attribution |
 | SF-UI-11 | Site／カテゴリー・テーマ戦略／記事の成果を、SEO、CTA・CV、内部link、認知の別Lane、市場影響、外部変更、復元availabilityと共に表示し、次回Recommendation・月次再計画へ正しく還流できるか。`AOS-PRE-L3-CUSTOMER-OUTCOME-UI-VALIDATION`のOUT-UI-01〜34を比較する | 三階層drill down、順位段階、Lane比較、評価準備中、復元判断、通常／Office分析差、3秒状態表示。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-BUS-10、REQ-LOGIC-06/09/13/14、REQ-MEASURE-02/13/14、Customer Outcome Metrics Map |
 | SF-UI-12 | Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果の横断検索と一覧絞込みを、Site／権限／鮮度を保って通常画面・Officeへ接続できるか。`AOS-PRE-L3-INTERNAL-SEARCH-UI-VALIDATION`のSEARCH-UI-01〜32を比較する | Header検索、group、Scope切替、0件状態、部分結果、縮退、通常／Office route、戻りContext、3秒表示。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-09/10/21、REQ-DATA-16、REQ-TECH-20、Internal Search Index Map |
+| SF-UI-13 | Dashboard、popup、通知Center、emailで同じ業務eventを重複させず、受信者別readとResource共通actionedを分離し、必須判断を通知OFF・digestでも失わず2遷移以内で処理できるか。`AOS-PRE-L3-NOTIFICATION-ACTION-UI-VALIDATION`のNOTIFY-UI-01〜34を比較する | Dashboard優先順、channel重複、recipient、fallback、購読、reminder、Lifecycle文言、再認可、3秒表示。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-01/19、Notification Recipient Routing、Authorization |
 
 視覚検証ではdesktop標準viewport、狭幅、reduced motion、2D縮退を確認し、通常ビューの優先判断が埋もれないこと、Officeの詳細操作が演出に隠れないこと、往復時に対象を見失わないことを記録する。ブラウザ未接続のソース監査だけでこれらを`resolved`にしない。
 
