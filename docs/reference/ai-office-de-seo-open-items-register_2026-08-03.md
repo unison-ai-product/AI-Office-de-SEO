@@ -55,6 +55,7 @@
 | DD-15 | Transactional Email provider、送信認証、bounce／complaint／抑制list連携 | 認証・通知 | provider比較、domain認証、bounce／suppression Contract Test |
 | DD-16 | Embedding model、vector index、再計算・切替方式 | Knowledge／類似検索 | 日本語精度、latency、原価、再index時間の比較ADR |
 | DD-17 | OTelを正本としたLLM trace補助toolと相関・保存境界 | Observability／Agent trace | trace相関fixture、PII除外、費用・保持比較ADR |
+| DD-18 | Semantic Metric実行AdapterとAnalytics Store製品の段階採否 | Data Platform／通常・Office分析 | 4 Schemaの互換test、同一Metric fixture、移行・rollback ADR、ライセンス・運用比較 |
 
 ## 5. Operational calibration
 
@@ -69,6 +70,7 @@
 | OC-07 | Keyword Market Pool更新頻度・購入原価 | source鮮度、利用率、重複、API費 | Source Policy／Cost Table |
 | OC-08 | k匿名しきい値、segment最小標本、prior縮小重み | 再識別risk、標本安定性、補正精度 | Network Learning Policy／Config Registry |
 | OC-09 | URL Inspection quotaとランキング更新情報の取得経路・更新頻度 | quota消費、取得成功率、鮮度、原価 | Source Policy／Connector Config |
+| OC-10 | Analytics Store移行閾値とPlan別Data Fidelity Capacity | scan量、ingestion backlog、storage、query P95、AWS費用、運用工数、Plan別coverage／freshness／grain／history | Data Platform ADR／Plan Configuration／Config Registry |
 
 ## 6. Post-release concept
 
@@ -142,6 +144,7 @@ L3 Decision Tableの項目を次の分類へ必ず接続する。本表にない
 | D-33 | decided／launch作業 | 累計10社Trial方針は決定、cohort実数登録待ち |
 | D-34 | LB-13 | 商標、domain、成果非保証を含むmarketing表現規約 |
 | D-35 | decided／LB-14 | North Star、顧客視点Activation、継続、休眠、契約churnの定義は決定。実装fixtureと初期目標校正はLB-14 |
+| D-36 | DD-18／OC-10 | Semantic Metricの4契約とPort境界は決定済み。製品採否、移行閾値、Plan別Capacity実数は負荷・原価計測後に確定 |
 
 ### 9.1 台帳整合規則
 

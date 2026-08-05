@@ -1558,6 +1558,77 @@ for (const requiredPhrase of [
     fail(errors, `contract schemas: CMS Delivery contract missing: ${requiredPhrase}`);
   }
 }
+for (const requiredPhrase of [
+  "schema.metric.definition.v1",
+  "schema.calibration.snapshot.v1",
+  "schema.metric.snapshot.v1",
+  "schema.metric.preaggregation.v1",
+  "同じmetric／scope／grain／window／filterから別の値を作らない",
+  "同じMetric Definitionの式や較正weightへPlan係数を加えない",
+]) {
+  if (!contractSchemas.includes(requiredPhrase)) {
+    fail(errors, `contract schemas: Semantic Metric / Calibration contract missing: ${requiredPhrase}`);
+  }
+}
+const metricDdlPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-data-ddl_v3.7.md",
+);
+const metricDdl = fs.readFileSync(metricDdlPath, "utf8");
+for (const requiredPhrase of [
+  "domain_metric_definitions",
+  "hierarchical_calibration_snapshots",
+  "metric_snapshots",
+  "metric_preaggregations",
+  "data_fidelity_entitlements",
+  "通常／Office別の値列を作らず",
+]) {
+  if (!metricDdl.includes(requiredPhrase)) {
+    fail(errors, `data DDL: Semantic Metric / Data Fidelity boundary missing: ${requiredPhrase}`);
+  }
+}
+for (const currentEvent of [
+  "calibration.snapshot_published",
+  "metric.definition_published",
+  "metric.preaggregation_refreshed",
+  "metric.preaggregation_staled",
+  "billing.data_fidelity_entitlement_changed",
+]) {
+  if (!eventCatalog.includes(`| ${currentEvent} |`)) {
+    fail(errors, `event catalog: Semantic Metric / Data Fidelity event missing: ${currentEvent}`);
+  }
+}
+const metricConfigPath = path.join(
+  repoRoot,
+  "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-config-registry-defaults_v3.7.md",
+);
+const metricConfig = fs.readFileSync(metricConfigPath, "utf8");
+for (const requiredPhrase of [
+  "analytics.migration.scan_rows",
+  "calibration.minimum_samples",
+  "Plan／tenant／Site上書き禁止",
+  "entitlement.data_fidelity.coverage",
+]) {
+  if (!metricConfig.includes(requiredPhrase)) {
+    fail(errors, `config registry: Semantic Metric / Data Fidelity key missing: ${requiredPhrase}`);
+  }
+}
+const handoffGate = fs.readFileSync(
+  path.join(repoRoot, "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-handoff-gate_v3.7.md"),
+  "utf8",
+);
+for (const requiredPhrase of ["B-7 | Semantic Metric Schema Registry", "B-8 | Data Fidelity Query Admission"]) {
+  if (!handoffGate.includes(requiredPhrase)) {
+    fail(errors, `handoff gate: Semantic Metric implementation gate missing: ${requiredPhrase}`);
+  }
+}
+const l3DecisionTable = fs.readFileSync(
+  path.join(repoRoot, "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-l3-decision-table_v3.7.md"),
+  "utf8",
+);
+if (!l3DecisionTable.includes("| D-36 | Semantic Metric実行方式とAnalytics Store段階移行")) {
+  fail(errors, "L3 decision table: Analytics Store staged migration decision missing: D-36");
+}
 const layerPlanChecks = [
   ["/L0-charter/", "docs/plans/PLAN-L0-01-ai-office-de-seo-charter.md"],
   ["/L1-requirements/", "docs/plans/PLAN-L1-01-ai-office-de-seo-requirements.md"],

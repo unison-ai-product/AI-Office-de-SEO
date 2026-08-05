@@ -35,6 +35,8 @@ L1/L2を通常ビューとOfficeビューの画面・遷移・fixtureで検証�
 | B-4 | Source Extract JSON Schemaの第一陣 | プロトP0画面が使う分を先行確定: `source.keyword.map.v1`（attributes込み）/ `source.gsc.query_group.v1`（match込み）/ `source.keyword.assignment.v1` / `source.gsc.page_query_matrix.v1` / `schema.snapshot.qa.v1`。残りは画面到達順で | REQ-PACK-07 | Design(モック) / Code |
 | B-5 | 形態素解析エンジン選定 | KGA-15 exact段の正規化（分かち書き・助詞除去）の実装選定（MeCab系等・決定論）。辞書versionの持ち方に影響 | REQ-KGA-15 | Code |
 | B-6 | AWS初期配置・復旧ADR | AWS Operations Recovery Map v1の論理境界を維持してcompute、DB、queue、cache、Multi-AZ、backup隔離先、SLO、障害注入・復元演習方法を負荷・人数・費用から確定する。製品選定前でもcorrelation、bulkhead、circuit、Runbook、RPO/RTOの契約は変更しない | REQ-NFR-06〜08/14/15, REQ-TECH-19 | Code / Operations |
+| B-7 | Semantic Metric Schema Registry | `schema.metric.definition.v1`、`schema.calibration.snapshot.v1`、`schema.metric.snapshot.v1`、`schema.metric.preaggregation.v1`を機械可読Schemaとして公開し、owner Context、互換規則、契約test、通常／Office一致fixtureを確定する。汎用JSONまたは画面別算式で代替しない | REQ-DATA-17, REQ-KRL-11, REQ-TECH-21, Contract Schemas §0.0.7.1 | Code / Design(S1/S2/Office) |
+| B-8 | Data Fidelity Query Admission | Entitlement Snapshotからcoverage／freshness／grain／history／recalculation CapacityをQueryへ適用し、統計的最低標本、Metric式、較正weightをPlanで変更しないPolicyと負テストを確定する | REQ-BILLING-17, INV-DATA-FIDELITY-001, INV-METRIC-001 | Code / Billing / Data |
 
 ## Gate C: 先行確定不要（設計上、後から吸収できる）
 
@@ -43,6 +45,7 @@ L1/L2を通常ビューとOfficeビューの画面・遷移・fixtureで検証�
 - 日本語可読性指標の選定: 検証ログのオープン項目。確定まで可読性ゲートはadvisory運用で影響を限定済み。
 - Plan価格階段、契約期間、主要Entitlementは確定済み。credit付与量、品質別消費係数、週次上限、Provider上限等の実数は構築・負荷・原価計測後にCatalogへ吸収する。
 - Generative AIレポートの取得経路: availability設計で吸収（検証ログの再確認運用）。
+- Analytics Store製品と移行閾値の実数: 初期必須依存にせず、D-36の6 Dimensionを負荷・原価計測してADRで段階採用する。閾値未確定でもPort、Metric Contract、watermark、再構築可能性はGate B-7で固定する。
 
 ## 進め方の提案
 
