@@ -46,7 +46,7 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | kga.gsc_daily_retention | 16か月（GSC保持に整合） | REQ-KGA-08（v3.7.1確定） |
 | kga.realtime_retention | 1週間（日次より細かいデータのみ） | REQ-KGA-08 |
 | evaluation.checkpoints | 1か月 / 3か月 / 6か月 | REQ-LOGIC-06/08 |
-| prediction.unlock.clicks_per_28d | 1,000 click。判定不能な記事は個別にlocked | REQ-LOGIC-09 |
+| prediction.unlock.clicks_per_28d | 1,000 click。判定不能な記事は個別にlocked | REQ-LOGIC-07 |
 | rewrite.backup.retention.max | 3か月。Site容量上限超過時は古いものから削除 | REQ-DATA-05, REQ-IRG-08 |
 
 ### 取得・バッチ（REQ-SRC-05/06/07、REQ-KGA-11）

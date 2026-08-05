@@ -262,5 +262,5 @@ Pattern、Image Generation Job、CMS Media Delivery、記事制作を別状態�
 - [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。生成成果提供、CMS下書き、公開処理引渡し、予約、Publication Fact、評価登録を別文言で表示し、予約・外部変更・帰属確認中を公開完了通知にしない。
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。
 - [ ] AC-L1-SCREEN-21: Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果を現在Siteまたは付与済み全Siteで横断検索し、通常／Officeの同一対象へContextを保って遷移できる。indexing、stale、partial、0件、権限除外、障害を区別し、P95 3秒以内に結果または理由付き縮退状態を表示し、副作用前に検索hitの対象を正本から再読込・再認可できる。
-- [ ] AC-L1-SCREEN-22: 契約周期・税別税込・年額総額、Credit lotの利用可能／予約／消費／失効、自動チャージ、Dimension別Capacity、Plan変更、支払失敗を同じ正本versionから区別して表示し、権限・step-up・影響Preview・stale再確認を経て操作でき、hard limit／past_dueでも閲覧・export・修正導線を維持できる。
+- [ ] AC-L1-SCREEN-22: 契約周期・税別税込・年額総額、Credit lot、自動チャージ、Dimension別Capacity、Plan別Data Fidelity、Plan変更、支払失敗を同じ正本versionから区別して表示できる。Data Fidelityは追加coverage・詳細期間・再計算頻度・予測可能対象として比較し、較正weightへのPlan加点や精度保証にせず、権限・step-up・影響Preview・stale再確認を経て操作し、hard limit／past_dueでも閲覧・export・修正導線を維持できる。
 - [ ] AC-L1-SCREEN-23: Featured Image Patternの版・slot・variation・CMS sizeを生成前に設定し、Pattern編集、画像生成、採否、最適化、Media登録、featured割当を別状態で確認できる。ユーザー再生成と障害再試行、技術停止とadvisoryを区別し、Media二重登録と画像失敗による本文成果喪失を防げる。
