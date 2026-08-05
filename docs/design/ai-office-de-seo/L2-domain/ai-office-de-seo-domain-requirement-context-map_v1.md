@@ -28,9 +28,9 @@ L1の要求分類は監査と文書管理の分類であり、業務データの
 | CMS Publication | WPA, INT + PRODUCT-06 | 25 | CmsDelivery |
 | Customer Outcome | MEASURE-01〜04/12/14 | 6 | CustomerOutcomeSnapshot |
 | Commercial Entitlement | BILL, BILLING, COST, UPSELL | 48 | SubscriptionAccount |
-| Platform Control & Reliability | PAC, ADM, IRG, SEC, NFR, DUR, TECH + MEASURE-05〜11/13 + PRODUCT-16/21/22/23 | 109 | PlatformControlPolicy |
+| Platform Control & Reliability | PAC, ADM, IRG, SEC, NFR, DUR, TECH + MEASURE-05〜11/13 + PRODUCT-16/21/22/23 | 110 | PlatformControlPolicy |
 | Agent Execution Experience | SCREEN, DESIGN, AOUI, NAV + PRODUCT-11/14/15 | 54 | AgentTaskProjection |
-| **合計** | **35接頭辞** | **456** | |
+| **合計** | **35接頭辞** | **457** | |
 
 新しいREQ接頭辞を追加した場合は、同じ変更で所有コンテキストを登録する。未割当、二重割当、存在しない接頭辞の登録はRequirements Auditを失敗させる。
 

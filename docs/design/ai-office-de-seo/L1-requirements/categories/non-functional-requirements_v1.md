@@ -128,6 +128,14 @@ soft limitでは予測到達日と削減・Plan変更候補を通知する。har
 
 負荷試験は基準Site、上限近傍Site、急増Site、複数tenant同時実行を含み、特定tenantの大量データまたは再計算が他tenantの対話API、公開、課金、権限操作を劣化させないことを確認する。初期上限値は実装・β測定で決定し、CPU、memory、DB latency・IO、queue滞留、storage増加、egress、Provider rate、原価から較正する。
 
+### REQ-NFR-16 分析Workload隔離・優先順位
+
+実行資源を少なくとも`interactive_read / business_command / publication_write / billing_authorization / source_ingest / metric_rollup / search_rebuild / export`へ分類し、queueまたはrouting key、worker concurrency、DB connection・statement budget、cache、memory、IO、error budgetを資源クラス別に制御する。Metric rollup、全再構築、長期履歴、検索再構築、exportが対話API、認可、課金台帳、公開・更新Commandと同じ無制限poolを奪わない。transaction databaseを分析scanの無制限実行先にせず、有界read model、replica／Analytics Store Port、pre-aggregation、statement timeout等を段階的に適用する。
+
+過負荷時は、非緊急の全再構築、低優先再計算、長期履歴、exportを先に遅延・保留し、既存Projection、watermark、stale／partial状態、取消・再試行予定を返す。ログイン、契約・課金正本、認可、緊急停止、公開・更新の冪等状態確認、既存データの基本閲覧を継続する。分析Queue、cache、pre-aggregationまたはAnalytics Storeの障害から業務Commandを失敗させず、復旧後はsource watermarkから冪等再構築する。
+
+Planは分析資源クラス内の観測coverage、再計算頻度、履歴、同時処理枠、scheduled weightをData Fidelity Entitlementとして差別化できる。ただし、全Planの対話API・現在Object基本検索・安全Commandの最低サービス枠、統計的最低標本、tenant／Site境界、DB・Provider安全上限を迂回しない。weighted fair share、age昇格、hard capにより単一Tenantまたは上位Planが下位Planを永久待機させない。
+
 ## 受入条件
 
 - [ ] AC-L1-NFR-01: 推薦再計算中でも画面シェルと既存データを操作できる。
@@ -145,3 +153,4 @@ soft limitでは予測到達日と削減・Plan変更候補を通知する。har
 - [ ] AC-L1-NFR-13: 相関IDから対象顧客・Site・記事・ジョブ・stage・外部依存の原因候補へ到達でき、MTTD/MTTA/MTTI/MTTRを計測できる。
 - [ ] AC-L1-NFR-14: AWS上でmetrics、logs、traces、queue滞留、DLQ、edge cache hit率をdashboardとalertから確認できる。
 - [ ] AC-L1-NFR-15: 管理規模・保存量・取込量・計算量・瞬間負荷をDimension別に計測・制限し、上限近傍tenantの処理中も他tenantの対話・公開・課金経路を維持できる。
+- [ ] AC-L1-NFR-16: metric rollup、検索再構築、長期履歴、exportを同時に飽和させても、対話API、認可、課金、公開・更新Commandの最低サービス枠を維持し、分析側だけをstale／partial／heldへ縮退してwatermarkから冪等再構築できる。Plan別scheduled weightを適用しても下位Planのage昇格と最低枠が機能する。

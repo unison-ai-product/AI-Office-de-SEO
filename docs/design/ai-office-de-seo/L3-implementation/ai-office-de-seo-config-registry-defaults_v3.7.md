@@ -127,6 +127,8 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | calibration.minimum_samples / freshness_limit / variance_limit | TODO(L3・global固定。Plan／tenant／Site上書き禁止) | REQ-KRL-11, REQ-DATA-17 |
 | calibration.weight_policy_version / fallback_policy_version | TODO(L3・決定論fixtureと匿名cohort検証後にCatalog版を登録) | REQ-KRL-11 |
 | entitlement.data_fidelity.coverage / freshness / grain / detailed_retention / recalculation / site_feature_depth / external_acquisition_capacity / searchable_history | TODO(L3・β原価／負荷実測後にPlan Configurationへ登録) | REQ-BILLING-17 |
+| workload.class.*.concurrency / queue_age_slo / db_connection_budget / statement_timeout / memory_budget / io_budget | TODO(L3・資源クラス別の代表負荷試験で確定) | REQ-NFR-16 |
+| workload.core.minimum_service_share / analytics.weight_by_plan / fairness.age_promotion / tenant_hard_cap / starvation_window | TODO(L3・Plan別weightと全Plan最低枠を同じ負荷試験で確定) | REQ-NFR-15/16 |
 
 `calibration.minimum_samples / freshness_limit / variance_limit`は統計的安全条件であり許可Scopeを`global`に固定する。PlanはData Fidelity Entitlementによって観測対象と処理Capacityを増減できるが、これらの条件、Metric Definition、較正weightへ上書き値を持たない。Analytics Store移行は単一閾値で自動実行せず、version付き観測Snapshot、費用差、rollback plan、ADR承認を必要とする。
 
@@ -186,7 +188,7 @@ related_plan: PLAN-L3-01-ai-office-de-seo-implementation-design
 | `auto.*`, `wpa.*`, `rwr.*`, `cvp.*`, `sched.*` | LB-01、OC-04、OC-06 | CMS負荷、週次上限、変更結果、停止・再開試験 |
 | `summary.*`, `facts.*`, `embed.*`, `retention.*` | DD-09、DD-10、D-10、D-14 | 保存量、推薦精度、検索latency、費用、復元試験 |
 | `capacity.*`, `perf.*`, `adm.retry_*`, `circuit_breaker` | LB-01、DD-05、DD-06、OC-04、D-08、D-20 | 負荷・障害注入・P95/P99・queue age・費用 |
-| `metric.*`, `analytics.migration.*`, `calibration.*`, `entitlement.data_fidelity.*` | D-36、LB-01、DD-05、OC-07 | Metric一致fixture、P95、watermark遅延、scan量、backlog、保存量、AWS費用、運用工数、匿名cohort標本安定性 |
+| `metric.*`, `analytics.migration.*`, `calibration.*`, `entitlement.data_fidelity.*`, `workload.*`, `fairness.*`, `tenant_hard_cap` | D-36、LB-01、DD-05、OC-07／10 | Metric一致fixture、P95、watermark遅延、scan量、backlog、保存量、AWS費用、運用工数、匿名cohort標本安定性、Plan別wait分布、starvation |
 | `recovery.*`, `heal.*` | LB-04、D-21、OC-04 | Restore演習、RPO／RTO、flapping試験 |
 | `inbound.*`, `mail.*`, `support.*`, `notif.*`, `auth.*` | D-07、DD-10、D-16、D-31、OC-04 | abuse試験、delivery／bounce、Support運用、Retention、法務review |
 | `net.*`, `master.*`, `showcase.*` | OC-08、D-16、D-34 | 再識別risk、標本安定性、同意・撤回、marketing review |

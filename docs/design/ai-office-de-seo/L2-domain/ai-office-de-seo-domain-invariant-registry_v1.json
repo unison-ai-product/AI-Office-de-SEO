@@ -614,6 +614,35 @@
             "Plan差分はMetric式ではなく利用できるcoverage、grain、history、freshnessへ適用する。",
             "PlatformはMetric実行を所有するが、業務上の意味はFact所有Contextが公開する。"
           ]
+        },
+        {
+          "invariant_id": "INV-ANALYTICS-OPS-001",
+          "statement": "分析取込、Metric rollup、検索再構築、長期履歴、exportは対話、業務Command、公開、課金・認可と資源クラスを分離する。Plan差分は分析class内のCapacityとscheduled weightへ限定し、Core最低枠、安全上限、tenant／Site fair share、age昇格を迂回しない。分析障害は既存Projectionのstale／partial表示へ縮退し、業務Commandを継続する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/non-functional-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/technical-architecture-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-aws-operations-recovery-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-config-registry-defaults_v3.7.md",
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md"
+          ],
+          "forbidden_patterns": [
+            "(?:metric_rollup|分析再計算|検索再構築).{0,35}(?:business_command|業務Command|公開Command).{0,30}同一無制限pool(?:へ置く|を使用する)",
+            "(?:Premium|上位Plan).{0,35}(?:Entry|下位Plan).{0,25}(?:永久待機を許可する|永久待機させる|starvationを許可する)",
+            "(?:Analytics Store|pre-aggregation).{0,30}(?:停止|障害).{0,30}(?:公開Command|課金|認可).{0,20}(?:停止する|利用不能にする|利用不能とする)",
+            "Plan別weight.{0,30}(?:hard cap|安全上限|Core最低枠).{0,20}(?:迂回|無視)(?:する|できる)"
+          ],
+          "bad_fixtures": [
+            "metric_rollupとbusiness_commandを同一無制限poolへ置く。",
+            "上位Planは下位Planの永久待機を許可する。",
+            "Analytics Store障害時は公開Commandを停止する。",
+            "Plan別weightで安全上限を迂回する。"
+          ],
+          "good_fixtures": [
+            "metric rollupは分析classへ隔離し、business commandの最低枠を維持する。",
+            "上位Planのscheduled weightを増やしても下位Planをage昇格する。",
+            "Analytics Store停止時は既存Projectionをstale表示し公開Commandを継続する。",
+            "Plan別weightはtenant hard capとCore最低枠の内側で適用する。"
+          ]
         }
       ]
     },

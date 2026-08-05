@@ -1512,6 +1512,21 @@ assertIncludes("docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-sc
   "Office専用算式・Metric copy・認可迂回",
   "P95 3秒以内にページ骨格と値または理由付き状態",
 ]);
+assertIncludes("docs/design/ai-office-de-seo/L1-requirements/categories/non-functional-requirements_v1.md", [
+  "### REQ-NFR-16 分析Workload隔離・優先順位",
+  "interactive_read / business_command / publication_write / billing_authorization / source_ingest / metric_rollup / search_rebuild / export",
+  "weighted fair share、age昇格、hard cap",
+  "AC-L1-NFR-16",
+]);
+assertIncludes("docs/design/ai-office-de-seo/L3-implementation/ai-office-de-seo-aws-operations-recovery-map_v1.md", [
+  "| Analytics Projection |",
+  "事前集計は将来最適化ではなく初期表示契約の一部",
+  "物理的な列指向DBを全領域の必須依存にしない",
+  "Analytics／Search",
+  "Analytics overload shedding",
+  "Metric／Search projection rebuild",
+  "Plan別weight適用下で下位Planがage昇格",
+]);
 const agentRuntimePath = path.join(
   repoRoot,
   "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-runtime-requirements_v3.7.md",

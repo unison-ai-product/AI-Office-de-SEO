@@ -36,7 +36,7 @@ L1要求（REQ）を、DDDの語彙で構造化する。用語は用語一覧（
 | CMS Publication | CmsDelivery | WPA, INT, PRODUCTのCMS詳細 | CMS接続、下書き送信、承認後反映、外部変更通知、CV集計入力 |
 | Customer Outcome | CustomerOutcomeSnapshot | MEASUREの顧客計測・成果要求 | 顧客Siteの成果、施策評価、市場影響、Domain Metricの意味、運営指標との分離 |
 | Commercial Entitlement | SubscriptionAccount | BILL, BILLING, COST, UPSELL | Plan、契約、Credit、Data Fidelity Entitlement、原価、利用権、追加購入、アップセル |
-| Platform Control & Reliability | PlatformControlPolicy | PAC, ADM, IRG, SEC, NFR, DUR, TECH, MEASUREの運用要求, PRODUCTの運営詳細 | 運営管理、障害、保証、セキュリティ、可用性、Metric実行・rollup、技術基盤 |
+| Platform Control & Reliability | PlatformControlPolicy | PAC, ADM, IRG, SEC, NFR, DUR, TECH, MEASUREの運用要求, PRODUCTの運営詳細 | 運営管理、障害、保証、セキュリティ、可用性、Metric実行・rollup、資源クラスbulkhead、技術基盤 |
 | Agent Execution Experience | AgentTaskProjection | SCREEN, DESIGN, AOUI, NAV, PRODUCTの通知・検索・出力詳細 | 通常ビューの簡単操作と成果分析、Officeの詳細運用・Agent操作を同じ業務状態から投影 |
 
 Conversion MeasurementとPublication Attributionは独立した要求所有コンテキストではなく、CMS PublicationからCustomer Outcomeへ渡す明示的な下位モデルである。これにより、CVの保存制約とAI Office経由／外部変更の帰属規則を局所的な不変条件として検証する。
@@ -273,6 +273,7 @@ Office Conversation RuntimeはExperienceのApplication Serviceとして置く。
 - 状態: `planned → building → partial → current → stale / failed → rebuilding`。`partial / stale / failed`を0件・最新・完全値へ写像しない。
 - columnar store、Cube等のsemantic runtime、別cache engineはAdapter候補であり、scan量、backlog、storage、latency、費用、運用工数の移行閾値を満たしADRが承認されるまで必須依存にしない。
 - 不変条件: 全Queryへtenant／Site ScopeとAuthorizationを強制する／PlanごとにMetric式をforkしない／現在Objectの基本検索を分析Entitlementで劣化させない／pre-aggregation障害で正本Commandを止めない／UIがcache値を再計算しない。
+- 実行資源は`interactive_read / business_command / publication_write / billing_authorization / source_ingest / metric_rollup / search_rebuild / export`へ分類し、同じ無制限poolへ置かない。Plan別weightは分析class内だけへ適用し、Core最低枠、hard cap、age昇格、tenant／Site fair shareを迂回しない。
 
 ### 4.7 Site / SiteSandboxContext（Tenancy）
 - ルート: Site。
