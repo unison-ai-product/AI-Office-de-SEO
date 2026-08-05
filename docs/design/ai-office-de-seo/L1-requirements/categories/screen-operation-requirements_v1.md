@@ -215,6 +215,12 @@ Task完了、ユーザー確認待ち、承認期限、停止、失敗、再開�
 
 4象限ごとに `維持／保護、選択性診断、技術要監視、取得障害のユーザー対応` の推奨次操作を通常ビューへ簡潔に提示する。Agent Officeでは同じ観測結果を、対象Keyword／Cluster／記事、取得性・表示性の根拠、時系列、観測Task、変更候補まで専門的に掘り下げ、許可された条件調整を型付きProposalとして実行できる。未接続機能はavailabilityと後続提供範囲を示し、0件と表示しない。
 
+### REQ-SCREEN-21 内部横断検索・結果遷移
+
+顧客面はKeyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、顧客成果を現在Siteで横断検索できる補助導線を持つ。明示的な全Site検索は付与済みSiteだけを対象にし、Site名を表示する。結果は種別、名称、Site、状態、短い一致理由、最終更新、遷移先を示し、通常ビューの正本画面または同じ対象のOffice WorkbenchへContextを保って移動する。戻る操作ではquery、filter、scroll位置を復元する。
+
+検索中、indexing、stale、partial、true empty、権限除外、利用不能を区別し、権限外対象の存在・件数・facetを漏らさない。Index障害時も主要一覧・最近見た項目・exact-ID等へ縮退し、全ページを表示する。検索結果の選択だけで業務状態を変更せず、副作用Actionは対象正本を再読込して認可・version・状態を再判定する。顧客面検索と内部管理検索を別契約にし、検索ごとにLLMを呼ばない。詳細は`ai-office-de-seo-internal-search-index-connection-map_v1.md`を正本とする。
+
 ## 受入条件
 
 - [ ] AC-L1-SCREEN-01: Dashboardで承認期限、停止、今週の予定、新規Recommendation、完了・評価の順に判断項目を確認し、月次計画と週次予定を運用modeに応じて確定できる。WordPress Thin Pluginを選ぶ場合はSaaS側からZIP取得、Siteペアリング、接続・version・署名付き更新状態を確認できる。
@@ -237,3 +243,4 @@ Task完了、ユーザー確認待ち、承認期限、停止、失敗、再開�
 - [ ] AC-L1-SCREEN-18: 通常ビューでRecommendation中心の要約・簡単操作を行え、Agent Officeで同じProjectionを使う玄人向け詳細分析・設定・Task操作を行え、選択式操作は決定論Service、自由文は必要時だけLLMを使い、確認済み共通Commandの結果が両Viewへ同期される。
 - [ ] AC-L1-SCREEN-19: Task完了・確認待ち等をWeb popupと永続通知Centerで確認でき、担当者割当なしでもRole／Scope・購読設定から通知され、event別のON／OFFと対象業務への遷移が機能する。生成成果提供、CMS下書き、公開処理引渡し、予約、Publication Fact、評価登録を別文言で表示し、予約・外部変更・帰属確認中を公開完了通知にしない。
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。
+- [ ] AC-L1-SCREEN-21: Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果を現在Siteまたは付与済み全Siteで横断検索し、通常／Officeの同一対象へContextを保って遷移できる。indexing、stale、partial、0件、権限除外、障害を区別し、P95 3秒以内に結果または理由付き縮退状態を表示し、副作用前に検索hitの対象を正本から再読込・再認可できる。

@@ -364,6 +364,8 @@ Site導入・接続画面は、`site_identified`をSite単位、`analysis_ready`
 
 遷移Contextには `tenant_id`、`site_id`、`source_screen`、`source_tab`、`source_filter`、対象ID、対象version、`correlation_id` を含める。通知、Dashboard、Office、Task Historyから遷移しても同一Contextを復元し、別Siteまたは旧versionへ黙って移動しない。
 
+横断検索からの遷移はこれに`source=search`、query、Document type、result positionを加える。検索hitは遷移候補であり業務正本ではないため、副作用Actionの前に対象Aggregateを再読込して認可・version・状態を再判定する。通常結果は該当S画面・tab、Office結果は同じ対象のWorkbenchへ移り、戻る操作でquery、filter、scroll位置を復元する。
+
 ## 9. 検証規約
 
 - 各ジャーニー（REQ-UJ-02〜09）のステップ列は本図のパスとして到達可能であること（AC-UJ-02〜09）。

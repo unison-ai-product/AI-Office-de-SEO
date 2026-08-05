@@ -586,6 +586,33 @@
             "総量不確定Taskはpercentを出さず実stageと待機理由を表示する。",
             "Officeの作業演出は実eventから決定論的に導出する。"
           ]
+        },
+        {
+          "invariant_id": "INV-SEARCH-UI-001",
+          "statement": "顧客向け横断検索は現在Siteまたは付与済みSiteだけを対象にし、Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果から通常／Officeの同一対象へContext付きで遷移する。検索hitは正本でなく、Action前に再読込・再認可する。indexing、stale、partial、0件、権限除外、障害を分離し、P95 3秒以内に結果または縮退状態を示す。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-internal-search-index-connection-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-internal-search-ui-validation_v1.md"
+          ],
+          "forbidden_patterns": [
+            "顧客(?:向け|面).{0,30}(?:全tenant|全テナント).{0,20}(?:横断検索|検索する)",
+            "権限外.{0,30}(?:結果件数|facet|候補語).{0,20}(?:表示|返す)",
+            "検索hit.{0,40}(?:再読込なし|再認可なし).{0,20}(?:公開|更新|採用|実行)",
+            "検索(?:Index)?障害.{0,40}(?:全ページ停止|Navigationを隠す)"
+          ],
+          "bad_fixtures": [
+            "顧客面で全tenantを横断検索する。",
+            "権限外の結果件数を表示する。",
+            "検索hitから再認可なしで公開する。",
+            "検索Index障害では全ページ停止する。"
+          ],
+          "good_fixtures": [
+            "顧客検索は現在Siteまたは付与済みSiteだけを対象にする。",
+            "権限除外時は他対象の存在を漏らさない。",
+            "検索hitの対象を正本から再読込・再認可してActionを実行する。",
+            "Index障害時も主要一覧と理由付き状態を表示する。"
+          ]
         }
       ]
     },
