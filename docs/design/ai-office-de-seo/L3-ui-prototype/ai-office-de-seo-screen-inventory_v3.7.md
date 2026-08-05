@@ -33,7 +33,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 
 第一階層S1〜S7は再利用するが、旧プロトの画面起点ではなく、次の業務Lifecycleを画面間の正本とする。
 
-`Site導入 → 市場探索／既存データ取込 → Keyword分析・Cluster化 → 戦略／診断Report → 月次計画 → Recommendation → 採否 → Agent実行 → CMS下書き／公開 → 1・3・6か月評価 → 学習・再推薦`
+`Site導入 → 市場探索／既存データ取込 → Keyword分析・Cluster化 → 戦略／診断Report → 月次計画 → Recommendation → 採否 → Action別実行（Agentic Workflow／軽量Patch／観測／Policy／ユーザー対応） → CMS下書き／公開 → 1・3・6か月評価 → 学習・再推薦`
 
 | Lifecycle | 主画面 | 画面責務 | 次へ渡す正本 |
 |---|---|---|---|
@@ -43,7 +43,7 @@ related_plan: PLAN-L3-02-ai-office-de-seo-screen-prototype
 | 戦略／診断Report | S2 Report tab / W1 | 新規Siteは市場・必要領域・カテゴリ提案・制作順、既存Siteは市場母集団に対する自社share・獲得・未獲得・記事問題・施策配分を表示 | version付きReport、ユーザー優先／保留／除外 |
 | 月次計画 | S1 Plan tab | 目的、重点領域、傾向配分、予算、週次枠を確認。自動／手動確定を分ける | `MonthlyPlan` version |
 | Recommendation | S1 Queue / S2・S5文脈表示 | 理由、対象Cluster、記事目的、CTA、内部link、依存、品質、credit、保護、availabilityを表示 | `schema.intake.recommendation.v1` |
-| Agent実行 | S3 / S4 / W3〜W5 | 新規、リライト、軽量Patch、Automationを別Workflowで表示する。リライト／記事置換はArticle Read Snapshotの取得可否を入口条件とし、同一correlationで成果と保留を追跡 | Ticket、`schema.snapshot.article_read.v1`、Workflow Snapshot |
+| Action別実行 | S3 / S4 / S5 / W2〜W5 | 新規・リライトだけをAgentic Workflow、CTA・内部linkを軽量Patch、observeを要監視、protectをPolicy、構造・技術対応をユーザー対応、Automationを許可Command実行として表示する。リライト／記事置換はArticle Read Snapshotの取得可否を入口条件とし、同一correlationで成果と保留を追跡する。非Agent Actionへ架空Ticket／Jobを作らない | Action execution ref、必要時だけTicket、`schema.snapshot.article_read.v1`、Workflow／Patch／Policy Snapshot |
 | 成果・CMS・公開 | S3確認 / S4予定 / W2・W4 | Generation Outcomeの成果提供・Output Vault期限・生成credit確定、CMS Deliveryの下書き、Publication Decisionの判定、承認、Publication Jobの予約・実行・再試行、Publication Factの検証済み公開／更新と帰属を別状態で表示する。予約・API受付を公開成功にせず、検証済み下書き以降で、最初の新規15記事、リライト、hard gate例外、解放済みAutomationを別条件で扱う | `schema.generation.outcome.v1`、`schema.cms.delivery.v1`、`schema.publication.decision.v1`、`schema.publication.job.v1`、`schema.publication.fact.v1` |
 | 評価・学習 | S5 Evaluation / S6 Knowledge | SEO、CTA/CV、認知貢献、1/3/6か月、月次／累積、要監視、Site補正、匿名補正候補を表示 | Intervention result、Recommendation feedback |
 

@@ -263,22 +263,29 @@
           "canonical_sources": [
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-agent-requirements-map_v1.md",
             "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-recommendation-action-routing-map_v1.md",
-            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md"
+            "docs/design/ai-office-de-seo/L2-domain/ai-office-de-seo-domain-model_v3.7.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-action-execution-ui-validation_v1.md"
           ],
           "forbidden_patterns": [
             "Recommendation(?:の正本)?は.{0,30}(?:画面表示|UI)(?:とする|である)",
             "手動(?:指定|起動).{0,50}(?:Recommendation採用|recommendation_id).{0,30}(?:として保存|を必須)",
-            "(?:observe|protect|no_action|technical_escalation).{0,50}(?:記事生成Job|Agent Job).{0,20}(?:発行する|起動する|必須とする)"
+            "(?:observe|protect|no_action|technical_escalation).{0,50}(?:記事生成Job|Agent Job).{0,20}(?:発行する|起動する|必須とする)",
+            "(?:Recommendation|Action).{0,30}(?:採用|accepted).{0,30}(?:すべて|一律|必ず).{0,20}(?:Agent Workflow|Agent Job)(?:へ送る|を起動する|を発行する)",
+            "(?:13|全)(?:体|種類)?の?(?:Office)?ペルソナ.{0,40}(?:13|個別|専用)(?:個|種類)?の?(?:常駐)?LLM(?:を用意する|を実装する|を常駐させる)"
           ],
           "bad_fixtures": [
             "Recommendationの正本はUIとする。",
             "手動起動はRecommendation採用として保存する。",
-            "no_actionでもAgent Jobを発行する。"
+            "no_actionでもAgent Jobを発行する。",
+            "Recommendation採用後はすべてAgent Workflowへ送る。",
+            "13体のOfficeペルソナに13個の常駐LLMを用意する。"
           ],
           "good_fixtures": [
             "Recommendation Intakeをversion付きで正規Actionへ渡す。",
             "手動指定はManual Intakeとして由来を分離し、同じPreflightへ通す。",
-            "observeとprotectは記事生成Jobを発行しない。"
+            "observeとprotectは記事生成Jobを発行しない。",
+            "Action種別に応じてAgentic Workflow、軽量Patch、観測、Policy、ユーザー対応へ分岐する。",
+            "13体のOfficeペルソナは必要時だけ共通Conversation Runtimeを利用する。"
           ]
         },
         {

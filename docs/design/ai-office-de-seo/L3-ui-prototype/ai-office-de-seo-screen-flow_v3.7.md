@@ -147,6 +147,8 @@ flowchart LR
   W5 --> W6[W6 ジョブ履歴]
 ```
 
+Recommendation Intake後の分岐はAction Routing Mapを正本とする。`new_article / rewrite`だけをAgentic content Workflowへ、`cta_patch / internal_link_patch`を軽量Patchへ、`observe / protect / no_action`をJobなしの観測・Policy・終端へ、`structure_change_proposal / technical_escalation`をユーザー対応へ、`automation_change`を型付きPolicy変更へ送る。「採用したのでAgent Jobを作る」を共通経路にしない。
+
 ### 1.1 通常ビューとAgent Officeの往復・詳細操作フロー（2026-08-03現行要求）
 
 通常ビューとOfficeは別システムではない。通常ビューはRecommendation中心の要約と簡単操作、Officeは同じProjection・認可・Domain Commandを用いる玄人向け詳細分析・運用面である。Officeは成果、Keyword、記事、根拠、条件、設定、Taskを横断し、選択式操作または型付きProposalから共通Commandへ接続する。
