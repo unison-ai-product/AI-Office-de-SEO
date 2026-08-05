@@ -385,6 +385,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-BILLING-14: 初期OFFの自動チャージについて残高しきい値・購入額・月間上限または無制限を権限者が設定でき、上限到達・決済失敗時に二重購入せず停止できる。 ｜ 検証: REQ-BILLING-14 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-15: 累計10社までの招待制Trialへ1～3カ月、Standard相当、固定creditを設定でき、通常の15記事承認を適用し、一般公開・枠再利用・明示契約なしの有償化を行わない。 ｜ 検証: REQ-BILLING-15 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 - [ ] AC-L1-BILLING-16: 月・年契約の期間末解約、自動更新通知、14日・利用履歴なしの返金判定、計画Upgrade、更新時Downgradeを再現でき、Enterprise SLAのservice creditを根拠・承認・冪等性付きappend-only調整eventとして追跡できる。 ｜ 検証: REQ-BILLING-16 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
+- [ ] AC-L1-BILLING-17: Plan別Data Fidelityを観測coverage・freshness・粒度・保持・再計算等のDimensionで付与し、Upgrade／Downgradeのデータ影響をPreviewでき、Planを顧客実測への加点・標本条件緩和・精度保証として扱わない。 ｜ 検証: REQ-BILLING-17 ｜ 正本: `categories/billing-accounting-requirements_v1.md`
 
 ### business-requirements_v1
 
@@ -634,6 +635,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-TECH-18: 技術的禁止事項を自動検査またはレビューゲートで検出できる。 ｜ 検証: REQ-TECH-18 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-19: AWS上の代表E2Eで相関IDがAPI、queue、worker、Provider、CMS Adapter結果まで維持され、初期WordPress Adapterを含むDLQから原因確認と安全なredriveができる。 ｜ 検証: REQ-TECH-19 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 - [ ] AC-L1-TECH-20: 検索Indexを正本eventから冪等更新・全再構築でき、世代切替・rollback、tenant／Site越境負テスト、更新lag監視、Index停止時の縮退を検証し、検索障害中も正本CommandとP95 3秒のページ状態表示を維持できる。 ｜ 検証: REQ-TECH-20 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
+- [ ] AC-L1-TECH-21: version付きMetric Contractから通常／Office／内部管理の同一指標を再現し、Scope付きpre-aggregationと非同期rollupでP95 3秒を満たし、移行閾値までは重い分析DBを必須化せず、個人sessionを保存せずに遅延・重複・欠落を診断できる。 ｜ 検証: REQ-TECH-21 ｜ 正本: `categories/technical-architecture-requirements_v1.md`
 
 ## 26. 詳細ロジック受入トレース
 
@@ -662,6 +664,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。 ｜ 検証: REQ-DATA-14 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。 ｜ 検証: REQ-DATA-15 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-DATA-16: 内部検索Indexを正本から再構築でき、tenant／Site Scope、version、鮮度、削除を保ったまま差分更新し、記事本文・Prompt・secretをDocumentまたはembeddingへ恒久複製せず、vector機能停止時も基本検索を継続できる。 ｜ 検証: REQ-DATA-16 ｜ 正本: `categories/data-requirements_v1.md`
+- [ ] AC-L1-DATA-17: Site実測、Site固有較正、匿名業界cohort、global priorをprovenance・weight・confidence付きで分離し、Plan別Dimensionからcoverage・freshness・粒度・保持・再計算範囲を変えても、顧客固有事実と過去Observation Factを平均値で上書きしない。 ｜ 検証: REQ-DATA-17 ｜ 正本: `categories/data-requirements_v1.md`
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。 ｜ 検証: REQ-SCREEN-20 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-21: Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果を現在Siteまたは付与済み全Siteで横断検索し、通常／Officeの同一対象へContextを保って遷移できる。indexing、stale、partial、0件、権限除外、障害を区別し、P95 3秒以内に結果または理由付き縮退状態を表示し、副作用前に検索hitの対象を正本から再読込・再認可できる。 ｜ 検証: REQ-SCREEN-21 ｜ 正本: `categories/screen-operation-requirements_v1.md`
 - [ ] AC-L1-SCREEN-22: 契約周期・税別税込・年額総額、Credit lotの利用可能／予約／消費／失効、自動チャージ、Dimension別Capacity、Plan変更、支払失敗を同じ正本versionから区別して表示し、権限・step-up・影響Preview・stale再確認を経て操作でき、hard limit／past_dueでも閲覧・export・修正導線を維持できる。 ｜ 検証: REQ-SCREEN-22 ｜ 正本: `categories/screen-operation-requirements_v1.md`
@@ -683,6 +686,7 @@ related_plan: PLAN-L1-01-ai-office-de-seo-requirements
 - [ ] AC-L1-KRL-21: traffic potentialが範囲と不確実性で示され、自Site固有難易度が被link、トピック信用、content、意図、記事type、構造、SERP、市場圧力、過去実績へ分解される。 ｜ 検証: REQ-KRL-02, REQ-KRL-06 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-22: 検索競合がcluster実績から動的分類され、Recommendationが対象cluster、根拠、役割、記事type、既存記事、内部link、順序、credit、不足入力、実行可能状態を一体で返す。 ｜ 検証: REQ-KRL-08 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 - [ ] AC-L1-KRL-23: キーワード市場の規模・価値と、Query・記事による自Siteの獲得シェアが別成分で保存され、GSC実測シェアと競合データ由来の推定シェアが区別される。 ｜ 検証: REQ-KRL-01, REQ-KRL-02, REQ-KRL-08 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
+- [ ] AC-L1-KRL-24: Site実測からglobal priorまでの階層weightとfallbackを再現でき、Planは入力coverage・保持・再計算能力だけを変え、同じ観測値への恣意的加点、標本条件の緩和、顧客固有事実の平均置換を行わない。 ｜ 検証: REQ-KRL-11 ｜ 正本: `logic/keyword-dynamic-recommendation-logic-requirements_v1.md`
 
 ### Article Summary抽出・完全性
 

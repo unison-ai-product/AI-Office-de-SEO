@@ -147,6 +147,12 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 
 取得経路の切替、source更新、hash変更または期限切れ時は旧Snapshotを再利用しない。job完了、取消または期限切れ後に本文objectを破棄し、Snapshot ID、hash、取得時刻、availability、provenance、破棄時刻だけを履歴として保持する。CMS保存値、公開表示、Plugin Snapshot等は用途別正本としてsource種別で区別し、読取成功を書込権限へ流用しない。
 
+### REQ-DATA-17 Plan別Data Fidelityと較正Provenance
+
+顧客のSite実測、Site×業界／業種の固有較正、匿名業界cohort、global priorを別provenanceで保持し、較正結果は各階層のweight、availability、confidence、fallback理由、使用期間、calibration versionを持つ。公共Keyword pool、顧客固有事実、匿名cohortを別Scopeで保存し、Plan差分を理由に顧客固有事実を全体平均で上書きしない。
+
+Plan Configurationは観測coverage、freshness、粒度、詳細保持期間、再計算Capacity、Site固有feature depth、外部取得予算、検索可能履歴をDimensionとして版管理する。Plan変更は新しい取得・rollup・保持・再計算範囲へ適用し、過去Observation Factを書き換えない。Downgrade前に詳細保持終了、rollup、削除予定、export期限を確定し、現在Objectの基本検索品質とtenant／Site境界をPlan差分にしない。詳細は`ai-office-de-seo-plan-data-fidelity-connection-map_v1.md`を正本とする。
+
 ## 受入条件
 
 - [ ] AC-L1-DATA-01: 主要データの所有者、正本、tenant/site境界が定義される。
@@ -165,3 +171,4 @@ Featured Image PatternはCMS要求size、layer、領域、位置、比率、余�
 - [ ] AC-L1-DATA-14: SEO／AI Botの外形診断・実crawlと回答面観測をprovenance付きで分離保持し、生access logを期限後に日次集約へロールアップして削除できる。
 - [ ] AC-L1-DATA-15: 本文変更を伴うリライト／記事置換が、有効で完全なArticle Read Snapshotなしに開始されず、本文を期限付き一時領域だけへ保持し、完了・取消・期限切れ後に破棄した証拠を追跡できる。
 - [ ] AC-L1-DATA-16: 内部検索Indexを正本から再構築でき、tenant／Site Scope、version、鮮度、削除を保ったまま差分更新し、記事本文・Prompt・secretをDocumentまたはembeddingへ恒久複製せず、vector機能停止時も基本検索を継続できる。
+- [ ] AC-L1-DATA-17: Site実測、Site固有較正、匿名業界cohort、global priorをprovenance・weight・confidence付きで分離し、Plan別Dimensionからcoverage・freshness・粒度・保持・再計算範囲を変えても、顧客固有事実と過去Observation Factを平均値で上書きしない。

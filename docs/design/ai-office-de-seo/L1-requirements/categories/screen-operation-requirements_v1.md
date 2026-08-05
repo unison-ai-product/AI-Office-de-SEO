@@ -231,6 +231,8 @@ popup、通知Center、emailは同じNotificationのchannel deliveryとして扱
 
 購入、Plan変更、解約、自動チャージ、上限変更は権限、step-up、影響Previewを通す。Upgradeは差額・税・適用時刻、Downgradeは次回更新時の超過解消、支払失敗は猶予・停止対象・修正導線を表示する。CapacityとCreditを単一残量へ合算せず、hard limit／past_dueでも既存data閲覧・export・削減・支払修正を維持する。staleな金額・残高では確定前に再取得・再見積し、Officeの提案も共通Billing Commandへ渡す。詳細は`ai-office-de-seo-billing-capacity-ui-connection-map_v1.md`を正本とする。
 
+Plan別Data Fidelityは「精度優遇」とだけ表示せず、追加される観測Keyword／cluster／競合、詳細期間、freshness、比較軸、再計算頻度、予測可能対象を示す。通常ビューはSite実績・業界参考・全体参考の利用状態を平易に示し、Officeは較正階層weight、fallback、confidence、Plan上限を表示する。基本検索、顧客実測値、既存Observation Factを下位Plan向けに意図的に劣化させない。
+
 ### REQ-SCREEN-23 アイキャッチPattern・画像生成操作面
 
 初期画面はFeatured Image Pattern、アイキャッチ生成、CMS Media登録、featured media割当だけを実行可能にし、本文中画像・SNS等の別size・WordPress内画像編集を後続提供として分離する。Site既定Pattern、記事override、active／draft／廃止version、固定・可変slot、variation tolerance、ロゴ余白、CMS対応sizeを編集でき、active版の変更は新draftを経て次回生成から適用する。Pattern編集・wireframeでは画像Providerを呼ばず、実画像生成前にfreeze入力とCreditを見積もる。

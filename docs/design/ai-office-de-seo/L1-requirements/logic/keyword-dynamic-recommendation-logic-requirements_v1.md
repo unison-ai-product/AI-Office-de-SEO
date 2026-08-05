@@ -208,6 +208,12 @@ Site固有補正は既存割当を直接変更しない範囲で自動適用す�
 
 採用、編集、保留、却下理由、実施後効果を保存する。入力事実を上書きせず、重みの評価データとして扱う。同じ根拠・同じ条件で却下された候補は抑制期間中に再提示しない。
 
+## 10.1 階層較正とPlan別Data Fidelity  ［REQ-KRL-11］
+
+推薦・予測の較正は `site_observed → site_industry_cohort → industry_cohort → global_prior` の階層を用い、有効標本数、freshness、欠損、分散、provenanceからblend weightを決定する。Site実測が有効な場合はPlanを理由にglobal priorだけへ置換しない。Planはscoreやweightへ直接bonusを加えず、Entitlement Snapshotから観測coverage、詳細保持、再計算頻度、feature depth、外部取得予算を解決する。
+
+上位Planでも標本不足の最低条件を緩めず、同一入力・rule・calibration versionからは同じ結果を返す。入力拡張による結果差は、追加Observation、期間、特徴量、cohort、weight差へ追跡可能にする。出力は使用階層、weight、fallback理由、confidence、Plan上限で未観測の範囲、追加観測後の再評価条件を返す。具体件数はβ原価実測後のPlan Configurationを使い、Plan名を判定式へ直接埋め込まない。
+
 ## 11. 受入条件
 
 - [ ] AC-L1-KRL-01: 市場影響3軸と戦略必要性3軸が独立して算出・保存される。
@@ -233,3 +239,4 @@ Site固有補正は既存割当を直接変更しない範囲で自動適用す�
 - [ ] AC-L1-KRL-21: traffic potentialが範囲と不確実性で示され、自Site固有難易度が被link、トピック信用、content、意図、記事type、構造、SERP、市場圧力、過去実績へ分解される。
 - [ ] AC-L1-KRL-22: 検索競合がcluster実績から動的分類され、Recommendationが対象cluster、根拠、役割、記事type、既存記事、内部link、順序、credit、不足入力、実行可能状態を一体で返す。
 - [ ] AC-L1-KRL-23: キーワード市場の規模・価値と、Query・記事による自Siteの獲得シェアが別成分で保存され、GSC実測シェアと競合データ由来の推定シェアが区別される。
+- [ ] AC-L1-KRL-24: Site実測からglobal priorまでの階層weightとfallbackを再現でき、Planは入力coverage・保持・再計算能力だけを変え、同じ観測値への恣意的加点、標本条件の緩和、顧客固有事実の平均置換を行わない。

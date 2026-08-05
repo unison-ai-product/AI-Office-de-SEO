@@ -170,6 +170,14 @@ Index更新は正本transactionのoutbox／Domain Eventから非同期・冪等�
 
 検索APIは認可済みserver contextからtenant／Site Scopeを強制し、query、facet、suggestion、cursor、cacheで越境を防ぐ。検索hitから副作用Commandを直接実行せず、対象正本を再読込して認可・version・状態を再検証する。Index障害・遅延時はDB read model、保存済みProjection、exact-ID参照等へ縮退し、全ページ表示とP95 3秒の理由付き状態を維持する。詳細は`ai-office-de-seo-internal-search-index-connection-map_v1.md`を正本とする。
 
+### REQ-TECH-21 分析Semantic Layer・段階的Analytics Store
+
+顧客成果、Keyword市場、記事share、CV、運営側product metricsは、Fact source、grain、Dimension、time window、filter、attribution、availability、confidence、Authorization、Plan Dimension、versionを持つMetric Contractから算出する。通常ビュー、Office、内部管理、APIが同じSemantic Metricを利用し、UIごとに算式を再実装しない。pre-aggregationはMetric version、tenant／Site Scope、source watermarkを持ち、stale、partial、未計測を0または最新値として扱わない。
+
+初期構成でClickHouse、Cube、PostHog、Metabase等を必須依存にしない。append-only Factを非同期rollupし、有界ProjectionとcacheでP95 3秒を検証する。scan量、ingestion backlog、storage、latency、AWS費用、運用工数がversion付き移行閾値を超えた領域だけ、Analytics Store Portを介してcolumnar storeまたはpre-aggregation engineへ段階移行する。契約、権限、Credit Ledger、Recommendation、記事状態の正本を分析storeへ移さない。
+
+event ingestionはschema version、冪等key、backpressure、retry、dead-letter、watermark、遅延・重複・欠落診断を持つ。顧客SiteのCV計測では個別session経路・session replay・人物profileを恒久保持せず、既定の日別・URL別・Goal別集計を維持する。外部OSSはarchitecture referenceとし、source code・component・埋込みを採用する場合は対象path／versionのlicenseを審査する。比較根拠は`open-source-analytics-architecture-review_2026-08-05.md`を参照する。
+
 ## 4. 接続要求
 
 - 性能、可用性、容量目標は `non-functional-requirements_v1.md` を参照する。
@@ -201,3 +209,4 @@ Index更新は正本transactionのoutbox／Domain Eventから非同期・冪等�
 - [ ] AC-L1-TECH-18: 技術的禁止事項を自動検査またはレビューゲートで検出できる。
 - [ ] AC-L1-TECH-19: AWS上の代表E2Eで相関IDがAPI、queue、worker、Provider、CMS Adapter結果まで維持され、初期WordPress Adapterを含むDLQから原因確認と安全なredriveができる。
 - [ ] AC-L1-TECH-20: 検索Indexを正本eventから冪等更新・全再構築でき、世代切替・rollback、tenant／Site越境負テスト、更新lag監視、Index停止時の縮退を検証し、検索障害中も正本CommandとP95 3秒のページ状態表示を維持できる。
+- [ ] AC-L1-TECH-21: version付きMetric Contractから通常／Office／内部管理の同一指標を再現し、Scope付きpre-aggregationと非同期rollupでP95 3秒を満たし、移行閾値までは重い分析DBを必須化せず、個人sessionを保存せずに遅延・重複・欠落を診断できる。

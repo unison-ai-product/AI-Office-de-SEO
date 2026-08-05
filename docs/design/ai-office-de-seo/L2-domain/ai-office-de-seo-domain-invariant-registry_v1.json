@@ -110,6 +110,34 @@
           "forbidden_patterns": ["(?:単一Keyword|単一キーワード|単語単位).{0,40}(?:だけ|のみ).{0,30}(?:戦略|Recommendation|評価).{0,20}(?:確定|決定)"] ,
           "bad_fixtures": ["単一キーワードだけで戦略を確定する。"],
           "good_fixtures": ["Keyword Clusterを市場、記事とQueryをSite Shareとして評価する。"]
+        },
+        {
+          "invariant_id": "INV-DATA-FIDELITY-001",
+          "statement": "Plan差分は観測coverage、freshness、粒度、保持、再計算、feature depth、外部取得Capacityへ適用し、Site実測→Site×業界→匿名業界cohort→global priorの階層較正weightへ直接bonusを加えない。顧客固有事実を平均で上書きせず、標本条件、provenance、confidenceを全Planで維持する。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-plan-data-fidelity-connection-map_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/data-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/billing-accounting-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/logic/keyword-dynamic-recommendation-logic-requirements_v1.md"
+          ],
+          "forbidden_patterns": [
+            "(?:Entry|下位Plan).{0,40}(?:Site実測|顧客実測).{0,30}(?:global prior|全体平均)(?:へ置換|だけを使用)",
+            "(?:Premium|上位Plan).{0,40}(?:標本条件|最低標本).{0,20}(?:緩和|無視)",
+            "Planごとに.{0,20}(?:score|weight)へ.{0,20}(?:固定値を加算|優遇係数を乗算)",
+            "(?:Downgrade|下位Plan変更).{0,40}(?:Observation Fact|観測事実).{0,20}(?:上書き|平均へ変更)"
+          ],
+          "bad_fixtures": [
+            "EntryではSite実測を全体平均へ置換する。",
+            "Premiumでは最低標本を無視する。",
+            "Planごとにscoreへ固定値を加算する。",
+            "Downgrade時にObservation Factを平均へ変更する。"
+          ],
+          "good_fixtures": [
+            "全PlanでSite実測を維持し、入力不足分だけ階層priorへfallbackする。",
+            "上位Planは観測coverageと詳細保持を増やし、global priorへのfallbackを減らす。",
+            "較正結果は階層weight、provenance、confidence、Plan上限を返す。",
+            "Downgradeは将来の取得・rollup範囲を変更し、過去Observation Factを維持する。"
+          ]
         }
       ]
     },
