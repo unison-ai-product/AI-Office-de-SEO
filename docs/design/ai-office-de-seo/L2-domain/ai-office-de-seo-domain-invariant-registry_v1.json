@@ -344,9 +344,40 @@
             "検証済みProvisionを前提にOutcome、Credit commit、outboxを同一DB transactionで確定する。",
             "transaction失敗時はOutcomeとcommitを残さず、孤立stagingをcleanupする。",
             "Vault期限切れは一時保管とCMS再送のavailabilityだけを終了し、Outcome providedとcommitを維持する。",
-            "後続CMS失敗は同じOutcomeを参照して再送し、再commitしない。"
-          ]
-        }
+        "後続CMS失敗は同じOutcomeを参照して再送し、再commitしない。"
+      ]
+    },
+    {
+      "invariant_id": "INV-IMAGE-UI-001",
+      "statement": "Featured Image Pattern、Image Generation Job、CMS Media Delivery、記事制作は別Aggregate／Lifecycleとする。active Patternは直接変更せず新draft versionを次回生成から適用し、Jobは使用版をfreezeする。Editor操作は決定論処理、実画像生成だけを有償Jobとし、Media登録とfeatured割当を冪等な別Commandにする。",
+      "canonical_sources": [
+        "docs/design/ai-office-de-seo/L1-requirements/categories/logic-requirements_v1.md",
+        "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+        "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-featured-image-pattern-connection-map_v1.md",
+        "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-featured-image-pattern-ui-validation_v1.md"
+      ],
+      "forbidden_patterns": [
+        "(?:Pattern Editor|canvas|undo|redo).{0,40}(?:操作ごと|変更ごと).{0,25}(?:GPT Image|画像Provider|画像モデル)(?:を呼ぶ|で再生成)",
+        "active Pattern(?:を|は).{0,30}(?:直接上書き|in-place更新)",
+        "(?:Media登録|media_registered).{0,40}(?:失敗|再試行).{0,30}(?:画像を再生成|新しい画像Job)",
+        "featured(?: media)?割当失敗.{0,40}(?:Mediaを再登録|別Mediaを新規登録)",
+        "画像工程失敗.{0,30}(?:本文成果を削除|記事生成を失敗へ変更)"
+      ],
+      "bad_fixtures": [
+        "Pattern Editorの操作ごとにGPT Imageを呼ぶ。",
+        "active Patternを直接上書きする。",
+        "Media登録の再試行で画像を再生成する。",
+        "featured media割当失敗でMediaを再登録する。",
+        "画像工程失敗で本文成果を削除する。"
+      ],
+      "good_fixtures": [
+        "Editorは決定論処理とし、テスト生成または記事用生成だけで画像Providerを呼ぶ。",
+        "active Patternの編集は新draft versionを作り、次回生成から適用する。",
+        "Image Jobは使用したPattern versionとProfile versionをfreezeする。",
+        "Media登録済みで割当だけ失敗した場合はfeatured割当から再開する。",
+        "画像工程の失敗時も完成済み本文成果を維持する。"
+      ]
+    }
       ]
     },
     {

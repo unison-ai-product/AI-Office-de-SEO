@@ -231,6 +231,12 @@ popup、通知Center、emailは同じNotificationのchannel deliveryとして扱
 
 購入、Plan変更、解約、自動チャージ、上限変更は権限、step-up、影響Previewを通す。Upgradeは差額・税・適用時刻、Downgradeは次回更新時の超過解消、支払失敗は猶予・停止対象・修正導線を表示する。CapacityとCreditを単一残量へ合算せず、hard limit／past_dueでも既存data閲覧・export・削減・支払修正を維持する。staleな金額・残高では確定前に再取得・再見積し、Officeの提案も共通Billing Commandへ渡す。詳細は`ai-office-de-seo-billing-capacity-ui-connection-map_v1.md`を正本とする。
 
+### REQ-SCREEN-23 アイキャッチPattern・画像生成操作面
+
+初期画面はFeatured Image Pattern、アイキャッチ生成、CMS Media登録、featured media割当だけを実行可能にし、本文中画像・SNS等の別size・WordPress内画像編集を後続提供として分離する。Site既定Pattern、記事override、active／draft／廃止version、固定・可変slot、variation tolerance、ロゴ余白、CMS対応sizeを編集でき、active版の変更は新draftを経て次回生成から適用する。Pattern編集・wireframeでは画像Providerを呼ばず、実画像生成前にfreeze入力とCreditを見積もる。
+
+Pattern、Image Generation Job、CMS Media Delivery、記事制作を別状態で表示する。ユーザー再生成は新Job、障害再試行は元Jobとし、採用主体・policy version、技術停止・設定不一致・advisoryを区別する。Media登録とfeatured割当を冪等な別Commandとして扱い、割当失敗でMediaを重複登録せず、画像工程の失敗で完成済み本文を失わせない。詳細は`ai-office-de-seo-featured-image-pattern-connection-map_v1.md`を正本とする。
+
 ## 受入条件
 
 - [ ] AC-L1-SCREEN-01: Dashboardで承認期限、停止、今週の予定、新規Recommendation、完了・評価の順に判断項目を確認し、月次計画と週次予定を運用modeに応じて確定できる。WordPress Thin Pluginを選ぶ場合はSaaS側からZIP取得、Siteペアリング、接続・version・署名付き更新状態を確認できる。
@@ -255,3 +261,4 @@ popup、通知Center、emailは同じNotificationのchannel deliveryとして扱
 - [ ] AC-L1-SCREEN-20: SEO／AIを切り替えて取得性×表示性と構成値・availabilityを確認でき、観測段階を誤認せず4象限に応じた次操作へ進める。
 - [ ] AC-L1-SCREEN-21: Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果を現在Siteまたは付与済み全Siteで横断検索し、通常／Officeの同一対象へContextを保って遷移できる。indexing、stale、partial、0件、権限除外、障害を区別し、P95 3秒以内に結果または理由付き縮退状態を表示し、副作用前に検索hitの対象を正本から再読込・再認可できる。
 - [ ] AC-L1-SCREEN-22: 契約周期・税別税込・年額総額、Credit lotの利用可能／予約／消費／失効、自動チャージ、Dimension別Capacity、Plan変更、支払失敗を同じ正本versionから区別して表示し、権限・step-up・影響Preview・stale再確認を経て操作でき、hard limit／past_dueでも閲覧・export・修正導線を維持できる。
+- [ ] AC-L1-SCREEN-23: Featured Image Patternの版・slot・variation・CMS sizeを生成前に設定し、Pattern編集、画像生成、採否、最適化、Media登録、featured割当を別状態で確認できる。ユーザー再生成と障害再試行、技術停止とadvisoryを区別し、Media二重登録と画像失敗による本文成果喪失を防げる。

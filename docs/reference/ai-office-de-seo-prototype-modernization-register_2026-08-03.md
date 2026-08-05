@@ -74,6 +74,7 @@
 | SF-UI-12 | Keyword、カテゴリー／テーマ戦略、記事、Recommendation、Task、成果の横断検索と一覧絞込みを、Site／権限／鮮度を保って通常画面・Officeへ接続できるか。`AOS-PRE-L3-INTERNAL-SEARCH-UI-VALIDATION`のSEARCH-UI-01〜32を比較する | Header検索、group、Scope切替、0件状態、部分結果、縮退、通常／Office route、戻りContext、3秒表示。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-09/10/21、REQ-DATA-16、REQ-TECH-20、Internal Search Index Map |
 | SF-UI-13 | Dashboard、popup、通知Center、emailで同じ業務eventを重複させず、受信者別readとResource共通actionedを分離し、必須判断を通知OFF・digestでも失わず2遷移以内で処理できるか。`AOS-PRE-L3-NOTIFICATION-ACTION-UI-VALIDATION`のNOTIFY-UI-01〜34を比較する | Dashboard優先順、channel重複、recipient、fallback、購読、reminder、Lifecycle文言、再認可、3秒表示。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-01/19、Notification Recipient Routing、Authorization |
 | SF-UI-14 | 年契約の月額換算と実請求総額、Creditのreserve／commit／失効、自動チャージ、Dimension別Capacity、Plan変更、past_dueを一つの残量や成功へ丸めず操作できるか。`AOS-PRE-L3-BILLING-CAPACITY-UI-VALIDATION`のBILL-UI-01〜44を比較する | Catalog version、税表示、年額総額、Ledger projection、stale再見積、権限、step-up、Upgrade／Downgrade、hard limit、3秒表示。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-16/17/22、Billing & Capacity UI、Commercial Entitlement |
+| SF-UI-15 | 生成前Pattern設定を中心に、Pattern版、Image Job、採否、Media登録、featured割当を分離し、Editor操作で画像Providerを浪費せずアイキャッチをCMSへ渡せるか。`AOS-PRE-L3-FEATURED-IMAGE-PATTERN-UI-VALIDATION`のIMG-UI-01〜40を比較する | release境界、active/draft、slot、variation、ロゴ縮退、Credit、Automation採用、Media冪等性、3秒表示。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-15/23、REQ-LOGIC-10、Featured Image Pattern |
 
 視覚検証ではdesktop標準viewport、狭幅、reduced motion、2D縮退を確認し、通常ビューの優先判断が埋もれないこと、Officeの詳細操作が演出に隠れないこと、往復時に対象を見失わないことを記録する。ブラウザ未接続のソース監査だけでこれらを`resolved`にしない。
 
