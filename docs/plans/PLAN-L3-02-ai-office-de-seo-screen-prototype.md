@@ -29,6 +29,8 @@ generates:
     artifact_type: ui_validation_spec
   - artifact_path: docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-async-task-experience-ui-validation_v1.md
     artifact_type: ui_validation_spec
+  - artifact_path: docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-cms-publication-ui-validation_v1.md
+    artifact_type: ui_validation_spec
 dependencies:
   parent: PLAN-L1-01-ai-office-de-seo-requirements
   requires:

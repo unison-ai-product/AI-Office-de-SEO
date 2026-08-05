@@ -69,6 +69,7 @@
 | SF-UI-07 | 月次計画と週次実行予定を、権限別確定、カテゴリー／テーマ戦略の配分、Action別Admission、分散実行としてどう見せれば、計画確定＝全件起動と誤認しないか。`AOS-PRE-L3-MONTHLY-PLAN-UI-VALIDATION`の判断サマリー／月間配置ボードとPLAN-UI-01〜18を比較する | セクション順、権限待ち表示、見込み幅、Capacity待機表現、S1／S3／S4の遷移。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-BUS-03/05、REQ-SCREEN-01/18、Authorization、Capacity Admission |
 | SF-UI-08 | Recommendation採用後の新規記事、リライト、軽量Patch、観測、保護、見送り、ユーザー対応、Automationを、Actionの意味に合う経路でどう見せるか。`AOS-PRE-L3-ACTION-EXECUTION-UI-VALIDATION`のACT-UI-01〜20で比較する | Action別進捗、通常／Officeの詳細差、LLM呼出し境界、非Agent Actionの終端表示。検証仕様作成済み、ブラウザ操作前のため`open` | Agent Requirements Map、Action Routing Map、REQ-SCREEN-04/18、INV-PRODUCTION-001 |
 | SF-UI-09 | 同期操作を短く保ち、長時間処理を離脱可能なTaskとして扱い、全ページを先に表示し、データ画面をP95 3秒以内の判断可能状態へ到達させ、通常ビューのTask ShelfとOfficeの実stage演出で待たされ感を減らせるか。`AOS-PRE-L3-ASYNC-TASK-EXPERIENCE-UI-VALIDATION`のASYNC-UI-01〜24を比較する | Shelf位置、通知強度、stage表現、見込み範囲、部分開放、全route表示、3秒data contract、Office animation。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-TECH-05/06、REQ-SCREEN-04/05/11、REQ-DESIGN-05/08、REQ-NFR-01/02/04 |
+| SF-UI-10 | 生成成果、CMS下書き、Preview、承認、予約、API受付、外部反映、評価登録を別状態で見せ、外部確認待ちでも全ページをP95 3秒以内の判断可能状態へ出せるか。`AOS-PRE-L3-CMS-PUBLICATION-UI-VALIDATION`のCMS-UI-01〜30を比較する | 状態文言、次操作、15件count、Preview経路、retry、通常／Office詳細差、3秒状態表示。検証仕様作成済み、ブラウザ操作前のため`open` | REQ-SCREEN-04/15/19、REQ-INT-10、REQ-WPA-04、CMS Routing、Publication Attribution |
 
 視覚検証ではdesktop標準viewport、狭幅、reduced motion、2D縮退を確認し、通常ビューの優先判断が埋もれないこと、Officeの詳細操作が演出に隠れないこと、往復時に対象を見失わないことを記録する。ブラウザ未接続のソース監査だけでこれらを`resolved`にしない。
 

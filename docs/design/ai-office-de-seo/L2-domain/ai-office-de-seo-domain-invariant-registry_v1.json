@@ -363,6 +363,34 @@
             "15件は本システム経由で承認・公開した新規記事だけを数える。",
             "hard gate例外は同一権限者の二段階確認と版付き同意を必要とする。"
           ]
+        },
+        {
+          "invariant_id": "INV-CMS-003",
+          "statement": "画面はGeneration Outcome、CMS Delivery、CMS下書き、Preview、Publication Decision、承認、Publication Job、Publication Fact、評価登録を別状態で表示する。CMS下書き後はAdapterのPreview URLを正規確認経路とし、Preview閲覧を承認証拠にせず、予約・API受付・下書きを公開成功へ丸めない。外部確認待ちでも全ページを表示し、データ画面は標準利用条件P95 3秒以内に既存データ、部分結果または理由付き状態を示す。",
+          "canonical_sources": [
+            "docs/design/ai-office-de-seo/L1-requirements/categories/screen-operation-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/categories/integration-requirements_v1.md",
+            "docs/design/ai-office-de-seo/L1-requirements/ai-office-de-seo-cms-connection-routing-map_v1.md",
+            "docs/design/ai-office-de-seo/L3-ui-prototype/ai-office-de-seo-cms-publication-ui-validation_v1.md"
+          ],
+          "forbidden_patterns": [
+            "CMS下書き.{0,30}(?:公開完了|公開成功)",
+            "Preview URL.{0,40}(?:閲覧|開いた).{0,30}(?:承認証拠|承認済み)",
+            "CMS送信後.{0,50}(?:擬似Preview|HTML Preview).{0,30}(?:正規|正本)",
+            "外部確認待ち.{0,40}(?:全面spinner|ページを隠す)"
+          ],
+          "bad_fixtures": [
+            "CMS下書きを作成したので公開完了と表示する。",
+            "Preview URLを開いた記録を承認証拠とする。",
+            "CMS送信後も製品内HTML Previewを正規Previewとする。",
+            "外部確認待ちは全面spinnerでページを隠す。"
+          ],
+          "good_fixtures": [
+            "CMS下書き作成とPublication Factを別状態で表示する。",
+            "Preview閲覧と完成記事への承認操作を分離する。",
+            "CMS下書き後はAdapterが返すPreview URLを正規確認経路にする。",
+            "外部確認待ちでも3秒以内に前回状態と確認中を表示する。"
+          ]
         }
       ]
     },
